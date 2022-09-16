@@ -7,11 +7,9 @@ from itertools import combinations
 from scipy.optimize import minimize_scalar
 from shapely.geometry import GeometryCollection, LineString, Point
 
-
-from SuPyMode.Plotting.Plots import Scene, Axis, Mesh, Contour, ColorBar
-from SuPyMode.Geometry.Rings import FiberRing
-from SuPyMode.Geometry.Connection import Connection
-from SuPyMode.Geometry.Utils import ( Buffer,
+import FiberFusing.Plotting.Plots as Plots
+from FiberFusing.Connection import Connection
+from FiberFusing.Utils import ( Buffer,
                                       BufferPoint, 
                                       BufferPolygon, 
                                       BufferMultiPolygon, 
@@ -237,10 +235,10 @@ class BaseFused():
 
 
     def Plot(self, **kwargs):
-        Fig = Scene('SuPyMode Figure', UnitSize=(6,6))
-        Colorbar = ColorBar(Discreet=True, Position='right')
+        Fig = Plots.Scene('SuPyMode Figure', UnitSize=(6,6))
+        Colorbar = Plots.ColorBar(Discreet=True, Position='right')
 
-        ax = Axis(Row              = 0,
+        ax = Plots.Axis(Row              = 0,
                   Col              = 0,
                   xLabel           = r'x',
                   yLabel           = r'y',
@@ -253,10 +251,10 @@ class BaseFused():
                   yScale           = 'linear')
 
         if 'Base' in kwargs:
-            self.Object._Plot(ax)
+            self.Object.__plot__(ax)
 
         for connection in self.Connections:
-            connection._Plot(ax, **kwargs)
+            connection.__plot__(ax, **kwargs)
 
         Fig.AddAxes(ax)
 

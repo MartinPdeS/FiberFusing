@@ -2,8 +2,8 @@
 import numpy
 from dataclasses import dataclass
 
-from FiberFusing.Geometry.Utils import BufferMultiPolygon, Buffer, Rotate, BufferPolygon, BufferPoint
-from FiberFusing.Geometry.BaseClass import BaseFused, FiberRing
+from FiberFusing.BaseClass import BaseFused
+from FiberFusing.Rings import FiberRing
 
 
 class Fused3(BaseFused):

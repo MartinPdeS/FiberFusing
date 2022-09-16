@@ -1,10 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import logging
-from typing import Union
 import numpy as np
-from descartes               import PolygonPatch
 from shapely.geometry        import Point, LineString, MultiPolygon, Polygon, GeometryCollection
 import matplotlib.pyplot     as plt
 import matplotlib.cm         as cm
@@ -14,15 +11,8 @@ from matplotlib.patches      import PathPatch
 from matplotlib.collections  import PatchCollection
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 
-from SuPyMode.Plotting.PlotsUtils  import FieldMap, MidPointNorm
 from dataclasses import dataclass
 
-
-try:
-    from mayavi     import mlab
-    from tvtk.tools import visual
-except ImportError:
-    logging.warning('Mayavi package could not be loaded! Not 3D rendering available.')
 
 import matplotlib
 matplotlib.style.use('ggplot')
@@ -84,8 +74,9 @@ class AddShapely:
 
         if isinstance(self.Object, Polygon ):
             Image = PlotPolygon(Ax._ax, self.Object, facecolor=Color, edgecolor=self.edgecolor, alpha=Alpha)
-            Ax._ax.text(self.Object.centroid.x, self.Object.centroid.y, Text)
-            point = Ax._ax.scatter(self.Object.centroid.x, self.Object.centroid.y, color='k' )
+            if Text != '':
+                Ax._ax.text(self.Object.centroid.x, self.Object.centroid.y, Text)
+                point = Ax._ax.scatter(self.Object.centroid.x, self.Object.centroid.y, color='k' )
 
 
         if isinstance(self.Object, (GeometryCollection, MultiPolygon)):

@@ -1,19 +1,25 @@
 
 import numpy, logging
 from typing import Union as UnionType
-from scipy.optimize import minimize_scalar
 
-from shapely.geometry import Point, MultiPolygon, Polygon, GeometryCollection, box, LineString
+from shapely.geometry import Point, Polygon
 from shapely import affinity
 
 from shapely.ops import nearest_points, unary_union
 
-from SuPyMode.Tools.utils import ToList
-from SuPyMode.Geometry.Buffer import Buffer, BufferPoint, BufferPolygon, BufferMultiPolygon, BufferLine
-import SuPyMode.Plotting.Plots as Plots
-from SuPyMode.Plotting.Plots import Scene, Axis, Mesh, Contour, ColorBar, AddShapely
+from FiberFusing.Buffer import Buffer, BufferPoint, BufferPolygon, BufferMultiPolygon, BufferLine
+import FiberFusing.Plotting.Plots as Plots
 
 logging.basicConfig(level=logging.INFO)
+
+
+def ToList(Object):
+    Object = numpy.array(Object)
+    if numpy.atleast_1d(Object) is Object:
+        return Object
+
+    else:
+        return numpy.expand_dims(Object, axis=0)
 
 
 def NearestPoints(Object0, Object1):
@@ -55,46 +61,6 @@ def Rotate(Object=None, Angle=0, Origin=(0,0)):
 
 
 
-
-
-
-
-
-
-
-
-
-
-def GetCirconscriptCircle(Circle0, Circle1, Shift, Type='Interior'):
-    ParallelLine = BufferLine([Circle0.Center, Circle1.Center] )
-
-    PerpendicularLine = ParallelLine.GetBissectrice().Extend(factor=30)
-
-    CoreDistance = Circle0.Center.Distance(Circle1.Center)
-
-    Point = ParallelLine.MidPoint
-    Point = Point.Shift(PerpendicularLine.Vector * Shift)
-
-    if Type == 'Interior' :
-        Radius = numpy.sqrt( Shift**2 + (CoreDistance/2)**2 ) + Circle0.Radius
-
-    if Type == 'Exterior':
-        Radius = numpy.sqrt( Shift**2 +  (CoreDistance/2)**2 ) - Circle0.Radius
-
-    Circonscript0 = Point.Buffer(Radius)
-
-    Circonscript1 = Rotate(Object=Circonscript0, Angle=[180], Origin=ParallelLine.MidPoint)[0]
-
-    Circonscript0.Color = Circonscript1.Color = 'r'
-    Circonscript0.Alpha = Circonscript1.Alpha = 0.1
-
-    return Circonscript0, Circonscript1
-
-
-
-
-
-
 class _Fiber(BufferPolygon):
     def __new__(cls, Radius: float, Center: list, Name: str = ''):
         Instance = Polygon.__new__(cls)
@@ -107,6 +73,11 @@ class _Fiber(BufferPolygon):
         self.Core = Center
         circle = Point(Center).buffer(Radius, resolution=256)
         super(_Fiber, self).__init__(circle)
+
+
+    def UpdateCorePosition(self):
+        print(self.CorePosition)
+        self.CorePosition += self.CoreShift
 
 
     def MaxDistance(self, Origin=Point([0,0])):
@@ -139,12 +110,16 @@ class _Fiber(BufferPolygon):
         P2  = self.Center.Rotate(Angle=-90, Origin=P0)
         P3  = self.Center.Rotate(Angle=90, Origin=P1)
 
-        Mask = BufferPolygon([P0, P1, P3, P2])
-        Mask.Color = 'k'
+        Mask = BufferPolygon([P0, P1, P3, P2], Color='k')
+
         return Mask
 
-        
 
+    @property
+    def Area(self):
+        return numpy.pi * self.Radius**2
+
+        
 
 
 

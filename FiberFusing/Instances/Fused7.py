@@ -1,13 +1,12 @@
 
-from dataclasses import dataclass
 import numpy
+from dataclasses import dataclass
 
-from FiberFusing.Geometry.Utils import BufferMultiPolygon, Buffer, Rotate, BufferPolygon, BufferPoint
-from FiberFusing.Geometry.BaseClass import BaseFused, FiberRing
+from FiberFusing.BaseClass import BaseFused
+from FiberFusing.Rings import FiberRing
 
 
-class Fused7(BaseFused):
-
+class Fused2(BaseFused):
     def __init__(self, FiberRadius, Fusion, Index, debug='INFO', Gradient=None):
         super().__init__(FiberRadius  = FiberRadius,
                          Fusion       = Fusion,
@@ -23,6 +22,7 @@ class Fused7(BaseFused):
         self.Object = self.OptimizeGeometry()
 
 
+
 if __name__ == '__main__':
-    a = Fused7(FiberRadius=62.5, Fusion=0.2, Index=1)
-    a.Plot(Base=True)
+    a = Fused2(FiberRadius=60, Fusion=0.2, Index=1)
+    a.Plot(Fibers=True, Added=True, Removed=False, Virtual=False, Mask=False)

@@ -1,11 +1,11 @@
-import numpy
+import numpy, logging
+from shapely.ops import split
+from scipy.optimize import minimize_scalar
 
+from FiberFusing.Utils import Union, Intersection, NearestPoints, Rotate, _Fiber
+from FiberFusing.Buffer import Buffer, BufferPoint, BufferPolygon, BufferLine
 
-from SuPyMode.Geometry.Utils import Union, Intersection, NearestPoints, Rotate, BufferPolygon, Buffer
-from SuPyMode.Geometry.Buffer import Buffer, BufferPoint, BufferPolygon, BufferMultiPolygon, BufferLine
-from SuPyMode.Geometry.Utils import _Fiber
-
-import SuPyMode.Plotting.Plots as Plots
+import FiberFusing.Plotting.Plots as Plots
 
 class Connection():
     def __init__(self, Fiber0, Fiber1):
@@ -20,6 +20,8 @@ class Connection():
         self._Added = None
         self._Removed = None
         self._Mask = None
+        self[0].CorePosition = self[0].Center
+        self[1].CorePosition = self[1].Center
 
 
     def SetShift(self, Shift, Topology: str=None):
@@ -101,13 +103,8 @@ class Connection():
 
         Circonscript1 = Rotate(Object=Circonscript0, Angle=[180], Origin=ParallelLine.MidPoint)[0]
 
-        Circonscript0 = BufferPolygon(Circonscript0)
-        Circonscript1 = BufferPolygon(Circonscript1)
-
-        Circonscript0.Color = Circonscript1.Color = 'r'
-        Circonscript0.Alpha = Circonscript1.Alpha = 0.1
-        Circonscript0.Name = ' Virtual 0'
-        Circonscript1.Name = ' Virtual 1'
+        Circonscript0 = BufferPolygon(Circonscript0, Color='r', Alpha=0.1, Name=' Virtual 0')
+        Circonscript1 = BufferPolygon(Circonscript1, Color='r', Alpha=0.1, Name=' Virtual 0')
 
         self._Virtual = Circonscript0, Circonscript1
 
@@ -138,8 +135,7 @@ class Connection():
 
             self._Mask = Union( mask0, mask1 ) & Union( *self.Virtual )
 
-        self._Mask = Buffer(self._Mask)
-        self._Mask.Color = 'k'
+        self._Mask = Buffer(self._Mask, Color='k')
 
 
     def ComputeAdded(self):
@@ -149,9 +145,7 @@ class Connection():
         elif self.Topology == 'concave':
             self._Added = self.Mask - self[0] - self[1] - Union(*self.Virtual)
  
-        self._Added = Buffer( self._Added )
-        self._Added.Color = 'k'
-        self._Added.Area = self._Added.area
+        self._Added = Buffer( self._Added, Color='k', Area=self._Added.area )
 
 
     def ComputeRemoved(self):
@@ -160,7 +154,7 @@ class Connection():
         self._Removed.Color = 'k'
 
 
-    def _Plot(self, ax, Fibers: bool=True, 
+    def __plot__(self, ax, Fibers: bool=True, 
                         Mask: bool=False, 
                         Virtual: bool=False, 
                         Added: bool=False, 
@@ -168,20 +162,20 @@ class Connection():
                         **kwargs):
         if Fibers:
             for fiber in self:
-                fiber._Plot(ax)
+                fiber.__plot__(ax)
 
         if Mask:
-            self.Mask._Plot(ax)
+            self.Mask.__plot__(ax)
 
         if Virtual:
-            self.Virtual[0]._Plot(ax)
-            self.Virtual[1]._Plot(ax)
+            self.Virtual[0].__plot__(ax)
+            self.Virtual[1].__plot__(ax)
 
         if Added:
-            self.Added._Plot(ax)
+            self.Added.__plot__(ax)
 
         if Removed:
-            self.Removed._Plot(ax)
+            self.Removed.__plot__(ax)
 
 
     @property
@@ -190,21 +184,51 @@ class Connection():
 
 
     @property
-    def ExternalMask(self):
+    def TotalArea(self):
+        return Union(*self, self.Added)
+
+
+    def Split(self, Geometry, Position):
         Radial = self.CoreLine
-        Line = Radial.Centering(Center=self[1].Center)
-        Line = Line.Rotate(Angle=90).MakeLength(self[0].Radius*2)
-        Line1 = Line.Rotate(Angle=-90, Origin=Line.boundary[0])
-        Line2 = Line.Rotate(Angle=90, Origin=Line.boundary[1])
 
-        Mask = BufferPolygon([*Line1.boundary, *Line2.boundary]).convex_hull
+        Line = Radial.Centering(Center=BufferPoint(Position))
 
-        Mask.Color = 'k'
+        Line = Line.Rotate(Angle=90).MakeLength(self[0].Radius*5)
 
-        Plots.PlotShapely(*self, Mask)
-        return Mask
+        return [ Buffer( geo, Color='r' ) for geo in split(Geometry, Line).geoms ]
 
 
+    def UpdateCorePosition(self):
+        self[0].UpdateCorePosition()
+        self[1].UpdateCorePosition()
+
+
+    def ComputeCoreShift(self, x: float=0.5):
+        
+        P0 = self[0].Center.ToNumpy()
+        P1 = self[1].Center.ToNumpy()
+
+        Position = P0 - x * (P0-P1)
+
+        ExternalPart  =  self.Split(Geometry=self.TotalArea, Position=Position)[1]
+
+        Cost = abs(ExternalPart.area - self[0].Area/2)
+
+        CoreShift = Position-P0
+
+        logging.info(f' {x = :+.2f} \t -> \t{Cost = :.2f} -> \t\t{CoreShift = }')
+
+        self[0].CoreShift += CoreShift
+        self[1].CoreShift += CoreShift
+        self.CoreShift = BufferPoint(CoreShift)
+        # Plots.PlotShapely(*self, self.TotalArea, ExternalPart)
+
+        return Cost
+
+
+    def OptimizeCorePosition(self):
+        res = minimize_scalar(self.ComputeCoreShift, bounds=(-2, 2) , method='bounded', options={'xatol': 0.001})
+        print(self.CoreShift)
 
     def Plot(self, **kwargs):
         Fig = Plots.Scene('SuPyMode Figure', UnitSize=(6,6))
@@ -222,28 +246,18 @@ class Connection():
                   xScale           = 'linear',
                   yScale           = 'linear')
 
-        self._Plot(ax, **kwargs)
+        self.__plot__(ax, **kwargs)
 
-        self.CoreLine._Plot(ax)
+        self.CoreLine.__plot__(ax)
 
-        temp = self.ExternalMask
-        for t in temp:
-            t._Plot(ax)
+        temp = self.GetExternalMask()
+        temp.__plot__(ax)
 
-     
 
         Fig.AddAxes(ax)
 
         Fig.Show()
 
-
-a = _Fiber(Radius=30, Center=[0,0])
-
-b = _Fiber(Radius=30, Center=[19,0])
-
-connection = Connection(Fiber0=a, Fiber1=b)
-
-connection.Plot()
 
 
 

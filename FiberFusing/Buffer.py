@@ -4,8 +4,7 @@ import numpy
 from shapely.geometry import Point, MultiPolygon, Polygon, GeometryCollection, box, LineString
 from shapely import affinity
 
-from SuPyMode.Plotting.Plots import Scene, Axis, Mesh, Contour, ColorBar, AddShapely
-
+import FiberFusing.Plotting.Plots as Plots
 
 def Normalize(Array):
     Array = numpy.asarray(Array)
@@ -21,9 +20,16 @@ class ExtraParameters():
     Color = None
     Radius = None
     Gradient = None
+    CoreShift = numpy.array([0.,0.])
     Raster = None
+    CorePosition = None
     Name = ''
     Name = ''
+
+
+    @property
+    def convex_hull(self):
+        return Buffer(self.convex_hull)
 
     def GetMaxDistance(self):
         x, y = self.exterior.xy
@@ -32,15 +38,15 @@ class ExtraParameters():
         return numpy.sqrt(x**2 + y**2).max()
 
 
-    def _Plot(self, ax):
-        artist = AddShapely(Object=self, Alpha=0.1)
+    def __plot__(self, ax):
+        artist = Plots.AddShapely(Object=self, Alpha=0.1)
         ax.AddArtist(artist)
 
     def Plot(self):
-        Fig = Scene('SuPyMode Figure', UnitSize=(6,6))
-        Colorbar = ColorBar(Discreet=True, Position='right')
+        Fig = Plots.Scene('SuPyMode Figure', UnitSize=(6,6))
+        Colorbar = Plots.ColorBar(Discreet=True, Position='right')
 
-        ax = Axis(Row              = 0,
+        ax = Plots.Axis(Row              = 0,
                   Col              = 0,
                   xLabel           = r'x',
                   yLabel           = r'y',
@@ -52,14 +58,25 @@ class ExtraParameters():
                   xScale           = 'linear',
                   yScale           = 'linear')
 
-        self._Plot(ax)
+        self.__plot__(ax)
 
         Fig.AddAxes(ax)
 
         Fig.Show()
 
 
-class BufferPolygon(Polygon, ExtraParameters):    
+class BufferPolygon(Polygon, ExtraParameters):  
+    def __init__(self, Object=None, *args, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+        if Object is None:
+            super().__init__()
+        else:
+            super().__init__(Object)
+
+
+
     def __self__(self, Object):
         if isinstance(Object, list) and all([isinstance(e, Point) for e in Object]):
             super().__init__( [(p.x, p.y) for p in Object ] )
@@ -67,6 +84,18 @@ class BufferPolygon(Polygon, ExtraParameters):
         if isinstance(Object, Polygon):
             super().__init__(Object)
 
+
+    def __sub__(self, Other):
+        return Buffer(super().__sub__(Other))
+
+    def __add__(self, Other):
+        return Buffer(super().__add__(Other))
+
+
+    @property
+    def convex_hull(self):
+        return Buffer(super().convex_hull)
+        
 
     def Rotate(self, Angle, Origin=[0,0]):
         return BufferPolygon( affinity.rotate(self, Angle, origin=Origin ) )
@@ -78,11 +107,18 @@ class BufferPolygon(Polygon, ExtraParameters):
 
 
 class BufferPoint(Point, ExtraParameters):    
-    def __init__(self, Object=None):
+    def __init__(self, Object=None, *args, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
         if Object is None:
             super().__init__()
         else:
             super().__init__(Object)
+
+    def ToNumpy(self):
+        return numpy.array( [ self.x, self.y ] )
+
 
     def Distance(self, Other=None):
         if Other is None:
@@ -108,8 +144,14 @@ class BufferPoint(Point, ExtraParameters):
 
 
 class BufferMultiPolygon(MultiPolygon, ExtraParameters):
-    def __init__(self, Object):
-        super().__init__(Object)
+    def __init__(self, Object=None, *args, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+        if Object is None:
+            super().__init__()
+        else:
+            super().__init__(Object)
 
 
     def Rotate(self, Angle, Origin=[0,0]):
@@ -120,9 +162,14 @@ class BufferMultiPolygon(MultiPolygon, ExtraParameters):
         
 
 class BufferGeometryCollection(GeometryCollection, ExtraParameters):
-    def __init__(self, Object):
-        super().__init__(Object)
+    def __init__(self, Object=None, *args, **kwargs):
+        for key, value in kwargs.items():
+            setattr(self, key, value)
 
+        if Object is None:
+            super().__init__()
+        else:
+            super().__init__(Object)
 
     def Rotate(self, Angle, Origin=[0,0]):
         return BufferGeometryCollection( affinity.rotate(self, Angle, origin=Origin ) )
@@ -195,21 +242,21 @@ class BufferLine(LineString, ExtraParameters):
 
 
 class Buffer():
-    def __new__(self, Object):
+    def __new__(self, Object, **kwargs):
         if isinstance(Object, list):
-            return BufferPoint(Object)
+            return BufferPoint(Object, **kwargs)
         
         if isinstance(Object, Polygon):
-            return BufferPolygon(Object)
+            return BufferPolygon(Object, **kwargs)
         
         if isinstance(Object, MultiPolygon):
-            return BufferMultiPolygon(Object)
+            return BufferMultiPolygon(Object, **kwargs)
 
         if isinstance(Object, GeometryCollection):
-            return BufferGeometryCollection(Object)
+            return BufferGeometryCollection(Object, **kwargs)
 
         if isinstance(Object, LineString):
-            return BufferLine(Object)
+            return BufferLine(Object, **kwargs)
 
         if isinstance(Object, Point):
-            return BufferPoint(Object)
+            return BufferPoint(Object, **kwargs)

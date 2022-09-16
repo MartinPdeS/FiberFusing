@@ -2,9 +2,7 @@ import numpy
 
 from dataclasses import dataclass
 
-
-from SuPyMode.Plotting.Plots import Scene, Axis, Mesh, Contour, ColorBar
-from SuPyMode.Geometry.Utils import Buffer, BufferPoint, Rotate, _Fiber
+from FiberFusing.Utils import Buffer, BufferPoint, Rotate, _Fiber
 
 
 class FiberRing():
