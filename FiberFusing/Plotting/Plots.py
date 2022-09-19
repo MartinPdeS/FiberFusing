@@ -46,6 +46,12 @@ class ColorBar:
 
 
 
+
+
+
+
+
+
 @dataclass
 class AddShapely:
     Object: list
@@ -72,11 +78,13 @@ class AddShapely:
         if isinstance(self.Object, Point):
             Image = Ax._ax.scatter(self.Object.x, self.Object.y, color='k', linewidth=self.LineWidth)
 
-        if isinstance(self.Object, Polygon ):
+        if isinstance(self.Object, Polygon):
             Image = PlotPolygon(Ax._ax, self.Object, facecolor=Color, edgecolor=self.edgecolor, alpha=Alpha)
             if Text != '':
                 Ax._ax.text(self.Object.centroid.x, self.Object.centroid.y, Text)
-                point = Ax._ax.scatter(self.Object.centroid.x, self.Object.centroid.y, color='k' )
+                point = Ax._ax.scatter(self.Object.centroid.x, self.Object.centroid.y, color='k')
+
+
 
 
         if isinstance(self.Object, (GeometryCollection, MultiPolygon)):
@@ -236,6 +244,7 @@ class Scene:
     plt.rcParams['legend.fontsize'] = 'small'
 
     def __init__(self, Title='', UnitSize=None):
+        self.AxisGenerated = False
         self.Axis = []
         self.Title = Title
         self.nCols = 1
@@ -274,9 +283,12 @@ class Scene:
         for ax in self.Axis:
             ax._ax = Ax[ax.Row, ax.Col]
 
+        self.AxisGenerated = True
+
 
     def Render(self):
-        self.GenerateAxis()
+        if not self.AxisGenerated:
+            self.GenerateAxis()
 
         for ax in self.Axis:
             ax.Render()

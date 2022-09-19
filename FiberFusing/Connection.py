@@ -20,8 +20,6 @@ class Connection():
         self._Added = None
         self._Removed = None
         self._Mask = None
-        self[0].CorePosition = self[0].Center
-        self[1].CorePosition = self[1].Center
 
 
     def SetShift(self, Shift, Topology: str=None):
@@ -214,24 +212,26 @@ class Connection():
 
         Cost = abs(ExternalPart.area - self[0].Area/2)
 
-        CoreShift = Position-P0
+        self.CoreShift = Position-P0
 
-        logging.info(f' {x = :+.2f} \t -> \t{Cost = :.2f} -> \t\t{CoreShift = }')
+        logging.info(f' {x = :+.2f} \t -> \t{Cost = :.2f} -> \t\t{self.CoreShift = }')
 
-        self[0].CoreShift += CoreShift
-        self[1].CoreShift += CoreShift
-        self.CoreShift = BufferPoint(CoreShift)
-        # Plots.PlotShapely(*self, self.TotalArea, ExternalPart)
 
         return Cost
 
 
     def OptimizeCorePosition(self):
         res = minimize_scalar(self.ComputeCoreShift, bounds=(-2, 2) , method='bounded', options={'xatol': 0.001})
-        print(self.CoreShift)
+        
 
-    def Plot(self, **kwargs):
-        Fig = Plots.Scene('SuPyMode Figure', UnitSize=(6,6))
+        self[0].ShiftCore(self.CoreShift)
+        self[1].ShiftCore(-self.CoreShift)
+
+        # Plots.PlotShapely(*self, self.TotalArea, self[0].Core, self[1].Core)
+
+
+    def Plot(self):
+        Fig = Plots.Scene('FiberFusing figure', UnitSize=(6,6))
         Colorbar = Plots.ColorBar(Discreet=True, Position='right')
 
         ax = Plots.Axis(Row              = 0,
@@ -246,7 +246,7 @@ class Connection():
                   xScale           = 'linear',
                   yScale           = 'linear')
 
-        self.__plot__(ax, **kwargs)
+        self[0].Plot(ax)
 
         self.CoreLine.__plot__(ax)
 

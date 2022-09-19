@@ -11,19 +11,20 @@ def Normalize(Array):
     Norm = numpy.sqrt( numpy.sum(Array**2) )
     return Array/Norm
 
+
 class ExtraParameters():
     Center = None
     Area = None
+    Core = None
     Alpha = 0.3
     Index = None
     Hole = None
+    Marker = None
     Color = None
     Radius = None
-    Gradient = None
     CoreShift = numpy.array([0.,0.])
     Raster = None
     CorePosition = None
-    Name = ''
     Name = ''
 
 
@@ -65,6 +66,7 @@ class ExtraParameters():
         Fig.Show()
 
 
+
 class BufferPolygon(Polygon, ExtraParameters):  
     def __init__(self, Object=None, *args, **kwargs):
         for key, value in kwargs.items():
@@ -74,7 +76,6 @@ class BufferPolygon(Polygon, ExtraParameters):
             super().__init__()
         else:
             super().__init__(Object)
-
 
 
     def __self__(self, Object):
@@ -105,8 +106,15 @@ class BufferPolygon(Polygon, ExtraParameters):
         return BufferPolygon( affinity.scale( self, xfact=Factor, yfact=Factor, origin=Point(Origin) ) )
 
 
+    def __render__(self, Ax):
+        Plots.PlotPolygon(Ax._ax, self, facecolor=self.Color, edgecolor='k', alpha=self.Alpha)
 
-class BufferPoint(Point, ExtraParameters):    
+
+class BufferPoint(Point, ExtraParameters):
+    Name: str = ''
+    Marker: str = 'x'
+    Size: float = 5
+
     def __init__(self, Object=None, *args, **kwargs):
         for key, value in kwargs.items():
             setattr(self, key, value)
@@ -141,6 +149,10 @@ class BufferPoint(Point, ExtraParameters):
         return Circle
 
 
+    def __render__(self, Ax):
+        Ax._ax.text(self.x, self.y, self.Name)
+        point = Ax._ax.scatter(self.x, self.y, color=self.Color, marker=self.Marker, s=self.Size)
+
 
 
 class BufferMultiPolygon(MultiPolygon, ExtraParameters):
@@ -160,6 +172,11 @@ class BufferMultiPolygon(MultiPolygon, ExtraParameters):
     def Scale(self, Factor: float, Origin: list = [0,0]):
         return BufferMultiPolygon( affinity.scale( self, xfact=Factor, yfact=Factor, origin=Point(Origin) ) )
         
+
+    def __render__(self, Ax):
+        for polygone in self:
+            Plots.PlotPolygon(Ax._ax, polygone, facecolor=self.Color, edgecolor='k', alpha=self.Alpha)
+
 
 class BufferGeometryCollection(GeometryCollection, ExtraParameters):
     def __init__(self, Object=None, *args, **kwargs):
