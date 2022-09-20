@@ -245,21 +245,32 @@ class Scene:
 
     def __init__(self, Title='', UnitSize=None):
         self.AxisGenerated = False
-        self.Axis = []
+        self._Axis = []
         self.Title = Title
         self.nCols = 1
         self.nRows = None
         if UnitSize is not None: self.UnitSize = UnitSize
 
 
+    @property
+    def Axis(self):
+        if not self.AxisGenerated:
+
+            self.GenerateAxis()
+
+        return self._Axis
+
+
     def AddAxes(self, *Axis):
         for ax in Axis:
-            self.Axis.append(ax)
+            self._Axis.append(ax)
+
+        return self
 
 
     def GetMaxColsRows(self):
         RowMax, ColMax = 0,0
-        for ax in self.Axis:
+        for ax in self._Axis:
             RowMax = ax.Row if ax.Row > RowMax else RowMax
             ColMax = ax.Col if ax.Col > ColMax else ColMax
 
@@ -268,8 +279,6 @@ class Scene:
 
     def GenerateAxis(self):
         RowMax, ColMax = self.GetMaxColsRows()
-
-        self.nRows = len(self.Axis)
 
         FigSize = [ self.UnitSize[0]*(ColMax+1), self.UnitSize[1]*(RowMax+1) ]
 
@@ -280,20 +289,22 @@ class Scene:
 
         self.Figure.suptitle(self.Title)
 
-        for ax in self.Axis:
+        for ax in self._Axis:
             ax._ax = Ax[ax.Row, ax.Col]
 
         self.AxisGenerated = True
 
+        return self
+
+
 
     def Render(self):
-        if not self.AxisGenerated:
-            self.GenerateAxis()
-
         for ax in self.Axis:
             ax.Render()
 
         plt.tight_layout()
+
+        return self
 
 
     def Show(self):

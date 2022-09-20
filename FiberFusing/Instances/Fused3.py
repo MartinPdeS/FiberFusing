@@ -23,5 +23,5 @@ class Fused3(BaseFused):
 
 
 if __name__ == '__main__':
-    a = Fused3(FiberRadius=60, Fusion=0.7, Index=1)
+    a = Fused3(FiberRadius=60, Fusion=0.99, Index=1)
     a.Plot(Fibers=True, Added=True, Removed=False, Virtual=False, Mask=False)

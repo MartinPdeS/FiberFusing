@@ -8,12 +8,10 @@ from scipy.optimize import minimize_scalar
 from shapely.geometry import GeometryCollection, LineString, Point
 
 import FiberFusing.Plotting.Plots as Plots
+import FiberFusing.Utils as Utils
 from FiberFusing.Connection import Connection
-from FiberFusing.Utils import ( Buffer,
-                                      BufferPoint, 
-                                      BufferPolygon, 
-                                      BufferMultiPolygon, 
-                                      Union)
+import FiberFusing.Buffer as Buffer
+
 
 
 
@@ -74,7 +72,7 @@ class BaseFused():
         for connection in self.Connections:
             Limit.append(connection.LimitAdded)
 
-        OverallLimit = Union(*Limit)
+        OverallLimit = Utils.Union(*Limit)
         
         self._Topology = 'convex' if self.Removed.Area > OverallLimit.area else 'concave'
 
@@ -84,8 +82,10 @@ class BaseFused():
         for connection in self.Connections:
             Added.append(connection.Added)
 
-        self._Added = Union(*Added)
+        self._Added = Utils.Union(*Added) - Utils.Union(*self.Fibers)
+        self._Added = Buffer.ToBuffer(self._Added, Color='g').Clean()
         self._Added.Area = self._Added.area
+
 
 
     def ComputeRemoved(self) -> None:
@@ -93,8 +93,9 @@ class BaseFused():
         for connection in self.Connections:
             Removed.append(connection.Removed)
 
-        self._Removed = Union(*Removed)
-        self._Removed.Area = len(self.Fibers) * self.Fibers[0].area - Union(*self.Fibers).area
+        self._Removed = Utils.Union(*Removed)
+        self._Removed.Area = len(self.Fibers) * self.Fibers[0].area - Utils.Union(*self.Fibers).area
+        self._Removed.Color = 'r'
 
 
     def GetMaxDistance(self) -> float:
@@ -115,13 +116,6 @@ class BaseFused():
         return self._Hole
 
 
-    @property
-    def CoreShift(self):
-        if self._CoreShift is None:
-            self.ComputeCoreShift()
-        return self._CoreShift
-
-
     def AddRing(self, *Rings):
         for Ring in Rings:
             self._Rings.append(Ring)
@@ -135,8 +129,13 @@ class BaseFused():
         return self.BuildCoupler(VirtualShift=res.x)
 
 
+    def ComputeCorePosition(self):
+        for connection in self.Connections:
+            connection.OptimizeCorePosition()
+
+
     def ComputeHole(self):
-        self._Hole = Buffer( Union( *self.Fibers ).convex_hull - Union( *self.Fibers, self.Added ) )
+        self._Hole = Buffer( Utils.Union( *self.Fibers ).convex_hull - Utils.Union( *self.Fibers, self.Added ) )
 
 
     def ComputeFibers(self):
@@ -151,10 +150,10 @@ class BaseFused():
 
 
     def BuildCoupler(self, VirtualShift):
-        Coupler = Union(*self.Fibers, self.Added)
+        Coupler = Utils.Union(*self.Fibers, self.Added)
 
         if isinstance(Coupler, GeometryCollection):
-            Coupler = BufferMultiPolygon( [P for P in Coupler.geoms if not isinstance(P, TypeUnion[BufferPoint, Point, LineString] )] )
+            Coupler = Buffer.MultiPolygon( [P for P in Coupler.geoms if not isinstance(P, TypeUnion[Buffer.Point, Point, LineString] )] )
 
         return Coupler
   
@@ -196,26 +195,26 @@ class BaseFused():
 
 
     def CleanGeometry(self, Object):
-        if isinstance(Object, BufferPolygon ):
+        if isinstance(Object, Buffer.Polygon ):
             return Object
 
         else:
             MaxArea = numpy.max( [P.area for P in Object.geoms] )
 
-            return BufferMultiPolygon( [P for P in Object.geoms if P.area == MaxArea] )
+            return Buffer.MultiPolygon( [P for P in Object.geoms if P.area == MaxArea] )
 
 
 
     def Rasterize(self, Coordinate: numpy.ndarray, Shape: list):
 
-        if isinstance(self.Object, BufferPolygon):
+        if isinstance(self.Object, Buffer.Polygon):
             Exterior = Path(list( self.Object.exterior.coords))
 
             Exterior = Exterior.contains_points(Coordinate).reshape(Shape)
 
             Exterior = Exterior.astype(float)
 
-        if isinstance(self.Object, BufferMultiPolygon):
+        if isinstance(self.Object, Buffer.MultiPolygon):
             raster = []
             for polygone in self.Object.geoms:
                 Exterior = Path(list( polygone.exterior.coords))
@@ -236,27 +235,33 @@ class BaseFused():
 
     def Plot(self, **kwargs):
         Fig = Plots.Scene('SuPyMode Figure', UnitSize=(6,6))
-        Colorbar = Plots.ColorBar(Discreet=True, Position='right')
 
-        ax = Plots.Axis(Row              = 0,
-                  Col              = 0,
-                  xLabel           = r'x',
-                  yLabel           = r'y',
-                  Title            = f'{self.Topology = }',
-                  Legend           = False,
-                  Grid             = False,
-                  Equal            = True,
-                  Colorbar         = Colorbar,
-                  xScale           = 'linear',
-                  yScale           = 'linear')
+        ax = Plots.Axis(Row      = 0,
+                        Col      = 0,
+                        xLabel   = r'x',
+                        yLabel   = r'y',
+                        Title    = f'{self.Topology = }',
+                        Grid     = True,
+                        Equal    = True)
+
+
+        self.ComputeCorePosition()
+        Fig.AddAxes(ax).GenerateAxis()
 
         if 'Base' in kwargs:
-            self.Object.__plot__(ax)
+            self.Object.__render__(ax)
 
-        for connection in self.Connections:
-            connection.__plot__(ax, **kwargs)
+        if 'Fibers' in kwargs:
+            for fiber in self.Fibers:
+                fiber.__render__(ax)
 
-        Fig.AddAxes(ax)
+        if 'Added' in kwargs:
+            self.Added.__render__(ax)
+
+        if 'Removed' in kwargs:
+            self.Removed.__render__(ax)
+
+        
 
         Fig.Show()
 
@@ -271,8 +276,8 @@ class Circle(BaseFused):
         self.FiberRadius   = Radius
         self.Index    = Index
         self.Raster   = None
-        self.Object   = BufferPolygon( BufferPoint(Position).Buffer(self.FiberRadius) )
-        self.C        = [BufferPoint(Position)]
+        self.Object   = Buffer.Polygon( Buffer.Point(Position).Buffer(self.FiberRadius) )
+        self.C        = [Buffer.Point(Position)]
         Name          = ''
         self.Initialize()
         self._Hole = None
@@ -295,8 +300,8 @@ class BackGround(BaseFused):
         self.FiberRadius   = Radius
         self.Index    = Index
         self.Raster   = None
-        self.Object   = BufferPolygon( BufferPoint(self.Position).Buffer(self.FiberRadius) )
-        self.C        = [BufferPoint(self.Position)]
+        self.Object   = Buffer.Polygon( Buffer.Point(self.Position).Buffer(self.FiberRadius) )
+        self.C        = [Buffer.Point(self.Position)]
         Name          = ''
         self.Initialize()
         self._Hole = None

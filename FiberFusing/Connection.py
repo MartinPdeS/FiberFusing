@@ -2,8 +2,8 @@ import numpy, logging
 from shapely.ops import split
 from scipy.optimize import minimize_scalar
 
+import FiberFusing.Buffer as Buffer
 from FiberFusing.Utils import Union, Intersection, NearestPoints, Rotate, _Fiber
-from FiberFusing.Buffer import Buffer, BufferPoint, BufferPolygon, BufferLine
 
 import FiberFusing.Plotting.Plots as Plots
 
@@ -83,7 +83,7 @@ class Connection():
    
 
     def ComputeVirtual(self):
-        ParallelLine = BufferLine([self[0].Center, self[1].Center] )
+        ParallelLine = Buffer.Line([self[0].Center, self[1].Center] )
 
         PerpendicularLine = ParallelLine.GetBissectrice().Extend(factor=30)
 
@@ -101,8 +101,8 @@ class Connection():
 
         Circonscript1 = Rotate(Object=Circonscript0, Angle=[180], Origin=ParallelLine.MidPoint)[0]
 
-        Circonscript0 = BufferPolygon(Circonscript0, Color='r', Alpha=0.1, Name=' Virtual 0')
-        Circonscript1 = BufferPolygon(Circonscript1, Color='r', Alpha=0.1, Name=' Virtual 0')
+        Circonscript0 = Buffer.Polygon(Circonscript0, Color='r', Alpha=0.1, Name=' Virtual 0')
+        Circonscript1 = Buffer.Polygon(Circonscript1, Color='r', Alpha=0.1, Name=' Virtual 0')
 
         self._Virtual = Circonscript0, Circonscript1
 
@@ -120,20 +120,20 @@ class Connection():
         P0, P1, P2, P3 = self.GetConnectedPoint()
 
         if self.Topology == 'concave':
-            Mask = BufferPolygon([P0, P1, P3, P2])
+            Mask = Buffer.Polygon([P0, P1, P3, P2])
 
             self._Mask = Mask - self.Virtual[0] - self.Virtual[1]
 
         elif self.Topology == 'convex':
-            MidPoint = BufferLine([self[0].Center, self[1].Center]).MidPoint
+            MidPoint = Buffer.Line([self[0].Center, self[1].Center]).MidPoint
 
-            mask0 = BufferPolygon([MidPoint, P0, P2]).Scale(Factor=10, Origin=MidPoint)
+            mask0 = Buffer.Polygon([MidPoint, P0, P2]).Scale(Factor=10, Origin=MidPoint)
 
-            mask1 = BufferPolygon([MidPoint, P1, P3]).Scale(Factor=10, Origin=MidPoint)
+            mask1 = Buffer.Polygon([MidPoint, P1, P3]).Scale(Factor=10, Origin=MidPoint)
 
             self._Mask = Union( mask0, mask1 ) & Union( *self.Virtual )
 
-        self._Mask = Buffer(self._Mask, Color='k')
+        self._Mask = Buffer.ToBuffer(self._Mask, Color='k')
 
 
     def ComputeAdded(self):
@@ -143,16 +143,18 @@ class Connection():
         elif self.Topology == 'concave':
             self._Added = self.Mask - self[0] - self[1] - Union(*self.Virtual)
  
-        self._Added = Buffer( self._Added, Color='k', Area=self._Added.area )
+        self._Added = Buffer.ToBuffer( self._Added, Color='k', Area=self._Added.area ).Clean()
 
 
     def ComputeRemoved(self):
+        a = Union(*self.Fibers)
         self._Removed = Intersection( *self )
         self._Removed.Area = self[1].area + self[0].area - Union(*self.Fibers).area
         self._Removed.Color = 'k'
 
 
-    def __plot__(self, ax, Fibers: bool=True, 
+    def __plot__(self, ax, 
+                        Fibers: bool=True, 
                         Mask: bool=False, 
                         Virtual: bool=False, 
                         Added: bool=False, 
@@ -160,25 +162,25 @@ class Connection():
                         **kwargs):
         if Fibers:
             for fiber in self:
-                fiber.__plot__(ax)
+                fiber.__render__(ax)
 
         if Mask:
-            self.Mask.__plot__(ax)
+            self.Mask.__render__(ax)
 
         if Virtual:
-            self.Virtual[0].__plot__(ax)
-            self.Virtual[1].__plot__(ax)
+            self.Virtual[0].__render__(ax)
+            self.Virtual[1].__render__(ax)
 
         if Added:
-            self.Added.__plot__(ax)
+            self.Added.__render__(ax)
 
         if Removed:
-            self.Removed.__plot__(ax)
+            self.Removed.__render__(ax)
 
 
     @property
     def CoreLine(self):
-        return BufferLine([self[0].Center, self[1].Center])
+        return Buffer.Line([self[0].Center, self[1].Center])
 
 
     @property
@@ -187,13 +189,15 @@ class Connection():
 
 
     def Split(self, Geometry, Position):
+
         Radial = self.CoreLine
 
-        Line = Radial.Centering(Center=BufferPoint(Position))
+        Line = Radial.Centering(Center=Buffer.Point(Position))
 
         Line = Line.Rotate(Angle=90).MakeLength(self[0].Radius*5)
+        Plots.PlotShapely(*self, Line, Radial)
 
-        return [ Buffer( geo, Color='r' ) for geo in split(Geometry, Line).geoms ]
+        return [ Buffer.ToBuffer( geo, Color='r' ) for geo in split(Geometry, Line).geoms ]
 
 
     def UpdateCorePosition(self):
@@ -203,10 +207,13 @@ class Connection():
 
     def ComputeCoreShift(self, x: float=0.5):
         
+        x = 1
         P0 = self[0].Center.ToNumpy()
         P1 = self[1].Center.ToNumpy()
 
         Position = P0 - x * (P0-P1)
+
+        print(f'{x = }')
 
         ExternalPart  =  self.Split(Geometry=self.TotalArea, Position=Position)[1]
 
@@ -223,40 +230,33 @@ class Connection():
     def OptimizeCorePosition(self):
         res = minimize_scalar(self.ComputeCoreShift, bounds=(-2, 2) , method='bounded', options={'xatol': 0.001})
         
-
         self[0].ShiftCore(self.CoreShift)
         self[1].ShiftCore(-self.CoreShift)
+        self.UpdateCorePosition()
 
-        # Plots.PlotShapely(*self, self.TotalArea, self[0].Core, self[1].Core)
 
 
     def Plot(self):
-        Fig = Plots.Scene('FiberFusing figure', UnitSize=(6,6))
-        Colorbar = Plots.ColorBar(Discreet=True, Position='right')
+        Figure = Plots.Scene('FiberFusing figure', UnitSize=(6,6))
 
         ax = Plots.Axis(Row              = 0,
-                  Col              = 0,
-                  xLabel           = r'x',
-                  yLabel           = r'y',
-                  Title            = f'Debug',
-                  Legend           = False,
-                  Grid             = False,
-                  Equal            = True,
-                  Colorbar         = None,
-                  xScale           = 'linear',
-                  yScale           = 'linear')
+                        Col              = 0,
+                        xLabel           = r'x distance',
+                        yLabel           = r'y distance',
+                        Title            = f'Debug',
+                        Legend           = False,
+                        Grid             = True,
+                        Equal            = True,)
 
-        self[0].Plot(ax)
+        Figure.AddAxes(ax)
+        Figure.GenerateAxis()
 
-        self.CoreLine.__plot__(ax)
+        self[0].__render__(ax)
+        self[1].__render__(ax)
 
-        temp = self.GetExternalMask()
-        temp.__plot__(ax)
+        self.Added.__render__(ax)
 
-
-        Fig.AddAxes(ax)
-
-        Fig.Show()
+        Figure.Show()
 
 
 

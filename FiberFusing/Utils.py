@@ -8,7 +8,7 @@ from shapely import affinity
 
 from shapely.ops import nearest_points, unary_union
 
-from FiberFusing.Buffer import Buffer, BufferPoint, BufferPolygon, BufferMultiPolygon, BufferLine
+import FiberFusing.Buffer as Buffer 
 import FiberFusing.Plotting.Plots as Plots
 
 logging.basicConfig(level=logging.INFO)
@@ -24,10 +24,10 @@ def ToList(Object):
 
 
 def NearestPoints(Object0, Object1):
-    if isinstance(Object0, UnionType[Polygon, BufferPolygon] ):
+    if isinstance(Object0, UnionType[Polygon, Buffer.Polygon] ):
         P = nearest_points(Object0.exterior, Object1.exterior)
-        return BufferPoint(P[0])
-        # return [ BufferPoint(p) for p in P ]
+        return Buffer.Point(P[0])
+
 
 
 def GetBoundaries(Objects):
@@ -36,11 +36,11 @@ def GetBoundaries(Objects):
 
 
 def Union(*Objects):
-    Output = BufferPolygon()
+    Output = Buffer.Polygon()
     for geo in Objects:
         Output = Output.union(geo)
 
-    return Buffer(Output)
+    return Buffer.ToBuffer(Output)
 
 
 def Intersection(*Objects):
@@ -48,21 +48,21 @@ def Intersection(*Objects):
     for geo in Objects[1:]:
         Output = Output.intersection(geo)
 
-    return Buffer(Output)
+    return Buffer.ToBuffer(Output)
 
 
 
 
 def Rotate(Object=None, Angle=0, Origin=(0,0)):
     Angle = ToList(Angle)
-    rotated = tuple( Buffer(affinity.rotate(Object, angle, origin=Origin ) ) for angle in Angle )
+    rotated = tuple( Buffer.ToBuffer(affinity.rotate(Object, angle, origin=Origin ) ) for angle in Angle )
 
     return rotated
 
 
 
 
-class _Fiber(BufferPolygon):
+class _Fiber(Buffer.Polygon):
     def __new__(cls, Radius: float, Center: list, Name: str = ''):
         Instance = Polygon.__new__(cls)
         return Instance
@@ -70,8 +70,8 @@ class _Fiber(BufferPolygon):
     def __init__(self, Radius: float, Center: list, Name: str = ''):
         self.Radius = Radius
         self.Name = Name
-        self.Center = BufferPoint(Center, Marker='x', Name='Center', Color='k')
-        self.Core = BufferPoint(Center, Marker='o', Name='Core', Color='k')
+        self.Center = Buffer.Point(Center, marker='o', Name='')
+        self.Core = Buffer.Point(Center, marker='o', Name='')
         self.CorePosition = numpy.array( [self.Center.x, self.Center.y] )
         circle = Point(Center).buffer(Radius, resolution=256)
         super(_Fiber, self).__init__(circle)
@@ -79,7 +79,7 @@ class _Fiber(BufferPolygon):
 
     def UpdateCorePosition(self):
         self.CorePosition += self.CoreShift
-        self.Core = BufferPoint(self.CorePosition, Marker='o', Name='Core', Color='k')
+        self.Core = Buffer.Point(self.CorePosition, Name='')
 
 
     def ShiftCore(self, Shift: numpy.ndarray):
@@ -99,25 +99,25 @@ class _Fiber(BufferPolygon):
 
 
     def GetRemoved(self, Other):
-        Removed = BufferPolygon(self.intersection(Other))
+        Removed = Buffer.Polygon(self.intersection(Other))
         Removed.Area = Other.area + self.area - Union(self, Other).area
         Removed.Color = 'k'
         return Removed
 
 
     def GetRadialLine(self):
-        C0 = BufferPoint([0,0])
-        return BufferLine([C0, self.Center])
+        C0 = Buffer.Point([0,0])
+        return Buffer.Line([C0, self.Center])
 
 
     def GetRadialMask(self):
         Radial = self.GetRadialLine()
-        P0  = BufferPoint([0,0]).Rotate(Angle=90, Origin=Radial.boundary[1])
-        P1  = BufferPoint([0,0]).Rotate(Angle=-90, Origin=Radial.boundary[1])
+        P0  = Buffer.Point([0,0]).Rotate(Angle=90, Origin=Radial.boundary[1])
+        P1  = Buffer.Point([0,0]).Rotate(Angle=-90, Origin=Radial.boundary[1])
         P2  = self.Center.Rotate(Angle=-90, Origin=P0)
         P3  = self.Center.Rotate(Angle=90, Origin=P1)
 
-        Mask = BufferPolygon([P0, P1, P3, P2], Color='k')
+        Mask = Buffer.Polygon([P0, P1, P3, P2], Color='k')
 
         return Mask
 
@@ -127,7 +127,7 @@ class _Fiber(BufferPolygon):
         return numpy.pi * self.Radius**2
 
 
-    def Plot(self, Ax=None, Return=False, Show=True):
+    def Plot(self, Figure=None, Ax=None, Return=False, Show=True):
         if Ax is None:
             Figure = Plots.Scene('FiberFusing figure', UnitSize=(6,6))
             Ax = Plots.Axis(Row=0, Col=0, xLabel='x', yLabel='y', Colorbar=False, Equal=True)
@@ -136,24 +136,24 @@ class _Fiber(BufferPolygon):
 
         
  
-        print(Ax)
-        self.__plot__(Ax)
+        self.__render__(Ax)
 
         if Return: 
             return Figure, Ax
 
         if Show:
-            plt.show()
+            Figure.Show()
 
 
 
-    def __plot__(self, Ax):
+    def __render__(self, Ax):
         super().__render__(Ax)
 
         self.Core.__render__(Ax)
+        self.Center.__render__(Ax)
 
-        if self.Center != self.Core:
-            self.Center.__render__(Ax)
+        # if self.Center != self.Core:
+        #     self.Center.__render__(Ax)
 
 
 

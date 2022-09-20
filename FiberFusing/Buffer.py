@@ -1,7 +1,6 @@
 
 import numpy
-
-from shapely.geometry import Point, MultiPolygon, Polygon, GeometryCollection, box, LineString
+import shapely.geometry as geo
 from shapely import affinity
 
 import FiberFusing.Plotting.Plots as Plots
@@ -12,25 +11,31 @@ def Normalize(Array):
     return Array/Norm
 
 
-class ExtraParameters():
+class BaseBuffer():
     Center = None
     Area = None
     Core = None
-    Alpha = 0.3
     Index = None
-    Hole = None
-    Marker = None
-    Color = None
-    Radius = None
     CoreShift = numpy.array([0.,0.])
     Raster = None
-    CorePosition = None
-    Name = ''
+    kwargs = {}
+
+
+    def __init__(self, Object=None, *args, **kwargs):
+        self.kwargs = kwargs
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+        if Object is None:
+            super().__init__()
+        else:
+            super().__init__(Object)
 
 
     @property
     def convex_hull(self):
-        return Buffer(self.convex_hull)
+        return ToBuffer(self.convex_hull)
+
 
     def GetMaxDistance(self):
         x, y = self.exterior.xy
@@ -39,90 +44,72 @@ class ExtraParameters():
         return numpy.sqrt(x**2 + y**2).max()
 
 
-    def __plot__(self, ax):
-        artist = Plots.AddShapely(Object=self, Alpha=0.1)
-        ax.AddArtist(artist)
-
-    def Plot(self):
-        Fig = Plots.Scene('SuPyMode Figure', UnitSize=(6,6))
-        Colorbar = Plots.ColorBar(Discreet=True, Position='right')
-
-        ax = Plots.Axis(Row              = 0,
-                  Col              = 0,
-                  xLabel           = r'x',
-                  yLabel           = r'y',
-                  Title            = f'',
-                  Legend           = False,
-                  Grid             = False,
-                  Equal            = True,
-                  Colorbar         = Colorbar,
-                  xScale           = 'linear',
-                  yScale           = 'linear')
-
-        self.__plot__(ax)
-
-        Fig.AddAxes(ax)
-
-        Fig.Show()
+    def Clean(self):
+        return self
 
 
+class Polygon(BaseBuffer, geo.Polygon):  
+    Name = None
+    Color = 'lightblue'
+    Alpha = 0.3
 
-class BufferPolygon(Polygon, ExtraParameters):  
-    def __init__(self, Object=None, *args, **kwargs):
-        for key, value in kwargs.items():
-            setattr(self, key, value)
 
-        if Object is None:
-            super().__init__()
-        else:
-            super().__init__(Object)
+    @property
+    def PlotKwargs(self):
+        return {'alpha': self.Alpha, 
+                'color': self.Color}
 
 
     def __self__(self, Object):
-        if isinstance(Object, list) and all([isinstance(e, Point) for e in Object]):
+        if isinstance(Object, list) and all([isinstance(e, geo.Point) for e in Object]):
             super().__init__( [(p.x, p.y) for p in Object ] )
 
-        if isinstance(Object, Polygon):
+        if isinstance(Object, geo.Polygon):
             super().__init__(Object)
 
 
     def __sub__(self, Other):
-        return Buffer(super().__sub__(Other))
+        return ToBuffer(super().__sub__(Other))
+
 
     def __add__(self, Other):
-        return Buffer(super().__add__(Other))
+        return ToBuffer(super().__add__(Other))
 
 
     @property
     def convex_hull(self):
-        return Buffer(super().convex_hull)
+        return ToBuffer(super().convex_hull)
         
 
     def Rotate(self, Angle, Origin=[0,0]):
-        return BufferPolygon( affinity.rotate(self, Angle, origin=Origin ) )
+        return Polygon( affinity.rotate(self, Angle, origin=Origin ), **self.kwargs )
         
 
     def Scale(self, Factor: float, Origin: list = [0,0]):
-        return BufferPolygon( affinity.scale( self, xfact=Factor, yfact=Factor, origin=Point(Origin) ) )
+        return Polygon( affinity.scale( self, xfact=Factor, yfact=Factor, origin=Point(Origin) ), **self.kwargs )
 
 
     def __render__(self, Ax):
-        Plots.PlotPolygon(Ax._ax, self, facecolor=self.Color, edgecolor='k', alpha=self.Alpha)
+        Plots.PlotPolygon(Ax._ax, self, **self.PlotKwargs, edgecolor='k')
 
 
-class BufferPoint(Point, ExtraParameters):
+class Point(BaseBuffer, geo.Point):
     Name: str = ''
-    Marker: str = 'x'
-    Size: float = 5
+    marker: str = 'o'
+    size: float = 60
+    alpha = 1
+    facecolors = 'none'
+    color = 'k'
 
-    def __init__(self, Object=None, *args, **kwargs):
-        for key, value in kwargs.items():
-            setattr(self, key, value)
 
-        if Object is None:
-            super().__init__()
-        else:
-            super().__init__(Object)
+    @property
+    def PlotKwargs(self):
+        return {'marker': self.marker,
+                's': self.size,
+                'alpha': self.alpha,
+                'facecolors': self.facecolors,
+                'color': self.color}
+
 
     def ToNumpy(self):
         return numpy.array( [ self.x, self.y ] )
@@ -134,16 +121,18 @@ class BufferPoint(Point, ExtraParameters):
         else:
             return numpy.sqrt( ( self.x - Other.x )**2 + ( self.y - Other.y )**2 ) 
 
+
     def Shift(self, Vector: list):
         x = self.x + Vector[0]
         y = self.y + Vector[1]
-        return BufferPoint([x, y])
+        return Point([x, y], **self.kwargs)
+
 
     def Rotate(self, Angle, Origin=[0,0]):
-        return BufferPoint( affinity.rotate(self, Angle, origin=Origin ) )
+        return Point( affinity.rotate(self, Angle, origin=Origin), **self.kwargs )
 
     def Buffer(self, Radius):
-        Circle = BufferPolygon( self.buffer(Radius, resolution=256) )
+        Circle = Polygon( self.buffer(Radius, resolution=256), **self.kwargs )
         Circle.Radius = Radius
         Circle.Center = self
         return Circle
@@ -151,60 +140,80 @@ class BufferPoint(Point, ExtraParameters):
 
     def __render__(self, Ax):
         Ax._ax.text(self.x, self.y, self.Name)
-        point = Ax._ax.scatter(self.x, self.y, color=self.Color, marker=self.Marker, s=self.Size)
+        Ax._ax.scatter(self.x, self.y, **self.PlotKwargs)
 
 
 
-class BufferMultiPolygon(MultiPolygon, ExtraParameters):
-    def __init__(self, Object=None, *args, **kwargs):
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-
-        if Object is None:
-            super().__init__()
-        else:
-            super().__init__(Object)
+class MultiPolygon(BaseBuffer, geo.MultiPolygon):
+    Name = None
+    Color = 'lightblue'
+    Alpha = 0.3
 
 
     def Rotate(self, Angle, Origin=[0,0]):
-        return BufferMultiPolygon( affinity.rotate(self, Angle, origin=Origin ) )
+        return MultiPolygon( affinity.rotate(self, Angle, origin=Origin ) )
+
 
     def Scale(self, Factor: float, Origin: list = [0,0]):
-        return BufferMultiPolygon( affinity.scale( self, xfact=Factor, yfact=Factor, origin=Point(Origin) ) )
+        return MultiPolygon( affinity.scale(self, xfact=Factor, yfact=Factor, origin=Point(Origin) ), **self.kwargs )
         
 
     def __render__(self, Ax):
-        for polygone in self:
+        for polygone in self.geoms:
             Plots.PlotPolygon(Ax._ax, polygone, facecolor=self.Color, edgecolor='k', alpha=self.Alpha)
 
 
-class BufferGeometryCollection(GeometryCollection, ExtraParameters):
-    def __init__(self, Object=None, *args, **kwargs):
-        for key, value in kwargs.items():
-            setattr(self, key, value)
 
-        if Object is None:
-            super().__init__()
-        else:
-            super().__init__(Object)
+class GeometryCollection(BaseBuffer, geo.GeometryCollection):
+    Name = None
+    Color = 'lightblue'
+    Alpha = 0.3
+
+    @property
+    def PlotKwargs(self):
+        return {'alpha': self.Alpha,
+                'color': self.Color}
+
 
     def Rotate(self, Angle, Origin=[0,0]):
         return BufferGeometryCollection( affinity.rotate(self, Angle, origin=Origin ) )
 
+    def __render__(self, Ax):
+        for polygone in self.geoms:
+            ToBuffer(polygone, **self.kwargs).__render__(Ax)
 
-class BufferLine(LineString, ExtraParameters):
-    def __init__(self, Object):
-        super().__init__(Object)
+
+    def Clean(self):
+        NewClean = [e for e in self.geoms if not isinstance(e, (geo.LineString, geo.Point) ) ]
+        return GeometryCollection(NewClean)
+
+
+
+    def __render__(self, Ax):
+        for polygone in self:
+            Plots.PlotPolygon(Ax._ax, polygone, **self.PlotKwargs, edgecolor='k')
+
+
+class Line(BaseBuffer, geo.LineString):
+    LineWidth = 2
+    Color = 'b'
+    Alpha = 0.3
+
+    @property
+    def PlotKwargs(self):
+        return {'lineWidth': self.LineWidth, 
+                'color': self.Color,
+                'alpha': self.Alpha}
+
 
     @property
     def MidPoint(self):
         P0, P1 = self.boundary.geoms
-
-        return BufferPoint( [ (P0.x+P1.x)/2, (P0.y+P1.y)/2 ] )
+        return Point( [ (P0.x+P1.x)/2, (P0.y+P1.y)/2 ], **self.kwargs )
 
 
     def GetBissectrice(self):
-        return BufferLine( affinity.rotate(self, 90, origin=self.MidPoint) )
+        return Line( affinity.rotate(self, 90, origin=self.MidPoint), **self.kwargs )
 
 
     def MakeLength(self, Length: float):
@@ -213,13 +222,14 @@ class BufferLine(LineString, ExtraParameters):
         Factor = Length/Distance
         return self.Extend(factor=Factor)
 
+
     def Shift(self, Vector: list):
         P0, P1 = self.boundary.geoms
 
-        P2 = BufferPoint(P0).Shift(Vector=Vector)
-        P3 = BufferPoint(P1).Shift(Vector=Vector)
+        P2 = Point(P0).Shift(Vector=Vector)
+        P3 = Point(P1).Shift(Vector=Vector)
 
-        return BufferLine([P2, P3])
+        return Line([P2, P3], **self.kwargs)
 
 
     def Centering(self, Center):
@@ -230,19 +240,20 @@ class BufferLine(LineString, ExtraParameters):
         yShift = Center.y - MidPoint.y
         Vector = [xShift, yShift]
 
-        P2 = BufferPoint(P0).Shift(Vector=Vector)
-        P3 = BufferPoint(P1).Shift(Vector=Vector)
+        P2 = Point(P0).Shift(Vector=Vector)
+        P3 = Point(P1).Shift(Vector=Vector)
 
-        return BufferLine([P2, P3])
+        return Line([P2, P3])
 
 
     def Extend(self, factor: float=1):
-         return BufferLine( affinity.scale(self, xfact=factor, yfact=factor, origin=self.MidPoint) )
+         return Line( affinity.scale(self, xfact=factor, yfact=factor, origin=self.MidPoint), **self.kwargs )
+
 
     def Rotate(self, Angle, Origin=None):
         if Origin is None:
             Origin = self.MidPoint
-        return BufferLine( affinity.rotate(self, Angle, origin=Origin ) )
+        return Line( affinity.rotate(self, Angle, origin=Origin ), **self.kwargs )
 
 
     @property
@@ -256,24 +267,26 @@ class BufferLine(LineString, ExtraParameters):
         else:
             return Normalize([1, dy/dx])
 
+    def __render__(self, Ax):
+        Ax._ax.plot(*self.xy, **self.PlotKwargs)
 
 
-class Buffer():
+class ToBuffer():
     def __new__(self, Object, **kwargs):
         if isinstance(Object, list):
-            return BufferPoint(Object, **kwargs)
+            return Point(Object, **kwargs)
         
-        if isinstance(Object, Polygon):
-            return BufferPolygon(Object, **kwargs)
+        if isinstance(Object, geo.Polygon):
+            return Polygon(Object, **kwargs)
         
-        if isinstance(Object, MultiPolygon):
-            return BufferMultiPolygon(Object, **kwargs)
+        if isinstance(Object, geo.MultiPolygon):
+            return MultiPolygon(Object, **kwargs)
 
-        if isinstance(Object, GeometryCollection):
-            return BufferGeometryCollection(Object, **kwargs)
+        if isinstance(Object, geo.GeometryCollection):
+            return GeometryCollection(Object, **kwargs)
 
-        if isinstance(Object, LineString):
-            return BufferLine(Object, **kwargs)
+        if isinstance(Object, geo.LineString):
+            return Line(Object, **kwargs)
 
-        if isinstance(Object, Point):
-            return BufferPoint(Object, **kwargs)
+        if isinstance(Object, geo.Point):
+            return Point(Object, **kwargs)
