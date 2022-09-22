@@ -3,10 +3,14 @@ import numpy
 import shapely.geometry as geo
 from shapely import affinity
 from collections.abc import Iterable
+from matplotlib.patches import PathPatch
+from matplotlib.collections  import PatchCollection
+from matplotlib.path import Path
 
 import FiberFusing.Plotting.Plots as Plots
 
-RESOLUTION=128
+RESOLUTION=62
+ORIGIN = geo.Point([0,0])
 
 def Normalize(Array):
     Array = numpy.asarray(Array)
@@ -21,14 +25,16 @@ class BaseBuffer():
     alpha: float = 0.3
     Area = None
 
-    Index = None
-    marker = None
+    Index: float=1
+    marker: str = None
 
     Raster = None
     kwargs = {}
 
 
     def __init__(self, Object=None, Name=None, **kwargs):
+        self.kwargs = kwargs
+
         for key, value in kwargs.items():
             setattr(self, key, value)
 
@@ -40,7 +46,7 @@ class BaseBuffer():
 
     @property
     def convex_hull(self):
-        return ToBuffer(self.convex_hull)
+        return super().convex_hull
 
 
     def GetMaxDistance(self):
@@ -53,15 +59,39 @@ class BaseBuffer():
     def Clean(self):
         return self
 
-    def Scale(self, Factor: float, Origin: list = [0,0]):
-        return ToBuffer( affinity.scale( self, xfact=Factor, yfact=Factor, origin=Point(Origin) ), **self.kwargs )
+    def Scale(self, Factor: float, Origin: geo.Point=ORIGIN):
+        # o = affinity.scale(geo.Point([0,0]), xfact=1, yfact=1)
+        # print(self)
+        o = affinity.scale( self, xfact=Factor, yfact=Factor, origin=Origin )
+        return ToBuffer( Object=o, **self.kwargs )
 
 
     def Rotate(self, Angle, Origin=[0,0]):
         if isinstance(Angle, Iterable):
             return [ self.Rotate(Angle=angle, Origin=Origin) for angle in Angle ] 
         else:
-            return self.__class__( affinity.rotate(self, Angle, origin=Origin), **self.kwargs ) 
+            return self.__class__( Object=affinity.rotate(self, Angle, origin=Origin), **self.kwargs ) 
+
+    @property
+    def Hole(self):
+        return Polygon( self.exterior.coords ) - self
+
+
+    def __render__(self, Ax):
+
+        if self.is_empty: return
+
+        path = Path.make_compound_path(
+            Path(numpy.asarray(self.exterior.coords)[:, :2]),
+            *[Path(numpy.asarray(ring.coords)[:, :2]) for ring in self.interiors])
+
+        patch = PathPatch(path, facecolor=self.facecolor, alpha=self.alpha, edgecolor='k')
+        collection = PatchCollection([patch], facecolor=self.facecolor, alpha=self.alpha, edgecolor='k')
+        
+        Ax._ax.add_collection(collection, autolim=True)
+        Ax._ax.autoscale_view()
+        if self.Name is not None:
+            Ax._ax.text(self.centroid.x, self.centroid.y, self.Name)
 
 
 class Polygon(BaseBuffer, geo.Polygon):  
@@ -82,49 +112,62 @@ class Polygon(BaseBuffer, geo.Polygon):
         return ToBuffer(super().__add__(Other))
 
 
-    @property
-    def convex_hull(self):
-        return ToBuffer(super().convex_hull)
+    def __raster__(self, Coordinate):
+        Exterior = Path(list( self.exterior.coords))
+
+        Exterior = Exterior.contains_points(Coordinate)
+
+        hole = self.Hole.contains_points(Coordinate)
+
+        return Exterior.astype(int) - hole.astype(int)
 
 
-    def __render__(self, Ax):
-        Plots.PlotPolygon(Ax._ax, self, facecolor=self.facecolor, alpha=self.alpha, edgecolor='k')
+    def contains_points(self, Coordinate):
+        if self.is_empty:
+            return  numpy.zeros(Coordinate.shape[0])
+        else:
+            Exterior = Path( list( self.exterior.coords) )
+            return Exterior.contains_points(Coordinate).astype(bool)
 
 
 class Point(BaseBuffer, geo.Point):
+    alpha = 1
+    facecolor = 'none'
+    edgecolor = 'k'
+
+    @property
+    def Kwargs(self):
+        return {'facecolor': self.facecolor, 'edgecolor': self.edgecolor, 'alpha': self.alpha, 'marker': self.marker}
+
     def __repr__(self):
         return f"Point: ({self.x:.2f}, {self.y:.2f})"
 
     def __neg__(self):
-        return Point( [-self.x, -self.y] )
+        return Point( [-self.x, -self.y], **self.Kwargs )
 
 
     def __sub__(self, Other):
         if isinstance(Other, geo.Point):
-            return Point( [self.x-Other.x, self.y-Other.y] )
+            return Point( [self.x-Other.x, self.y-Other.y], **self.Kwargs )
 
         if isinstance( Other, (list, numpy.ndarray) ):
-            return Point( [self.x-Other[0], self.y-Other[1]] )
+            return Point( [self.x-Other[0], self.y-Other[1]], **self.Kwargs )
 
     def __add__(self, Other):
         if isinstance(Other, geo.Point):
-            return Point( [self.x+Other.x, self.y+Other.y] )
+            return Point( [self.x+Other.x, self.y+Other.y], **self.Kwargs )
 
         if isinstance( Other, (list, numpy.ndarray) ):
-            return Point( [self.x+Other[0], self.y+Other[1]] )
+            return Point( [self.x+Other[0], self.y+Other[1]], **self.Kwargs )
 
     def __mul__(self, Factor: float):
-        return Point( [self.x*Factor, self.y*Factor] )
+        return Point( [self.x*Factor, self.y*Factor], **self.Kwargs )
 
     def __rmul__(self, Factor: float):
-        return Point( [self.x*Factor, self.y*Factor] )
+        return Point( [self.x*Factor, self.y*Factor], **self.Kwargs )
 
     def __truediv__(self, Factor: float):
-        return Point( [self.x/Factor, self.y/Factor] )
-
-
-    def ToNumpy(self):
-        return numpy.array( [ self.x, self.y ] )
+        return Point( [self.x/Factor, self.y/Factor], **self.Kwargs )
 
 
     def Distance(self, Other=None):
@@ -146,7 +189,7 @@ class Point(BaseBuffer, geo.Point):
 
     def __render__(self, Ax):
         Ax._ax.text(self.x, self.y, self.Name)
-        Ax._ax.scatter(self.x, self.y, s=60, facecolor=self.facecolor, alpha=self.alpha, edgecolor='k')
+        Ax._ax.scatter(self.x, self.y, s=60, **self.Kwargs )
 
 
 
@@ -155,6 +198,15 @@ class MultiPolygon(BaseBuffer, geo.MultiPolygon):
         for polygone in self.geoms:
             Plots.PlotPolygon(Ax._ax, self, facecolor=self.facecolor, alpha=self.alpha, edgecolor='k')
 
+
+    def contains_points(self, Coordinate):
+        Init = numpy.zeros(Coordinate.shape[0])
+
+        for polygon in self:
+            Exterior = Path( list( polygon.exterior.coords) )
+            Init += Exterior.contains_points(Coordinate)
+
+        return Init.astype(bool)
 
 
 class GeometryCollection(BaseBuffer, geo.GeometryCollection):
@@ -168,7 +220,8 @@ class GeometryCollection(BaseBuffer, geo.GeometryCollection):
 
 
 class Line(BaseBuffer, geo.LineString):
-    linewidth = 2
+    linewidth: float = 2
+    facecolor: str = 'k'
 
     @property
     def boundary(self):
@@ -247,8 +300,9 @@ class Line(BaseBuffer, geo.LineString):
             return Normalize([1, dy/dx])
 
     def __render__(self, Ax):
-        Ax._ax.plot(*self.xy, facecolor=self.facecolor, alpha=self.alpha)
-
+        Ax._ax.plot(*self.xy, color='k', alpha=self.alpha)
+        if self.Name is not None:
+            Ax._ax.text(self.centroid.x, self.centroid.y, self.Name)
 
 
 
@@ -315,10 +369,10 @@ class Circle(Polygon):
                 Radius = numpy.sqrt( Shift**2 + (CenterLine.length/2)**2 ) + self.Radius
 
             if Rotate:
-                return Circle(Radius=self.Radius, Center=Point).Rotate(Angle=180, Origin=CenterLine.MidPoint)
+                return Circle(Radius=self.Radius, Center=Point, **self.kwargs).Rotate(Angle=180, Origin=CenterLine.MidPoint)
 
             else:
-                return Circle(Radius=self.Radius, Center=Point)
+                return Circle(Radius=self.Radius, Center=Point, **self.kwargs)
 
 
 

@@ -14,7 +14,8 @@ import FiberFusing.Buffer as Buffer
 logging.basicConfig(level=logging.INFO)
 
 
-
+ORIGIN = Buffer.Point([0,0])
+RESOLUTION = 68
 
 @dataclass
 class BaseFused():
@@ -197,6 +198,9 @@ class BaseFused():
         for fiber in self._CustomFibers:
             self._Fibers.append(fiber)
 
+        for n, fiber in enumerate(self._Fibers):
+            fiber.Name = f' Fiber {n}'
+
 
     def BuildCoupler(self, VirtualShift):
         Coupler = Utils.Union(*self.Fibers, self.Added)
@@ -248,32 +252,36 @@ class BaseFused():
 
 
 
-    def Rasterize(self, Coordinate: numpy.ndarray, Shape: list):
+    def Rasterize(self, Coordinate: numpy.ndarray=None, Shape: list=[100,100]):
+
+        if Coordinate is None:
+            xMin, yMin, xMax, yMax = self.Object.bounds
+            x, y = numpy.mgrid[ xMin:xMax:complex(Shape[0]), yMin:yMax:complex(Shape[1]) ]
+            Coordinate = numpy.vstack((x.flatten(), y.flatten())).T
+
 
         if isinstance(self.Object, Buffer.Polygon):
-            Exterior = Path(list( self.Object.exterior.coords))
-
-            Exterior = Exterior.contains_points(Coordinate).reshape(Shape)
-
-            Exterior = Exterior.astype(float)
-
+            Exterior = self.Object.__raster__(Coordinate).reshape(Shape)
+   
         if isinstance(self.Object, Buffer.MultiPolygon):
             raster = []
             for polygone in self.Object.geoms:
                 Exterior = Path(list( polygone.exterior.coords))
 
-                Exterior = Exterior.contains_points(Coordinate).reshape(Shape)
+                Exterior = polygone.__raster__(Coordinate)
 
                 raster.append(Exterior.astype(float))
 
                 Exterior = numpy.sum(raster, axis=0)
 
-        if self.Hole is not None:
-            Interior = Path(list( self.Hole.exterior.coords))
-            Interior = numpy.logical_not( Interior.contains_points(Coordinate).reshape(Shape) )
-            Exterior = numpy.logical_and( Exterior, Interior )
+        # if self.Hole is not None:
+        #     Interior = Path(list( self.Hole.exterior.coords))
+        #     Interior = numpy.logical_not( Interior.contains_points(Coordinate).reshape(Shape) )
+        #     Exterior = numpy.logical_and( Exterior, Interior )
 
         self.Raster = Exterior
+
+        return self.Raster
 
 
 
@@ -334,31 +342,26 @@ class Circle(BaseFused):
         self.Raster = Exterior
 
 
-class BackGround(BaseFused):
-    def __init__(self, Radius: float=1000, Index: float=1., debug: str='INFO'):
-        self.Position = [0,0]
-        self.FiberRadius   = Radius
-        self.Index    = Index
-        self.Raster   = None
-        self.Object   = Buffer.Polygon( Buffer.Point(self.Position).Buffer(self.FiberRadius) )
-        self.C        = [Buffer.Point(self.Position)]
-        Name          = ''
-        self.Initialize()
-        self._Hole = None
 
 
-    def Rasterize(self, Coordinate: numpy.ndarray, Shape: list):
+class BackGround(Buffer.Polygon):
+    Radius: float=None
+    Center: Buffer.Point=None
 
-        Exterior = Path(list( self.Object.exterior.coords))
+    def __new__(cls, Radius: float, Center: Buffer.Point=ORIGIN, Name: str = '', Index: float=1):
+        Instance = Buffer.Polygon.__new__(cls)
+        return Instance
 
-        Exterior = Exterior.contains_points(Coordinate).reshape(Shape)
+    def __init__(self, Radius: float, Center: Buffer.Point=ORIGIN, Name: str = '', Index: float=1):
+        self.Radius = Radius
+        self.Name = Name
+        self.Center = Center
 
-        Exterior = Exterior.astype(float)
-
-        self.Raster = Exterior
+        super(BackGround, self).__init__(self.Center.buffer(Radius, resolution=RESOLUTION))
 
 
-
+    def __str__(self):
+        return f" Center: {self.Center} \t Radius: {self.Radius}"
 
 
 
