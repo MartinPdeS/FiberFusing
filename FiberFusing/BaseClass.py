@@ -1,11 +1,10 @@
 import numpy, logging
-from typing import Union as TypeUnion
 from dataclasses import dataclass
 
 from matplotlib.path import Path
 from itertools import combinations
 from scipy.optimize import minimize_scalar
-from shapely.geometry import GeometryCollection, LineString, Point
+import shapely.geometry as geo
 
 import FiberFusing.Plotting.Plots as Plots
 import FiberFusing.Utils as Utils
@@ -46,6 +45,9 @@ class BaseFused():
         self._Centers = None
         self._CoreShift = None
 
+    @property
+    def Cores(self):
+        return [f.Core for f in self.Fibers]
 
     @property
     def Added(self):
@@ -130,7 +132,10 @@ class BaseFused():
 
 
     def ComputeCorePosition(self):
+
         for connection in self.Connections:
+            connection.Fibers_ = self.Fibers
+            logging.info('\n\nNew connection\n')
             connection.OptimizeCorePosition()
 
 
@@ -152,8 +157,10 @@ class BaseFused():
     def BuildCoupler(self, VirtualShift):
         Coupler = Utils.Union(*self.Fibers, self.Added)
 
-        if isinstance(Coupler, GeometryCollection):
-            Coupler = Buffer.MultiPolygon( [P for P in Coupler.geoms if not isinstance(P, TypeUnion[Buffer.Point, Point, LineString] )] )
+        if isinstance(Coupler, geo.GeometryCollection):
+            Coupler = Buffer.MultiPolygon( [P for P in Coupler.geoms if not isinstance(P, (geo.Point, geo.LineString) )] )
+
+        self.ComputeCorePosition()
 
         return Coupler
   
@@ -169,7 +176,8 @@ class BaseFused():
 
     def ShiftConnections(self, Shift):
         for connection in self.Connections:
-            connection.SetShift(Shift=Shift, Topology=self.Topology)
+            connection.Shift = Shift
+            connection.Topology = self.Topology
 
         self.Initialize()
 
@@ -244,8 +252,6 @@ class BaseFused():
                         Grid     = True,
                         Equal    = True)
 
-
-        self.ComputeCorePosition()
         Fig.AddAxes(ax).GenerateAxis()
 
         if 'Base' in kwargs:
@@ -260,8 +266,6 @@ class BaseFused():
 
         if 'Removed' in kwargs:
             self.Removed.__render__(ax)
-
-        
 
         Fig.Show()
 

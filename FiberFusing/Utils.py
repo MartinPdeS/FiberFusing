@@ -29,12 +29,6 @@ def NearestPoints(Object0, Object1):
         return Buffer.Point(P[0])
 
 
-
-def GetBoundaries(Objects):
-    Objects = ToList(Objects)
-    return unary_union(Objects).bounds
-
-
 def Union(*Objects):
     Output = Buffer.Polygon()
     for geo in Objects:
@@ -63,6 +57,9 @@ def Rotate(Object=None, Angle=0, Origin=(0,0)):
 
 
 class _Fiber(Buffer.Polygon):
+    Radius: float=None
+    CorePosition: Buffer.Point=None
+
     def __new__(cls, Radius: float, Center: list, Name: str = ''):
         Instance = Polygon.__new__(cls)
         return Instance
@@ -70,7 +67,7 @@ class _Fiber(Buffer.Polygon):
     def __init__(self, Radius: float, Center: list, Name: str = ''):
         self.Radius = Radius
         self.Name = Name
-        self.Center = Buffer.Point(Center, marker='o', Name='')
+        self.Center = Buffer.Point(Center, marker='o', Name='', facecolors='k')
         self.Core = Buffer.Point(Center, marker='o', Name='')
         self.CorePosition = numpy.array( [self.Center.x, self.Center.y] )
         circle = Point(Center).buffer(Radius, resolution=256)

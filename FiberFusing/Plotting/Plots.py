@@ -350,11 +350,14 @@ def PlotShapely(*Object):
                   yScale           = 'linear')
 
 
-        for obj in Object:
-            artist = AddShapely( Object=obj, Text=f"C{1}", Color=obj.Color )
-            ax.AddArtist(artist)
-
         Fig.AddAxes(ax)
+        Fig.GenerateAxis()
+        
+        for obj in Object:
+            obj.__render__(ax)
+
+
+        
 
         Fig.Show()
 

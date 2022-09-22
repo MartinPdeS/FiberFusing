@@ -11,24 +11,43 @@ class Connection():
     def __init__(self, Fiber0, Fiber1):
         self.Fibers = [Fiber0, Fiber1]
         self._Shift = None
+        self._CenterLine = None
+        self._ExtendedCenterLine = None
         self.Initialize()
 
 
-    def Initialize(self, Topology: str=None):
-        self._Topology = Topology
+    def Initialize(self):
+        self._Topology = None
         self._Virtual = None
         self._Added = None
         self._Removed = None
         self._Mask = None
 
 
-    def SetShift(self, Shift, Topology: str=None):
-        self._Shift = Shift
-        self.Initialize(Topology=Topology)
+    @property
+    def Shift(self):
+        return self._Shift
+
+
+    @Shift.setter
+    def Shift(self, Value):
+        self._Shift = Value
+        self.Initialize()
+
+
+    @property
+    def Topology(self):
+        return self._Topology
+
+
+    @Topology.setter
+    def Topology(self, Value):
+        self._Topology = Value
+
 
 
     def __repr__(self):
-        return f"{self._Shift = } \n{self.Topology = } \n{self.Removed.Area = :.2f} \n{self.Added.Area = :.2f} \n\n"
+        return f"Connected fiber: {self._Shift = } \n{self.Topology = } \n{self.Removed.Area = :.2f} \n{self.Added.Area = :.2f} \n\n"
 
 
     def __getitem__(self, idx):
@@ -46,13 +65,6 @@ class Connection():
         if self._Mask is None:
             self.ComputeMask()
         return self._Mask
-
-
-    @property
-    def Topology(self):
-        if self._Topology is None:
-            self.ComputeTopology()
-        return self._Topology
 
 
     @property
@@ -82,27 +94,25 @@ class Connection():
         self._Topology = 'convex' if self.Removed.Area > self.LimitAdded.area else 'concave'
    
 
+    def GetConscriptedCircle(self, Type='Exterior'):
+        PerpendicularVector = self.ExtendedCenterLine.Perpendicular.Vector
+
+        Point = self.CenterLine.MidPoint.Shift( PerpendicularVector * self._Shift)
+
+        if Type in ['Exterior', 'concave']:
+            Radius = numpy.sqrt( self._Shift**2 +  (self.CenterLine.length/2)**2 ) - self[0].Radius
+
+        if Type in ['Interior', 'convex']:
+            Radius = numpy.sqrt( self._Shift**2 + (self.CenterLine.length/2)**2 ) + self[0].Radius
+
+        return Point.Buffer(Radius)
+
+
     def ComputeVirtual(self):
-        ParallelLine = Buffer.Line([self[0].Center, self[1].Center] )
 
-        PerpendicularLine = ParallelLine.GetBissectrice().Extend(factor=30)
+        Circonscript0 = self.GetConscriptedCircle(Type=self.Topology)
 
-        CoreDistance = self[0].Center.Distance(self[1].Center)
-
-        Point = ParallelLine.MidPoint.Shift(PerpendicularLine.Vector * self._Shift)
-
-        if self.Topology == 'convex':
-            Radius = numpy.sqrt( self._Shift**2 + (CoreDistance/2)**2 ) + self[0].Radius
-
-        if self.Topology == 'concave':
-            Radius = numpy.sqrt( self._Shift**2 +  (CoreDistance/2)**2 ) - self[0].Radius
-
-        Circonscript0 = Point.Buffer(Radius)
-
-        Circonscript1 = Rotate(Object=Circonscript0, Angle=[180], Origin=ParallelLine.MidPoint)[0]
-
-        Circonscript0 = Buffer.Polygon(Circonscript0, Color='r', Alpha=0.1, Name=' Virtual 0')
-        Circonscript1 = Buffer.Polygon(Circonscript1, Color='r', Alpha=0.1, Name=' Virtual 0')
+        Circonscript1 = Rotate(Object=Circonscript0, Angle=[180], Origin=self.CenterLine.MidPoint)[0]
 
         self._Virtual = Circonscript0, Circonscript1
 
@@ -123,6 +133,7 @@ class Connection():
             Mask = Buffer.Polygon([P0, P1, P3, P2])
 
             self._Mask = Mask - self.Virtual[0] - self.Virtual[1]
+
 
         elif self.Topology == 'convex':
             MidPoint = Buffer.Line([self[0].Center, self[1].Center]).MidPoint
@@ -154,12 +165,13 @@ class Connection():
 
 
     def __plot__(self, ax, 
-                        Fibers: bool=True, 
-                        Mask: bool=False, 
+                       Fibers: bool=True, 
+                       Mask: bool=False, 
                         Virtual: bool=False, 
                         Added: bool=False, 
                         Removed: bool=False,
                         **kwargs):
+
         if Fibers:
             for fiber in self:
                 fiber.__render__(ax)
@@ -179,8 +191,26 @@ class Connection():
 
 
     @property
-    def CoreLine(self):
-        return Buffer.Line([self[0].Center, self[1].Center])
+    def CenterLine(self):
+        if self._CenterLine is None:
+            self.ComputeCenterLine()
+        return self._CenterLine
+
+
+    def ComputeCenterLine(self):
+        self._CenterLine = Buffer.Line([self[0].Center, self[1].Center])
+
+
+    @property
+    def ExtendedCenterLine(self):
+        if self._ExtendedCenterLine is None:
+            self.ComputeExtendedCenterLine()
+        return self._ExtendedCenterLine
+
+
+    def ComputeExtendedCenterLine(self):
+        Line = self.CenterLine.MakeLength(2*self[0].Radius + 2*self[1].Radius)
+        self._ExtendedCenterLine = Buffer.Line( Line.intersection( Union(*self) ) )
 
 
     @property
@@ -190,49 +220,43 @@ class Connection():
 
     def Split(self, Geometry, Position):
 
-        Radial = self.CoreLine
+        Line = self.ExtendedCenterLine.Centering(Center=Buffer.Point(Position))
 
-        Line = Radial.Centering(Center=Buffer.Point(Position))
+        Line = Line.Rotate(Angle=90)
 
-        Line = Line.Rotate(Angle=90).MakeLength(self[0].Radius*5)
-        Plots.PlotShapely(*self, Line, Radial)
+        Splitted = split(Geometry, Line).geoms
 
-        return [ Buffer.ToBuffer( geo, Color='r' ) for geo in split(Geometry, Line).geoms ]
+        Splitted = Splitted[0] if Splitted[0].area < Splitted[1].area else Splitted[1]
+        
+        return Buffer.Polygon( Splitted, Color='k' )
 
-
-    def UpdateCorePosition(self):
-        self[0].UpdateCorePosition()
-        self[1].UpdateCorePosition()
 
 
     def ComputeCoreShift(self, x: float=0.5):
-        
-        x = 1
-        P0 = self[0].Center.ToNumpy()
-        P1 = self[1].Center.ToNumpy()
 
-        Position = P0 - x * (P0-P1)
+        P0, P1 = self.ExtendedCenterLine.boundary
 
-        print(f'{x = }')
+        C0, C1 = self[0].Center, self[1].Center
 
-        ExternalPart  =  self.Split(Geometry=self.TotalArea, Position=Position)[1]
+        Position = self.ExtendedCenterLine.GetPosition(x)
+
+        ExternalPart = self.Split(Geometry=self.TotalArea, Position=Position)
 
         Cost = abs(ExternalPart.area - self[0].Area/2)
 
-        self.CoreShift = Position-P0
+        self.CoreShift = (Position-C1)
 
-        logging.info(f' {x = :+.2f} \t -> \t{Cost = :.2f} -> \t\t{self.CoreShift = }')
-
+        logging.info(f' {x = :+.2f} \t -> \t{Cost = :<10.2f} -> \t\t{self.CoreShift = }')
 
         return Cost
 
 
+
     def OptimizeCorePosition(self):
-        res = minimize_scalar(self.ComputeCoreShift, bounds=(-2, 2) , method='bounded', options={'xatol': 0.001})
-        
-        self[0].ShiftCore(self.CoreShift)
-        self[1].ShiftCore(-self.CoreShift)
-        self.UpdateCorePosition()
+        res = minimize_scalar(self.ComputeCoreShift, bounds=(0.50001, 0.99) , method='bounded', options={'xatol': 0.001})
+
+        self[0].Core -= self.CoreShift
+        self[1].Core += self.CoreShift
 
 
 

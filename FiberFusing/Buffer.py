@@ -49,15 +49,16 @@ class BaseBuffer():
 
 
 class Polygon(BaseBuffer, geo.Polygon):  
-    Name = None
-    Color = 'lightblue'
-    Alpha = 0.3
+    Name: str = None
+    facecolor: str = 'lightblue'
+    alpha: float = 0.3
+    Radius: float = None
 
 
     @property
     def PlotKwargs(self):
-        return {'alpha': self.Alpha, 
-                'color': self.Color}
+        return {'alpha': self.alpha, 
+                'facecolor': self.facecolor}
 
 
     def __self__(self, Object):
@@ -101,6 +102,30 @@ class Point(BaseBuffer, geo.Point):
     facecolors = 'none'
     color = 'k'
 
+    def __repr__(self):
+        return f"Point: ({self.x:.2f}, {self.y:.2f})"
+
+    def __neg__(self):
+        return Point( [-self.x, -self.y] )
+
+
+    def __sub__(self, Other):
+        if isinstance(Other, geo.Point):
+            return Point( [self.x-Other.x, self.y-Other.y] )
+
+        if isinstance( Other, (list, numpy.ndarray) ):
+            return Point( [self.x-Other[0], self.y-Other[1]] )
+
+    def __add__(self, Other):
+        if isinstance(Other, geo.Point):
+            return Point( [self.x+Other.x, self.y+Other.y] )
+
+        if isinstance( Other, (list, numpy.ndarray) ):
+            return Point( [self.x+Other[0], self.y+Other[1]] )
+
+
+    def __mul__(self, Factor):
+        return Point( [self.x*Factor, self.y*Factor] )
 
     @property
     def PlotKwargs(self):
@@ -195,36 +220,46 @@ class GeometryCollection(BaseBuffer, geo.GeometryCollection):
 
 
 class Line(BaseBuffer, geo.LineString):
-    LineWidth = 2
-    Color = 'b'
-    Alpha = 0.3
+    linewidth = 2
+    color = 'b'
+    alpha = 0.3
+
 
     @property
     def PlotKwargs(self):
-        return {'lineWidth': self.LineWidth, 
-                'color': self.Color,
-                'alpha': self.Alpha}
+        return {'linewidth': self.linewidth, 
+                'color': self.color,
+                'alpha': self.alpha}
+
+
+    @property
+    def boundary(self):
+        return ( Point( e ) for e in super().boundary.geoms )
 
 
     @property
     def MidPoint(self):
-        P0, P1 = self.boundary.geoms
+        P0, P1 = self.boundary
         return Point( [ (P0.x+P1.x)/2, (P0.y+P1.y)/2 ], **self.kwargs )
 
+
+    def GetPosition(self, x):
+        P0, P1 = self.boundary
+        return P0 - x * (P0-P1)
 
     def GetBissectrice(self):
         return Line( affinity.rotate(self, 90, origin=self.MidPoint), **self.kwargs )
 
 
     def MakeLength(self, Length: float):
-        P0, P1 = self.boundary.geoms
+        P0, P1 = self.boundary
         Distance = numpy.sqrt( (P0.x-P1.x)**2 + (P0.y-P1.y)**2 )
         Factor = Length/Distance
         return self.Extend(factor=Factor)
 
 
     def Shift(self, Vector: list):
-        P0, P1 = self.boundary.geoms
+        P0, P1 = self.boundary
 
         P2 = Point(P0).Shift(Vector=Vector)
         P3 = Point(P1).Shift(Vector=Vector)
@@ -233,7 +268,7 @@ class Line(BaseBuffer, geo.LineString):
 
 
     def Centering(self, Center):
-        P0, P1 = self.boundary.geoms
+        P0, P1 = self.boundary
 
         MidPoint = self.MidPoint
         xShift = Center.x - MidPoint.x
@@ -244,6 +279,12 @@ class Line(BaseBuffer, geo.LineString):
         P3 = Point(P1).Shift(Vector=Vector)
 
         return Line([P2, P3])
+
+
+    @property
+    def Perpendicular(self):
+        return Line(  self.Rotate(90, Origin=self.MidPoint) )
+
 
 
     def Extend(self, factor: float=1):
@@ -258,7 +299,7 @@ class Line(BaseBuffer, geo.LineString):
 
     @property
     def Vector(self):
-        P0, P1 = self.boundary.geoms
+        P0, P1 = self.boundary
 
         dy = P0.y-P1.y
         dx = P0.x-P1.x
