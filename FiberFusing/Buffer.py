@@ -2,8 +2,11 @@
 import numpy
 import shapely.geometry as geo
 from shapely import affinity
+from collections.abc import Iterable
 
 import FiberFusing.Plotting.Plots as Plots
+
+RESOLUTION=128
 
 def Normalize(Array):
     Array = numpy.asarray(Array)
@@ -11,18 +14,21 @@ def Normalize(Array):
     return Array/Norm
 
 
+
 class BaseBuffer():
-    Center = None
+    Name: str = None
+    facecolor: str = 'lightblue'
+    alpha: float = 0.3
     Area = None
-    Core = None
+
     Index = None
-    CoreShift = numpy.array([0.,0.])
+    marker = None
+
     Raster = None
     kwargs = {}
 
 
-    def __init__(self, Object=None, *args, **kwargs):
-        self.kwargs = kwargs
+    def __init__(self, Object=None, Name=None, **kwargs):
         for key, value in kwargs.items():
             setattr(self, key, value)
 
@@ -47,19 +53,18 @@ class BaseBuffer():
     def Clean(self):
         return self
 
+    def Scale(self, Factor: float, Origin: list = [0,0]):
+        return ToBuffer( affinity.scale( self, xfact=Factor, yfact=Factor, origin=Point(Origin) ), **self.kwargs )
+
+
+    def Rotate(self, Angle, Origin=[0,0]):
+        if isinstance(Angle, Iterable):
+            return [ self.Rotate(Angle=angle, Origin=Origin) for angle in Angle ] 
+        else:
+            return self.__class__( affinity.rotate(self, Angle, origin=Origin), **self.kwargs ) 
+
 
 class Polygon(BaseBuffer, geo.Polygon):  
-    Name: str = None
-    facecolor: str = 'lightblue'
-    alpha: float = 0.3
-    Radius: float = None
-
-
-    @property
-    def PlotKwargs(self):
-        return {'alpha': self.alpha, 
-                'facecolor': self.facecolor}
-
 
     def __self__(self, Object):
         if isinstance(Object, list) and all([isinstance(e, geo.Point) for e in Object]):
@@ -80,28 +85,13 @@ class Polygon(BaseBuffer, geo.Polygon):
     @property
     def convex_hull(self):
         return ToBuffer(super().convex_hull)
-        
-
-    def Rotate(self, Angle, Origin=[0,0]):
-        return Polygon( affinity.rotate(self, Angle, origin=Origin ), **self.kwargs )
-        
-
-    def Scale(self, Factor: float, Origin: list = [0,0]):
-        return Polygon( affinity.scale( self, xfact=Factor, yfact=Factor, origin=Point(Origin) ), **self.kwargs )
 
 
     def __render__(self, Ax):
-        Plots.PlotPolygon(Ax._ax, self, **self.PlotKwargs, edgecolor='k')
+        Plots.PlotPolygon(Ax._ax, self, facecolor=self.facecolor, alpha=self.alpha, edgecolor='k')
 
 
 class Point(BaseBuffer, geo.Point):
-    Name: str = ''
-    marker: str = 'o'
-    size: float = 60
-    alpha = 1
-    facecolors = 'none'
-    color = 'k'
-
     def __repr__(self):
         return f"Point: ({self.x:.2f}, {self.y:.2f})"
 
@@ -123,17 +113,14 @@ class Point(BaseBuffer, geo.Point):
         if isinstance( Other, (list, numpy.ndarray) ):
             return Point( [self.x+Other[0], self.y+Other[1]] )
 
-
-    def __mul__(self, Factor):
+    def __mul__(self, Factor: float):
         return Point( [self.x*Factor, self.y*Factor] )
 
-    @property
-    def PlotKwargs(self):
-        return {'marker': self.marker,
-                's': self.size,
-                'alpha': self.alpha,
-                'facecolors': self.facecolors,
-                'color': self.color}
+    def __rmul__(self, Factor: float):
+        return Point( [self.x*Factor, self.y*Factor] )
+
+    def __truediv__(self, Factor: float):
+        return Point( [self.x/Factor, self.y/Factor] )
 
 
     def ToNumpy(self):
@@ -153,84 +140,35 @@ class Point(BaseBuffer, geo.Point):
         return Point([x, y], **self.kwargs)
 
 
-    def Rotate(self, Angle, Origin=[0,0]):
-        return Point( affinity.rotate(self, Angle, origin=Origin), **self.kwargs )
-
     def Buffer(self, Radius):
-        Circle = Polygon( self.buffer(Radius, resolution=256), **self.kwargs )
-        Circle.Radius = Radius
-        Circle.Center = self
-        return Circle
+        return Circle(Radius=Radius, Center=self)
 
 
     def __render__(self, Ax):
         Ax._ax.text(self.x, self.y, self.Name)
-        Ax._ax.scatter(self.x, self.y, **self.PlotKwargs)
+        Ax._ax.scatter(self.x, self.y, s=60, facecolor=self.facecolor, alpha=self.alpha, edgecolor='k')
 
 
 
 class MultiPolygon(BaseBuffer, geo.MultiPolygon):
-    Name = None
-    Color = 'lightblue'
-    Alpha = 0.3
-
-
-    def Rotate(self, Angle, Origin=[0,0]):
-        return MultiPolygon( affinity.rotate(self, Angle, origin=Origin ) )
-
-
-    def Scale(self, Factor: float, Origin: list = [0,0]):
-        return MultiPolygon( affinity.scale(self, xfact=Factor, yfact=Factor, origin=Point(Origin) ), **self.kwargs )
-        
-
     def __render__(self, Ax):
         for polygone in self.geoms:
-            Plots.PlotPolygon(Ax._ax, polygone, facecolor=self.Color, edgecolor='k', alpha=self.Alpha)
+            Plots.PlotPolygon(Ax._ax, self, facecolor=self.facecolor, alpha=self.alpha, edgecolor='k')
 
 
 
 class GeometryCollection(BaseBuffer, geo.GeometryCollection):
-    Name = None
-    Color = 'lightblue'
-    Alpha = 0.3
-
-    @property
-    def PlotKwargs(self):
-        return {'alpha': self.Alpha,
-                'color': self.Color}
-
-
-    def Rotate(self, Angle, Origin=[0,0]):
-        return BufferGeometryCollection( affinity.rotate(self, Angle, origin=Origin ) )
-
-    def __render__(self, Ax):
-        for polygone in self.geoms:
-            ToBuffer(polygone, **self.kwargs).__render__(Ax)
-
-
     def Clean(self):
         NewClean = [e for e in self.geoms if not isinstance(e, (geo.LineString, geo.Point) ) ]
         return GeometryCollection(NewClean)
 
-
-
     def __render__(self, Ax):
         for polygone in self:
-            Plots.PlotPolygon(Ax._ax, polygone, **self.PlotKwargs, edgecolor='k')
+            Plots.PlotPolygon(Ax._ax, self, facecolor=self.facecolor, alpha=self.alpha, edgecolor='k')
 
 
 class Line(BaseBuffer, geo.LineString):
     linewidth = 2
-    color = 'b'
-    alpha = 0.3
-
-
-    @property
-    def PlotKwargs(self):
-        return {'linewidth': self.linewidth, 
-                'color': self.color,
-                'alpha': self.alpha}
-
 
     @property
     def boundary(self):
@@ -245,7 +183,7 @@ class Line(BaseBuffer, geo.LineString):
 
     def GetPosition(self, x):
         P0, P1 = self.boundary
-        return P0 - x * (P0-P1)
+        return P0 - (P0-P1)*x
 
     def GetBissectrice(self):
         return Line( affinity.rotate(self, 90, origin=self.MidPoint), **self.kwargs )
@@ -309,7 +247,96 @@ class Line(BaseBuffer, geo.LineString):
             return Normalize([1, dy/dx])
 
     def __render__(self, Ax):
-        Ax._ax.plot(*self.xy, **self.PlotKwargs)
+        Ax._ax.plot(*self.xy, facecolor=self.facecolor, alpha=self.alpha)
+
+
+
+
+
+class Circle(Polygon):
+    Radius: float=None
+    Center: Point=None
+
+    def __new__(cls, Radius: float, Center: Point, Name: str = ''):
+        Instance = Polygon.__new__(cls)
+        return Instance
+
+    def __init__(self, Radius: float, Center: Point, Name: str = ''):
+        self.Radius = Radius
+        self.Name = Name
+        self.Center = Center
+
+        super(Circle, self).__init__(self.Center.buffer(Radius, resolution=RESOLUTION))
+
+
+    def __str__(self):
+        return f" Center: {self.Center} \t Radius: {self.Radius}"
+
+
+    @property
+    def Area(self):
+        return numpy.pi * self.Radius**2
+
+
+    def Plot(self, Figure=None, Ax=None, Return=False, Show=True):
+        if Ax is None:
+            Figure = Plots.Scene('FiberFusing figure', UnitSize=(6,6))
+            Ax = Plots.Axis(Row=0, Col=0, xLabel='x', yLabel='y', Colorbar=False, Equal=True)
+            Figure.AddAxes(Ax)
+            Figure.GenerateAxis()
+
+        
+ 
+        self.__render__(Ax)
+
+        if Return: 
+            return Figure, Ax
+
+        if Show:
+            Figure.Show()
+
+
+    def GetConscriptedFiber(self, Other = None, Type='Interior', Rotate: bool=False):
+
+        if Other is None:
+            return Circle(Radius=self.Radius, Center=self.Center+[0, 2*self.Radius])
+
+        else:
+            CenterLine = Buffer.Line( [self.Center, Other.Center] ) 
+
+            Shift = numpy.sqrt( (self.Radius + Other.Radius)**2 - (CenterLine.length/2)**2)
+
+            Point = CenterLine.MidPoint.Shift( CenterLine.Perpendicular.Vector * Shift)
+
+            if Type in ['Exterior', 'concave']:
+                Radius = numpy.sqrt( Shift**2 +  (CenterLine.length/2)**2 ) - self.Radius
+
+            if Type in ['Interior', 'convex']:
+                Radius = numpy.sqrt( Shift**2 + (CenterLine.length/2)**2 ) + self.Radius
+
+            if Rotate:
+                return Circle(Radius=self.Radius, Center=Point).Rotate(Angle=180, Origin=CenterLine.MidPoint)
+
+            else:
+                return Circle(Radius=self.Radius, Center=Point)
+
+
+
+    def __render__(self, Ax):
+        super().__render__(Ax)
+
+        self.Center.__render__(Ax)
+
+
+    def Rotate(self, Angle: float, Origin: Point):
+        return Circle(Radius=self.Radius, Center=self.Center.Rotate(Angle, Origin=Origin), Name=self.Name)
+
+
+    def ScaleCenter(self, Factor: float):
+        NewCenter = self.Center.Scale(Factor=Factor, Origin=[0,0])
+        return Circle(Radius=self.Radius, Center=NewCenter)
+
+
 
 
 class ToBuffer():

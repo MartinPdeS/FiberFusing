@@ -178,7 +178,7 @@ class Axis:
     yLabel: str = ''
     Title: str = ''
     Grid: bool = True
-    Legend: bool = True
+    Legend: bool = False
     xScale: str = 'linear'
     yScale: str = 'linear'
     xLimits: list = None
@@ -313,7 +313,7 @@ class Scene:
 
 
 
-def PlotPolygon(ax, poly, **kwargs):
+def PlotPolygon(ax, poly,  **kwargs):
     if poly.is_empty: return
     if isinstance(poly, MultiPolygon):
         for e in poly.geoms:
@@ -329,6 +329,8 @@ def PlotPolygon(ax, poly, **kwargs):
     
     ax.add_collection(collection, autolim=True)
     ax.autoscale_view()
+    if 'Name' in poly.__dict__ and poly.Name is not None:
+        ax.text(poly.centroid.x, poly.centroid.y, poly.Name)
     # return collection
 
 
@@ -353,7 +355,8 @@ def PlotShapely(*Object):
         Fig.AddAxes(ax)
         Fig.GenerateAxis()
         
-        for obj in Object:
+        for n, obj in enumerate(Object):
+            obj.Name = f" {n}"
             obj.__render__(ax)
 
 

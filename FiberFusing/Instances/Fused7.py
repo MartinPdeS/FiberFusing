@@ -6,7 +6,7 @@ from FiberFusing.BaseClass import BaseFused
 from FiberFusing.Rings import FiberRing
 
 
-class Fused2(BaseFused):
+class Fused7(BaseFused):
     def __init__(self, FiberRadius, Fusion, Index, debug='INFO', Gradient=None):
         super().__init__(FiberRadius  = FiberRadius,
                          Fusion       = Fusion,
@@ -14,6 +14,7 @@ class Fused2(BaseFused):
                          Index        = Index,
                          debug        = debug)
 
+        assert 0 <= Fusion <= 0.65, "Fusion degree has to be in the range [0, 0.65]"
         Ring0 = FiberRing(Angles=self.Angle, Fusion=self.Fusion, FiberRadius=self.FiberRadius)
         Ring1 = FiberRing(Angles=[0], Fusion=self.Fusion, FiberRadius=self.FiberRadius)
 
@@ -24,5 +25,5 @@ class Fused2(BaseFused):
 
 
 if __name__ == '__main__':
-    a = Fused2(FiberRadius=60, Fusion=0.75, Index=1)
+    a = Fused7(FiberRadius=60, Fusion=0.65, Index=1)
     a.Plot(Fibers=True, Added=True, Removed=True, Virtual=False, Mask=False)

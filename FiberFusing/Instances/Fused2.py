@@ -14,6 +14,7 @@ class Fused2(BaseFused):
                          Index        = Index,
                          debug        = debug)
 
+        assert 0 <= Fusion <= 1, "Fusion degree has to be in the range [0, 1]"
         Ring0 = FiberRing(Angles=self.Angle, Fusion=self.Fusion, FiberRadius=self.FiberRadius)
 
         self.AddRing( Ring0 )
@@ -23,5 +24,5 @@ class Fused2(BaseFused):
 
 
 if __name__ == '__main__':
-    a = Fused2(FiberRadius=60, Fusion=0.9, Index=1)
-    a.Plot(Fibers=True, Added=True, Removed=True, Virtual=False, Mask=False)
+    a = Fused2(FiberRadius=60, Fusion=1, Index=1)
+    a.Plot(Fibers=True, Added=True, Removed=True, Virtual=True, Mask=False)

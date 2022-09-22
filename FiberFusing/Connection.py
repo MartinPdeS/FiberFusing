@@ -3,21 +3,20 @@ from shapely.ops import split
 from scipy.optimize import minimize_scalar
 
 import FiberFusing.Buffer as Buffer
-from FiberFusing.Utils import Union, Intersection, NearestPoints, Rotate, _Fiber
-
+from FiberFusing.Utils import Union, Intersection, NearestPoints
 import FiberFusing.Plotting.Plots as Plots
 
 class Connection():
-    def __init__(self, Fiber0, Fiber1):
+    def __init__(self, Fiber0, Fiber1, Topology: str=None, Shift: float=None):
+        self._Topology = Topology
         self.Fibers = [Fiber0, Fiber1]
-        self._Shift = None
+        self._Shift = Shift
         self._CenterLine = None
         self._ExtendedCenterLine = None
         self.Initialize()
 
 
     def Initialize(self):
-        self._Topology = None
         self._Virtual = None
         self._Added = None
         self._Removed = None
@@ -53,6 +52,9 @@ class Connection():
     def __getitem__(self, idx):
         return self.Fibers[idx]
 
+    def __setitem__(self, idx, Item):
+        self.Fibers[idx] = Item
+
     @property
     def Virtual(self,):
         if self._Virtual is None:
@@ -79,6 +81,7 @@ class Connection():
             self.ComputeRemoved()
         return self._Removed
 
+
     @property
     def LimitAdded(self):
         return self[0].union(self[1]).convex_hull - self[0] - self[1]
@@ -87,7 +90,7 @@ class Connection():
     def ComputeRemoved(self):
         self._Removed = Intersection( *self )
         self._Removed.Area = self[1].area + self[0].area - Union(*self).area
-        self._Removed.Color = 'k'
+        self._Removed.facecolors = 'k'
 
 
     def ComputeTopology(self):
@@ -112,7 +115,7 @@ class Connection():
 
         Circonscript0 = self.GetConscriptedCircle(Type=self.Topology)
 
-        Circonscript1 = Rotate(Object=Circonscript0, Angle=[180], Origin=self.CenterLine.MidPoint)[0]
+        Circonscript1 = Circonscript0.Rotate(Angle=180, Origin=self.CenterLine.MidPoint)
 
         self._Virtual = Circonscript0, Circonscript1
 
@@ -138,13 +141,13 @@ class Connection():
         elif self.Topology == 'convex':
             MidPoint = Buffer.Line([self[0].Center, self[1].Center]).MidPoint
 
-            mask0 = Buffer.Polygon([MidPoint, P0, P2]).Scale(Factor=10, Origin=MidPoint)
+            mask0 = Buffer.Polygon([MidPoint, P0, P2]).Scale(Factor=1000, Origin=MidPoint)
 
-            mask1 = Buffer.Polygon([MidPoint, P1, P3]).Scale(Factor=10, Origin=MidPoint)
+            mask1 = Buffer.Polygon([MidPoint, P1, P3]).Scale(Factor=1000, Origin=MidPoint)
 
             self._Mask = Union( mask0, mask1 ) & Union( *self.Virtual )
 
-        self._Mask = Buffer.ToBuffer(self._Mask, Color='k')
+        self._Mask = Buffer.ToBuffer(self._Mask)
 
 
     def ComputeAdded(self):
@@ -154,14 +157,14 @@ class Connection():
         elif self.Topology == 'concave':
             self._Added = self.Mask - self[0] - self[1] - Union(*self.Virtual)
  
-        self._Added = Buffer.ToBuffer( self._Added, Color='k', Area=self._Added.area ).Clean()
+        self._Added = Buffer.ToBuffer( self._Added, Area=self._Added.area ).Clean()
 
 
     def ComputeRemoved(self):
         a = Union(*self.Fibers)
         self._Removed = Intersection( *self )
         self._Removed.Area = self[1].area + self[0].area - Union(*self.Fibers).area
-        self._Removed.Color = 'k'
+        self._Removed.facecolor = 'r'
 
 
     def __plot__(self, ax, 
@@ -228,7 +231,7 @@ class Connection():
 
         Splitted = Splitted[0] if Splitted[0].area < Splitted[1].area else Splitted[1]
         
-        return Buffer.Polygon( Splitted, Color='k' )
+        return Buffer.Polygon(Splitted)
 
 
 
@@ -246,7 +249,7 @@ class Connection():
 
         self.CoreShift = (Position-C1)
 
-        logging.info(f' {x = :+.2f} \t -> \t{Cost = :<10.2f} -> \t\t{self.CoreShift = }')
+        logging.info(f' Core positioning optimization: {x = :+.2f} \t -> \t{Cost = :<10.2f} -> \t\t{self.CoreShift = }')
 
         return Cost
 

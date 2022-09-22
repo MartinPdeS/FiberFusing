@@ -11,7 +11,7 @@ import FiberFusing.Utils as Utils
 from FiberFusing.Connection import Connection
 import FiberFusing.Buffer as Buffer
 
-
+logging.basicConfig(level=logging.INFO)
 
 
 
@@ -38,6 +38,7 @@ class BaseFused():
 
     def Initialize(self):
         self._Rings = []
+        self._CustomFibers = []
         self._Hole = None
         self._Topology = None
         self._Added = None
@@ -74,18 +75,58 @@ class BaseFused():
         for connection in self.Connections:
             Limit.append(connection.LimitAdded)
 
-        OverallLimit = Utils.Union(*Limit)
-        
+        OverallLimit = Utils.Union(*Limit) - Utils.Union(*self.Fibers)
+
         self._Topology = 'convex' if self.Removed.Area > OverallLimit.area else 'concave'
+
+
+    def MergeConnections(self) -> None:
+        NewConnections = []
+
+        for n, connection0 in enumerate(self.Connections):
+            for m, connection1 in enumerate(self.Connections):
+                if m==n: continue
+
+                union = connection1.Added.union(connection0.Added)
+
+                if not union.is_empty:
+                    logging.info('Connection merging')
+                    if connection1[0] == connection0[0]:
+                        Set = (connection1[1], connection0[1])
+                        new = Connection( *Set, Shift = self.VirtualShift)
+                        NewConnections.append(new)
+                        continue
+
+                    if connection1[1] == connection0[0]:
+                        Set = (connection1[0], connection0[1])
+                        new = Connection( *Set, Shift = self.VirtualShift)
+                        NewConnections.append(new)
+                        continue
+
+                    if connection1[0] == connection0[1]:
+                        Set = (connection1[1], connection0[0])
+                        new = Connection( *Set, Shift = self.VirtualShift)
+                        NewConnections.append(new)
+                        continue
+
+
+                    if connection1[1] == connection0[1]:
+                        Set = (connection1[0], connection0[0])
+                        new = Connection( *Set, Shift = self.VirtualShift)
+                        NewConnections.append(new)
+                        continue
 
 
     def ComputeAdded(self) -> None:
         Added = []
-        for connection in self.Connections:
-            Added.append(connection.Added)
+
+        for n, connection in enumerate(self.Connections):
+            NewAdded = connection.Added
+
+            Added.append(NewAdded)
 
         self._Added = Utils.Union(*Added) - Utils.Union(*self.Fibers)
-        self._Added = Buffer.ToBuffer(self._Added, Color='g').Clean()
+        self._Added = Buffer.ToBuffer(self._Added, facecolor='g').Clean()
         self._Added.Area = self._Added.area
 
 
@@ -97,7 +138,8 @@ class BaseFused():
 
         self._Removed = Utils.Union(*Removed)
         self._Removed.Area = len(self.Fibers) * self.Fibers[0].area - Utils.Union(*self.Fibers).area
-        self._Removed.Color = 'r'
+
+        self._Removed.facecolor = 'r'
 
 
     def GetMaxDistance(self) -> float:
@@ -123,6 +165,11 @@ class BaseFused():
             self._Rings.append(Ring)
 
 
+    def AddCustom(self, *Custom):
+        for fiber in Custom:
+            self._CustomFibers.append(fiber)
+
+
     def OptimizeGeometry(self):
         self.InitializeConnections()
 
@@ -132,10 +179,7 @@ class BaseFused():
 
 
     def ComputeCorePosition(self):
-
         for connection in self.Connections:
-            connection.Fibers_ = self.Fibers
-            logging.info('\n\nNew connection\n')
             connection.OptimizeCorePosition()
 
 
@@ -145,13 +189,13 @@ class BaseFused():
 
     def ComputeFibers(self):
         self._Fibers = []
-        
-        n = 0
 
         for Ring in self._Rings:
-            for Fiber in Ring.Fibers:
-                self._Fibers.append(Fiber)
-                n += 1
+            for fiber in Ring.Fibers:
+                self._Fibers.append(fiber)
+
+        for fiber in self._CustomFibers:
+            self._Fibers.append(fiber)
 
 
     def BuildCoupler(self, VirtualShift):
@@ -169,7 +213,7 @@ class BaseFused():
         self.Connections = []
 
         for fibers in self.IterateOverConnectedFibers():
-            connection = Connection( *fibers)
+            connection = Connection( *fibers )
             self.Connections.append( connection )
 
 
@@ -183,13 +227,14 @@ class BaseFused():
 
 
     def ComputeCost(self, VirtualShift):
+        self.VirtualShift = VirtualShift
         self.ShiftConnections(Shift=VirtualShift)
 
         Added = self.Added.Area
         Removed = self.Removed.Area
         Cost = abs(Added - Removed)
 
-        logging.info(f' {VirtualShift = :.2f} \t -> {Added = :.2f} \t {Removed = :.2f} \t{Cost = :.2f}')
+        logging.info(f' Fusing optimization: {VirtualShift = :.2f} \t -> \t{Added = :.2f} \t -> {Removed = :.2f} \t -> {Cost = :.2f}')
         
         return Cost
 
@@ -200,16 +245,6 @@ class BaseFused():
                 continue
             else:
                 yield Fiber0, Fiber1
-
-
-    def CleanGeometry(self, Object):
-        if isinstance(Object, Buffer.Polygon ):
-            return Object
-
-        else:
-            MaxArea = numpy.max( [P.area for P in Object.geoms] )
-
-            return Buffer.MultiPolygon( [P for P in Object.geoms if P.area == MaxArea] )
 
 
 
@@ -239,6 +274,7 @@ class BaseFused():
             Exterior = numpy.logical_and( Exterior, Interior )
 
         self.Raster = Exterior
+
 
 
     def Plot(self, **kwargs):

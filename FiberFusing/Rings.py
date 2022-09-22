@@ -2,7 +2,7 @@ import numpy
 
 from dataclasses import dataclass
 
-from FiberFusing.Utils import Rotate, _Fiber
+from FiberFusing.Fiber import Fiber
 import FiberFusing.Buffer as Buffer
 
 class FiberRing():
@@ -48,7 +48,7 @@ class FiberRing():
 
     def AddRing(self, Ring):
         P0 = Buffer.Point([0, Layer*self.CoreShift])
-        Points = Rotate(Object=P0, Angle=Angle)
+        Points = P0.Rotate(Angle=Angle)
         self._Centers = [*self._Centers, *Points]
 
 
@@ -57,8 +57,8 @@ class FiberRing():
         self._Fibers = []
 
         for n, point in enumerate(self.Centers):
-            Fiber = _Fiber( Radius=self.FiberRadius, Center=point, Name=f' Fiber {n}')
-            self._Fibers.append( Fiber )
+            fiber = Fiber( Radius=self.FiberRadius, Center=point, Name=f' Fiber {n}')
+            self._Fibers.append( fiber )
 
 
     def ComputeCoreShift(self):
@@ -77,7 +77,7 @@ class FiberRing():
 
 
     def ComputeCenters(self):
-        self._Centers = Rotate( Object=Buffer.Point([0, self.CoreShift]), Angle=self.Angles, Origin=[0,0] )
+        self._Centers = Buffer.Point([0, self.CoreShift]).Rotate(Angle=self.Angles, Origin=[0,0])
 
 
     def ComputeMaxDistance(self):
