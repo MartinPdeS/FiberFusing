@@ -6,17 +6,19 @@ from collections.abc import Iterable
 from matplotlib.patches import PathPatch
 from matplotlib.collections  import PatchCollection
 from matplotlib.path import Path
+from dataclasses import dataclass
 
 import FiberFusing.Plotting.Plots as Plots
 
 RESOLUTION=62
 ORIGIN = geo.Point([0,0])
 
+
+
 def Normalize(Array):
     Array = numpy.asarray(Array)
     Norm = numpy.sqrt( numpy.sum(Array**2) )
     return Array/Norm
-
 
 
 class BaseBuffer():
@@ -60,13 +62,11 @@ class BaseBuffer():
         return self
 
     def Scale(self, Factor: float, Origin: geo.Point=ORIGIN):
-        # o = affinity.scale(geo.Point([0,0]), xfact=1, yfact=1)
-        # print(self)
         o = affinity.scale( self, xfact=Factor, yfact=Factor, origin=Origin )
         return ToBuffer( Object=o, **self.kwargs )
 
 
-    def Rotate(self, Angle, Origin=[0,0]):
+    def Rotate(self, Angle, Origin=ORIGIN):
         if isinstance(Angle, Iterable):
             return [ self.Rotate(Angle=angle, Origin=Origin) for angle in Angle ] 
         else:
@@ -78,7 +78,6 @@ class BaseBuffer():
 
 
     def __render__(self, Ax):
-
         if self.is_empty: return
 
         path = Path.make_compound_path(
@@ -95,15 +94,6 @@ class BaseBuffer():
 
 
 class Polygon(BaseBuffer, geo.Polygon):  
-
-    def __self__(self, Object):
-        if isinstance(Object, list) and all([isinstance(e, geo.Point) for e in Object]):
-            super().__init__( [(p.x, p.y) for p in Object ] )
-
-        if isinstance(Object, geo.Polygon):
-            super().__init__(Object)
-
-
     def __sub__(self, Other):
         return ToBuffer(super().__sub__(Other))
 
@@ -318,7 +308,7 @@ class Circle(Polygon):
     def __init__(self, Radius: float, Center: Point, Name: str = ''):
         self.Radius = Radius
         self.Name = Name
-        self.Center = Center
+        self.Center = Point(Center)
 
         super(Circle, self).__init__(self.Center.buffer(Radius, resolution=RESOLUTION))
 
@@ -392,7 +382,6 @@ class Circle(Polygon):
 
 
 
-
 class ToBuffer():
     def __new__(self, Object, **kwargs):
         if isinstance(Object, list):
@@ -412,3 +401,19 @@ class ToBuffer():
 
         if isinstance(Object, geo.Point):
             return Point(Object, **kwargs)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# - 

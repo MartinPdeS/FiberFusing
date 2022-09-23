@@ -1,6 +1,8 @@
 import numpy, logging
 from dataclasses import dataclass
 
+from collections.abc import Iterable
+from shapely import affinity
 from matplotlib.path import Path
 from itertools import combinations
 from scipy.optimize import minimize_scalar
@@ -314,6 +316,9 @@ class BaseFused():
         Fig.Show()
 
 
+    def Rotate(self, *args, **kwargs):
+        self.Object = self.Object.Rotate(*args, **kwargs)
+
 
 
 
@@ -343,34 +348,30 @@ class Circle(BaseFused):
 
 
 
-
 class BackGround(Buffer.Polygon):
-    Radius: float=None
-    Center: Buffer.Point=None
+    Name: str = 'BackGround'
+    Index: float
 
-    def __new__(cls, Radius: float, Center: Buffer.Point=ORIGIN, Name: str = '', Index: float=1):
+    def __new__(cls, Radius: float=1000, Index: float=1):
         Instance = Buffer.Polygon.__new__(cls)
         return Instance
 
-    def __init__(self, Radius: float, Center: Buffer.Point=ORIGIN, Name: str = '', Index: float=1):
-        self.Radius = Radius
-        self.Name = Name
-        self.Center = Center
+    def __init__(self, Radius: float=1000, Index: float=1):
+        super().__init__( ORIGIN.buffer(Radius, resolution=RESOLUTION))
 
-        super(BackGround, self).__init__(self.Center.buffer(Radius, resolution=RESOLUTION))
-
-
-    def __str__(self):
-        return f" Center: {self.Center} \t Radius: {self.Radius}"
+    def Rotate(self, *args, **kwargs):
+        return self
 
 
+    def Rasterize(self, Coordinate: numpy.ndarray, Shape: list):
 
+        Exterior = Path(list( self.exterior.coords))
 
+        Exterior = Exterior.contains_points(Coordinate).reshape(Shape)
 
+        Exterior = Exterior.astype(float)
 
-
-
-
+        self.Raster = Exterior
 
 
 

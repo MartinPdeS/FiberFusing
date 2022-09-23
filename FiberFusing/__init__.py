@@ -1,5 +1,5 @@
 from FiberFusing.Geometry  import Geometry
-from FiberFusing.BaseClass import Circle
+from FiberFusing.BaseClass import Circle, BackGround
 from FiberFusing.Instances.Fused2 import Fused2
 from FiberFusing.Instances.Fused3 import Fused3
 from FiberFusing.Instances.Fused4 import Fused4
