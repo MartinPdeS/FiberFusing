@@ -8,7 +8,7 @@ from matplotlib.collections  import PatchCollection
 from matplotlib.path import Path
 from dataclasses import dataclass
 
-import FiberFusing.Plotting.Plots as Plots
+import FiberFusing.Plots as Plots
 import FiberFusing
 
 RESOLUTION=32

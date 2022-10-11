@@ -10,7 +10,7 @@ from itertools import combinations
 from scipy.optimize import minimize_scalar
 import shapely.geometry as geo
 
-import FiberFusing.Plotting.Plots as Plots
+import FiberFusing.Plots as Plots
 import FiberFusing.Utils as Utils
 from FiberFusing.Connection import Connection
 import FiberFusing.Buffer as Buffer

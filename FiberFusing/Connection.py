@@ -4,7 +4,7 @@ from scipy.optimize import minimize_scalar
 
 import FiberFusing.Buffer as Buffer
 from FiberFusing.Utils import Union, Intersection, NearestPoints
-import FiberFusing.Plotting.Plots as Plots
+import FiberFusing.Plots as Plots
 
 class Connection():
     def __init__(self, Fiber0, Fiber1, Topology: str=None, Shift: float=None):
