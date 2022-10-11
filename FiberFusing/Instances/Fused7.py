@@ -25,6 +25,6 @@ class Fused7(BaseFused):
 
 
 if __name__ == '__main__':
-    a = Fused7(FiberRadius=60, Fusion=0.1, Index=1)
+    a = Fused7(FiberRadius=60, Fusion=0.60, Index=1)
     a.Plot(Fibers=True, Added=True, Removed=True, Virtual=False, Mask=False)
     

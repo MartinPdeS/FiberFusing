@@ -9,8 +9,9 @@ from matplotlib.path import Path
 from dataclasses import dataclass
 
 import FiberFusing.Plotting.Plots as Plots
+import FiberFusing
 
-RESOLUTION=62
+RESOLUTION=32
 ORIGIN = geo.Point([0,0])
 
 
@@ -192,7 +193,7 @@ class MultiPolygon(BaseBuffer, geo.MultiPolygon):
     def contains_points(self, Coordinate):
         Init = numpy.zeros(Coordinate.shape[0])
 
-        for polygon in self:
+        for polygon in self.geoms:
             Exterior = Path( list( polygon.exterior.coords) )
             Init += Exterior.contains_points(Coordinate)
 
@@ -340,13 +341,13 @@ class Circle(Polygon):
             Figure.Show()
 
 
-    def GetConscriptedFiber(self, Other = None, Type='Interior', Rotate: bool=False):
+    def GetConscriptedFiber(self, Other=None, Type='Interior', Rotate: bool=False):
 
         if Other is None:
-            return Circle(Radius=self.Radius, Center=self.Center+[0, 2*self.Radius])
+            return FiberFusing.Fiber.Fiber(Radius=self.Radius, Center=self.Center+[0, 2*self.Radius])
 
         else:
-            CenterLine = Buffer.Line( [self.Center, Other.Center] ) 
+            CenterLine = Line( [self.Center, Other.Center] ) 
 
             Shift = numpy.sqrt( (self.Radius + Other.Radius)**2 - (CenterLine.length/2)**2)
 
@@ -359,10 +360,10 @@ class Circle(Polygon):
                 Radius = numpy.sqrt( Shift**2 + (CenterLine.length/2)**2 ) + self.Radius
 
             if Rotate:
-                return Circle(Radius=self.Radius, Center=Point, **self.kwargs).Rotate(Angle=180, Origin=CenterLine.MidPoint)
+                return FiberFusing.Fiber.Fiber(Radius=self.Radius, Center=Point, **self.kwargs).Rotate(Angle=180, Origin=CenterLine.MidPoint)
 
             else:
-                return Circle(Radius=self.Radius, Center=Point, **self.kwargs)
+                return FiberFusing.Fiber.Fiber(Radius=self.Radius, Center=Point, **self.kwargs)
 
 
 
@@ -373,12 +374,12 @@ class Circle(Polygon):
 
 
     def Rotate(self, Angle: float, Origin: Point):
-        return Circle(Radius=self.Radius, Center=self.Center.Rotate(Angle, Origin=Origin), Name=self.Name)
+        return self.__class__(Radius=self.Radius, Center=self.Center.Rotate(Angle, Origin=Origin), Name=self.Name)
 
 
     def ScaleCenter(self, Factor: float):
-        NewCenter = self.Center.Scale(Factor=Factor, Origin=[0,0])
-        return Circle(Radius=self.Radius, Center=NewCenter)
+        NewCenter = self.Center.Scale(Factor=Factor, Origin=ORIGIN)
+        return self.__class__(Radius=self.Radius, Center=NewCenter)
 
 
 

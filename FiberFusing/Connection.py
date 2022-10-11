@@ -249,7 +249,7 @@ class Connection():
 
         self.CoreShift = (Position-C1)
 
-        logging.info(f' Core positioning optimization: {x = :+.2f} \t -> \t{Cost = :<10.2f} -> \t\t{self.CoreShift = }')
+        logging.debug(f' Core positioning optimization: {x = :+.2f} \t -> \t{Cost = :<10.2f} -> \t\t{self.CoreShift = }')
 
         return Cost
 

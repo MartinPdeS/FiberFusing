@@ -4,6 +4,8 @@ from dataclasses import dataclass
 from collections.abc import Iterable
 from shapely import affinity
 from matplotlib.path import Path
+from matplotlib.patches import PathPatch
+from matplotlib.collections  import PatchCollection
 from itertools import combinations
 from scipy.optimize import minimize_scalar
 import shapely.geometry as geo
@@ -33,6 +35,7 @@ class BaseFused():
         return f" {self.Topology}"
 
     def __post_init__(self):
+        logging.info("Setting up the structure geometry...")
         self.Angle = numpy.asarray(self.Angle)
         self.N = len(self.Angle)
         self.Initialize()
@@ -48,6 +51,19 @@ class BaseFused():
         self._Removed = None
         self._Centers = None
         self._CoreShift = None
+
+
+    def __render__(self, Ax):
+        path = Path.make_compound_path(
+            Path(numpy.asarray(self.Object.exterior.coords)[:, :2]),
+            *[Path(numpy.asarray(ring.coords)[:, :2]) for ring in self.Object.interiors])
+
+        patch = PathPatch(path, facecolor='lightblue', alpha=0.4, edgecolor='k')
+        collection = PatchCollection([patch], facecolor='lightblue', alpha=0.3, edgecolor='k')
+        
+        Ax._ax.add_collection(collection, autolim=True)
+        Ax._ax.autoscale_view()
+
 
     @property
     def Cores(self):
@@ -93,7 +109,7 @@ class BaseFused():
                 union = connection1.Added.union(connection0.Added)
 
                 if not union.is_empty:
-                    logging.info('Connection merging')
+                    logging.debug('Connection merging')
                     if connection1[0] == connection0[0]:
                         Set = (connection1[1], connection0[1])
                         new = Connection( *Set, Shift = self.VirtualShift)
@@ -186,10 +202,6 @@ class BaseFused():
             connection.OptimizeCorePosition()
 
 
-    def ComputeHole(self):
-        self._Hole = Buffer( Utils.Union( *self.Fibers ).convex_hull - Utils.Union( *self.Fibers, self.Added ) )
-
-
     def ComputeFibers(self):
         self._Fibers = []
 
@@ -208,7 +220,7 @@ class BaseFused():
         Coupler = Utils.Union(*self.Fibers, self.Added)
 
         if isinstance(Coupler, geo.GeometryCollection):
-            Coupler = Buffer.MultiPolygon( [P for P in Coupler.geoms if not isinstance(P, (geo.Point, geo.LineString) )] )
+            Coupler = Buffer.MultiPolygon( [Buffer.Polygon(P) for P in Coupler.geoms if not isinstance(P, (geo.Point, geo.LineString) )] )
 
         self.ComputeCorePosition()
 
@@ -240,7 +252,7 @@ class BaseFused():
         Removed = self.Removed.Area
         Cost = abs(Added - Removed)
 
-        logging.info(f' Fusing optimization: {VirtualShift = :.2f} \t -> \t{Added = :.2f} \t -> {Removed = :.2f} \t -> {Cost = :.2f}')
+        logging.debug(f' Fusing optimization: {VirtualShift = :.2f} \t -> \t{Added = :.2f} \t -> {Removed = :.2f} \t -> {Cost = :.2f}')
         
         return Cost
 
@@ -268,6 +280,7 @@ class BaseFused():
         if isinstance(self.Object, Buffer.MultiPolygon):
             raster = []
             for polygone in self.Object.geoms:
+                polygone = Buffer.Polygon(polygone)
                 Exterior = Path(list( polygone.exterior.coords))
 
                 Exterior = polygone.__raster__(Coordinate)
@@ -275,11 +288,6 @@ class BaseFused():
                 raster.append(Exterior.astype(float))
 
                 Exterior = numpy.sum(raster, axis=0)
-
-        # if self.Hole is not None:
-        #     Interior = Path(list( self.Hole.exterior.coords))
-        #     Interior = numpy.logical_not( Interior.contains_points(Coordinate).reshape(Shape) )
-        #     Exterior = numpy.logical_and( Exterior, Interior )
 
         self.Raster = Exterior
 

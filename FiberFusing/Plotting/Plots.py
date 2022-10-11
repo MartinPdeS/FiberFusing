@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import numpy as np
+import numpy
 from shapely.geometry        import Point, LineString, MultiPolygon, Polygon, GeometryCollection
 import matplotlib.pyplot     as plt
 import matplotlib.cm         as cm
@@ -25,30 +25,34 @@ class ColorBar:
     Position: str = 'left'
     Orientation: str = "vertical"
     Symmetric: bool = False
+    Format: str = ':.3f'
+    LogNorm: bool = False
 
     def Render(self, Ax, Scalar, Image):
         divider = make_axes_locatable(Ax._ax)
         cax = divider.append_axes(self.Position, size="10%", pad=0.15)
 
         if self.Discreet:
-            Norm = colors.BoundaryNorm(np.unique(Scalar), 200, extend='both')
+            Values = numpy.unique(Scalar)
+            Norm = colors.BoundaryNorm(Values, Values.size+1, extend='both')
             Image.set_norm(Norm)
-            ticks = np.unique(Scalar)
-            plt.colorbar(mappable=Image, norm=Norm, boundaries=ticks, ticks=ticks, cax=cax, orientation=Ax.Colorbar.Orientation)
+            ticks = numpy.unique(Scalar)
+            plt.colorbar(mappable=Image, norm=Norm, boundaries=ticks, cax=cax, orientation=self.Orientation)
+            return
 
         if self.Symmetric:
             Norm = colors.CenteredNorm()
             Image.set_norm(Norm)
             plt.colorbar(mappable=Image, norm=Norm, cax=cax, orientation=self.Orientation)
+            return
 
-        else:
-            plt.colorbar(mappable=Image, norm=None, cax=cax, orientation=self.Orientation)
-
-
-
-
-
-
+        if self.LogNorm:
+            Norm = matplotlib.colors.SymLogNorm(linthresh=0.03)
+            Image.set_norm(Norm)
+            plt.colorbar(mappable=Image, norm=Norm, cax=cax, orientation=self.Orientation)
+            return
+        
+        plt.colorbar(mappable=Image, norm=None, cax=cax, orientation=self.Orientation)
 
 
 
@@ -106,9 +110,9 @@ class AddShapely:
 
 @dataclass
 class Contour:
-    X: np.ndarray
-    Y: np.ndarray
-    Scalar: np.ndarray
+    X: numpy.ndarray
+    Y: numpy.ndarray
+    Scalar: numpy.ndarray
     ColorMap: str = 'viridis'
     xLabel: str = ''
     yLabel: str = ''
@@ -132,20 +136,16 @@ class Contour:
 
 @dataclass
 class Mesh:
-    X: np.ndarray
-    Y: np.ndarray
-    Scalar: np.ndarray
+    X: numpy.ndarray
+    Y: numpy.ndarray
+    Scalar: numpy.ndarray
     ColorMap: str = 'viridis'
     Label: str = ''
 
     def Render(self, Ax):
 
-        Image = Ax._ax.pcolormesh(self.X,
-                              self.Y,
-                              self.Scalar,
-                              cmap    = self.ColorMap,
-                              shading = 'auto'
-                              )
+        Image = Ax._ax.pcolormesh(self.Y, self.X, self.Scalar.T, cmap=self.ColorMap, shading='auto')
+        Image.set_edgecolor('face')
 
         if Ax.Colorbar is not None:
             Ax.Colorbar.Render(Ax=Ax, Scalar=self.Scalar, Image=Image)
@@ -155,8 +155,8 @@ class Mesh:
 
 @dataclass
 class Line:
-    X: np.ndarray
-    Y: np.ndarray
+    X: numpy.ndarray
+    Y: numpy.ndarray
     Label: str = None
     Fill: bool = False
     Color: str = None
@@ -284,8 +284,8 @@ class Scene:
 
         self.Figure, Ax  = plt.subplots(ncols=ColMax+1, nrows=RowMax+1, figsize=FigSize)
 
-        if not isinstance(Ax, np.ndarray): Ax = np.asarray([[Ax]])
-        if Ax.ndim == 1: Ax = np.asarray([Ax])
+        if not isinstance(Ax, numpy.ndarray): Ax = numpy.asarray([[Ax]])
+        if Ax.ndim == 1: Ax = numpy.asarray([Ax])
 
         self.Figure.suptitle(self.Title)
 
@@ -321,8 +321,8 @@ def PlotPolygon(ax, poly,  **kwargs):
         return
 
     path = Path.make_compound_path(
-        Path(np.asarray(poly.exterior.coords)[:, :2]),
-        *[Path(np.asarray(ring.coords)[:, :2]) for ring in poly.interiors])
+        Path(numpy.asarray(poly.exterior.coords)[:, :2]),
+        *[Path(numpy.asarray(ring.coords)[:, :2]) for ring in poly.interiors])
 
     patch = PathPatch(path, **kwargs)
     collection = PatchCollection([patch], **kwargs)
@@ -336,7 +336,7 @@ def PlotPolygon(ax, poly,  **kwargs):
 
 
 def PlotShapely(*Object):
-        Fig = Scene('SuPyMode Figure', UnitSize=(6,6))
+        Fig = Scene('', UnitSize=(6,6))
         Colorbar = ColorBar(Discreet=True, Position='right')
 
         ax = Axis(Row              = 0,
