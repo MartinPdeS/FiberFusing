@@ -6,12 +6,11 @@ from collections.abc import Iterable
 from matplotlib.patches import PathPatch
 from matplotlib.collections  import PatchCollection
 from matplotlib.path import Path
-from dataclasses import dataclass
 
-import FiberFusing.Plots as Plots
+import MPSPlots.Plots as Plots
 import FiberFusing
 
-RESOLUTION=32
+RESOLUTION=128
 ORIGIN = geo.Point([0,0])
 
 
@@ -373,7 +372,8 @@ class Circle(Polygon):
         self.Center.__render__(Ax)
 
 
-    def Rotate(self, Angle: float, Origin: Point):
+    def Rotate(self, Angle: float, Origin: Point=None):
+        Origin = self.centroid if Origin is None else Origin
         return self.__class__(Radius=self.Radius, Center=self.Center.Rotate(Angle, Origin=Origin), Name=self.Name)
 
 

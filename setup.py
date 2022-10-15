@@ -26,7 +26,7 @@ Version = f'{Major}.{Mid}.{Minor}'
 
 print(f" ---------------- FiberFusing Version: {Version} ----------------")
 
-with open(os.path.join(__location__, 'Version'), "w+") as f:
+with open(os.path.join(__location__, 'VERSION'), "w+") as f:
     f.writelines(Version)
 
 setup()

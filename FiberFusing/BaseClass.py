@@ -10,7 +10,7 @@ from itertools import combinations
 from scipy.optimize import minimize_scalar
 import shapely.geometry as geo
 
-import FiberFusing.Plots as Plots
+import MPSPlots.Plots as Plots
 import FiberFusing.Utils as Utils
 from FiberFusing.Connection import Connection
 import FiberFusing.Buffer as Buffer
@@ -308,8 +308,7 @@ class BaseFused():
 
         Fig.AddAxes(ax).GenerateAxis()
 
-        if 'Base' in kwargs:
-            self.Object.__render__(ax)
+        self.Object.__render__(ax)
 
         if 'Fibers' in kwargs:
             for fiber in self.Fibers:
@@ -329,30 +328,6 @@ class BaseFused():
 
 
 
-
-class Circle(BaseFused):
-    def __init__(self, Position: list, Radius: float, Index: float=None, debug='INFO', Gradient=None):
-
-        self.Points   = Position
-        self.FiberRadius   = Radius
-        self.Index    = Index
-        self.Raster   = None
-        self.Object   = Buffer.Polygon( Buffer.Point(Position).Buffer(self.FiberRadius) )
-        self.C        = [Buffer.Point(Position)]
-        Name          = ''
-        self.Initialize()
-        self._Hole = None
-
-
-    def Rasterize(self, Coordinate: numpy.ndarray, Shape: list):
-
-        Exterior = Path(list( self.Object.exterior.coords))
-
-        Exterior = Exterior.contains_points(Coordinate).reshape(Shape)
-
-        Exterior = Exterior.astype(float)
-
-        self.Raster = Exterior
 
 
 
