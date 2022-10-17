@@ -1,0 +1,22 @@
+name: Github page
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: write
+
+jobs:
+  publish_doc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Empty runner
+        run: echo ----------
+
+
+
+
+
