@@ -4,3 +4,4 @@ matplotlib
 shapely
 descartes
 pillow
+MPSPlots
