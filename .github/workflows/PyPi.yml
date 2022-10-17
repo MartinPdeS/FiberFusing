@@ -11,7 +11,7 @@ permissions:
 
 
 jobs:
-  Pure upload:
+  Pure_Upload:
     runs-on: ubuntu-latest
     steps:
 
