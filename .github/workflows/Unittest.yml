@@ -33,11 +33,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt
-          pip install --user .
+          python -m pip install .
 
 
       - name: Run unittests
         run: |
-          python -m pip install MPSPlots pyface
-          python -c "import MPSPlots"
+          python -m pip install pyface
           python Tests/Unittest.py
