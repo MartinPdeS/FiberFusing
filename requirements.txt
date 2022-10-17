@@ -3,3 +3,4 @@ scipy
 matplotlib
 shapely
 descartes
+pillow

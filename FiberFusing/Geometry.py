@@ -1,7 +1,7 @@
 
-import logging, numpy, cv2
+import logging, numpy
 from dataclasses import dataclass
-
+from PIL import Image
 import MPSPlots.Plots as Plots 
 import FiberFusing.Utils as Utils
 from FiberFusing.Axes import Axes
@@ -132,6 +132,12 @@ class Geometry(object):
             obj = obj.Rotate(Angle=Angle)
 
 
+    def DownscaleImage(self, Array, Size):
+        image = Image.fromarray(Image)
+
+        return numpy.asarray(image.resize(Size, resample=Image.Resampling.BOX))
+
+
     def GenerateMesh(self) -> numpy.ndarray:
         UpScaleMesh = numpy.zeros(self.UpScaleAxes.Shape)
 
@@ -142,14 +148,14 @@ class Geometry(object):
             UpScaleMesh[numpy.where(polygone.Raster > 0)] = 0
             UpScaleMesh += polygone.Raster * polygone.Index + numpy.random.rand(1)*self.IndexScrambling
 
-        
-        RescaledMesh = cv2.resize(UpScaleMesh, dsize=self.Axes.Shape, interpolation=cv2.INTER_AREA)
 
-        RawGradient = self.GetGradient(Mesh=UpScaleMesh, Axes=self.UpScaleAxes)
+        Mesh = self.DownscaleImage(Array=UpScaleMesh, Size=self.Axes.Shape)
 
-        RescaledGradient = cv2.resize(RawGradient, dsize=self.Axes.Shape, interpolation=cv2.INTER_AREA)
+        UpscaleGradient = self.GetGradient(Mesh=UpScaleMesh, Axes=self.UpScaleAxes)
 
-        return RescaledMesh, UpScaleMesh, RescaledGradient, RawGradient
+        Gradient = cv2.resize(UpscaleGradient, dsize=self.Axes.Shape, interpolation=cv2.INTER_AREA)
+
+        return Mesh, UpScaleMesh, Gradient, UpscaleGradient
 
 
     def Plot(self) -> None:
