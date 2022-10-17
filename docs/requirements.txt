@@ -1,0 +1,5 @@
+Jinja2
+numpydoc
+Babel
+Sphinx>=3.1.2
+sphinx_gallery
