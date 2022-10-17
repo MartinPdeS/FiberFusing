@@ -1,3 +1,2 @@
-Coding Examples
-===============
+.. include:: ./ExamplesGallery/index.rst
 

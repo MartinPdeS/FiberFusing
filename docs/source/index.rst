@@ -3,8 +3,8 @@
 
 
 
-**FIberFusing's documentation**
------------------------------
+**FiberFusing's documentation**
+-------------------------------
 
 .. image:: ../images/Logo.png
 

@@ -56,7 +56,7 @@ extensions = [
 ]
 
 
-Examples = ['Example1.py', 'Example2.py']
+
 ExampleDirectory = ["../../Examples/"]
 
 sphinx_gallery_conf = {
