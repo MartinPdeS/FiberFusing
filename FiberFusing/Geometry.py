@@ -133,7 +133,7 @@ class Geometry(object):
 
 
     def DownscaleImage(self, Array, Size):
-        image = Image.fromarray(Image)
+        image = Image.fromarray(Array)
 
         return numpy.asarray(image.resize(Size, resample=Image.Resampling.BOX))
 
@@ -153,7 +153,7 @@ class Geometry(object):
 
         UpscaleGradient = self.GetGradient(Mesh=UpScaleMesh, Axes=self.UpScaleAxes)
 
-        Gradient = cv2.resize(UpscaleGradient, dsize=self.Axes.Shape, interpolation=cv2.INTER_AREA)
+        Gradient = self.DownscaleImage(Array=UpscaleGradient, Size=self.Axes.Shape)
 
         return Mesh, UpScaleMesh, Gradient, UpscaleGradient
 
