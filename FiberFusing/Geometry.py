@@ -12,18 +12,12 @@ class Geometry(object):
     """ Class represent the refractive index (RI) geometrique profile which
     can be used to retrieve the supermodes.
 
-    Parameters
-    ----------
-    Objects:
-        Geometrique object representing the element of the RI profile.
-    Xbound: 
-        X-dimension boundary for the rasterized profile.
-    Ybound: 
-        Y-dimension boundary for the rasterized profile.
-    Nx: 
-        Number of point for X dimensions discretization.
-    Ny: 
-        Number of point for Y dimensions discretization.
+    Args:
+        Objects: Geometrique object representing the element of the RI profile.
+        Xbound: X-dimension boundary for the rasterized profile.
+        Ybound: Y-dimension boundary for the rasterized profile.
+        Nx: Number of point for X dimensions discretization.
+        Ny: Number of point for Y dimensions discretization.
     """
 
     Objects: list
@@ -132,7 +126,7 @@ class Geometry(object):
             obj = obj.Rotate(Angle=Angle)
 
 
-    def DownscaleImage(self, Array, Size):
+    def DownscaleImage(self, Array, Size) -> numpy.ndarray:
         image = Image.fromarray(Array)
 
         return numpy.asarray(image.resize(Size, resample=Image.Resampling.BOX))
@@ -159,29 +153,33 @@ class Geometry(object):
 
 
     def Plot(self) -> None:
-        """ Method plot the rasterized RI profile."""
+        """ 
+        Method plot the rasterized RI profile.
+        """
 
         Figure = Plots.Scene(UnitSize=(6,6))
         Colorbar0 = Plots.ColorBar(Discreet=True, Position='right', Format='%.4f')
-        Colorbar1 = Plots.ColorBar(LogNorm=True, Position='right', Format='%.4f')
+        Colorbar1 = Plots.ColorBar(LogNorm=True, Position='right', Format='%.4f', Symmetric=True)
 
         ax0 = Plots.Axis(Row = 0, 
                          Col = 0, 
                          xLabel = r'x [$\mu m$]', 
                          yLabel = r'y [$\mu m$]', 
                          Title = f'Refractive index structure', 
-                         Legend = False, Colorbar = Colorbar0)
+                         Legend = False, 
+                         Colorbar = Colorbar0)
 
         ax1 = Plots.Axis(Row = 0, 
                          Col = 1, 
                          xLabel = r'x [$\mu m$]', 
                          yLabel = r'y [$\mu m$]', 
                          Title = f'Refractive index gradient', 
-                         Legend = False, Colorbar = Colorbar1)
+                         Legend = False, 
+                         Colorbar = Colorbar1)
 
         artist = Plots.Mesh(X=self.Axes.x.Vector, Y=self.Axes.y.Vector, Scalar=self.Mesh, ColorMap='Blues')
 
-        gradient = Plots.Mesh(X=self.Axes.x.Vector, Y=self.Axes.y.Vector, Scalar=self.Gradient, ColorMap='seismic')
+        gradient = Plots.Mesh(X=self.Axes.x.Vector, Y=self.Axes.y.Vector, Scalar=self.Gradient, ColorMap=Plots.CMAP.BWR)
 
         ax0.AddArtist(artist)
         ax1.AddArtist(gradient)

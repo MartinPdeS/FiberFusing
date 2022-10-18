@@ -8,7 +8,7 @@ from FiberFusing import Geometry, Fused2, Fused3, Fused4, Fused7, Circle, BackGr
 from utils import BaseStepTest, TestFactory, Close
 
 PLOTTIME = 1000 # one seconde
-N=150
+N=300
 
 Index = 1.5
 Air = BackGround(Index=1) 
