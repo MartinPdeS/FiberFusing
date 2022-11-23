@@ -1,15 +1,14 @@
 
-import numpy, logging
-import matplotlib.pyplot as plt
+import numpy
+import logging
 
-import FiberFusing.Buffer as Buffer 
-import MPSPlots.Plots as Plots
+import FiberFusing.Buffer as Buffer
 
 
 class Fiber(Buffer.Circle):
-    Radius: float=None
-    Core: Buffer.Point=None
-    Center: Buffer.Point=None
+    Radius: float = None
+    Core: Buffer.Point = None
+    Center: Buffer.Point = None
 
     def __new__(cls, Radius: float, Center: list, Name: str = ''):
         Instance = Buffer.Circle.__new__(cls, Radius=Radius, Center=Center)
@@ -20,15 +19,12 @@ class Fiber(Buffer.Circle):
         self.Name = Name
         self.Center = Center
         self.Core = Buffer.Point([Center.x, Center.y])
-        self.Core.facecolor='k'
+        self.Core.facecolor = 'k'
 
         super(Fiber, self).__init__(Radius=Radius, Center=Center)
 
-
     def __str__(self):
         return f" Center: {self.Center} \t Core position: {self.Core} \t Radius: {self.Radius}"
-
-
 
     def __render__(self, Ax):
         super().__render__(Ax)
