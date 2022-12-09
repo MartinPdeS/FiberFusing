@@ -3,13 +3,11 @@
 import numpy
 from shapely.ops import nearest_points
 
-import FiberFusing.Buffer as Buffer 
-
-
+import FiberFusing.Buffer as Buffer
 
 
 def NearestPoints(Object0, Object1):
-    if isinstance(Object0, Buffer.Polygon ):
+    if isinstance(Object0, Buffer.Polygon):
         P = nearest_points(Object0.exterior, Object1.exterior)
         return Buffer.Point(P[0])
 
@@ -30,7 +28,7 @@ def Intersection(*Objects):
     return Buffer.ToBuffer(Output)
 
 
-#4th order accurate gradient function based on 2nd order version from http://projects.scipy.org/scipy/numpy/browser/trunk/numpy/lib/function_base.py
+# 4th order accurate gradient function based on 2nd order version from http://projects.scipy.org/scipy/numpy/browser/trunk/numpy/lib/function_base.py
 def gradientO4(f, *varargs):
     """Calculate the fourth-order-accurate gradient of an N-dimensional scalar function.
     Uses central differences on the interior and first differences on boundaries
@@ -51,11 +49,11 @@ def gradientO4(f, *varargs):
     outvals = []
 
     # create slice objects --- initially all are [:, :, ..., :]
-    slice0 = [slice(None)]*N
-    slice1 = [slice(None)]*N
-    slice2 = [slice(None)]*N
-    slice3 = [slice(None)]*N
-    slice4 = [slice(None)]*N
+    slice0 = [slice(None)] * N
+    slice1 = [slice(None)] * N
+    slice2 = [slice(None)] * N
+    slice3 = [slice(None)] * N
+    slice4 = [slice(None)] * N
 
     otype = f.dtype.char
     if otype not in ['f', 'd', 'F', 'D']:
@@ -71,7 +69,7 @@ def gradientO4(f, *varargs):
         slice3[axis] = slice(3, -1)
         slice4[axis] = slice(4, None)
         # 1D equivalent -- out[2:-2] = (f[:4] - 8*f[1:-3] + 8*f[3:-1] - f[4:])/12.0
-        out[tuple(slice0)] = (f[tuple(slice1)] - 8.0*f[tuple(slice2)] + 8.0*f[tuple(slice3)] - f[tuple(slice4)])/12.0
+        out[tuple(slice0)] = (f[tuple(slice1)] - 8.0 * f[tuple(slice2)] + 8.0 * f[tuple(slice3)] - f[tuple(slice4)]) / 12.0
 
         slice0[axis] = slice(None, 2)
         slice1[axis] = slice(1, 3)
@@ -82,9 +80,8 @@ def gradientO4(f, *varargs):
         slice0[axis] = slice(-2, None)
         slice1[axis] = slice(-2, None)
         slice2[axis] = slice(-3, -1)
-        ## 1D equivalent -- out[-2:] = (f[-2:] - f[-3:-1])
+        # 1D equivalent -- out[-2:] = (f[-2:] - f[-3:-1])
         out[tuple(slice0)] = (f[tuple(slice1)] - f[tuple(slice2)])
-
 
         # divide by step size
         outvals.append(out / dx[axis])
@@ -101,16 +98,4 @@ def gradientO4(f, *varargs):
     else:
         return outvals
 
-
-
-
-
-
-
-
-
-
-
-#
-
-
+# -

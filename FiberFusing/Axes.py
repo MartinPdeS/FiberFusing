@@ -11,37 +11,37 @@ class Namespace:
 
 @dataclass
 class Axes(object):
-    Nx: int
-    Ny: int
-    XBound: float
-    YBound: float
-    Symmetries: defaultdict[dict] = field(default_factory=lambda: {'Left': 0, 'Right': 0, 'Top': 0, 'Bottom': 0})
+    n_x: int
+    n_y: int
+    x_bound: float
+    y_bound: float
+    symmetries: defaultdict[dict] = field(default_factory=lambda: {'left': 0, 'right': 0, 'top': 0, 'bottom': 0})
 
     def __post_init__(self):
-        xAxis = numpy.linspace(*self.XBound, self.Nx)
-        yAxis = numpy.linspace(*self.YBound, self.Ny)
+        xAxis = numpy.linspace(*self.x_bound, self.n_x)
+        yAxis = numpy.linspace(*self.y_bound, self.n_y)
 
         self._FullxAxis = None
         self._FullyAxis = None
 
-        self.x = Namespace(N=self.Nx,
-                           Bounds=self.XBound,
+        self.x = Namespace(N=self.n_x,
+                           Bounds=self.x_bound,
                            Vector=xAxis,
                            d=numpy.abs(xAxis[0] - xAxis[1]))
 
-        self.y = Namespace(N=self.Ny,
-                           Bounds=self.YBound,
+        self.y = Namespace(N=self.n_y,
+                           Bounds=self.y_bound,
                            Vector=yAxis,
                            d=numpy.abs(yAxis[0] - yAxis[1]))
 
-        self.x.Mesh, self.y.Mesh = numpy.mgrid[self.XBound[0]:self.XBound[1]: complex(self.Nx),
-                                               self.YBound[0]:self.YBound[1]: complex(self.Ny)]
+        self.x.Mesh, self.y.Mesh = numpy.mgrid[self.x_bound[0]:self.x_bound[1]: complex(self.n_x),
+                                               self.y_bound[0]:self.y_bound[1]: complex(self.n_y)]
 
         self.rho = numpy.sqrt(self.x.Mesh**2 + self.y.Mesh**2)
 
         self.dA = self.x.d * self.y.d
 
-        self.Shape = numpy.array([self.Nx, self.Ny])
+        self.Shape = numpy.array([self.n_x, self.n_y])
 
     @property
     def FullxAxis(self):
@@ -55,7 +55,7 @@ class Axes(object):
             self._FullxAxis, self._FullyAxis = self.GetFullAxis()
         return self._FullyAxis
 
-    def ExtendAxis(self, Axis: numpy.ndarray, sign: str):
+    def _extend_axis_(self, Axis: numpy.ndarray, sign: str):
         d = Axis[1] - Axis[0]
 
         if sign == "Plus":
@@ -70,51 +70,51 @@ class Axes(object):
 
         return numpy.concatenate(Next)
 
-    def GetFullAxis(self, Symmetries: dict = None):
-        if Symmetries is None:
-            Symmetries = self.Symmetries
+    def GetFullAxis(self, symmetries: dict = None):
+        if symmetries is None:
+            symmetries = self.symmetries
 
         FullxAxis = self.x.Vector
         FullyAxis = self.y.Vector
 
-        FullxAxis = self.AddRightAxisSymmetry(FullxAxis, Symmetries=Symmetries)
+        FullxAxis = self._add_right_axis_symmetry_(FullxAxis, symmetries=symmetries)
 
-        FullxAxis = self.AddLeftAxisSymmetry(FullxAxis, Symmetries=Symmetries)
+        FullxAxis = self._add_left_axis_symmetry_(FullxAxis, symmetries=symmetries)
 
-        FullyAxis = self.AddTopAxisSymmetry(FullyAxis, Symmetries=Symmetries)
+        FullyAxis = self._add_top_axis_symmetry_(FullyAxis, symmetries=symmetries)
 
-        FullyAxis = self.AddBottomAxisSymmetry(FullyAxis, Symmetries=Symmetries)
+        FullyAxis = self._add_bottom_axis_symmetry_(FullyAxis, symmetries=symmetries)
 
         return FullxAxis, FullyAxis
 
-    def AddRightAxisSymmetry(self, FullxAxis, Symmetries):
-        match Symmetries['Right']:
+    def _add_right_axis_symmetry_(self, FullxAxis, symmetries):
+        match symmetries['right']:
             case 0: return FullxAxis
 
-            case 1: return self.ExtendAxis(Axis=FullxAxis, sign="Minus")
+            case 1: return self._extend_axis_(Axis=FullxAxis, sign="Minus")
 
-            case -1: return self.ExtendAxis(Axis=FullxAxis, sign="Minus")
+            case -1: return self._extend_axis_(Axis=FullxAxis, sign="Minus")
 
-    def AddLeftAxisSymmetry(self, FullxAxis, Symmetries):
-        match Symmetries['Left']:
+    def _add_left_axis_symmetry_(self, FullxAxis, symmetries):
+        match symmetries['left']:
             case 0: return FullxAxis
 
-            case 1: return self.ExtendAxis(Axis=FullxAxis, sign="Plus")
+            case 1: return self._extend_axis_(Axis=FullxAxis, sign="Plus")
 
-            case -1: return self.ExtendAxis(Axis=FullxAxis, sign="Plus")
+            case -1: return self._extend_axis_(Axis=FullxAxis, sign="Plus")
 
-    def AddTopAxisSymmetry(self, FullyAxis, Symmetries):
-        match Symmetries['Top']:
+    def _add_top_axis_symmetry_(self, FullyAxis, symmetries):
+        match symmetries['top']:
             case 0: return FullyAxis
 
-            case 1: return self.ExtendAxis(Axis=FullyAxis, sign="Plus")
+            case 1: return self._extend_axis_(Axis=FullyAxis, sign="Plus")
 
-            case -1: return self.ExtendAxis(Axis=FullyAxis, sign="Plus")
+            case -1: return self._extend_axis_(Axis=FullyAxis, sign="Plus")
 
-    def AddBottomAxisSymmetry(self, FullyAxis, Symmetries):
-        match Symmetries['Bottom']:
+    def _add_bottom_axis_symmetry_(self, FullyAxis, symmetries):
+        match symmetries['bottom']:
             case 0: return FullyAxis
 
-            case 1: return self.ExtendAxis(Axis=FullyAxis, sign="Minus")
+            case 1: return self._extend_axis_(Axis=FullyAxis, sign="Minus")
 
-            case -1: return self.ExtendAxis(Axis=FullyAxis, sign="Minus")
+            case -1: return self._extend_axis_(Axis=FullyAxis, sign="Minus")

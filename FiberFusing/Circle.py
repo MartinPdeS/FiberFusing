@@ -18,6 +18,10 @@ class Circle(Buffer.Circle):
         Instance = Buffer.Circle.__new__(cls, Radius=Radius, Center=Center)
         return Instance
 
+    @property
+    def Object(self):
+        return self
+
     def __init__(self, Radius: float, Center: list, Name: str = '', Index: float = None):
         Center = Buffer.Point(Center) if isinstance(Center, (tuple, list)) else Center
         self.Radius = Radius

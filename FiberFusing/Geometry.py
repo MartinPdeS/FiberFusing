@@ -15,69 +15,69 @@ class Geometry(object):
     can be used to retrieve the supermodes.
     """
 
-    Clad: object
+    clad: object
     """ Geometrique object representing the fiber structure clad. """
-    BackGround: object
+    background: object
     """ Geometrique object representing the background (usually air). """
-    Cores: list
+    cores: list
     """ List of geometrique object representing the fiber structure cores. """
-    Xbound: list
+    x_bound: list
     """ X boundary to render the structure [float, float, 'auto', 'auto right', 'auto left']. """
-    Ybound: list
+    y_bound: list
     """ Y boundary to render the structure [float, float, 'auto', 'auto top', 'auto bottom']. """
-    Nx: int = 100
+    n_x: int = 100
     """ Number of point (x-direction) to evaluate the rendering """
-    Ny: int = 100
+    n_y: int = 100
     """ Number of point (y-direction) to evaluate the rendering """
-    IndexScrambling: float = 0
+    index_scrambling: float = 0
     """ Index scrambling for degeneracy lifting """
-    ResizeFactor: int = 5
+    resize_factor: int = 5
     """ Oversampling factor for gradient evaluation """
 
     def __post_init__(self):
-        self.Objects = [self.BackGround, *self.Cores, self.Clad]
+        self.Objects = [self.background, self.clad, *self.cores]
         self._Mesh = None
         self._Gradient = None
 
-        minx, miny, maxx, maxy = self.Clad.Object.bounds
+        minx, miny, maxx, maxy = self.clad.Object.bounds
 
-        if isinstance(self.Xbound, str):
-            self._parse_Xbound_()
+        if isinstance(self.x_bound, str):
+            self._parse_x_bound_()
 
-        if isinstance(self.Ybound, str):
-            self._parse_Ybound_()
+        if isinstance(self.y_bound, str):
+            self._parse_y_bound_()
 
-        self.Axes = Axes(XBound=self.Xbound, YBound=self.Ybound, Nx=self.Nx, Ny=self.Ny)
-        self.UpScaleAxes = Axes(XBound=self.Xbound, YBound=self.Ybound, Nx=self.Nx * self.ResizeFactor, Ny=self.Ny * self.ResizeFactor)
+        self.Axes = Axes(x_bound=self.x_bound, y_bound=self.y_bound, n_x=self.n_x, n_y=self.n_y)
+        self.UpScaleAxes = Axes(x_bound=self.x_bound, y_bound=self.y_bound, n_x=self.n_x * self.resize_factor, n_y=self.n_y * self.resize_factor)
         self.GetIndices()
 
-    def _parse_Xbound_(self):
-        minx, miny, maxx, maxy = self.Clad.Object.bounds
-        string_Xbound = self.Xbound.lower()
+    def _parse_x_bound_(self):
+        minx, miny, maxx, maxy = self.clad.Object.bounds
+        string_x_bound = self.x_bound.lower()
 
-        if 'auto' in string_Xbound:
-            minx, miny, maxx, maxy = self.Clad.Object.bounds
-            self.Xbound = numpy.array([minx, maxx]) * 1.3
+        if 'auto' in string_x_bound:
+            minx, miny, maxx, maxy = self.clad.Object.bounds
+            self.x_bound = numpy.array([minx, maxx]) * 1.3
 
-        if 'right' in string_Xbound:
-            self.Xbound[0] = 0
+        if 'right' in string_x_bound:
+            self.x_bound[0] = 0
 
-        if 'left' in string_Xbound:
-            self.Xbound[1] = 0
+        if 'left' in string_x_bound:
+            self.x_bound[1] = 0
 
-    def _parse_Ybound_(self):
-        minx, miny, maxx, maxy = self.Clad.Object.bounds
-        string_Ybound = self.Ybound.lower()
+    def _parse_y_bound_(self):
+        minx, miny, maxx, maxy = self.clad.Object.bounds
+        string_y_bound = self.y_bound.lower()
 
-        if 'auto' in string_Ybound:
-            minx, miny, maxx, maxy = self.Clad.Object.bounds
-            self.Ybound = numpy.array([minx, maxx]) * 1.3
+        if 'auto' in string_y_bound:
+            minx, miny, maxx, maxy = self.clad.Object.bounds
+            self.y_bound = numpy.array([miny, maxy]) * 1.3
 
-        if 'top' in string_Ybound:
-            self.Ybound[0] = 0
+        if 'top' in string_y_bound:
+            self.y_bound[0] = 0
 
-        if 'bottom' in string_Ybound:
-            self.Ybound[1] = 0
+        if 'bottom' in string_y_bound:
+            self.y_bound[1] = 0
 
     def GetGradient(self, Mesh: numpy.ndarray, Axes: Axes) -> numpy.ndarray:
         Xgrad, Ygrad = Utils.gradientO4(Mesh**2, Axes.x.d, Axes.y.d)
@@ -87,7 +87,6 @@ class Geometry(object):
         return gradient
 
     def GetFullMesh(self, LeftSymmetry, RightSymmetry, TopSymmetry, BottomSymmetry):
-
         FullMesh = self.Mesh
 
         if BottomSymmetry in [1, -1]:
@@ -128,7 +127,7 @@ class Geometry(object):
     @property
     def MinIndex(self) -> float:
         ObjectList = self.Objects
-        return min( [obj.Index for obj in ObjectList] )[0]
+        return min([obj.Index for obj in ObjectList])[0]
 
     @property
     def xMax(self) -> float:
@@ -172,7 +171,7 @@ class Geometry(object):
         for polygone in self.Objects:
             polygone.Rasterize(Coordinate=self.coords, Shape=self.UpScaleAxes.Shape)
             UpScaleMesh[numpy.where(polygone.Raster > 0)] = 0
-            UpScaleMesh += polygone.Raster * polygone.Index + numpy.random.rand(1) * self.IndexScrambling
+            UpScaleMesh += polygone.Raster * polygone.Index + numpy.random.rand(1) * self.index_scrambling
 
         Mesh = self.DownscaleImage(Array=UpScaleMesh, Size=self.Axes.Shape)
 
@@ -186,30 +185,29 @@ class Geometry(object):
         """
         Method plot the rasterized RI profile.
         """
+        Figure = Scene2D(unit_size=(6, 6), tight_layout=True)
+        colorbar0 = ColorBar(discreet=True, position='right', numeric_format='%.4f')
+        colorbar1 = ColorBar(log_norm=True, position='right', numeric_format='%.1e', symmetric=True)
 
-        Figure = Scene2D(UnitSize=(6, 6))
-        Colorbar0 = ColorBar(Discreet=True, Position='right', Format='%.4f')
-        Colorbar1 = ColorBar(LogNorm=True, Position='right', Format='%.4f', Symmetric=True)
+        ax0 = Axis(row=0,
+                   col=0,
+                   x_label=r'x [$\mu m$]',
+                   y_label=r'y [$\mu m$]',
+                   title='Refractive index structure',
+                   show_legend=False,
+                   colorbar=colorbar0)
 
-        ax0 = Axis(Row=0,
-                   Col=0,
-                   xLabel=r'x [$\mu m$]',
-                   yLabel=r'y [$\mu m$]',
-                   Title='Refractive index structure',
-                   Legend=False,
-                   Colorbar=Colorbar0)
+        ax1 = Axis(row=0,
+                   col=1,
+                   x_label=r'x [$\mu m$]',
+                   y_label=r'y [$\mu m$]',
+                   title='Refractive index gradient',
+                   show_legend=False,
+                   colorbar=colorbar1)
 
-        ax1 = Axis(Row=0,
-                   Col=1,
-                   xLabel=r'x [$\mu m$]',
-                   yLabel=r'y [$\mu m$]',
-                   Title='Refractive index gradient',
-                   Legend=False,
-                   Colorbar=Colorbar1)
+        artist = Mesh(x=self.Axes.x.Vector, y=self.Axes.y.Vector, scalar=self.Mesh, colormap='Blues')
 
-        artist = Mesh(X=self.Axes.x.Vector, Y=self.Axes.y.Vector, Scalar=self.Mesh, ColorMap='Blues')
-
-        gradient = Mesh(X=self.Axes.x.Vector, Y=self.Axes.y.Vector, Scalar=self.Gradient, ColorMap=MPSPlots.CMAP.BWR)
+        gradient = Mesh(x=self.Axes.x.Vector, y=self.Axes.y.Vector, scalar=self.Gradient, colormap=MPSPlots.CMAP.BWR)
 
         ax0.AddArtist(artist)
         ax1.AddArtist(gradient)

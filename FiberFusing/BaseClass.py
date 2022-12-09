@@ -268,17 +268,16 @@ class BaseFused():
         return self.Raster
 
     def Plot(self, **kwargs):
-        Fig = Scene2D(UnitSize=(6, 6))
+        Fig = Scene2D(unit_size=(6, 6))
 
-        ax = Axis(Row=0,
-                  Col=0,
-                  xLabel=r'x',
-                  yLabel=r'y',
-                  Title=f'{self.Topology = }',
-                  Grid=True,
-                  Equal=True)
+        ax = Axis(row=0,
+                  col=0,
+                  x_label=r'x',
+                  y_label=r'y',
+                  show_grid=True,
+                  equal=True)
 
-        Fig.AddAxes(ax).GenerateAxis()
+        Fig.AddAxes(ax)._generate_axis_()
 
         self.Object.__render__(ax)
 
