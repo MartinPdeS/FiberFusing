@@ -364,17 +364,4 @@ class ToBuffer():
             return Point(Object, **kwargs)
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 # -

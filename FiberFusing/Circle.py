@@ -13,7 +13,7 @@ class Circle(Buffer.Circle):
     Center: Buffer.Point = None
     Index = None
 
-    def __new__(cls, Radius: float, Center: list, Name: str = '', Index: float = None):
+    def __new__(cls, Radius: float, Center: tuple = (0, 0), Name: str = '', Index: float = None):
         Center = Buffer.Point(Center) if isinstance(Center, (tuple, list)) else Center
         Instance = Buffer.Circle.__new__(cls, Radius=Radius, Center=Center)
         return Instance
@@ -22,7 +22,7 @@ class Circle(Buffer.Circle):
     def Object(self):
         return self
 
-    def __init__(self, Radius: float, Center: list, Name: str = '', Index: float = None):
+    def __init__(self, Radius: float, Center: tuple = (0, 0), Name: str = '', Index: float = None):
         Center = Buffer.Point(Center) if isinstance(Center, (tuple, list)) else Center
         self.Radius = Radius
         self.Name = Name
@@ -44,18 +44,22 @@ class Circle(Buffer.Circle):
         self.Raster = Exterior
 
     def Plot(self, **kwargs):
-        Fig = Scene2D('SuPyMode Figure', UnitSize=(6, 6))
+        figure = Scene2D(title='SuPyMode Figure', unit_size=(6, 6))
 
-        ax = Axis(Row=0,
-                  Col=0,
-                  xLabel=r'x',
-                  yLabel=r'y',
-                  Title='Circle',
-                  Grid=True,
-                  Equal=True)
+        ax = Axis(row=0,
+                  col=0,
+                  x_label=r'x',
+                  y_label=r'y',
+                  title='Circle',
+                  show_grid=True,
+                  equal=True)
 
-        Fig.AddAxes(ax).GenerateAxis()
+        figure.AddAxes(ax)
+
+        figure._render_()
 
         self.__render__(ax)
 
-        Fig.Show()
+        return figure
+
+# -
