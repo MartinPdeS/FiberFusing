@@ -1,6 +1,5 @@
 from .Geometry import Geometry
-from .BaseClass import BackGround
-from .Circle import Circle
+from ._buffer import Circle, BackGround
 from .Instances.Fused2 import Fused2
 from .Instances.Fused3 import Fused3
 from .Instances.Fused4 import Fused4

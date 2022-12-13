@@ -2,18 +2,19 @@ import numpy
 
 from FiberFusing.Fiber import Fiber
 import FiberFusing.Buffer as Buffer
+import FiberFusing._buffer as _buffer
 
 
 class FiberRing():
-    def __init__(self, Angles, Fusion, FiberRadius):
-        self.FiberRadius = FiberRadius
-        self.Fusion = Fusion
-        self.Angles = Angles
-        self.NFiber = len(Angles)
+    def __init__(self, angle_list, fusion_degree, fiber_radius):
+        self.fiber_radius = fiber_radius
+        self.fusion_degree = fusion_degree
+        self.angle_list = angle_list
+        self.NFiber = len(angle_list)
 
         self._Fibers = None
         self._CoreShift = None
-        self._Centers = None
+        self._centers = None
         self._MaxDistance = None
 
     @property
@@ -29,10 +30,10 @@ class FiberRing():
         return self._Fibers
 
     @property
-    def Centers(self):
-        if self._Centers is None:
-            self.ComputeCenters()
-        return self._Centers
+    def centers(self):
+        if self._centers is None:
+            self.Computecenters()
+        return self._centers
 
     @property
     def CoreShift(self):
@@ -40,17 +41,11 @@ class FiberRing():
             self.ComputeCoreShift()
         return self._CoreShift
 
-    def AddRing(self, Ring):
-        P0 = Buffer.Point([0, Layer * self.CoreShift])
-        Points = P0.Rotate(Angle=Angle)
-        self._Centers = [*self._Centers, *Points]
-
     def ComputeFibers(self):
-
         self._Fibers = []
 
-        for n, point in enumerate(self.Centers):
-            fiber = Fiber(Radius=self.FiberRadius, Center=point, Name=f' Fiber {n}')
+        for n, point in enumerate(self.centers):
+            fiber = Fiber(radius=self.fiber_radius, center=point, name=f' Fiber {n}')
             self._Fibers.append(fiber)
 
     def ComputeCoreShift(self):
@@ -63,12 +58,12 @@ class FiberRing():
 
             self._CoreShift = (1 + numpy.cos(alpha)) - numpy.sqrt(self.NFiber) * numpy.cos(alpha)
 
-            self._CoreShift = (self.FiberRadius - (self._CoreShift * self.FiberRadius) * self.Fusion)
+            self._CoreShift = (self.fiber_radius - (self._CoreShift * self.fiber_radius) * self.fusion_degree)
 
             self._CoreShift *= 1 / (numpy.cos(alpha))
 
-    def ComputeCenters(self):
-        self._Centers = Buffer.Point([0, self.CoreShift]).Rotate(Angle=self.Angles, Origin=[0, 0])
+    def Computecenters(self):
+        self._centers = Buffer.Point([0, self.CoreShift]).Rotate(angle=self.angle_list, Origin=[0, 0])
 
     def ComputeMaxDistance(self):
         x, y = self.Fibers[0].exterior.xy

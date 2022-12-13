@@ -1,9 +1,9 @@
-
-
 import numpy
 from shapely.ops import nearest_points
 
 import FiberFusing.Buffer as Buffer
+import FiberFusing._buffer as _buffer
+import shapely.geometry as geo
 
 
 def NearestPoints(Object0, Object1):
@@ -13,11 +13,15 @@ def NearestPoints(Object0, Object1):
 
 
 def Union(*Objects):
-    Output = Buffer.Polygon()
-    for geo in Objects:
-        Output = Output.union(geo)
+    output = Buffer.Polygon()
+    for geometry in Objects:
+        output = output.union(geometry)
 
-    return Buffer.ToBuffer(Output)
+    if isinstance(output, (geo.GeometryCollection, geo.MultiPolygon)):
+        return _buffer.GeometryCollection(output)
+
+    if isinstance(output, geo.Polygon):
+        return _buffer.Polygon(output)
 
 
 def Intersection(*Objects):
@@ -25,7 +29,7 @@ def Intersection(*Objects):
     for geo in Objects[1:]:
         Output = Output.intersection(geo)
 
-    return Buffer.ToBuffer(Output)
+    return Buffer.to_buffer(Output)
 
 
 # 4th order accurate gradient function based on 2nd order version from http://projects.scipy.org/scipy/numpy/browser/trunk/numpy/lib/function_base.py

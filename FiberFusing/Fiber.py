@@ -1,33 +1,25 @@
-
-import numpy
-import logging
-
-import FiberFusing.Buffer as Buffer
+import FiberFusing._buffer as _buffer
 
 
-class Fiber(Buffer.Circle):
-    Radius: float = None
-    Core: Buffer.Point = None
-    Center: Buffer.Point = None
+class Fiber(_buffer.Circle):
+    radius: float = None
+    core: _buffer.Point = None
+    center: _buffer.Point = None
 
-    def __new__(cls, Radius: float, Center: list, Name: str = ''):
-        Instance = Buffer.Circle.__new__(cls, Radius=Radius, Center=Center)
+    def __new__(cls, radius: float, center: list, name: str = ''):
+        Instance = _buffer.Circle.__new__(cls, radius=radius, center=center)
         return Instance
 
-    def __init__(self, Radius: float, Center: list, Name: str = ''):
-        self.Radius = Radius
-        self.Name = Name
-        self.Center = Center
-        self.Core = Buffer.Point([Center.x, Center.y])
-        self.Core.facecolor = 'k'
+    def __init__(self, radius: float, center: list, name: str = ''):
+        self.radius = radius
+        self.name = name
+        self.center = center
+        self.core = _buffer.Point([center.x, center.y])
 
-        super(Fiber, self).__init__(Radius=Radius, Center=Center)
+        super(Fiber, self).__init__(radius=radius, center=center)
 
-    def __str__(self):
-        return f" Center: {self.Center} \t Core position: {self.Core} \t Radius: {self.Radius}"
+    def _render_(self, Ax):
+        super()._render_(Ax)
 
-    def __render__(self, Ax):
-        super().__render__(Ax)
-
-        self.Core.__render__(Ax)
-        self.Center.__render__(Ax)
+        self.core._render_(Ax)
+        self.center._render_(Ax)

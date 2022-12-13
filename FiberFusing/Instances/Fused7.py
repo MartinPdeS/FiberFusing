@@ -1,4 +1,3 @@
-
 import numpy
 
 from FiberFusing.BaseClass import BaseFused
@@ -6,22 +5,31 @@ from FiberFusing.Rings import FiberRing
 
 
 class Fused7(BaseFused):
-    def __init__(self, FiberRadius, Fusion, Index, debug='INFO', Gradient=None):
-        super().__init__(FiberRadius=FiberRadius,
-                         Fusion=Fusion,
-                         Angle=numpy.linspace(0, 360, 6, endpoint=False),
-                         Index=Index,
-                         debug=debug)
+    def __init__(self,
+                 fiber_radius: float,
+                 fusion_degree: float,
+                 index: float,
+                 Gradient: numpy.ndarray = None):
 
-        assert 0 <= Fusion <= 0.65, "Fusion degree has to be in the range [0, 0.65]"
-        Ring0 = FiberRing(Angles=self.Angle, Fusion=self.Fusion, FiberRadius=self.FiberRadius)
-        Ring1 = FiberRing(Angles=[0], Fusion=self.Fusion, FiberRadius=self.FiberRadius)
+        super().__init__(fiber_radius=fiber_radius,
+                         fusion_degree=fusion_degree,
+                         index=index)
 
-        self.AddRing(Ring0, Ring1)
+        assert 0 <= fusion_degree <= 0.65, "Fusion degree has to be in the range [0, 0.65]"
 
-        self.Object = self.OptimizeGeometry()
+        Ring0 = FiberRing(angle_list=numpy.linspace(0, 360, 6, endpoint=False),
+                          fusion_degree=self.fusion_degree,
+                          fiber_radius=self.fiber_radius)
+
+        Ring1 = FiberRing(angle_list=[0],
+                          fusion_degree=self.fusion_degree,
+                          fiber_radius=self.fiber_radius)
+
+        self.add_fiber_ring(Ring0, Ring1)
+
+        self.Object = self.optimize_geometry()
 
 
 if __name__ == '__main__':
-    a = Fused7(FiberRadius=60, Fusion=0.60, Index=1)
-    a.Plot(Fibers=True, Added=True, Removed=True, Virtual=False, Mask=False).Show()
+    a = Fused7(fiber_radius=62.5, fusion_degree=0.6, index=1)
+    a.Plot(Fibers=False, Added=True, Removed=False, Virtual=False, Mask=False).Show()

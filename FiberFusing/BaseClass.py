@@ -1,99 +1,83 @@
 import numpy
 import logging
 from dataclasses import dataclass
+from collections.abc import Iterable
 
 from matplotlib.path import Path
-from matplotlib.patches import PathPatch
-from matplotlib.collections import PatchCollection
 from itertools import combinations
 from scipy.optimize import minimize_scalar
 import shapely.geometry as geo
 
-from MPSPlots.Render2D import Scene2D, ColorBar, Axis, Mesh
+from MPSPlots.Render2D import Scene2D, Axis
 import FiberFusing.Utils as Utils
 from FiberFusing.Connection import Connection
-import FiberFusing.Buffer as Buffer
+import FiberFusing._buffer as _buffer
 
 logging.basicConfig(level=logging.INFO)
 
 
-ORIGIN = Buffer.Point([0, 0])
+ORIGIN = _buffer.Point([0, 0])
 RESOLUTION = 68
 
 
 @dataclass
 class BaseFused():
-    FiberRadius: float
-    Fusion: float
-    Angle: float
-    Index: float
-    debug: bool
-    Gradient: object = None
-    Tolerance: float = 1e-2
+    fiber_radius: float
+    fusion_degree: float
+    index: float
+    gradient: object = None
+    tolerance: float = 1e-2
 
     def __repr__(self):
-        return f" {self.Topology}"
+        return f" {self.topology}"
 
     def __post_init__(self):
         logging.info("Setting up the structure geometry...")
-        self.Angle = numpy.asarray(self.Angle)
-        self.N = len(self.Angle)
-        self.Initialize()
-        self._Fibers = None
+        self._initialize_()
+        self._fiber_list = None
 
-    def Initialize(self):
-        self._Rings = []
-        self._CustomFibers = []
-        self._Hole = None
-        self._Topology = None
-        self._Added = None
-        self._Removed = None
-        self._Centers = None
-        self._CoreShift = None
-
-    def __render__(self, Ax):
-        path = Path.make_compound_path(
-            Path(numpy.asarray(self.Object.exterior.coords)[:, :2]),
-            *[Path(numpy.asarray(ring.coords)[:, :2]) for ring in self.Object.interiors])
-
-        patch = PathPatch(path, facecolor='lightblue', alpha=0.4, edgecolor='k')
-        collection = PatchCollection([patch], facecolor='lightblue', alpha=0.3, edgecolor='k')
-
-        Ax._ax.add_collection(collection, autolim=True)
-        Ax._ax.autoscale_view()
+    def _initialize_(self):
+        self._fiber_rings = []
+        self.custom_fiber = []
+        self._hole = None
+        self._topology = None
+        self._added_section = None
+        self._removed_section = None
+        self._fiber_centers = None
+        self._core_shift = None
 
     @property
     def Cores(self):
-        return [f.Core for f in self.Fibers]
+        return [f.core for f in self.fiber_list]
 
     @property
-    def Added(self):
-        if self._Added is None:
-            self.ComputeAdded()
-        return self._Added
+    def added_section(self):
+        if self._added_section is None:
+            self.compute_added_section()
+        return self._added_section
 
     @property
-    def Removed(self):
-        if self._Removed is None:
-            self.ComputeRemoved()
-        return self._Removed
+    def removed_section(self):
+        if self._removed_section is None:
+            self.compute_removed_section()
+        return self._removed_section
 
     @property
-    def Topology(self):
-        if self._Topology is None:
-            self.ComputeTopology()
-        return self._Topology
+    def topology(self):
+        if self._topology is None:
+            self.compute_topology()
+        return self._topology
 
-    def ComputeTopology(self) -> None:
+    def compute_topology(self) -> None:
         Limit = []
         for connection in self.Connections:
             Limit.append(connection.LimitAdded)
 
-        OverallLimit = Utils.Union(*Limit) - Utils.Union(*self.Fibers)
+        OverallLimit = Utils.Union(*Limit) - Utils.Union(*self.fiber_list)
 
-        self._Topology = 'convex' if self.Removed.Area > OverallLimit.area else 'concave'
+        self._topology = 'convex' if self.removed_section.Area > OverallLimit.area else 'concave'
 
-    def MergeConnections(self) -> None:
+    def merge_connections(self) -> None:
         NewConnections = []
 
         for n, connection0 in enumerate(self.Connections):
@@ -107,29 +91,29 @@ class BaseFused():
                     logging.debug('Connection merging')
                     if connection1[0] == connection0[0]:
                         Set = (connection1[1], connection0[1])
-                        new = Connection(*Set, Shift=self.VirtualShift)
+                        new = Connection(*Set, Shift=self.virtual_shift)
                         NewConnections.append(new)
                         continue
 
                     if connection1[1] == connection0[0]:
                         Set = (connection1[0], connection0[1])
-                        new = Connection(*Set, Shift=self.VirtualShift)
+                        new = Connection(*Set, Shift=self.virtual_shift)
                         NewConnections.append(new)
                         continue
 
                     if connection1[0] == connection0[1]:
                         Set = (connection1[1], connection0[0])
-                        new = Connection(*Set, Shift=self.VirtualShift)
+                        new = Connection(*Set, Shift=self.virtual_shift)
                         NewConnections.append(new)
                         continue
 
                     if connection1[1] == connection0[1]:
                         Set = (connection1[0], connection0[0])
-                        new = Connection(*Set, Shift=self.VirtualShift)
+                        new = Connection(*Set, Shift=self.virtual_shift)
                         NewConnections.append(new)
                         continue
 
-    def ComputeAdded(self) -> None:
+    def compute_added_section(self) -> None:
         Added = []
 
         for n, connection in enumerate(self.Connections):
@@ -137,137 +121,139 @@ class BaseFused():
 
             Added.append(NewAdded)
 
-        self._Added = Utils.Union(*Added) - Utils.Union(*self.Fibers)
-        self._Added = Buffer.ToBuffer(self._Added, facecolor='g').Clean()
-        self._Added.Area = self._Added.area
+        self._added_section = Utils.Union(*Added) - Utils.Union(*self.fiber_list)
+        self._added_section = _buffer.GeometryCollection(self._added_section).remove_non_polygon()
+        self._added_section.Area = self._added_section.area
+        self._added_section.facecolor = 'green'
 
-    def ComputeRemoved(self) -> None:
+    def compute_removed_section(self) -> None:
         Removed = []
         for connection in self.Connections:
             Removed.append(connection.Removed)
 
-        self._Removed = Utils.Union(*Removed)
-        self._Removed.Area = len(self.Fibers) * self.Fibers[0].area - Utils.Union(*self.Fibers).area
+        self._removed_section = Utils.Union(*Removed)
+        self._removed_section = self._removed_section
+        self._removed_section.Area = len(self.fiber_list) * self.fiber_list[0].area - Utils.Union(*self.fiber_list).area
+        self._removed_section.facecolor = 'red'
 
-        self._Removed.facecolor = 'r'
-
-    def GetMaxDistance(self) -> float:
-        return numpy.max([f.GetMaxDistance() for f in self.Fibers])
-
-    @property
-    def Fibers(self):
-        if self._Fibers is None:
-            self.ComputeFibers()
-        return self._Fibers
+    def get_max_distance(self) -> float:
+        return numpy.max([f.get_max_distance() for f in self.fiber_list])
 
     @property
-    def Hole(self):
-        if self._Hole is None:
-            self.ComputeHole()
-        return self._Hole
+    def fiber_list(self) -> list:
+        if self._fiber_list is None:
+            self.populate_fiber_list()
+        return self._fiber_list
 
-    def AddRing(self, *Rings):
+    def add_fiber_ring(self, *Rings):
         for Ring in Rings:
-            self._Rings.append(Ring)
+            self._fiber_rings.append(Ring)
 
-    def AddCustom(self, *Custom):
+    def add_custom_fiber(self, *Custom):
         for fiber in Custom:
-            self._CustomFibers.append(fiber)
+            self.custom_fiber.append(fiber)
 
-    def OptimizeGeometry(self):
-        self.InitializeConnections()
+    def optimize_geometry(self, bounds: tuple = (0, 1000)):
+        self.initialize_connections()
 
-        res = minimize_scalar(self.ComputeCost, bounds=(0, 1000), method='bounded', options={'xatol': self.Tolerance})
+        res = minimize_scalar(self.get_cost_value, bounds=bounds, method='bounded', options={'xatol': self.tolerance})
 
-        return self.BuildCoupler(VirtualShift=res.x)
+        return _buffer.Polygon(self.get_optimized_geometry(virtual_shift=res.x))
 
-    def ComputeCorePosition(self):
+    def compute_core_position(self):
         for connection in self.Connections:
             connection.OptimizeCorePosition()
 
-    def ComputeFibers(self):
-        self._Fibers = []
+    def populate_fiber_list(self):
+        self._fiber_list = []
 
-        for Ring in self._Rings:
+        for Ring in self._fiber_rings:
             for fiber in Ring.Fibers:
-                self._Fibers.append(fiber)
+                self._fiber_list.append(fiber)
 
-        for fiber in self._CustomFibers:
-            self._Fibers.append(fiber)
+        for fiber in self.custom_fiber:
+            self._fiber_list.append(fiber)
 
-        for n, fiber in enumerate(self._Fibers):
+        for n, fiber in enumerate(self._fiber_list):
             fiber.Name = f' Fiber {n}'
 
-    def BuildCoupler(self, VirtualShift):
-        Coupler = Utils.Union(*self.Fibers, self.Added)
+    def get_optimized_geometry(self, virtual_shift):
+        Coupler = Utils.Union(*self.fiber_list, self.added_section)
 
         if isinstance(Coupler, geo.GeometryCollection):
-            Coupler = Buffer.MultiPolygon([Buffer.Polygon(P) for P in Coupler.geoms if not isinstance(P, (geo.Point, geo.LineString))])
+            Coupler = _buffer.GeometryCollection(Coupler.geoms).clean()
 
-        self.ComputeCorePosition()
+        self.compute_core_position()
 
         return Coupler
 
-    def InitializeConnections(self):
+    def initialize_connections(self) -> None:
         self.Connections = []
 
-        for fibers in self.IterateOverConnectedFibers():
+        for fibers in self.iterate_over_connected_fibers():
             connection = Connection(*fibers)
             self.Connections.append(connection)
 
-    def ShiftConnections(self, Shift):
+    def shift_connections(self, Shift) -> None:
         for connection in self.Connections:
             connection.Shift = Shift
-            connection.Topology = self.Topology
+            connection.topology = self.topology
 
-        self.Initialize()
+        self._initialize_()
 
-    def ComputeCost(self, VirtualShift):
-        self.VirtualShift = VirtualShift
-        self.ShiftConnections(Shift=VirtualShift)
+    def get_cost_value(self, virtual_shift: float) -> float:
+        self.virtual_shift = virtual_shift
+        self.shift_connections(Shift=virtual_shift)
 
-        Added = self.Added.Area
-        Removed = self.Removed.Area
+        Added = self.added_section.Area
+        Removed = self.removed_section.Area
         Cost = abs(Added - Removed)
 
-        logging.debug(f' Fusing optimization: {VirtualShift = :.2f} \t -> \t{Added = :.2f} \t -> {Removed = :.2f} \t -> {Cost = :.2f}')
+        logging.debug(f' Fusing optimization: {virtual_shift = :.2f} \t -> \t{Added = :.2f} \t -> {Removed = :.2f} \t -> {Cost = :.2f}')
 
         return Cost
 
-    def IterateOverConnectedFibers(self):
-        for Fiber0, Fiber1 in combinations(self.Fibers, 2):
+    def iterate_over_connected_fibers(self) -> tuple:
+        for Fiber0, Fiber1 in combinations(self.fiber_list, 2):
             if Fiber0.intersection(Fiber1).is_empty:
                 continue
             else:
                 yield Fiber0, Fiber1
 
-    def Rasterize(self, Coordinate: numpy.ndarray = None, Shape: list = [100, 100]):
+    def get_rasterized_mesh(self,
+                            coordinate: numpy.ndarray = None,
+                            shape: list = [100, 100]) -> numpy.ndarray:
 
-        if Coordinate is None:
+        if coordinate is None:
             xMin, yMin, xMax, yMax = self.Object.bounds
-            x, y = numpy.mgrid[xMin:xMax:complex(Shape[0]), yMin:yMax:complex(Shape[1])]
-            Coordinate = numpy.vstack((x.flatten(), y.flatten())).T
+            x, y = numpy.mgrid[xMin:xMax:complex(shape[0]), yMin:yMax:complex(shape[1])]
+            coordinate = numpy.vstack((x.flatten(), y.flatten())).T
 
-        if isinstance(self.Object, Buffer.Polygon):
-            Exterior = self.Object.__raster__(Coordinate).reshape(Shape)
-
-        if isinstance(self.Object, Buffer.MultiPolygon):
+        if isinstance(self.Object, Iterable):
             raster = []
             for polygone in self.Object.geoms:
-                polygone = Buffer.Polygon(polygone)
+                polygone = _buffer.Polygon(polygone)
                 Exterior = Path(list(polygone.exterior.coords))
 
-                Exterior = polygone.__raster__(Coordinate)
+                Exterior = polygone.__raster__(coordinate)
 
                 raster.append(Exterior.astype(float))
 
                 Exterior = numpy.sum(raster, axis=0)
 
+        else:
+            Exterior = self.Object.__raster__(coordinate).reshape(shape)
+
         self.Raster = Exterior
 
         return self.Raster
 
-    def Plot(self, **kwargs):
+    def Plot(self,
+             show_fibers: bool = True,
+             show_added: bool = True,
+             show_removed: bool = True,
+             **kwargs) -> Scene2D:
+
         Fig = Scene2D(unit_size=(6, 6))
 
         ax = Axis(row=0,
@@ -279,46 +265,22 @@ class BaseFused():
 
         Fig.AddAxes(ax)._generate_axis_()
 
-        self.Object.__render__(ax)
+        self.Object._render_(ax)
 
-        if 'Fibers' in kwargs:
-            for fiber in self.Fibers:
-                fiber.__render__(ax)
+        if show_fibers:
+            for fiber in self.fiber_list:
+                fiber._render_(ax)
 
-        if 'Added' in kwargs:
-            self.Added.__render__(ax)
+        if show_added:
+            self.added_section._render_(ax)
 
-        if 'Removed' in kwargs:
-            self.Removed.__render__(ax)
+        if show_removed:
+            self.removed_section._render_(ax)
 
         return Fig
 
-    def Rotate(self, *args, **kwargs):
-        self.Object = self.Object.Rotate(*args, **kwargs)
+    def rotate(self, *args, **kwargs):
+        self.Object = self.Object.rotate(*args, **kwargs)
 
-
-class BackGround(Buffer.Polygon):
-    Name: str = 'BackGround'
-    Index: float
-
-    def __new__(cls, Radius: float = 1000, Index: float = 1):
-        Instance = Buffer.Polygon.__new__(cls)
-        return Instance
-
-    def __init__(self, Radius: float = 1000, Index: float = 1):
-        super().__init__(ORIGIN.buffer(Radius, resolution=RESOLUTION))
-
-    def Rotate(self, *args, **kwargs):
-        return self
-
-    def Rasterize(self, Coordinate: numpy.ndarray, Shape: list):
-
-        Exterior = Path(list(self.exterior.coords))
-
-        Exterior = Exterior.contains_points(Coordinate).reshape(Shape)
-
-        Exterior = Exterior.astype(float)
-
-        self.Raster = Exterior
 
 #  -

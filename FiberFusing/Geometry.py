@@ -122,12 +122,12 @@ class Geometry(object):
     @property
     def MaxIndex(self) -> float:
         ObjectList = self.Objects
-        return max( [obj.Index for obj in ObjectList] )[0]
+        return max([obj.index for obj in ObjectList])[0]
 
     @property
     def MinIndex(self) -> float:
         ObjectList = self.Objects
-        return min([obj.Index for obj in ObjectList])[0]
+        return min([obj.index for obj in ObjectList])[0]
 
     @property
     def xMax(self) -> float:
@@ -152,11 +152,11 @@ class Geometry(object):
     def GetIndices(self) -> None:
         self.Indices = []
         for obj in self.Objects:
-            self.Indices.append(float(obj.Index))
+            self.Indices.append(float(obj.index))
 
-    def Rotate(self, Angle: float) -> None:
+    def Rotate(self, angle: float) -> None:
         for obj in self.Objects:
-            obj = obj.Rotate(Angle=Angle)
+            obj = obj.rotate(angle=angle)
 
     def DownscaleImage(self, Array, Size) -> numpy.ndarray:
         image = Image.fromarray(Array)
@@ -169,9 +169,9 @@ class Geometry(object):
         self.coords = numpy.vstack((self.UpScaleAxes.x.Mesh.flatten(), self.UpScaleAxes.y.Mesh.flatten())).T
 
         for polygone in self.Objects:
-            polygone.Rasterize(Coordinate=self.coords, Shape=self.UpScaleAxes.Shape)
-            UpScaleMesh[numpy.where(polygone.Raster > 0)] = 0
-            UpScaleMesh += polygone.Raster * polygone.Index + numpy.random.rand(1) * self.index_scrambling
+            raster = polygone.get_rasterized_mesh(coordinate=self.coords, shape=self.UpScaleAxes.Shape)
+            UpScaleMesh[numpy.where(raster > 0)] = 0
+            UpScaleMesh += raster * polygone.index + numpy.random.rand(1) * self.index_scrambling
 
         Mesh = self.DownscaleImage(Array=UpScaleMesh, Size=self.Axes.Shape)
 
