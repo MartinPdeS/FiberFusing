@@ -55,7 +55,7 @@ jobs:
       - name: "Set-up: Python ${{ matrix.python-version[1] }}"
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: ${{ matrix.python-version[0] }}
 
       - name: "Install: Dependencies"
         run: |
