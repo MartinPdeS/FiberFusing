@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 jobs:
-  ManyLinux_x86_64:
+  Ubuntu_x86_64:
     uses: MartinPdeS/PyMieSim/.github/workflows/ubuntu.yml@master
     secrets: inherit
     with:
@@ -23,7 +23,7 @@ jobs:
 
 
   job_publish_wheel:
-    needs: [Windows_x86_64, macos_x86_64, ManyLinux_x86_64]
+    needs: [Ubuntu_x86_64]
     name: "Publish wheel to PyPi"
     runs-on: ubuntu-latest
     steps:
