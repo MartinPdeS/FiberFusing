@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   Ubuntu_x86_64:
-    uses: MartinPdeS/FiberFusing/.github/workflows/ubuntu.yml@master
+    uses: MartinPdeS/FiberFusing/.github/workflows/ubuntu_x86_64.yml@master
     secrets: inherit
     with:
       publish_wheel: true
