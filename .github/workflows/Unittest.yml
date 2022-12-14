@@ -36,5 +36,5 @@ jobs:
 
       - name: Run unittests
         run: |
-          python -m pip install pyface
-          python Tests/Unittest.py
+          python -m pip install pytest
+          pytest tests

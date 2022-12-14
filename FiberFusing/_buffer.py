@@ -34,10 +34,14 @@ class Point(geo.Point):
 
     @_pass_info_output_
     def __add__(self, other):
+        if not isinstance(other, geo.Point):
+            other = geo.Point(other)
         return Point([self.x + other.x, self.y + other.y])
 
     @_pass_info_output_
     def __sub__(self, other):
+        if not isinstance(other, geo.Point):
+            other = geo.Point(other)
         return Point([self.x - other.x, self.y - other.y])
 
     @_pass_info_output_
@@ -87,6 +91,135 @@ class Point(geo.Point):
     def Plot(self, Figure=None, Ax=None, Return=False, Show=True):
         Figure = Scene2D(unit_size=(6, 6))
         Ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True)
+        Figure.AddAxes(Ax)
+        Figure._generate_axis_()
+
+        self._render_(Ax)
+
+        return Figure
+
+    def __raster__(self):
+        raise Exception("Rastering not available for points.")
+
+
+class LineString(geo.LineString):
+    name: str = None
+    color: str = 'black'
+    alpha: float = 0.9
+    linewidth: int = 10
+    index: float = 1
+    attributes: list = ('name', 'color', 'alpha', 'linewidth', 'index')
+
+    def _pass_info_output_(function, *args, **kwargs):
+        def wrapper(*args, **kwargs):
+            output = function(*args, **kwargs)
+            self = args[0]
+            output.__class__ = self.__class__
+            for attr in self.attributes:
+                setattr(output, attr, getattr(self, attr))
+            return output
+
+        return wrapper
+
+    def __init__(self, *args, name: str = 'none', index: float = 1, **kwargs) -> None:
+        self.name = name
+
+    def __new__(cls, *args, name: str = 'none', index: float = 1, **kwargs):
+        instance = geo.LineString(*args, **kwargs)
+        instance.__class__ = cls
+        return instance
+
+    @_pass_info_output_
+    def scale(self, factor: float, origin: geo.Point = ORIGIN):
+        o = affinity.scale(self, xfact=factor, yfact=factor, origin=origin)
+        o.__class__ = self.__class__
+        return o
+
+    @_pass_info_output_
+    def translate(self, shift: tuple):
+        if isinstance(shift, geo.Point):
+            shift = (shift.x, shift.y)
+
+        o = affinity.translate(self, *shift)
+        o.__class__ = self.__class__
+        return o
+
+    @_pass_info_output_
+    def rotate(self, angle, origin=ORIGIN):
+        o = affinity.rotate(self, angle=angle, origin=origin)
+        o.__class__ = self.__class__
+        return o
+
+    @property
+    def center(self):
+        return self.centroid.x, self.centroid.y
+
+    @_pass_info_output_
+    def centering(self, center):
+        P0, P1 = self.boundary
+
+        mid_point = self.mid_point
+        xShift = center.x - mid_point.x
+        yShift = center.y - mid_point.y
+        Vector = [xShift, yShift]
+
+        P2 = Point(P0).translate(shift=Vector)
+        P3 = Point(P1).translate(shift=Vector)
+
+        return LineString([P2, P3])
+
+    def MakeLength(self, length: float):
+        P0, P1 = self.boundary
+        distance = numpy.sqrt((P0.x - P1.x)**2 + (P0.y - P1.y)**2)
+        factor = length / distance
+        return self.Extend(factor=factor)
+
+    @_pass_info_output_
+    def Extend(self, factor: float = 1):
+        return LineString(affinity.scale(self,
+                                         xfact=factor,
+                                         yfact=factor,
+                                         origin=self.mid_point))
+
+    @property
+    def mid_point(self):
+        P0, P1 = self.boundary
+        return Point([(P0.x + P1.x) / 2, (P0.y + P1.y) / 2])
+
+    @property
+    def Perpendicular(self):
+        return self.rotate(angle=90, origin=self.mid_point)
+
+    @property
+    def Vector(self):
+        P0, P1 = self.boundary
+
+        dy = P0.y - P1.y
+        dx = P0.x - P1.x
+        if dx == 0:
+            return numpy.asarray([0, 1])
+        else:
+            norm = numpy.sqrt(1 + (dy / dx)**2)
+            return numpy.array([1, dy / dx]) / norm
+
+    @property
+    def boundary(self):
+        boundaries = super().boundary
+        return (Point(bound) for bound in boundaries)
+
+    def get_position_parametrisation(self, x):
+        P0, P1 = self.boundary
+        return P0 - (P0 - P1) * x
+
+    def _render_(self, Ax):
+        if self.is_empty:
+            return
+
+        Ax._ax.plot(*self.xy, color=self.color, alpha=self.alpha)
+
+    def Plot(self, Figure=None, Ax=None, Return=False, Show=True):
+        Figure = Scene2D(unit_size=(6, 6))
+        Ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True, equal_limits=True)
         Figure.AddAxes(Ax)
         Figure._generate_axis_()
 

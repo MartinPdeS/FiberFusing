@@ -12,26 +12,26 @@ from MPSPlots.Render2D import Scene2D, Axis
 class Connection():
     def __init__(self, Fiber0, Fiber1, topology: str = None, Shift: float = None):
         self._topology = topology
-        self.Fibers = [Fiber0, Fiber1]
-        self._Shift = Shift
-        self._centerLine = None
+        self.fiber_list = [Fiber0, Fiber1]
+        self._shift = Shift
+        self._center_line = None
         self._extended_center_line = None
-        self.Initialize()
+        self._initialize_()
 
-    def Initialize(self):
-        self._Virtual = None
-        self._Added = None
-        self._Removed = None
-        self._Mask = None
+    def _initialize_(self):
+        self._virtual_circles = None
+        self._added_section = None
+        self._removed = None
+        self._mask = None
 
     @property
     def Shift(self):
-        return self._Shift
+        return self._shift
 
     @Shift.setter
-    def Shift(self, Value):
-        self._Shift = Value
-        self.Initialize()
+    def Shift(self, value):
+        self._shift = value
+        self._initialize_()
 
     @property
     def topology(self):
@@ -42,76 +42,74 @@ class Connection():
         self._topology = Value
 
     def __repr__(self):
-        return f"Connected fiber: {self._Shift = } \n{self.topology = } \n{self.Removed.Area = :.2f} \n{self.Added.Area = :.2f} \n\n"
+        return f"Connected fiber: {self._shift = } \n{self.topology = } \n{self.Removed.Area = :.2f} \n{self.Added.Area = :.2f} \n\n"
 
     def __getitem__(self, idx):
-        return self.Fibers[idx]
+        return self.fiber_list[idx]
 
     def __setitem__(self, idx, Item):
-        self.Fibers[idx] = Item
+        self.fiber_list[idx] = Item
 
     @property
-    def Virtual(self,):
-        if self._Virtual is None:
+    def virtual_circle(self,):
+        if self._virtual_circles is None:
             self.compute_virtual_circles()
-        return self._Virtual
+        return self._virtual_circles
 
     @property
     def Mask(self,):
-        if self._Mask is None:
+        if self._mask is None:
             self.compute_mask()
-        return self._Mask
+        return self._mask
 
     @property
     def Added(self):
-        if self._Added is None:
+        if self._added_section is None:
             self.compute_added_section()
-        return self._Added
+        return self._added_section
 
     @property
     def Removed(self):
-        if self._Removed is None:
+        if self._removed is None:
             self.compute_removed_section()
-        return self._Removed
+        return self._removed
 
     @property
-    def get_limit_added_area(self):
+    def limit_added_area(self):
         return self[0].union(self[1]).convex_hull - self[0] - self[1]
 
     def compute_removed_section(self):
-        self._Removed = Intersection(*self)
-        self._Removed.Area = self[1].area + self[0].area - Union(*self).area
-        self._Removed.facecolors = 'k'
+        self._removed = Intersection(*self)
+        self._removed.Area = self[1].area + self[0].area - Union(*self).area
 
-    def Computetopology(self):
-        self._topology = 'convex' if self.Removed.Area > self.get_limit_added_area.area else 'concave'
+    def compute_topology(self) -> None:
+        self._topology = 'convex' if self.Removed.Area > self.limit_added_area.area else 'concave'
 
-    def get_conscripted_circles(self, Type='Exterior'):
-        PerpendicularVector = self.extended_center_line.Perpendicular.Vector
+    def get_conscripted_circles(self, Type='Exterior') -> _buffer.Circle:
+        perpendicular_vector = self.extended_center_line.Perpendicular.Vector
 
-        Point = self.centerLine.MidPoint.Shift(PerpendicularVector * self._Shift)
+        Point = self.center_line.mid_point.translate(perpendicular_vector * self._shift)
 
-        if Type in ['Exterior', 'concave']:
-            Radius = numpy.sqrt(self._Shift**2 + (self.centerLine.length / 2)**2) - self[0].radius
+        if Type.lower() in ['exterior', 'concave']:
+            radius = numpy.sqrt(self._shift**2 + (self.center_line.length / 2)**2) - self[0].radius
 
-        if Type in ['Interior', 'convex']:
-            Radius = numpy.sqrt(self._Shift**2 + (self.centerLine.length / 2)**2) + self[0].radius
+        if Type.lower() in ['interior', 'convex']:
+            radius = numpy.sqrt(self._shift**2 + (self.center_line.length / 2)**2) + self[0].radius
 
-        return Point.Buffer(Radius)
+        return _buffer.Circle(center=Point, radius=radius)
 
-    def compute_virtual_circles(self):
-
+    def compute_virtual_circles(self) -> None:
         Circonscript0 = self.get_conscripted_circles(Type=self.topology)
 
-        Circonscript1 = Circonscript0.Rotate(angle=180, Origin=self.centerLine.MidPoint)
+        Circonscript1 = Circonscript0.rotate(angle=180, origin=self.center_line.mid_point)
 
-        self._Virtual = Circonscript0, Circonscript1
+        self._virtual_circles = Circonscript0, Circonscript1
 
-    def get_connected_point(self):
-        P0 = NearestPoints(self.Virtual[0], self[0])
-        P1 = NearestPoints(self.Virtual[1], self[0])
-        P2 = NearestPoints(self.Virtual[0], self[1])
-        P3 = NearestPoints(self.Virtual[1], self[1])
+    def get_connected_point(self) -> tuple:
+        P0 = NearestPoints(self.virtual_circle[0], self[0])
+        P1 = NearestPoints(self.virtual_circle[1], self[0])
+        P2 = NearestPoints(self.virtual_circle[0], self[1])
+        P3 = NearestPoints(self.virtual_circle[1], self[1])
 
         return P0, P1, P2, P3
 
@@ -119,69 +117,66 @@ class Connection():
         P0, P1, P2, P3 = self.get_connected_point()
 
         if self.topology == 'concave':
-            Mask = Buffer.Polygon([P0, P1, P3, P2])
+            Mask = _buffer.Polygon([P0, P1, P3, P2])
 
-            self._Mask = Mask - self.Virtual[0] - self.Virtual[1]
+            self._mask = Mask - self.virtual_circle[0] - self.virtual_circle[1]
 
         elif self.topology == 'convex':
-            MidPoint = Buffer.Line([self[0].center, self[1].center]).MidPoint
+            mid_point = _buffer.LineString([self[0].center, self[1].center]).mid_point
 
-            mask0 = _buffer.Polygon([MidPoint, P0, P2]).scale(factor=1000, origin=MidPoint)
+            mask0 = _buffer.Polygon([mid_point, P0, P2]).scale(factor=1000, origin=mid_point)
 
-            mask1 = _buffer.Polygon([MidPoint, P1, P3]).scale(factor=1000, origin=MidPoint)
+            mask1 = _buffer.Polygon([mid_point, P1, P3]).scale(factor=1000, origin=mid_point)
 
-            self._Mask = Union(mask0, mask1) & Union(*self.Virtual)
+            self._mask = Union(mask0, mask1) & Union(*self.virtual_circle)
 
-        self._Mask = Buffer.to_buffer(self._Mask)
+        self._mask = _buffer.Polygon(self._mask)
 
-    def compute_added_section(self):
+    def compute_added_section(self) -> None:
         if self.topology == 'convex':
-            self._Added = (self.Mask - self[0] - self[1]) & Intersection(*self.Virtual)
+            self._added_section = (self.Mask - self[0] - self[1]) & Intersection(*self.virtual_circle)
 
         elif self.topology == 'concave':
-            self._Added = self.Mask - self[0] - self[1] - Union(*self.Virtual)
+            self._added_section = self.Mask - self[0] - self[1] - Union(*self.virtual_circle)
 
-        self._Added = Buffer.to_buffer(self._Added, Area=self._Added.area).Clean()
+        area = self._added_section.area
+        self._added_section = _buffer.GeometryCollection(self._added_section).remove_non_polygon()
+        self._added_section.Area = area
 
-    def compute_removed_section(self) -> None:
-        a = Union(*self.Fibers)
-        self._Removed = Intersection(*self)
-        self._Removed.Area = self[1].area + self[0].area - Union(*self.Fibers).area
-        self._Removed.facecolor = 'r'
+    def __plot__(self,
+                 ax,
+                 show_fiber: bool = True,
+                 show_mask: bool = False,
+                 show_virtual: bool = False,
+                 show_added: bool = False,
+                 show_removed: bool = False,
+                 **kwargs):
 
-    def __plot__(self, ax,
-                       Fibers: bool = True,
-                       Mask: bool = False,
-                        Virtual: bool = False,
-                        Added: bool = False,
-                        Removed: bool = False,
-                        **kwargs):
-
-        if Fibers:
+        if show_fiber:
             for fiber in self:
                 fiber._render_(ax)
 
-        if Mask:
+        if show_mask:
             self.Mask._render_(ax)
 
-        if Virtual:
-            self.Virtual[0]._render_(ax)
-            self.Virtual[1]._render_(ax)
+        if show_virtual:
+            self.virtual_circle[0]._render_(ax)
+            self.virtual_circle[1]._render_(ax)
 
-        if Added:
+        if show_added:
             self.Added._render_(ax)
 
-        if Removed:
+        if show_removed:
             self.Removed._render_(ax)
 
     @property
-    def centerLine(self):
-        if self._centerLine is None:
+    def center_line(self):
+        if self._center_line is None:
             self.compute_center_line()
-        return self._centerLine
+        return self._center_line
 
     def compute_center_line(self) -> None:
-        self._centerLine = Buffer.Line([self[0].center, self[1].center])
+        self._center_line = _buffer.LineString([self[0].center, self[1].center])
 
     @property
     def extended_center_line(self):
@@ -190,32 +185,31 @@ class Connection():
         return self._extended_center_line
 
     def compute_extended_center_line(self):
-        Line = self.centerLine.MakeLength(2 * self[0].radius + 2 * self[1].radius)
-        self._extended_center_line = Buffer.Line(Line.intersection(Union(*self)))
+        line = self.center_line.MakeLength(2 * self[0].radius + 2 * self[1].radius)
+        self._extended_center_line = _buffer.LineString(line.intersection(Union(*self)))
 
     @property
     def TotalArea(self):
         return Union(*self, self.Added)
 
-    def Split(self, Geometry, Position):
+    def Split(self, Geometry, Position) -> _buffer.Polygon:
+        line = self.extended_center_line.centering(center=_buffer.Point(Position))
 
-        Line = self.extended_center_line.centering(center=Buffer.Point(Position))
+        line = line.rotate(angle=90).Extend(factor=2)
 
-        Line = Line.Rotate(angle=90)
+        split_geometry = split(Geometry, line).geoms
 
-        Splitted = split(Geometry, Line).geoms
+        split_geometry = split_geometry[0] if split_geometry[0].area < split_geometry[1].area else split_geometry[1]
 
-        Splitted = Splitted[0] if Splitted[0].area < Splitted[1].area else Splitted[1]
+        return _buffer.Polygon(split_geometry)
 
-        return Buffer.Polygon(Splitted)
-
-    def ComputeCoreShift(self, x: float = 0.5):
+    def compute_core_shift(self, x: float = 0.5) -> float:
 
         P0, P1 = self.extended_center_line.boundary
 
-        C0, C1 = self[0].center, self[1].center
+        _, C1 = self[0].center, self[1].center
 
-        Position = self.extended_center_line.GetPosition(x)
+        Position = self.extended_center_line.get_position_parametrisation(x)
 
         ExternalPart = self.Split(Geometry=self.TotalArea, Position=Position)
 
@@ -227,13 +221,13 @@ class Connection():
 
         return Cost
 
-    def OptimizeCorePosition(self):
-        res = minimize_scalar(self.ComputeCoreShift, bounds=(0.50001, 0.99), method='bounded', options={'xatol': 0.001})
+    def optimize_core_position(self) -> None:
+        minimize_scalar(self.compute_core_shift, bounds=(0.50001, 0.99), method='bounded', options={'xatol': 0.001})
         self[0].core.translate(-self.CoreShift)
         self[1].core.translate(self.CoreShift)
 
-    def Plot(self):
-        Figure = Scene2D('FiberFusing figure', UnitSize=(6,6))
+    def Plot(self) -> Scene2D:
+        Figure = Scene2D('FiberFusing figure', UnitSize=(6, 6))
 
         ax = Axis(Row=0,
                   Col=0,
@@ -252,7 +246,7 @@ class Connection():
 
         self.Added._render_(ax)
 
-        Figure.Show()
+        return figure
 
 
 # -

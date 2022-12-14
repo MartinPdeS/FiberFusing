@@ -7,7 +7,7 @@ import shapely.geometry as geo
 
 
 def NearestPoints(Object0, Object1):
-    if isinstance(Object0, Buffer.Polygon):
+    if isinstance(Object0, geo.Polygon):
         P = nearest_points(Object0.exterior, Object1.exterior)
         return Buffer.Point(P[0])
 

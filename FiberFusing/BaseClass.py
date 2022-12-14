@@ -71,7 +71,7 @@ class BaseFused():
     def compute_topology(self) -> None:
         Limit = []
         for connection in self.Connections:
-            Limit.append(connection.LimitAdded)
+            Limit.append(connection.limit_added_area)
 
         OverallLimit = Utils.Union(*Limit) - Utils.Union(*self.fiber_list)
 
@@ -162,7 +162,7 @@ class BaseFused():
 
     def compute_core_position(self):
         for connection in self.Connections:
-            connection.OptimizeCorePosition()
+            connection.optimize_core_position()
 
     def populate_fiber_list(self):
         self._fiber_list = []
