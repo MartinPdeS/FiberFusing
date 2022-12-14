@@ -11,7 +11,7 @@ permissions:
 
 jobs:
   Ubuntu_x86_64:
-    uses: MartinPdeS/PyMieSim/.github/workflows/ubuntu.yml@master
+    uses: MartinPdeS/FiberFusing/.github/workflows/ubuntu.yml@master
     secrets: inherit
     with:
       publish_wheel: true

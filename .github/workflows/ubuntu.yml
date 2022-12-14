@@ -10,7 +10,6 @@ on:
       update_coverage:
         type: boolean
         default: false
-
       publish_wheel:
         type: boolean
         required: false
@@ -23,7 +22,6 @@ on:
         type: string
         required: false
         default: "3.9"
-
       upload_documentation:
         type: boolean
         required: false
