@@ -34,15 +34,19 @@ on:
 
 jobs:
   Testing:
-    name: "Testing: Python ${{ matrix.python-version }}"
-    if: "${{ inputs.Testing == true }}"
+    name: "Python ${{ matrix.python-version[1] }}"
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python-version: ${{ fromJson(inputs.PythonVersion) }}
-
+        python-version: ${{ fromJson(inputs.python_wheel) }}
     steps:
+
+      - name: "Set up QEMU"
+        uses: docker/setup-qemu-action@v2
+        with:
+          platform: arm64
+
       - name: "Checkout repository"
         uses: actions/checkout@v3
         with:
@@ -68,13 +72,21 @@ jobs:
           coverage combine
           coverage report -m --skip-covered
           coverage json -o CoverageReport.json
+
+      - name: "Computing total coverage"
+        run: |
           export TOTAL=$(python -c "import json;print(json.load(open('CoverageReport.json'))['totals']['percent_covered_display'])")
           echo "total=$TOTAL" >> $GITHUB_ENV
-          echo "### Total coverage: ${TOTAL}%" >> $GITHUB_STEP_SUMMARY
 
+      - name: "Upload: Wheel"
+        if: ${{ inputs.publish_wheel == true }}"
+        uses: actions/upload-artifact@v3
+        with:
+          name: "manylinux_wheel_python${{ matrix.python-version[1] }}"
+          path: ./dist/*
 
-      - name: "Make: Coverage badge"
-        if: "${{ inputs.UploadCoverage == true }}"
+      - name: "Upload: Coverage badge"
+        if: ${{ inputs.update_coverage == true }}"
         uses: schneegans/dynamic-badges-action@v1.4.0
         with:
           auth: ${{ secrets.GIST_TOKEN }}
@@ -88,9 +100,9 @@ jobs:
 
 
   Documentation:
-    needs: [Testing]
-    name: "Building documentation: Python ${{ inputs.Python_documentation }}"
-    if: ${{ inputs.UploadDocumentation == true }}"
+    needs: [job_create_wheel]
+    if: ${{ inputs.upload_documentation == true }}"
+    name: "Publish documentation to RTD"
     runs-on: ubuntu-latest
     steps:
 
@@ -117,41 +129,6 @@ jobs:
           build_dir: docs/build/html
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  UploadingWheel:
-    needs: [Testing]
-    name: "Upload wheel to PyPi: Python ${{ matrix.python-version }}"
-    if: "${{ inputs.UploadWheel == true }}"
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ${{ fromJson(inputs.PythonVersion) }}
-    steps:
-
-      - name: "Checkout repository"
-        uses: actions/checkout@v3
-        with:
-          submodules: 'true'
-
-      - name: "Set-up: Python ${{ matrix.python-version }}"
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: "Install: Dependencies"
-        run: |
-          echo "CIBW_PYTHON=${{ matrix.python-version }}" | tr -d "." >> $GITHUB_ENV
-
-      - name: "Build: Wheels"
-        run: |
-          python setup.py bdist_wheel
-
-      - name: "Upload: wheel"
-        uses: actions/upload-artifact@v3
-        with:
-          name: "ubuntu_wheel_python${{ matrix.python-version }}"
-          path: ./dist/*
 
 
 
