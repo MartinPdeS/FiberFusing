@@ -1,0 +1,210 @@
+name: Ubuntu-Workflow
+
+
+permissions:
+  contents: write
+
+on:
+  workflow_call:
+    inputs:
+      PythonVersion:
+        type: string
+        required: false
+        default: "['3.7']"
+      Testing:
+        type: boolean
+        required: false
+        default: true
+      UploadWheel:
+        type: boolean
+        required: false
+        default: false
+      UploadCoverage:
+        type: boolean
+        required: false
+        default: false
+      UploadDocumentation:
+        type: boolean
+        required: false
+        default: false
+      Python_documentation:
+        type: string
+        required: false
+        default: "3.9"
+      Python_twine:
+        type: string
+        required: false
+        default: "3.9"
+
+
+jobs:
+  Testing:
+    name: "Testing: Python ${{ matrix.python-version }}"
+    if: "${{ inputs.Testing == true }}"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ${{ fromJson(inputs.PythonVersion) }}
+
+    steps:
+      - name: "Checkout repository"
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+
+      - name: "Set-up: Python ${{ matrix.python-version }}"
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: "Install: Dependencies"
+        run: |
+          python -m pip install --upgrade pip
+          sudo apt install -y ninja-build xvfb x11-utils libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 xdotool
+          Xvfb :99 &
+          export DISPLAY=:99
+
+      - name: "Run: Tests"
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .[devs_all]
+          mkdir build
+          cd build
+          cmake -G"Unix Makefiles" -DPYBIND11_PYTHON_VERSION=${{ matrix.python-version }}  ../
+          cd ..
+          make -C build install
+          coverage run -p -m pytest -s
+          coverage combine
+          coverage report -m --skip-covered
+          coverage json -o CoverageReport.json
+          export TOTAL=$(python -c "import json;print(json.load(open('CoverageReport.json'))['totals']['percent_covered_display'])")
+          echo "total=$TOTAL" >> $GITHUB_ENV
+          echo "### Total coverage: ${TOTAL}%" >> $GITHUB_STEP_SUMMARY
+
+
+      - name: "Make: Coverage badge"
+        if: "${{ inputs.UploadCoverage == true }}"
+        uses: schneegans/dynamic-badges-action@v1.4.0
+        with:
+          auth: ${{ secrets.GIST_TOKEN }}
+          gistID: 16caa7bb2a83d5af36740e4a6a0f861d
+          filename: covbadge.json
+          label: Coverage
+          message: ${{ env.total }}%
+          minColorRange: 50
+          maxColorRange: 90
+          valColorRange: ${{ env.total }}
+
+
+  Documentation:
+    needs: [Testing]
+    name: "Building documentation: Python ${{ inputs.Python_documentation }}"
+    if: ${{ inputs.UploadDocumentation == true }}"
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: "Checkout repository"
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+
+      - name: "Set-up: Python ${{ inputs.Python_documentation }}"
+        uses: actions/setup-python@v4
+        with:
+          python-version: "${{ inputs.Python_documentation }}"
+
+      - name: "Build: documentation"
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e .[devs_all]
+          mkdir build
+          cd build
+          cmake -G"Unix Makefiles" -DPYBIND11_PYTHON_VERSION=${{ inputs.Python_documentation }}  ../
+          cd ..
+          make -C build install
+          make -C docs html
+
+      - name: "Upload: GitHub Pages"
+        uses: crazy-max/ghaction-github-pages@v3
+        with:
+          target_branch: gh-pages
+          build_dir: docs/build/html
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  UploadingWheel:
+    needs: [Testing]
+    name: "Upload wheel to PyPi: Python ${{ matrix.python-version }}"
+    if: "${{ inputs.UploadWheel == true }}"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ${{ fromJson(inputs.PythonVersion) }}
+    steps:
+
+      - name: "Checkout repository"
+        uses: actions/checkout@v3
+        with:
+          submodules: 'true'
+
+      - name: "Set-up: Python ${{ matrix.python-version }}"
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: "Install: Dependencies"
+        run: |
+          echo "CIBW_PYTHON=${{ matrix.python-version }}" | tr -d "." >> $GITHUB_ENV
+
+      - name: "Build: Wheels"
+        uses: pypa/cibuildwheel@v2.10.2
+        env:
+          CIBW_BEFORE_ALL: CC=gcc CXX=g++
+          CIBW_BEFORE_BUILD: cmake -G"Unix Makefiles" -DPYBIND11_PYTHON_VERSION=${{ matrix.python-version }}  . && make install
+          CIBW_BUILD: "cp${{ env.CIBW_PYTHON }}-manylinux_x86_64"
+        with:
+          output-dir: dist
+
+      - name: "Upload: wheel"
+        uses: actions/upload-artifact@v3
+        with:
+          name: "ubuntu_wheel_python${{ matrix.python-version }}"
+          path: ./dist/*
+
+
+  PublishingWheel:
+    needs: [UploadingWheel]
+    name: "Publish wheel to PyPi: Python ${{ matrix.python-version }}"
+    if: "${{ inputs.UploadWheel == true }}"
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: "Set-up: Python ${{ inputs.Python_twine }}"
+        uses: actions/setup-python@v4
+        with:
+          python-version: "${{ inputs.Python_twine }}"
+
+      - name: "Install: Dependencies"
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install twine
+
+      - name: "Download: wheel"
+        uses: actions/download-artifact@v3
+        with:
+          path: dist
+
+      - name: "Publish: Wheel"
+        uses: pypa/gh-action-pypi-publish@v1.5.1
+        with:
+          packages_dir: dist/*
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+
+
+
+
+
+# -

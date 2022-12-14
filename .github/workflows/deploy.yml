@@ -1,0 +1,22 @@
+name: Deploy
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: write
+
+jobs:
+  ManyLinux_x86_64:
+    uses: MartinPdeS/PyMieSim/.github/workflows/ubuntu.yml@master
+    secrets: inherit
+    with:
+      publish_wheel: true
+      python_wheel: "[['3.9', 'cp39']]"
+      python_twine: '3.8'
+      upload_documentation: true
+      python_documentation: "3.9" #no documentation for python 3.7 (pickle5 not present˘)
+      update_coverage: true

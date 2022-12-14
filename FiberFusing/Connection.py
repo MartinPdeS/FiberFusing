@@ -3,7 +3,6 @@ import logging
 from shapely.ops import split
 from scipy.optimize import minimize_scalar
 
-import FiberFusing.Buffer as Buffer
 import FiberFusing._buffer as _buffer
 from FiberFusing.Utils import Union, Intersection, NearestPoints
 from MPSPlots.Render2D import Scene2D, Axis
@@ -134,23 +133,21 @@ class Connection():
 
     def compute_added_section(self) -> None:
         if self.topology == 'convex':
-            self._added_section = (self.Mask - self[0] - self[1]) & Intersection(*self.virtual_circle)
+            _added_section = (self.Mask - self[0] - self[1]) & Intersection(*self.virtual_circle)
 
         elif self.topology == 'concave':
-            self._added_section = self.Mask - self[0] - self[1] - Union(*self.virtual_circle)
+            _added_section = self.Mask - self[0] - self[1] - Union(*self.virtual_circle)
 
-        area = self._added_section.area
-        self._added_section = _buffer.GeometryCollection(self._added_section).remove_non_polygon()
-        self._added_section.Area = area
+        self._added_section = _buffer.GeometryCollection(_added_section).remove_non_polygon()
+        self._added_section.Area = _added_section.area
 
-    def __plot__(self,
+    def __render__(self,
                  ax,
                  show_fiber: bool = True,
                  show_mask: bool = False,
                  show_virtual: bool = False,
                  show_added: bool = False,
-                 show_removed: bool = False,
-                 **kwargs):
+                 show_removed: bool = False) -> None:
 
         if show_fiber:
             for fiber in self:
@@ -184,7 +181,7 @@ class Connection():
             self.compute_extended_center_line()
         return self._extended_center_line
 
-    def compute_extended_center_line(self):
+    def compute_extended_center_line(self) -> None:
         line = self.center_line.MakeLength(2 * self[0].radius + 2 * self[1].radius)
         self._extended_center_line = _buffer.LineString(line.intersection(Union(*self)))
 
@@ -215,16 +212,16 @@ class Connection():
 
         Cost = abs(ExternalPart.area - self[0].area / 2)
 
-        self.CoreShift = (Position - C1)
+        self.core_shift = (Position - C1)
 
-        logging.debug(f' Core positioning optimization: {x = :+.2f} \t -> \t{Cost = :<10.2f} -> \t\t{self.CoreShift = }')
+        logging.debug(f' Core positioning optimization: {x = :+.2f} \t -> \t{Cost = :<10.2f} -> \t\t{self.core_shift = }')
 
         return Cost
 
     def optimize_core_position(self) -> None:
         minimize_scalar(self.compute_core_shift, bounds=(0.50001, 0.99), method='bounded', options={'xatol': 0.001})
-        self[0].core.translate(-self.CoreShift)
-        self[1].core.translate(self.CoreShift)
+        self[0].core.translate(-self.core_shift)
+        self[1].core.translate(self.core_shift)
 
     def Plot(self) -> Scene2D:
         Figure = Scene2D('FiberFusing figure', UnitSize=(6, 6))
