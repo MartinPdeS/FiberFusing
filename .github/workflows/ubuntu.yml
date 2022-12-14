@@ -7,31 +7,28 @@ permissions:
 on:
   workflow_call:
     inputs:
-      PythonVersion:
+      update_coverage:
+        type: boolean
+        default: false
+
+      publish_wheel:
+        type: boolean
+        required: false
+        default: false
+      python_wheel:
         type: string
         required: false
         default: "['3.7']"
-      Testing:
-        type: boolean
-        required: false
-        default: true
-      UploadWheel:
-        type: boolean
-        required: false
-        default: false
-      UploadCoverage:
-        type: boolean
-        required: false
-        default: false
-      UploadDocumentation:
-        type: boolean
-        required: false
-        default: false
-      Python_documentation:
+      python_twine:
         type: string
         required: false
         default: "3.9"
-      Python_twine:
+
+      upload_documentation:
+        type: boolean
+        required: false
+        default: false
+      python_documentation:
         type: string
         required: false
         default: "3.9"
