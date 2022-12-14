@@ -159,34 +159,6 @@ jobs:
           path: ./dist/*
 
 
-  PublishingWheel:
-    needs: [UploadingWheel]
-    name: "Publish wheel to PyPi: Python ${{ matrix.python-version }}"
-    if: "${{ inputs.UploadWheel == true }}"
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: "Set-up: Python ${{ inputs.Python_twine }}"
-        uses: actions/setup-python@v4
-        with:
-          python-version: "${{ inputs.Python_twine }}"
-
-      - name: "Install: Dependencies"
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install twine
-
-      - name: "Download: wheel"
-        uses: actions/download-artifact@v3
-        with:
-          path: dist
-
-      - name: "Publish: Wheel"
-        uses: pypa/gh-action-pypi-publish@v1.5.1
-        with:
-          packages_dir: dist/*
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
 
 
 
