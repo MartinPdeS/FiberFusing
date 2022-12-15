@@ -4,6 +4,7 @@ from shapely.ops import nearest_points
 import FiberFusing.Buffer as Buffer
 import FiberFusing._buffer as _buffer
 import shapely.geometry as geo
+from MPSPlots.Render2D import Scene2D, Axis
 
 
 def NearestPoints(Object0, Object1):
@@ -26,10 +27,14 @@ def Union(*Objects):
 
 def Intersection(*Objects):
     Output = Objects[0]
-    for geo in Objects[1:]:
-        Output = Output.intersection(geo)
+    for geometry in Objects[1:]:
+        output = Output.intersection(geometry)
 
-    return Buffer.to_buffer(Output)
+    if isinstance(output, (geo.GeometryCollection, geo.MultiPolygon)):
+        return _buffer.GeometryCollection(output)
+
+    if isinstance(output, geo.Polygon):
+        return _buffer.Polygon(output)
 
 
 # 4th order accurate gradient function based on 2nd order version from http://projects.scipy.org/scipy/numpy/browser/trunk/numpy/lib/function_base.py
@@ -101,5 +106,17 @@ def gradientO4(f, *varargs):
         return outvals[0]
     else:
         return outvals
+
+
+def multi_plot(*geometry):
+    Figure = Scene2D(unit_size=(6, 6))
+    ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True)
+    Figure.AddAxes(ax)
+    Figure._generate_axis_()
+    for poly in geometry:
+        poly._render_(ax)
+
+    Figure.Show()
+
 
 # -

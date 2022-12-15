@@ -1,5 +1,3 @@
-
-import logging
 import numpy
 from dataclasses import dataclass
 from PIL import Image
@@ -86,7 +84,7 @@ class Geometry(object):
 
         return gradient
 
-    def GetFullMesh(self, LeftSymmetry, RightSymmetry, TopSymmetry, BottomSymmetry):
+    def GetFullMesh(self, LeftSymmetry: int, RightSymmetry: int, TopSymmetry: int, BottomSymmetry: int) -> numpy.ndarray:
         FullMesh = self.Mesh
 
         if BottomSymmetry in [1, -1]:
@@ -104,13 +102,13 @@ class Geometry(object):
         return FullMesh
 
     @property
-    def Mesh(self):
+    def Mesh(self) -> numpy.ndarray:
         if self._Mesh is None:
             self._Mesh, _, self._Gradient, _ = self.GenerateMesh()
         return self._Mesh
 
     @property
-    def Gradient(self):
+    def Gradient(self) -> numpy.ndarray:
         if self._Gradient is None:
             self._Mesh, _, self._Gradient, _ = self.GenerateMesh()
         return self._Gradient

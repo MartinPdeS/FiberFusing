@@ -13,20 +13,22 @@ from FiberFusing import Geometry, Fused3, Circle, BackGround
 from PyOptik import ExpData
 
 Wavelength = 1.55e-6
-Index = ExpData('FusedSilica').GetRI(Wavelength)
+index = ExpData('FusedSilica').GetRI(Wavelength)
 
-Air = BackGround(index=1)
+air = BackGround(index=1.0)
 
-Clad = Fused3(fiber_radius=60, fusion_degree=0.3, index=Index)
+clad = Fused3(fiber_radius=60, fusion_degree=0.3, index=index)
 
-Cores = [Circle(center=Core, radius=4.1, index=Index + 0.005) for Core in Clad.Cores]
+clad.Plot().Show()
 
-Geo = Geometry(background=Air,
-               clad=Clad,
-               cores=Cores,
+cores = [Circle(center=core, radius=4.1, index=index + 0.005) for core in clad.cores]
+
+geo = Geometry(background=air,
+               clad=clad,
+               cores=cores,
                x_bound='auto',
                y_bound='auto',
                n_x=180,
                n_y=180)
 
-Geo.Plot().Show()
+geo.Plot().Show()

@@ -10,27 +10,70 @@ from shapely import affinity
 from MPSPlots.Render2D import Scene2D, Axis
 
 ORIGIN = geo.Point(0, 0)
+RESOLUTION = 128
 
 
-class Point(geo.Point):
-    name: str = None
-    color: str = 'black'
-    alpha: float = 0.9
-    marker: str = "o"
-    markersize: int = 60
-    index: float = 1
-    attributes: list = ('name', 'color', 'marker', 'alpha', 'markersize', 'index')
+class Point(geo.Point):  # https://github.com/shapely/shapely/issues/1233#issuecomment-977837620
+    _id_to_attrs: dict = {}
+    __slots__: tuple = geo.Point.__slots__
+    inherit_attr: list = ('name', 'color', 'marker', 'alpha', 'markersize', 'index')
+
+    def __init__(self,
+                 *args,
+                 name: str = None,
+                 index: float = 1,
+                 color: str = 'black',
+                 alpha: float = 0.9,
+                 marker: str = "o",
+                 markersize: int = 60,
+                 **kwargs) -> None:
+
+        self._id_to_attrs[id(self)] = dict(name=name,
+                                           index=index,
+                                           color=color,
+                                           marker=marker,
+                                           alpha=alpha,
+                                           markersize=markersize)
+
+    def __new__(cls,
+                 *args,
+                 name: str = None,
+                 index: float = 1,
+                 color: str = 'black',
+                 alpha: float = 0.9,
+                 marker: str = "o",
+                 markersize: int = 60,
+                 **kwargs) -> None:
+
+        instance = super().__new__(cls, *args, **kwargs)
+        instance.__class__ = cls
+        return instance
 
     def _pass_info_output_(function, *args, **kwargs):
         def wrapper(*args, **kwargs):
             output = function(*args, **kwargs)
             self = args[0]
-            output.__class__ = self.__class__
-            for attr in self.attributes:
+            output = self.__class__(output)
+            for attr in self.inherit_attr:
                 setattr(output, attr, getattr(self, attr))
             return output
 
         return wrapper
+
+    def __getattr__(self, attribute: str):
+        try:
+            return self.__class__._id_to_attrs[id(self)][attribute]
+        except KeyError as e:
+            raise AttributeError(str(e)) from None
+
+    def __setattr__(self, attribute: str, value):
+        try:
+            Point._id_to_attrs[id(self)][attribute] = value
+        except KeyError as e:
+            raise AttributeError(str(e)) from None
+
+    def __del__(self):
+        del self._id_to_attrs[id(self)]
 
     @_pass_info_output_
     def __add__(self, other):
@@ -48,18 +91,21 @@ class Point(geo.Point):
     def __neg__(self):
         return Point([-self.x, -self.y])
 
-    def __init__(self, *args, name: str = 'none', index: float = 1, **kwargs) -> None:
-        self.name = name
+    @_pass_info_output_
+    def __mul__(self, factor: float):
+        return Point([self.x * factor, self.y * factor])
 
-    def __new__(cls, *args, name: str = 'none', index: float = 1, **kwargs):
-        instance = geo.Point(*args, **kwargs)
-        instance.__class__ = cls
-        return instance
+    @_pass_info_output_
+    def __rmul__(self, factor: float):
+        return Point([self.x * factor, self.y * factor])
+
+    @_pass_info_output_
+    def __truediv__(self, factor: float):
+        return Point([self.x / factor, self.y / factor])
 
     @_pass_info_output_
     def scale(self, factor: float, origin: geo.Point = ORIGIN):
         o = affinity.scale(self, xfact=factor, yfact=factor, origin=origin)
-        o.__class__ = self.__class__
         return o
 
     @_pass_info_output_
@@ -68,13 +114,11 @@ class Point(geo.Point):
             shift = (shift.x, shift.y)
 
         o = affinity.translate(self, *shift)
-        o.__class__ = self.__class__
         return o
 
     @_pass_info_output_
     def rotate(self, angle, origin=ORIGIN):
         o = affinity.rotate(self, angle=angle, origin=origin)
-        o.__class__ = self.__class__
         return o
 
     @property
@@ -101,38 +145,82 @@ class Point(geo.Point):
     def __raster__(self):
         raise Exception("Rastering not available for points.")
 
+    @_pass_info_output_
+    def remove_non_polygon(self):
+        return self
+
 
 class LineString(geo.LineString):
-    name: str = None
-    color: str = 'black'
-    alpha: float = 0.9
-    linewidth: int = 10
-    index: float = 1
-    attributes: list = ('name', 'color', 'alpha', 'linewidth', 'index')
+    _id_to_attrs: dict = {}
+    __slots__: tuple = geo.LineString.__slots__
+    inherit_attr: list = ('name', 'color', 'alpha', 'linewidth', 'index')
+
+    def __init__(self,
+                 instance: geo.LineString = None,
+                 coordinate: list = None,
+                 name: str = None,
+                 index: float = 1,
+                 color: str = 'black',
+                 alpha: float = 0.9,
+                 linewidth: str = 2) -> None:
+
+        self._id_to_attrs[id(self)] = dict(name=name,
+                                           index=index,
+                                           color=color,
+                                           linewidth=linewidth,
+                                           alpha=alpha)
+
+    def __new__(cls,
+                instance: geo.LineString = None,
+                coordinate: list = None,
+                name: str = None,
+                index: float = 1,
+                color: str = 'black',
+                alpha: float = 0.9,
+                linewidth: str = 2) -> None:
+
+        if instance is not None:
+            instance = super().__new__(cls, instance)
+            instance.__class__ = cls
+            return instance
+
+        elif coordinate:
+            instance = super().__new__(cls, coordinate)
+            instance.__class__ = cls
+            return instance
+
+        else:
+            raise Exception(f"argument type not valid {coordinate=}, {linestring=}")
 
     def _pass_info_output_(function, *args, **kwargs):
         def wrapper(*args, **kwargs):
             output = function(*args, **kwargs)
             self = args[0]
-            output.__class__ = self.__class__
-            for attr in self.attributes:
+            output = self.__class__(output)
+            for attr in self.inherit_attr:
                 setattr(output, attr, getattr(self, attr))
             return output
 
         return wrapper
 
-    def __init__(self, *args, name: str = 'none', index: float = 1, **kwargs) -> None:
-        self.name = name
+    def __getattr__(self, attribute: str):
+        try:
+            return self.__class__._id_to_attrs[id(self)][attribute]
+        except KeyError as e:
+            raise AttributeError(str(e)) from None
 
-    def __new__(cls, *args, name: str = 'none', index: float = 1, **kwargs):
-        instance = geo.LineString(*args, **kwargs)
-        instance.__class__ = cls
-        return instance
+    def __setattr__(self, attribute: str, value):
+        try:
+            self.__class__._id_to_attrs[id(self)][attribute] = value
+        except KeyError as e:
+            raise AttributeError(str(e)) from None
+
+    def __del__(self):
+        del self._id_to_attrs[id(self)]
 
     @_pass_info_output_
     def scale(self, factor: float, origin: geo.Point = ORIGIN):
         o = affinity.scale(self, xfact=factor, yfact=factor, origin=origin)
-        o.__class__ = self.__class__
         return o
 
     @_pass_info_output_
@@ -141,13 +229,11 @@ class LineString(geo.LineString):
             shift = (shift.x, shift.y)
 
         o = affinity.translate(self, *shift)
-        o.__class__ = self.__class__
         return o
 
     @_pass_info_output_
     def rotate(self, angle, origin=ORIGIN):
         o = affinity.rotate(self, angle=angle, origin=origin)
-        o.__class__ = self.__class__
         return o
 
     @property
@@ -161,37 +247,35 @@ class LineString(geo.LineString):
         mid_point = self.mid_point
         xShift = center.x - mid_point.x
         yShift = center.y - mid_point.y
-        Vector = [xShift, yShift]
+        get_vector = [xShift, yShift]
 
-        P2 = Point(P0).translate(shift=Vector)
-        P3 = Point(P1).translate(shift=Vector)
+        P2 = Point(P0).translate(shift=get_vector)
+        P3 = Point(P1).translate(shift=get_vector)
 
-        return LineString([P2, P3])
+        return LineString(coordinate=[P2, P3])
 
     def MakeLength(self, length: float):
         P0, P1 = self.boundary
         distance = numpy.sqrt((P0.x - P1.x)**2 + (P0.y - P1.y)**2)
         factor = length / distance
-        return self.Extend(factor=factor)
+        return self.extend(factor=factor)
 
     @_pass_info_output_
-    def Extend(self, factor: float = 1):
-        return LineString(affinity.scale(self,
-                                         xfact=factor,
-                                         yfact=factor,
-                                         origin=self.mid_point))
+    def extend(self, factor: float = 1):
+        return LineString(instance=affinity.scale(self,
+                                                    xfact=factor,
+                                                    yfact=factor,
+                                                    origin=self.mid_point))
 
     @property
     def mid_point(self):
         P0, P1 = self.boundary
         return Point([(P0.x + P1.x) / 2, (P0.y + P1.y) / 2])
 
-    @property
-    def Perpendicular(self):
+    def get_perpendicular(self):
         return self.rotate(angle=90, origin=self.mid_point)
 
-    @property
-    def Vector(self):
+    def get_vector(self):
         P0, P1 = self.boundary
 
         dy = P0.y - P1.y
@@ -204,8 +288,7 @@ class LineString(geo.LineString):
 
     @property
     def boundary(self):
-        boundaries = super().boundary
-        return (Point(bound) for bound in boundaries)
+        return [Point(bound) for bound in super().boundary.geoms]
 
     def get_position_parametrisation(self, x):
         P0, P1 = self.boundary
@@ -230,55 +313,98 @@ class LineString(geo.LineString):
     def __raster__(self):
         raise Exception("Rastering not available for points.")
 
+    @_pass_info_output_
+    def remove_non_polygon(self):
+        return self
+
 
 class Circle(geo.Polygon):
-    name: str = None
-    facecolor: str = 'lightblue'
-    edgecolor: str = 'black'
-    alpha: float = 0.4
-    resolution: int = 128
-    index: float = 1.
-    attributes: list = ('name', 'facecolor', 'edgecolor', 'alpha', 'resolution', 'index')
+    _id_to_attrs: dict = {}
+    __slots__: tuple = geo.Polygon.__slots__
+    inherit_attr: list = ('name', 'facecolor', 'alpha', 'edgecolor', 'index')
+
+    def __init__(self,
+                 instance: geo.Polygon = None,
+                 radius: float = 1,
+                 center: Point = ORIGIN,
+                 name: str = None,
+                 index: float = 1,
+                 facecolor: str = 'lightblue',
+                 alpha: float = 0.9,
+                 edgecolor: str = "black") -> None:
+
+        self._id_to_attrs[id(self)] = dict(name=name,
+                                           index=index,
+                                           facecolor=facecolor,
+                                           edgecolor=edgecolor,
+                                           alpha=alpha)
+
+    def __new__(cls,
+                 instance: geo.Polygon = None,
+                 radius: float = 1.,
+                 center: Point = ORIGIN,
+                 name: str = None,
+                 index: float = 1,
+                 facecolor: str = 'black',
+                 alpha: float = 0.9,
+                 edgecolor: str = "black") -> None:
+
+        if instance is not None:
+            instance.__class__ = cls
+            return instance
+
+        else:
+            instance = geo.Point(center).buffer(radius, resolution=RESOLUTION)
+            instance.__class__ = cls
+            return instance
 
     def _pass_info_output_(function, *args, **kwargs):
         def wrapper(*args, **kwargs):
             output = function(*args, **kwargs)
             self = args[0]
-            output.__class__ = self.__class__
-            for attr in self.attributes:
+            for attr in self.inherit_attr:
                 setattr(output, attr, getattr(self, attr))
             return output
 
         return wrapper
 
-    def __init__(self, *args, center: tuple = (0, 0), name: str = None, radius: float = 1, resolution: int = 128, index: float = 1., **kwargs) -> None:
-        self.name = name
-        self.resolution = 128
-        super().__init__(*args, **kwargs)
+    def __getattr__(self, attribute: str):
+        try:
+            return self.__class__._id_to_attrs[id(self)][attribute]
+        except KeyError as e:
+            raise AttributeError(str(e)) from None
 
-    def __new__(cls, *args, center: tuple = (0, 0), name: str = None, radius: float = 1, resolution: int = 128, index: float = 1., **kwargs):
-        instance = geo.Point(center).buffer(radius)
-        instance.__class__ = cls
-        return instance
+    def __setattr__(self, attribute: str, value):
+        try:
+            self.__class__._id_to_attrs[id(self)][attribute] = value
+        except KeyError as e:
+            raise AttributeError(str(e)) from None
+
+    def __del__(self):
+        del self._id_to_attrs[id(self)]
 
     @property
     def hole(self):
         return Polygon(Polygon(self.exterior) - self)
 
+    @property
+    def Object(self):
+        return self
+
     @_pass_info_output_
     def scale(self, factor: float, origin: geo.Point = ORIGIN):
         o = affinity.scale(self, xfact=factor, yfact=factor, origin=origin)
-        return o
+        return Circle(o)
 
     @_pass_info_output_
     def translate(self, shift: tuple):
         o = affinity.translate(self, *shift)
-        return o
+        return Circle(o)
 
     @_pass_info_output_
     def rotate(self, angle, origin=ORIGIN):
         o = affinity.rotate(self, angle=angle, origin=origin)
-        return o
+        return Circle(o)
 
     @property
     def center(self):
@@ -327,29 +453,79 @@ class Circle(geo.Polygon):
             Exterior = Path(list(self.exterior.coords))
             return Exterior.contains_points(Coordinate).astype(bool)
 
+    @_pass_info_output_
+    def remove_non_polygon(self):
+        return self
 
-class Polygon(geo.Polygon):
-    name: str = None
-    facecolor: str = 'lightblue'
-    edgecolor: str = 'black'
-    alpha: float = 0.4
-    index: float = 1.
-    attributes: list = ('name', 'facecolor', 'edgecolor', 'alpha', 'index')
+
+class Polygon(geo.Polygon):  # https://github.com/shapely/shapely/issues/1233#issuecomment-977837620
+    _id_to_attrs: dict = {}
+    __slots__: tuple = geo.Polygon.__slots__
+    inherit_attr: list = ('name', 'facecolor', 'edgecolor', 'alpha', 'index')
+
+    def __init__(self,
+                 instance: geo.Polygon = None,
+                 coordinate: list = None,
+                 name: str = None,
+                 index: float = 1,
+                 facecolor: str = 'lightblue',
+                 alpha: float = 0.9,
+                 edgecolor: str = "black") -> None:
+
+        self._id_to_attrs[id(self)] = dict(name=name,
+                                           index=index,
+                                           facecolor=facecolor,
+                                           edgecolor=edgecolor,
+                                           alpha=alpha)
+
+    def __new__(cls,
+                instance: geo.Polygon = None,
+                coordinate: list = None,
+                name: str = None,
+                index: float = 1,
+                facecolor: str = 'black',
+                alpha: float = 0.9,
+                edgecolor: str = "black") -> None:
+
+        if instance is not None:
+            instance.__class__ = cls
+            return instance
+
+        elif coordinate is not None:
+            if isinstance(coordinate[0], geo.Point):
+                coordinate = [[p.x, p.y] for p in coordinate]
+            instance = geo.Polygon(coordinate)
+            instance.__class__ = cls
+            return instance
+
+        else:
+            raise Exception(f"argument type not valid {coordinate=}, {instance=}")
 
     def _pass_info_output_(function, *args, **kwargs):
         def wrapper(*args, **kwargs):
             output = function(*args, **kwargs)
             self = args[0]
-            output.__class__ = self.__class__
-            for attr in self.attributes:
+            output = self.__class__(output)
+            for attr in self.inherit_attr:
                 setattr(output, attr, getattr(self, attr))
             return output
 
         return wrapper
 
-    def __init__(self, *args, name: str = None, index: float = 1, **kwargs) -> None:
-        self.name = name
-        super().__init__(*args, **kwargs)
+    def __getattr__(self, attribute: str):
+        try:
+            return self.__class__._id_to_attrs[id(self)][attribute]
+        except KeyError as e:
+            raise AttributeError(str(e)) from None
+
+    def __setattr__(self, attribute: str, value):
+        try:
+            self.__class__._id_to_attrs[id(self)][attribute] = value
+        except KeyError as e:
+            raise AttributeError(str(e)) from None
+
+    def __del__(self):
+        del self._id_to_attrs[id(self)]
 
     @_pass_info_output_
     def scale(self, factor: float, origin: geo.Point = ORIGIN):
@@ -419,29 +595,77 @@ class Polygon(geo.Polygon):
             Exterior = Path(list(self.exterior.coords))
             return Exterior.contains_points(Coordinate).astype(bool)
 
+    @_pass_info_output_
+    def remove_non_polygon(self):
+        return self
+
+    @_pass_info_output_
+    def simplify(self, *args, **kwargs):
+        return super().simplify(*args, **kwargs)
+
+    @_pass_info_output_
+    def simplify(self, *args, **kwargs):
+        return super().simplify(*args, **kwargs)
+
 
 class GeometryCollection(geo.GeometryCollection):
-    name: str = None
-    facecolor: str = 'lightblue'
-    edgecolor: str = 'black'
-    alpha: float = 0.4
-    index: float = 1.
-    attributes: list = ('name', 'facecolor', 'edgecolor', 'alpha', 'index')
+    _id_to_attrs: dict = {}
+    __slots__: tuple = geo.Polygon.__slots__
+    inherit_attr: list = ('name', 'facecolor', 'edgecolor', 'alpha', 'index')
+
+    def __init__(self,
+                 *args,
+                 name: str = None,
+                 index: float = 1,
+                 facecolor: str = 'lightblue',
+                 alpha: float = 0.9,
+                 edgecolor: str = "black",
+                 **kwargs) -> None:
+
+        self._id_to_attrs[id(self)] = dict(name=name,
+                                           index=index,
+                                           facecolor=facecolor,
+                                           edgecolor=edgecolor,
+                                           alpha=alpha)
+
+    def __new__(cls,
+                 *args,
+                 name: str = None,
+                 index: float = 1,
+                 facecolor: str = 'black',
+                 alpha: float = 0.9,
+                 edgecolor: str = "black",
+                 **kwargs) -> None:
+
+        instance = super().__new__(cls, *args, **kwargs)
+        instance.__class__ = cls
+        return instance
 
     def _pass_info_output_(function, *args, **kwargs):
         def wrapper(*args, **kwargs):
             output = function(*args, **kwargs)
             self = args[0]
-            output.__class__ = self.__class__
-            for attr in self.attributes:
+            output = self.__class__(output)
+            for attr in self.inherit_attr:
                 setattr(output, attr, getattr(self, attr))
             return output
 
         return wrapper
 
-    def __init__(self, *args, name: str = None, index: float = 1, **kwargs) -> None:
-        self.name = name
-        super().__init__(*args, **kwargs)
+    def __getattr__(self, attribute: str):
+        try:
+            return self.__class__._id_to_attrs[id(self)][attribute]
+        except KeyError as e:
+            raise AttributeError(str(e)) from None
+
+    def __setattr__(self, attribute: str, value):
+        try:
+            self.__class__._id_to_attrs[id(self)][attribute] = value
+        except KeyError as e:
+            raise AttributeError(str(e)) from None
+
+    def __del__(self):
+        del self._id_to_attrs[id(self)]
 
     @_pass_info_output_
     def scale(self, factor: float, origin: geo.Point = ORIGIN):
@@ -461,7 +685,17 @@ class GeometryCollection(geo.GeometryCollection):
         o = affinity.rotate(self, angle=angle, origin=origin)
         return o
 
-    @property
+    def keep_only_largest_polygon(self, *args, **kwargs):
+        max_area = 0
+        for poly in self.geoms:
+            if poly.area > max_area:
+                max_area = poly.area
+
+        for poly in self.geoms:
+            if poly.area == max_area:
+                output = Polygon(poly)
+                return output
+
     def center(self):
         return self.centroid.x, self.centroid.y
 
@@ -469,7 +703,7 @@ class GeometryCollection(geo.GeometryCollection):
         if self.is_empty:
             return
 
-        for geometry in self:
+        for geometry in self.geoms:
             path = Path.make_compound_path(
                 Path(numpy.asarray(geometry.exterior.coords)[:, :2]),
                 *[Path(numpy.asarray(ring.coords)[:, :2]) for ring in geometry.interiors])
@@ -518,37 +752,67 @@ class GeometryCollection(geo.GeometryCollection):
     @_pass_info_output_
     def remove_non_polygon(self):
         cleaned = [e for e in self.geoms if not isinstance(e, (geo.LineString, geo.Point))]
-        return GeometryCollection(cleaned)
+        return cleaned
 
 
-class BackGround(Polygon):
-    name: str = None
-    facecolor: str = 'lightblue'
-    edgecolor: str = 'black'
-    alpha: float = 0.5
-    index: float = 1.
-    attributes: list = ('name', 'facecolor', 'edgecolor', 'alpha', 'index')
+class BackGround(geo.Polygon):  # https://github.com/shapely/shapely/issues/1233#issuecomment-977837620
+    _id_to_attrs: dict = {}
+    __slots__: tuple = geo.Polygon.__slots__
+    inherit_attr: list = ('name', 'facecolor', 'edgecolor', 'alpha', 'index')
+
+    def __init__(self,
+                 *args,
+                 name: str = None,
+                 index: float = 1,
+                 facecolor: str = 'lightblue',
+                 alpha: float = 0.9,
+                 edgecolor: str = "black",
+                 **kwargs) -> None:
+
+        self._id_to_attrs[id(self)] = dict(name='background',
+                                           index=index,
+                                           facecolor=facecolor,
+                                           edgecolor=edgecolor,
+                                           alpha=alpha)
+
+    def __new__(cls,
+                 *args,
+                 name: str = None,
+                 index: float = 1,
+                 facecolor: str = 'black',
+                 alpha: float = 0.9,
+                 edgecolor: str = "black",
+                 **kwargs) -> None:
+
+        instance = geo.Point(ORIGIN).buffer(1000)
+        instance.__class__ = cls
+        return instance
 
     def _pass_info_output_(function, *args, **kwargs):
         def wrapper(*args, **kwargs):
             output = function(*args, **kwargs)
             self = args[0]
-            output.__class__ = self.__class__
-            for attr in self.attributes:
+            output = self.__class__(output)
+            for attr in self.inherit_attr:
                 setattr(output, attr, getattr(self, attr))
             return output
 
         return wrapper
 
-    def __init__(self, *args, center: tuple = (0, 0), name: str = None, radius: float = 1000, resolution: int = 128, index: float = 1., **kwargs) -> None:
-        self.name = name
-        self.resolution = 32
-        super().__init__(*args, **kwargs)
+    def __getattr__(self, attribute: str):
+        try:
+            return self.__class__._id_to_attrs[id(self)][attribute]
+        except KeyError as e:
+            raise AttributeError(str(e)) from None
 
-    def __new__(cls, *args, center: tuple = (0, 0), name: str = None, radius: float = 1, resolution: int = 128, index: float = 1., **kwargs):
-        instance = geo.Point(center).buffer(radius)
-        instance.__class__ = cls
-        return instance
+    def __setattr__(self, attribute: str, value):
+        try:
+            self.__class__._id_to_attrs[id(self)][attribute] = value
+        except KeyError as e:
+            raise AttributeError(str(e)) from None
+
+    def __del__(self):
+        del self._id_to_attrs[id(self)]
 
     @_pass_info_output_
     def scale(self, factor: float, origin: geo.Point = ORIGIN):
@@ -614,4 +878,12 @@ class BackGround(Polygon):
         else:
             Exterior = Path(list(self.exterior.coords))
             return Exterior.contains_points(Coordinate).astype(bool)
+
+    @_pass_info_output_
+    def remove_non_polygon(self):
+        return self
+
+    @_pass_info_output_
+    def simplify(self, *args, **kwargs):
+        return super().simplify(*args, **kwargs)
 # -

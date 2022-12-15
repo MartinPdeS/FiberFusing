@@ -63,7 +63,7 @@ class FiberRing():
             self._CoreShift *= 1 / (numpy.cos(alpha))
 
     def Computecenters(self):
-        self._centers = Buffer.Point([0, self.CoreShift]).Rotate(angle=self.angle_list, Origin=[0, 0])
+        self._centers = [ _buffer.Point([0, self.CoreShift]).rotate(angle=angle, origin=[0, 0]) for angle in self.angle_list ]
 
     def ComputeMaxDistance(self):
         x, y = self.Fibers[0].exterior.xy

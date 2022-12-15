@@ -9,7 +9,7 @@ from scipy.optimize import minimize_scalar
 import shapely.geometry as geo
 
 from MPSPlots.Render2D import Scene2D, Axis
-import FiberFusing.Utils as Utils
+from FiberFusing import Utils
 from FiberFusing.Connection import Connection
 import FiberFusing._buffer as _buffer
 
@@ -23,16 +23,17 @@ RESOLUTION = 68
 @dataclass
 class BaseFused():
     fiber_radius: float
+    """ Radius of the fiber to be used, all fibers in the structure have the same radius. """
     fusion_degree: float
+    """ Value describe the fusion degree of the structure the higher the value to more fused are the fibers [0, 1]. """
     index: float
-    gradient: object = None
+    """ Refractive index of the cladding structure. """
     tolerance: float = 1e-2
-
-    def __repr__(self):
-        return f" {self.topology}"
+    """ Tolerance on the optimization problem which aim to minimize the difference between added and removed area of the heuristic algorithm. """
+    gradient: object = None
+    """ Not implemented yet. """
 
     def __post_init__(self):
-        logging.info("Setting up the structure geometry...")
         self._initialize_()
         self._fiber_list = None
 
@@ -47,23 +48,23 @@ class BaseFused():
         self._core_shift = None
 
     @property
-    def Cores(self):
+    def cores(self) -> list:
         return [f.core for f in self.fiber_list]
 
     @property
-    def added_section(self):
+    def added_section(self) -> _buffer.Polygon:
         if self._added_section is None:
             self.compute_added_section()
         return self._added_section
 
     @property
-    def removed_section(self):
+    def removed_section(self) -> _buffer.Polygon:
         if self._removed_section is None:
             self.compute_removed_section()
         return self._removed_section
 
     @property
-    def topology(self):
+    def topology(self) -> str:
         if self._topology is None:
             self.compute_topology()
         return self._topology
@@ -74,8 +75,9 @@ class BaseFused():
             Limit.append(connection.limit_added_area)
 
         OverallLimit = Utils.Union(*Limit) - Utils.Union(*self.fiber_list)
+        self.compute_removed_section()
 
-        self._topology = 'convex' if self.removed_section.Area > OverallLimit.area else 'concave'
+        self._topology = 'convex' if self.total_removed_area > OverallLimit.area else 'concave'
 
     def merge_connections(self) -> None:
         NewConnections = []
@@ -85,10 +87,9 @@ class BaseFused():
                 if m == n:
                     continue
 
-                union = connection1.Added.union(connection0.Added)
+                union = connection1.added_section.union(connection0.added_section)
 
                 if not union.is_empty:
-                    logging.debug('Connection merging')
                     if connection1[0] == connection0[0]:
                         Set = (connection1[1], connection0[1])
                         new = Connection(*Set, Shift=self.virtual_shift)
@@ -114,27 +115,27 @@ class BaseFused():
                         continue
 
     def compute_added_section(self) -> None:
-        Added = []
+        added_section = []
 
         for n, connection in enumerate(self.Connections):
-            NewAdded = connection.Added
+            Newadded_section = connection.added_section
 
-            Added.append(NewAdded)
+            added_section.append(Newadded_section)
 
-        self._added_section = Utils.Union(*Added) - Utils.Union(*self.fiber_list)
-        self._added_section = _buffer.GeometryCollection(self._added_section).remove_non_polygon()
+        self._added_section = Utils.Union(*added_section) - Utils.Union(*self.fiber_list)
+        self._added_section = _buffer.GeometryCollection(self._added_section, facecolor='green').remove_non_polygon()
         self._added_section.Area = self._added_section.area
-        self._added_section.facecolor = 'green'
+        self.total_added_area = self._added_section.area
 
     def compute_removed_section(self) -> None:
-        Removed = []
+        removed_section = []
         for connection in self.Connections:
-            Removed.append(connection.Removed)
+            removed_section.append(connection.removed_section)
 
-        self._removed_section = Utils.Union(*Removed)
+        self._removed_section = Utils.Union(*removed_section)
         self._removed_section = self._removed_section
-        self._removed_section.Area = len(self.fiber_list) * self.fiber_list[0].area - Utils.Union(*self.fiber_list).area
         self._removed_section.facecolor = 'red'
+        self.total_removed_area = len(self.fiber_list) * self.fiber_list[0].area - Utils.Union(*self.fiber_list).area
 
     def get_max_distance(self) -> float:
         return numpy.max([f.get_max_distance() for f in self.fiber_list])
@@ -145,26 +146,26 @@ class BaseFused():
             self.populate_fiber_list()
         return self._fiber_list
 
-    def add_fiber_ring(self, *Rings):
+    def add_fiber_ring(self, *Rings) -> None:
         for Ring in Rings:
             self._fiber_rings.append(Ring)
 
-    def add_custom_fiber(self, *Custom):
+    def add_custom_fiber(self, *Custom) -> None:
         for fiber in Custom:
             self.custom_fiber.append(fiber)
 
-    def optimize_geometry(self, bounds: tuple = (0, 1000)):
+    def optimize_geometry(self, bounds: tuple = (0, 1000)) -> _buffer.Polygon:
         self.initialize_connections()
 
         res = minimize_scalar(self.get_cost_value, bounds=bounds, method='bounded', options={'xatol': self.tolerance})
 
         return _buffer.Polygon(self.get_optimized_geometry(virtual_shift=res.x))
 
-    def compute_core_position(self):
+    def compute_core_position(self) -> None:
         for connection in self.Connections:
             connection.optimize_core_position()
 
-    def populate_fiber_list(self):
+    def populate_fiber_list(self) -> None:
         self._fiber_list = []
 
         for Ring in self._fiber_rings:
@@ -175,17 +176,17 @@ class BaseFused():
             self._fiber_list.append(fiber)
 
         for n, fiber in enumerate(self._fiber_list):
-            fiber.Name = f' Fiber {n}'
+            fiber.name = f' Fiber {n}'
 
-    def get_optimized_geometry(self, virtual_shift):
-        Coupler = Utils.Union(*self.fiber_list, self.added_section)
+    def get_optimized_geometry(self, virtual_shift) -> _buffer.Polygon:
+        opt_geometry = Utils.Union(*self.fiber_list, self.added_section)
 
-        if isinstance(Coupler, geo.GeometryCollection):
-            Coupler = _buffer.GeometryCollection(Coupler.geoms).clean()
+        if isinstance(opt_geometry, geo.GeometryCollection):
+            opt_geometry = _buffer.GeometryCollection(opt_geometry.geoms).clean()
 
         self.compute_core_position()
 
-        return Coupler
+        return opt_geometry
 
     def initialize_connections(self) -> None:
         self.Connections = []
@@ -205,13 +206,14 @@ class BaseFused():
         self.virtual_shift = virtual_shift
         self.shift_connections(Shift=virtual_shift)
 
-        Added = self.added_section.Area
-        Removed = self.removed_section.Area
-        Cost = abs(Added - Removed)
+        self.compute_added_section()
+        added_section = self.total_added_area
+        removed_section = self.total_removed_area
+        cost = abs(added_section - removed_section)
 
-        logging.debug(f' Fusing optimization: {virtual_shift = :.2f} \t -> \t{Added = :.2f} \t -> {Removed = :.2f} \t -> {Cost = :.2f}')
+        logging.debug(f' Fusing optimization: {virtual_shift = :.2f} \t -> \t{added_section = :.2f} \t -> {removed_section = :.2f} \t -> {cost = :.2f}')
 
-        return Cost
+        return cost
 
     def iterate_over_connected_fibers(self) -> tuple:
         for Fiber0, Fiber1 in combinations(self.fiber_list, 2):
@@ -251,8 +253,7 @@ class BaseFused():
     def Plot(self,
              show_fibers: bool = True,
              show_added: bool = True,
-             show_removed: bool = True,
-             **kwargs) -> Scene2D:
+             show_removed: bool = True) -> Scene2D:
 
         Fig = Scene2D(unit_size=(6, 6))
 

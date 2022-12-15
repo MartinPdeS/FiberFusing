@@ -9,26 +9,29 @@
 
 # sphinx_gallery_thumbnail_path = '../images/Example5/Geometry.png'
 
-
-
-from FiberFusing      import Geometry, Fused7, Circle, BackGround
-from SuPyMode.Solver  import SuPySolver
-from PyOptik          import ExpData
+from FiberFusing import Geometry, Fused7, Circle, BackGround
+from PyOptik import ExpData
 
 Wavelength = 1.55e-6
-Index = ExpData('FusedSilica').GetRI(Wavelength)
+index = ExpData('FusedSilica').GetRI(Wavelength)
 
-Air = BackGround(Index=1) 
+air = BackGround(index=1.0)
 
-Clad = Fused7(FiberRadius=62.5, Fusion=0.3, Index=Index)
+clad = Fused7(fiber_radius=60, fusion_degree=0.6, index=index)
 
-Cores = [ Circle(Center=Core, Radius=4.1, Index=Index+0.005) for Core in Clad.Cores]
+clad.Plot().Show()
 
-Geo = Geometry(Objects = [Air, Clad] + Cores,
-               Xbound  = [-190, 0],
-               Ybound  = [-190, 190],
-               Nx      = 50,
-               Ny      = 100)
+# cores = [Circle(center=core, radius=4.1, index=index + 0.005) for core in clad.cores]
 
-Geo.Plot().Show()
+# geo = Geometry(background=air,
+#                clad=clad,
+#                cores=cores,
+#                x_bound='auto',
+#                y_bound='auto',
+#                n_x=180,
+#                n_y=180)
+
+# geo.Plot().Show()
+
+# -
 
