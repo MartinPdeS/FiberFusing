@@ -1,7 +1,6 @@
 numpy
 scipy
 matplotlib
-shapely
-descartes
+shapely >= 2.0.0
 pillow
 MPSPlots
