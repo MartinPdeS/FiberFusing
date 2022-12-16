@@ -42,11 +42,6 @@ jobs:
         python-version: ${{ fromJson(inputs.python_wheel) }}
     steps:
 
-      - name: "Set up QEMU"
-        uses: docker/setup-qemu-action@v2
-        with:
-          platform: arm64
-
       - name: "Checkout repository"
         uses: actions/checkout@v3
         with:
@@ -72,6 +67,7 @@ jobs:
           coverage combine
           coverage report -m --skip-covered
           coverage json -o CoverageReport.json
+          python setup bdist_wheel
 
       - name: "Computing total coverage"
         run: |
@@ -89,7 +85,7 @@ jobs:
         if: ${{ inputs.update_coverage == true }}"
         uses: schneegans/dynamic-badges-action@v1.4.0
         with:
-          auth: ${{ secrets.GIST_TOKEN }}
+          auth: ${{ secrets.MPdS_gist_token }}
           gistID: 16caa7bb2a83d5af36740e4a6a0f861d
           filename: covbadge.json
           label: Coverage
