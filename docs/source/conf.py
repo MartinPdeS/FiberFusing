@@ -4,8 +4,6 @@ import os
 import sys
 from pathlib import Path
 from sphinx_gallery.sorting import FileNameSortKey
-import pyvista
-
 
 ProjectPath = Path(os.getcwd()).parent.parent
 sys.path.insert(0, ProjectPath)
@@ -40,20 +38,15 @@ with open(os.path.join(__location__, '../../VERSION'), "r+") as f:
 extensions = [
     'sphinx.ext.mathjax',
     'numpydoc',
-    "pyvista.ext.plot_directive",
     'sphinx_gallery.gen_gallery',
 ]
 
 
-try:
-    pyvista.start_xvfb()  # Works only on linux system!
-except:
-    pass
 prefix = "../../FiberFusing/Examples/"
 sphinx_gallery_conf = {
     'examples_dirs': [f"{prefix}clad", f"{prefix}geometry"],
     'gallery_dirs': ["Gallery/clad", "Gallery/geometry"],
-    'image_scrapers': ('matplotlib', 'pyvista'),
+    'image_scrapers': ('matplotlib'),
     'ignore_pattern': '/__',
     'plot_gallery': True,
     'thumbnail_size': [600, 600],
