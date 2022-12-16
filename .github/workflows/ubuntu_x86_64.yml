@@ -67,7 +67,7 @@ jobs:
           coverage combine
           coverage report -m --skip-covered
           coverage json -o CoverageReport.json
-          python setup bdist_wheel
+          python setup.py bdist_wheel
 
       - name: "Computing total coverage"
         run: |
