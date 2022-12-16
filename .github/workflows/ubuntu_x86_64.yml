@@ -23,7 +23,7 @@ on:
         required: false
         default: "3.9"
       upload_documentation:
-        type: boolean
+        type: boolean 
         required: false
         default: false 
       python_documentation:
