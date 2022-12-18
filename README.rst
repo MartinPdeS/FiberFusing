@@ -32,6 +32,24 @@ As simple as it gets using pip
 
    >>> pip install PyMieSim
 
+|PyPi|
+
+
+
+
+
+----
+
+Running Unittest
+*****************
+To run the unittests, one need the coverage library.
+
+.. code-block:: python
+
+   >>> python3 -m pytest tests
+
+
+
 
 
 ----
@@ -40,6 +58,9 @@ Coding examples
 ***************
 Plenty of examples are available online, I invite you to check the `examples <https://fiberfusing.readthedocs.io/en/latest/Examples.html>`_
 section of the documentation.
+
+
+
 
 
 ----
