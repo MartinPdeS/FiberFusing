@@ -4,10 +4,11 @@
 |python|
 |PyPi|
 |docs|
+|codecov|
 
 FiberFusing
 ===========
-Python package for fiber fusing simulations.
+Python package for fiber fusing simulations. This package allow the user to defined an initial fibre configuration and simulate the fusion process as a funciton of the fusion degree parameter. At the moment a total of sevend pre-defined structure are present: 1x1, 2x2, 3x3, 4x4, 6x6, 7x7, 19x19.
 
 
 ----
@@ -72,6 +73,10 @@ As of 2021 the project is still under development if you want to collaborate it 
 FiberFusing was written by `Martin Poinsinet de Sivry-Houle <https://github.com/MartinPdS>`_  .
 
 Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=FiberFusing>`_ .
+
+
+
+.. |codecov| image:: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MartinPdeS/c4f12a9ab97461a9453d9a174ae88e17/raw/covbadge.json
 
 
 
