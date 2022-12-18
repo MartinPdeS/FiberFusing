@@ -11,6 +11,7 @@ Python package for fiber fusing simulations.
 
 
 ----
+
 Documentation
 **************
 All the latest available documentation is available `here <https://pymiesim.readthedocs.io/en/latest/>`_ or you can click the following badge:
@@ -22,6 +23,7 @@ All the latest available documentation is available `here <https://pymiesim.read
 
 
 ----
+
 Installation
 ************
 As simple as it gets using pip
@@ -33,6 +35,7 @@ As simple as it gets using pip
 
 
 ----
+
 Coding examples
 ***************
 Plenty of examples are available online, I invite you to check the `examples <https://fiberfusing.readthedocs.io/en/latest/Examples.html>`_
@@ -40,6 +43,7 @@ section of the documentation.
 
 
 ----
+
 Contact Information
 *******************
 As of 2021 the project is still under development if you want to collaborate it would be a pleasure. I encourage you to contact me.
