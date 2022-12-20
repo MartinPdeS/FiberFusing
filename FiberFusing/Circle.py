@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import numpy
 import FiberFusing.Buffer as Buffer
 from MPSPlots.Render2D import Scene2D, Axis
 
 
-class Circle(Buffer.Circle):
+class Circle(_buffer.Circle):
     Radius: float = None
     Core: Buffer.Point = None
     center: Buffer.Point = None

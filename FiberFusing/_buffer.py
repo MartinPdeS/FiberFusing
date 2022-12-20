@@ -437,20 +437,20 @@ class Circle(geo.Polygon):
         return Figure
 
     def __raster__(self, coordinate):
-        Exterior = Path(list(self.exterior.coords))
+        Exterior = Path(self.exterior.coords)
 
         Exterior = Exterior.contains_points(coordinate)
 
         return Exterior.astype(int)
 
-    def get_rasterized_mesh(self, coordinate: numpy.ndarray, shape: list) -> numpy.ndarray:
-        return self.__raster__(coordinate).reshape(shape)
+    def get_rasterized_mesh(self, coordinate: numpy.ndarray, n_x: int, n_y: int) -> numpy.ndarray:
+        return self.__raster__(coordinate).reshape([n_y, n_x])
 
     def contains_points(self, Coordinate):
         if self.is_empty:
             return numpy.zeros(Coordinate.shape[0])
         else:
-            Exterior = Path(list(self.exterior.coords))
+            Exterior = Path(self.exterior.coords)
             return Exterior.contains_points(Coordinate).astype(bool)
 
     @_pass_info_output_
@@ -551,8 +551,8 @@ class Polygon(geo.Polygon):  # https://github.com/shapely/shapely/issues/1233#is
             return
 
         path = Path.make_compound_path(
-            Path(numpy.asarray(self.exterior.coords)[:, :2]),
-            *[Path(numpy.asarray(ring.coords)[:, :2]) for ring in self.interiors])
+            Path(numpy.asarray(self.exterior.coords)[:, :]),
+            *[Path(numpy.asarray(ring.coords)[:, :]) for ring in self.interiors])
 
         patch = PathPatch(path)
         collection = PatchCollection([patch], alpha=self.alpha, facecolor=self.facecolor, edgecolor=self.edgecolor)
@@ -576,8 +576,8 @@ class Polygon(geo.Polygon):  # https://github.com/shapely/shapely/issues/1233#is
     def hole(self):
         return Polygon(Polygon(self.exterior) - self)
 
-    def __raster__(self, coordinate):
-        Exterior = Path(list(self.exterior.coords))
+    def __raster__(self, coordinate: numpy.ndarray):
+        Exterior = Path(self.exterior.coords)
 
         Exterior = Exterior.contains_points(coordinate)
 
@@ -585,14 +585,14 @@ class Polygon(geo.Polygon):  # https://github.com/shapely/shapely/issues/1233#is
 
         return Exterior.astype(int) - hole.astype(int)
 
-    def get_rasterized_mesh(self, coordinate: numpy.ndarray, shape: list) -> numpy.ndarray:
-        return self.__raster__(coordinate).reshape(shape)
+    def get_rasterized_mesh(self, coordinate: numpy.ndarray, n_x: int, n_y: int) -> numpy.ndarray:
+        return self.__raster__(coordinate).reshape([n_y, n_x])
 
     def contains_points(self, Coordinate):
         if self.is_empty:
             return numpy.zeros(Coordinate.shape[0])
         else:
-            Exterior = Path(list(self.exterior.coords))
+            Exterior = Path(self.exterior.coords)
             return Exterior.contains_points(Coordinate).astype(bool)
 
     @_pass_info_output_
@@ -731,7 +731,7 @@ class GeometryCollection(geo.GeometryCollection):
         return Polygon(Polygon(self.exterior) - self)
 
     def __raster__(self, coordinate):
-        Exterior = Path(list(self.exterior.coords))
+        Exterior = Path(self.exterior.coords)
 
         Exterior = Exterior.contains_points(coordinate)
 
@@ -739,14 +739,14 @@ class GeometryCollection(geo.GeometryCollection):
 
         return Exterior.astype(int) - hole.astype(int)
 
-    def get_rasterized_mesh(self, coordinate: numpy.ndarray, shape: list) -> numpy.ndarray:
-        return self.__raster__(coordinate).reshape(shape)
+    def get_rasterized_mesh(self, coordinate: numpy.ndarray, n_x: int, n_y: int) -> numpy.ndarray:
+        return self.__raster__(coordinate).reshape([n_y, n_x])
 
     def contains_points(self, Coordinate):
         if self.is_empty:
             return numpy.zeros(Coordinate.shape[0])
         else:
-            Exterior = Path(list(self.exterior.coords))
+            Exterior = Path(self.exterior.coords)
             return Exterior.contains_points(Coordinate).astype(bool)
 
     @_pass_info_output_
@@ -862,11 +862,11 @@ class BackGround(geo.Polygon):  # https://github.com/shapely/shapely/issues/1233
 
         return Figure
 
-    def get_rasterized_mesh(self, coordinate: numpy.ndarray, shape: list) -> numpy.ndarray:
-        return self.__raster__(coordinate).reshape(shape)
+    def get_rasterized_mesh(self, coordinate: numpy.ndarray, n_x: int, n_y: int) -> numpy.ndarray:
+        return self.__raster__(coordinate).reshape([n_y, n_x])
 
     def __raster__(self, coordinate) -> numpy.ndarray:
-        Exterior = Path(list(self.exterior.coords))
+        Exterior = Path(self.exterior.coords)
 
         Exterior = Exterior.contains_points(coordinate)
 
@@ -876,7 +876,7 @@ class BackGround(geo.Polygon):  # https://github.com/shapely/shapely/issues/1233
         if self.is_empty:
             return numpy.zeros(Coordinate.shape[0])
         else:
-            Exterior = Path(list(self.exterior.coords))
+            Exterior = Path(self.exterior.coords)
             return Exterior.contains_points(Coordinate).astype(bool)
 
     @_pass_info_output_

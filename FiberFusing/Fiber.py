@@ -135,8 +135,8 @@ class Fiber(geo.Polygon):
 
         return Exterior.astype(int)
 
-    def get_rasterized_mesh(self, coordinate: numpy.ndarray, shape: list) -> numpy.ndarray:
-        return self.__raster__(coordinate).reshape(shape)
+    def get_rasterized_mesh(self, coordinate: numpy.ndarray, n_x: int, n_y: int) -> numpy.ndarray:
+        return self.__raster__(coordinate).reshape([n_y, n_x])
 
     def contains_points(self, Coordinate):
         if self.is_empty:

@@ -79,7 +79,6 @@ Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@po
 .. |codecov| image:: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MartinPdeS/c4f12a9ab97461a9453d9a174ae88e17/raw/covbadge.json
 
 
-
 .. |python| image:: https://img.shields.io/pypi/pyversions/fiberfusing.svg
    :target: https://www.python.org/
 

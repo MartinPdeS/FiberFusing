@@ -222,29 +222,21 @@ class BaseFused():
             else:
                 yield Fiber0, Fiber1
 
-    def get_rasterized_mesh(self,
-                            coordinate: numpy.ndarray = None,
-                            shape: list = [100, 100]) -> numpy.ndarray:
-
-        if coordinate is None:
-            xMin, yMin, xMax, yMax = self.Object.bounds
-            x, y = numpy.mgrid[xMin:xMax:complex(shape[0]), yMin:yMax:complex(shape[1])]
-            coordinate = numpy.vstack((x.flatten(), y.flatten())).T
-
+    def get_rasterized_mesh(self, coordinate: numpy.ndarray, n_x: int, n_y: int) -> numpy.ndarray:
         if isinstance(self.Object, Iterable):
             raster = []
             for polygone in self.Object.geoms:
                 polygone = _buffer.Polygon(polygone)
                 Exterior = Path(list(polygone.exterior.coords))
 
-                Exterior = polygone.__raster__(coordinate)
+                Exterior = polygone.__raster__(coordinate).reshape([n_y, n_x])
 
                 raster.append(Exterior.astype(float))
 
                 Exterior = numpy.sum(raster, axis=0)
 
         else:
-            Exterior = self.Object.__raster__(coordinate).reshape(shape)
+            Exterior = self.Object.__raster__(coordinate).reshape([n_y, n_x])
 
         self.Raster = Exterior
 

@@ -47,7 +47,7 @@ class Geometry(object):
 
         self.Axes = Axes(x_bound=self.x_bound, y_bound=self.y_bound, n_x=self.n_x, n_y=self.n_y)
         self.UpScaleAxes = Axes(x_bound=self.x_bound, y_bound=self.y_bound, n_x=self.n_x * self.resize_factor, n_y=self.n_y * self.resize_factor)
-        self.GetIndices()
+        self.compute_index_range()
 
     def _parse_x_bound_(self):
         minx, miny, maxx, maxy = self.clad.Object.bounds
@@ -77,78 +77,75 @@ class Geometry(object):
         if 'bottom' in string_y_bound:
             self.y_bound[1] = 0
 
-    def GetGradient(self, Mesh: numpy.ndarray, Axes: Axes) -> numpy.ndarray:
+    def get_gradient_mesh(self, Mesh: numpy.ndarray, Axes: Axes) -> numpy.ndarray:
         Xgrad, Ygrad = Utils.gradientO4(Mesh**2, Axes.x.d, Axes.y.d)
 
         gradient = (Xgrad * Axes.x.Mesh + Ygrad * Axes.y.Mesh)
 
         return gradient
 
-    def GetFullMesh(self, LeftSymmetry: int, RightSymmetry: int, TopSymmetry: int, BottomSymmetry: int) -> numpy.ndarray:
-        FullMesh = self.Mesh
+    def get_full_mesh(self, left_symmetry: int, right_symmetry: int, top_symmetry: int, bottom_symmetry: int) -> numpy.ndarray:
+        full_mesh = self.Mesh
 
-        if BottomSymmetry in [1, -1]:
-            FullMesh = numpy.concatenate((FullMesh[::-1, :], FullMesh), axis=1)
+        if bottom_symmetry in [1, -1]:
+            full_mesh = numpy.concatenate((full_mesh[::-1, :], full_mesh), axis=1)
 
-        if TopSymmetry in [1, -1]:
-            FullMesh = numpy.concatenate((FullMesh, FullMesh[::-1, :]), axis=1)
+        if top_symmetry in [1, -1]:
+            full_mesh = numpy.concatenate((full_mesh, full_mesh[::-1, :]), axis=1)
 
-        if RightSymmetry in [1, -1]:
-            FullMesh = numpy.concatenate((FullMesh, FullMesh[::-1, :]), axis=0)
+        if right_symmetry in [1, -1]:
+            full_mesh = numpy.concatenate((full_mesh, full_mesh[::-1, :]), axis=0)
 
-        if LeftSymmetry in [1, -1]:
-            FullMesh = numpy.concatenate((FullMesh[::-1, :], FullMesh), axis=0)
+        if left_symmetry in [1, -1]:
+            full_mesh = numpy.concatenate((full_mesh[::-1, :], full_mesh), axis=0)
 
-        return FullMesh
+        return full_mesh
 
     @property
     def Mesh(self) -> numpy.ndarray:
         if self._Mesh is None:
-            self._Mesh, _, self._Gradient, _ = self.GenerateMesh()
+            self._Mesh, _, self._Gradient, _ = self.generate_mesh()
         return self._Mesh
 
     @property
     def Gradient(self) -> numpy.ndarray:
         if self._Gradient is None:
-            self._Mesh, _, self._Gradient, _ = self.GenerateMesh()
+            self._Mesh, _, self._Gradient, _ = self.generate_mesh()
         return self._Gradient
 
     @property
-    def AllObjects(self) -> list:
-        return [*self.Objects]
-
-    @property
-    def MaxIndex(self) -> float:
+    def max_index(self) -> float:
         ObjectList = self.Objects
         return max([obj.index for obj in ObjectList])[0]
 
     @property
-    def MinIndex(self) -> float:
+    def min_index(self) -> float:
         ObjectList = self.Objects
         return min([obj.index for obj in ObjectList])[0]
 
     @property
-    def xMax(self) -> float:
+    def max_x(self) -> float:
         return self.Axes.x.Bounds[0]
 
     @property
-    def xMin(self) -> float:
+    def min_x(self) -> float:
         return self.Axes.x.Bounds[1]
 
     @property
-    def yMax(self) -> float:
+    def max_y(self) -> float:
         return self.Axes.y.Bounds[0]
 
     @property
-    def yMin(self) -> list:
+    def min_y(self) -> list:
         return self.Axes.y.Bounds[1]
 
     @property
     def Shape(self) -> list:
         return numpy.array([self.Axes.x.N, self.Axes.y.N])
 
-    def GetIndices(self) -> None:
+    def compute_index_range(self) -> None:
         self.Indices = []
+
         for obj in self.Objects:
             self.Indices.append(float(obj.index))
 
@@ -156,26 +153,32 @@ class Geometry(object):
         for obj in self.Objects:
             obj = obj.rotate(angle=angle)
 
-    def DownscaleImage(self, Array, Size) -> numpy.ndarray:
-        image = Image.fromarray(Array)
+    def get_downscale_array(self, array, size) -> numpy.ndarray:
+        array = Image.fromarray(array)
 
-        return numpy.asarray(image.resize(Size, resample=Image.Resampling.BOX))
+        return numpy.asarray(array.resize(size, resample=Image.Resampling.BOX))
 
-    def GenerateMesh(self) -> numpy.ndarray:
-        UpScaleMesh = numpy.zeros(self.UpScaleAxes.Shape)
+    def generate_mesh(self) -> numpy.ndarray:
+        UpScaleMesh = numpy.zeros([self.UpScaleAxes.y.n, self.UpScaleAxes.x.n])
 
         self.coords = numpy.vstack((self.UpScaleAxes.x.Mesh.flatten(), self.UpScaleAxes.y.Mesh.flatten())).T
 
         for polygone in self.Objects:
-            raster = polygone.get_rasterized_mesh(coordinate=self.coords, shape=self.UpScaleAxes.Shape)
-            UpScaleMesh[numpy.where(raster > 0)] = 0
-            UpScaleMesh += raster * polygone.index + numpy.random.rand(1) * self.index_scrambling
+            raster = polygone.get_rasterized_mesh(coordinate=self.coords, n_x=self.UpScaleAxes.x.n, n_y=self.UpScaleAxes.y.n).astype(numpy.float64)
 
-        Mesh = self.DownscaleImage(Array=UpScaleMesh, Size=self.Axes.Shape)
+            rand = (numpy.random.rand(1) - 0.5) * self.index_scrambling
 
-        UpscaleGradient = self.GetGradient(Mesh=UpScaleMesh, Axes=self.UpScaleAxes)
+            raster *= polygone.index + rand
 
-        Gradient = self.DownscaleImage(Array=UpscaleGradient, Size=self.Axes.Shape)
+            UpScaleMesh[numpy.where(raster != 0)] = 0
+
+            UpScaleMesh += raster
+
+        Mesh = self.get_downscale_array(array=UpScaleMesh, size=self.Axes.Shape)
+
+        UpscaleGradient = self.get_gradient_mesh(Mesh=UpScaleMesh, Axes=self.UpScaleAxes)
+
+        Gradient = self.get_downscale_array(array=UpscaleGradient, size=self.Axes.Shape)
 
         return Mesh, UpScaleMesh, Gradient, UpscaleGradient
 
