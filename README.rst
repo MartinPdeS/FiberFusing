@@ -15,7 +15,7 @@ Python package for fiber fusing simulations. This package allow the user to defi
 
 Documentation
 **************
-All the latest available documentation is available `here <https://pymiesim.readthedocs.io/en/latest/>`_ or you can click the following badge:
+All the latest available documentation is available `here <https://fiberfusing.readthedocs.io/en/latest/>`_ or you can click the following badge:
 
 |docs|
 
