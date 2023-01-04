@@ -210,10 +210,10 @@ class Geometry(object):
 
         gradient = Mesh(x=self.Axes.x.Vector, y=self.Axes.y.Vector, scalar=self.Gradient, colormap=MPSPlots.CMAP.BWR)
 
-        ax0.AddArtist(artist)
-        ax1.AddArtist(gradient)
+        ax0.add_artist(artist)
+        ax1.add_artist(gradient)
 
-        Figure.AddAxes(ax0, ax1)
+        Figure.add_axes(ax0, ax1)
 
         return Figure
 

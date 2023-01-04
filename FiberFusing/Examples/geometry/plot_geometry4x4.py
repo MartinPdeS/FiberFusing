@@ -24,7 +24,7 @@ geo = Geometry(background=air,
                n_x=180,
                n_y=180)
 
-geo.plot().Show()
+geo.plot().show()
 
 
 # -

@@ -41,7 +41,7 @@ class Circle(_buffer.Circle):
                   show_grid=True,
                   equal=True)
 
-        figure.AddAxes(ax)
+        figure.add_axes(ax)
 
         figure._render_()
 

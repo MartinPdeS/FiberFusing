@@ -231,16 +231,16 @@ class Connection():
     def plot(self) -> Scene2D:
         figure = Scene2D(unit_size=(6, 6))
 
-        ax = Axis(Row=0,
-                  Col=0,
-                  xLabel=r'x distance',
-                  yLabel=r'y distance',
-                  Legend=False,
-                  Grid=True,
-                  Equal=True,)
+        ax = Axis(row=0,
+                  col=0,
+                  x_label=r'x distance',
+                  y_label=r'y distance',
+                  legend=False,
+                  show_grid=True,
+                  equal=True,)
 
-        figure.AddAxes(ax)
-        figure.GenerateAxis()
+        figure.add_axes(ax)
+        figure._generate_axis_()
 
         self[0]._render_(ax)
         self[1]._render_(ax)

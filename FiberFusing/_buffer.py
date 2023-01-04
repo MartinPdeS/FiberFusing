@@ -135,7 +135,7 @@ class Point(geo.Point):  # https://github.com/shapely/shapely/issues/1233#issuec
     def plot(self, Figure=None, Ax=None, Return=False, Show=True):
         Figure = Scene2D(unit_size=(6, 6))
         Ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True)
-        Figure.AddAxes(Ax)
+        Figure.add_axes(Ax)
         Figure._generate_axis_()
 
         self._render_(Ax)
@@ -303,7 +303,7 @@ class LineString(geo.LineString):
     def plot(self, Figure=None, Ax=None, Return=False, Show=True):
         Figure = Scene2D(unit_size=(6, 6))
         Ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True, equal_limits=True)
-        Figure.AddAxes(Ax)
+        Figure.add_axes(Ax)
         Figure._generate_axis_()
 
         self._render_(Ax)
@@ -430,7 +430,7 @@ class Circle(geo.Polygon):
     def plot(self, Figure=None, Ax=None, Return=False, Show=True):
         Figure = Scene2D(unit_size=(6, 6))
         ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True)
-        Figure.AddAxes(ax)
+        Figure.add_axes(ax)
         Figure._generate_axis_()
         self._render_(ax)
 
@@ -566,7 +566,7 @@ class Polygon(geo.Polygon):  # https://github.com/shapely/shapely/issues/1233#is
     def plot(self, Figure=None, Ax=None, Return=False, Show=True):
         Figure = Scene2D(unit_size=(6, 6))
         ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True)
-        Figure.AddAxes(ax)
+        Figure.add_axes(ax)
         Figure._generate_axis_()
         self._render_(ax)
 
@@ -720,7 +720,7 @@ class GeometryCollection(geo.GeometryCollection):
     def plot(self, Figure=None, Ax=None, Return=False, Show=True):
         Figure = Scene2D(unit_size=(6, 6))
         ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True)
-        Figure.AddAxes(ax)
+        Figure.add_axes(ax)
         Figure._generate_axis_()
         self._render_(ax)
 
@@ -856,7 +856,7 @@ class BackGround(geo.Polygon):  # https://github.com/shapely/shapely/issues/1233
     def plot(self, Figure=None, Ax=None, Return=False, Show=True):
         Figure = Scene2D(unit_size=(6, 6))
         ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True)
-        Figure.AddAxes(ax)
+        Figure.add_axes(ax)
         Figure._generate_axis_()
         self._render_(ax)
 

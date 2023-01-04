@@ -40,7 +40,7 @@ class PlotClass():
         if Ax is None:
             Figure = Scene2D(title='FiberFusing figure', unit_size=(6, 6))
             Ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True)
-            Figure.AddAxes(Ax)
+            Figure.add_axes(Ax)
             Figure._generate_axis_()
 
         self._render_(Ax)

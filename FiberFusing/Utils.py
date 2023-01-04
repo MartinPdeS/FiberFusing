@@ -111,7 +111,7 @@ def gradientO4(f, *varargs):
 def multi_plot(*geometry):
     Figure = Scene2D(unit_size=(6, 6))
     ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True)
-    Figure.AddAxes(ax)
+    Figure.add_axes(ax)
     Figure._generate_axis_()
     for poly in geometry:
         poly._render_(ax)

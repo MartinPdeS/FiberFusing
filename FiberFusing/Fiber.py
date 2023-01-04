@@ -122,7 +122,7 @@ class Fiber(geo.Polygon):
     def plot(self, Figure=None, Ax=None, Return=False, Show=True):
         Figure = Scene2D(unit_size=(6, 6))
         ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True)
-        Figure.AddAxes(ax)
+        Figure.add_axes(ax)
         Figure._generate_axis_()
         self._render_(ax)
 

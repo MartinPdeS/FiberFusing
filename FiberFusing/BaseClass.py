@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 ORIGIN = _buffer.Point([0, 0])
-RESOLUTION = 68
+RESOLUTION = 128
 
 
 @dataclass
@@ -256,7 +256,7 @@ class BaseFused():
                   show_grid=True,
                   equal=True)
 
-        Fig.AddAxes(ax)._generate_axis_()
+        Fig.add_axes(ax)._generate_axis_()
 
         self.Object._render_(ax)
 
