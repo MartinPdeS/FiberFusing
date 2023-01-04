@@ -4,20 +4,16 @@
 """
 
 from FiberFusing import Geometry, Circle, BackGround
-from PyOptik import ExpData
 
-Wavelength = 1.55e-6
-Index = ExpData('FusedSilica').GetRI(Wavelength)
+air = BackGround(index=1)
 
-Air = BackGround(index=1)
+clad = Circle(center=(0, 0), radius=62.5, index=1.4444)
 
-Clad = Circle(center=(0, 0), radius=62.5, index=Index)
+core = Circle(center=clad.center, radius=4.1, index=1.4444 + 0.005)
 
-Core = Circle(center=Clad.center, radius=4.1, index=Index + 0.005)
-
-Geo = Geometry(background=Air,
-               clad=Clad,
-               cores=[Core],
+Geo = Geometry(background=air,
+               clad=clad,
+               cores=[core],
                x_bound=[-70, 70],
                y_bound=[-70, 70],
                n_x=180,
