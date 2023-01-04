@@ -228,7 +228,7 @@ class Connection():
         self[0].core.translate(-self.core_shift)
         self[1].core.translate(self.core_shift)
 
-    def Plot(self) -> Scene2D:
+    def plot(self) -> Scene2D:
         figure = Scene2D(unit_size=(6, 6))
 
         ax = Axis(Row=0,

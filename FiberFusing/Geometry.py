@@ -182,7 +182,7 @@ class Geometry(object):
 
         return Mesh, UpScaleMesh, Gradient, UpscaleGradient
 
-    def Plot(self) -> None:
+    def plot(self) -> None:
         """
         Method plot the rasterized RI profile.
         """

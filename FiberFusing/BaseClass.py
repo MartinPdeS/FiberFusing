@@ -242,7 +242,7 @@ class BaseFused():
 
         return self.Raster
 
-    def Plot(self,
+    def plot(self,
              show_fibers: bool = True,
              show_added: bool = True,
              show_removed: bool = True) -> Scene2D:

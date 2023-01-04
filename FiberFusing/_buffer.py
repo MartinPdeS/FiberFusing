@@ -132,7 +132,7 @@ class Point(geo.Point):  # https://github.com/shapely/shapely/issues/1233#issuec
         Ax._ax.scatter(self.x, self.y, s=self.markersize, marker=self.marker, color=self.color, alpha=self.alpha)
         Ax._ax.text(self.x * 1.01, self.y * 1.01, self.name)
 
-    def Plot(self, Figure=None, Ax=None, Return=False, Show=True):
+    def plot(self, Figure=None, Ax=None, Return=False, Show=True):
         Figure = Scene2D(unit_size=(6, 6))
         Ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True)
         Figure.AddAxes(Ax)
@@ -300,7 +300,7 @@ class LineString(geo.LineString):
 
         Ax._ax.plot(*self.xy, color=self.color, alpha=self.alpha)
 
-    def Plot(self, Figure=None, Ax=None, Return=False, Show=True):
+    def plot(self, Figure=None, Ax=None, Return=False, Show=True):
         Figure = Scene2D(unit_size=(6, 6))
         Ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True, equal_limits=True)
         Figure.AddAxes(Ax)
@@ -427,7 +427,7 @@ class Circle(geo.Polygon):
             ax._ax.scatter(*self.center)
             ax._ax.text(*self.center, self.name)
 
-    def Plot(self, Figure=None, Ax=None, Return=False, Show=True):
+    def plot(self, Figure=None, Ax=None, Return=False, Show=True):
         Figure = Scene2D(unit_size=(6, 6))
         ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True)
         Figure.AddAxes(ax)
@@ -563,7 +563,7 @@ class Polygon(geo.Polygon):  # https://github.com/shapely/shapely/issues/1233#is
             ax._ax.scatter(*self.center)
             ax._ax.text(*self.center, self.name)
 
-    def Plot(self, Figure=None, Ax=None, Return=False, Show=True):
+    def plot(self, Figure=None, Ax=None, Return=False, Show=True):
         Figure = Scene2D(unit_size=(6, 6))
         ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True)
         Figure.AddAxes(ax)
@@ -717,7 +717,7 @@ class GeometryCollection(geo.GeometryCollection):
                 ax._ax.scatter(*self.center)
                 ax._ax.text(*self.center, self.name)
 
-    def Plot(self, Figure=None, Ax=None, Return=False, Show=True):
+    def plot(self, Figure=None, Ax=None, Return=False, Show=True):
         Figure = Scene2D(unit_size=(6, 6))
         ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True)
         Figure.AddAxes(ax)
@@ -853,7 +853,7 @@ class BackGround(geo.Polygon):  # https://github.com/shapely/shapely/issues/1233
             ax._ax.scatter(*self.center)
             ax._ax.text(*self.center, self.name)
 
-    def Plot(self, Figure=None, Ax=None, Return=False, Show=True):
+    def plot(self, Figure=None, Ax=None, Return=False, Show=True):
         Figure = Scene2D(unit_size=(6, 6))
         ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True)
         Figure.AddAxes(ax)

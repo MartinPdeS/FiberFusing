@@ -23,7 +23,7 @@ Geo = Geometry(background=Air,
                n_x=180,
                n_y=180)
 
-Geo.Plot().Show()
+Geo.plot().Show()
 
 
 # -

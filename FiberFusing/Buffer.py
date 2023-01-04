@@ -36,7 +36,7 @@ class PlotClass():
 
         return {k: v for k, v in temp_dict.items() if v is not None}
 
-    def Plot(self, Figure=None, Ax=None, Return=False, Show=True):
+    def plot(self, Figure=None, Ax=None, Return=False, Show=True):
         if Ax is None:
             Figure = Scene2D(title='FiberFusing figure', unit_size=(6, 6))
             Ax = Axis(row=0, col=0, x_label='x', y_label='y', colorbar=False, equal=True)

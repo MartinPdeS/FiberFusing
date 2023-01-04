@@ -31,7 +31,7 @@ class Circle(_buffer.Circle):
 
         super(Circle, self).__init__(Radius=Radius, center=center)
 
-    def Plot(self, **kwargs) -> Scene2D:
+    def plot(self, **kwargs) -> Scene2D:
         figure = Scene2D(title='SuPyMode Figure', unit_size=(6, 6))
 
         ax = Axis(row=0,
@@ -50,5 +50,5 @@ class Circle(_buffer.Circle):
         return figure
 
 
-# a = Circle(Radius=10).Plot().Show()
+# a = Circle(Radius=10).plot().Show()
 # -
