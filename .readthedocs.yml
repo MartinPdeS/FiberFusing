@@ -27,6 +27,8 @@ build:
     - libxcb-xfixes0
     - xdotool
 
+  tools:
+    python: "3.10"
   jobs:
     pre_install:
       - Xvfb :99 &
@@ -35,7 +37,6 @@ build:
       - sleep 3
 
 python:
-  version: "3.10"
   system_packages: false
   install:
     - method: pip
