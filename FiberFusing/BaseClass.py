@@ -16,7 +16,7 @@ import FiberFusing._buffer as _buffer
 logging.basicConfig(level=logging.INFO)
 
 
-ORIGIN = _buffer.Point([0, 0])
+ORIGIN = _buffer.PointComposition([0, 0])
 RESOLUTION = 128
 
 
@@ -49,7 +49,7 @@ class BaseFused():
 
     @property
     def cores(self) -> list:
-        return [f.core for f in self.fiber_list]
+        return [f.position for f in self.fiber_list]
 
     @property
     def added_section(self) -> _buffer.Polygon:
@@ -207,6 +207,7 @@ class BaseFused():
         self.shift_connections(Shift=virtual_shift)
 
         self.compute_added_section()
+        self.compute_removed_section()
         added_section = self.total_added_area
         removed_section = self.total_removed_area
         cost = abs(added_section - removed_section)

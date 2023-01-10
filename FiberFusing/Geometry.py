@@ -49,33 +49,31 @@ class Geometry(object):
         self.UpScaleAxes = Axes(x_bound=self.x_bound, y_bound=self.y_bound, n_x=self.n_x * self.resize_factor, n_y=self.n_y * self.resize_factor)
         self.compute_index_range()
 
-    def _parse_x_bound_(self):
-        minx, miny, maxx, maxy = self.clad.Object.bounds
+    def _parse_x_bound_(self) -> None:
         string_x_bound = self.x_bound.lower()
+        minx, _, maxx, _ = self.clad.Object.bounds
+        auto_x_bound = numpy.array([minx, maxx]) * 1.2
 
-        if 'auto' in string_x_bound:
-            minx, miny, maxx, maxy = self.clad.Object.bounds
-            self.x_bound = numpy.array([minx, maxx]) * 1.3
+        match string_x_bound:
+            case 'auto':
+                self.x_bound = auto_x_bound
+            case 'auto-right':
+                self.x_bound = [0, auto_x_bound[1]]
+            case 'auto-left':
+                self.x_bound = [auto_x_bound[0], 0]
 
-        if 'right' in string_x_bound:
-            self.x_bound[0] = 0
-
-        if 'left' in string_x_bound:
-            self.x_bound[1] = 0
-
-    def _parse_y_bound_(self):
-        minx, miny, maxx, maxy = self.clad.Object.bounds
+    def _parse_y_bound_(self) -> None:
         string_y_bound = self.y_bound.lower()
+        _, min_y, _, max_y = self.clad.Object.bounds
+        auto_y_bound = numpy.array([min_y, max_y]) * 1.2
 
-        if 'auto' in string_y_bound:
-            minx, miny, maxx, maxy = self.clad.Object.bounds
-            self.y_bound = numpy.array([miny, maxy]) * 1.3
-
-        if 'top' in string_y_bound:
-            self.y_bound[0] = 0
-
-        if 'bottom' in string_y_bound:
-            self.y_bound[1] = 0
+        match string_y_bound:
+            case 'auto':
+                self.y_bound = auto_y_bound
+            case 'auto-top':
+                self.y_bound = [0, auto_y_bound[1]]
+            case 'auto-bottom':
+                self.y_bound = [auto_y_bound[0], 0]
 
     def get_gradient_mesh(self, Mesh: numpy.ndarray, Axes: Axes) -> numpy.ndarray:
         Xgrad, Ygrad = Utils.gradientO4(Mesh**2, Axes.x.d, Axes.y.d)
@@ -83,23 +81,6 @@ class Geometry(object):
         gradient = (Xgrad * Axes.x.Mesh + Ygrad * Axes.y.Mesh)
 
         return gradient
-
-    def get_full_mesh(self, left_symmetry: int, right_symmetry: int, top_symmetry: int, bottom_symmetry: int) -> numpy.ndarray:
-        full_mesh = self.Mesh
-
-        if bottom_symmetry in [1, -1]:
-            full_mesh = numpy.concatenate((full_mesh[::-1, :], full_mesh), axis=1)
-
-        if top_symmetry in [1, -1]:
-            full_mesh = numpy.concatenate((full_mesh, full_mesh[::-1, :]), axis=1)
-
-        if right_symmetry in [1, -1]:
-            full_mesh = numpy.concatenate((full_mesh, full_mesh[::-1, :]), axis=0)
-
-        if left_symmetry in [1, -1]:
-            full_mesh = numpy.concatenate((full_mesh[::-1, :], full_mesh), axis=0)
-
-        return full_mesh
 
     @property
     def Mesh(self) -> numpy.ndarray:
@@ -188,6 +169,7 @@ class Geometry(object):
         """
         Figure = Scene2D(unit_size=(6, 6), tight_layout=True)
         colorbar0 = ColorBar(discreet=True, position='right', numeric_format='%.4f')
+
         colorbar1 = ColorBar(log_norm=True, position='right', numeric_format='%.1e', symmetric=True)
 
         ax0 = Axis(row=0,

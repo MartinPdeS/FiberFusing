@@ -1,7 +1,5 @@
 import numpy
 
-from FiberFusing.Fiber import Fiber
-import FiberFusing.Buffer as Buffer
 import FiberFusing._buffer as _buffer
 
 
@@ -45,7 +43,8 @@ class FiberRing():
         self._Fibers = []
 
         for n, point in enumerate(self.centers):
-            fiber = Fiber(radius=self.fiber_radius, center=point, name=f' Fiber {n}')
+            print(point)
+            fiber = _buffer.CircleComposition(radius=self.fiber_radius, position=point, name=f' Fiber {n}')
             self._Fibers.append(fiber)
 
     def ComputeCoreShift(self):
@@ -63,7 +62,7 @@ class FiberRing():
             self._CoreShift *= 1 / (numpy.cos(alpha))
 
     def Computecenters(self):
-        self._centers = [ _buffer.Point([0, self.CoreShift]).rotate(angle=angle, origin=[0, 0]) for angle in self.angle_list ]
+        self._centers = [_buffer.PointComposition(position=[0, self.CoreShift]).rotate(angle=angle, origin=[0, 0]) for angle in self.angle_list ]
 
     def ComputeMaxDistance(self):
         x, y = self.Fibers[0].exterior.xy

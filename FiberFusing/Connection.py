@@ -84,10 +84,10 @@ class Connection():
     def compute_topology(self) -> None:
         self._topology = 'convex' if self.removed_section.Area > self.limit_added_area.area else 'concave'
 
-    def get_conscripted_circles(self, Type='exterior') -> _buffer.Circle:
-        perpendicular_vector = self.extended_center_line.get_perpendicular().get_vector()
+    def get_conscripted_circles(self, Type='exterior') -> _buffer.CircleComposition:
+        perpendicular_vector = self.extended_center_line.copy().get_perpendicular().get_vector()
 
-        Point = self.center_line.mid_point.translate(perpendicular_vector * self._shift)
+        point = self.center_line.mid_point.translate(perpendicular_vector * self._shift)
 
         if Type.lower() in ['exterior', 'concave']:
             radius = numpy.sqrt(self._shift**2 + (self.center_line.length / 2)**2) - self[0].radius
@@ -95,12 +95,14 @@ class Connection():
         if Type.lower() in ['interior', 'convex']:
             radius = numpy.sqrt(self._shift**2 + (self.center_line.length / 2)**2) + self[0].radius
 
-        return _buffer.Circle(center=Point, radius=radius, alpha=0.3, facecolor='black', name='virtual')
+        return _buffer.CircleComposition(position=point, radius=radius, alpha=0.3, facecolor='black', name='virtual')
 
     def compute_virtual_circles(self) -> None:
         Circonscript0 = self.get_conscripted_circles(Type=self.topology)
 
-        Circonscript1 = Circonscript0.rotate(angle=180, origin=self.center_line.mid_point)
+        Circonscript1 = Circonscript0.copy()
+
+        Circonscript1.rotate(angle=180, origin=self.center_line.mid_point)
 
         self._virtual_circles = Circonscript0, Circonscript1
 
@@ -110,35 +112,40 @@ class Connection():
         P2 = Utils.NearestPoints(self.virtual_circles[0], self[1])
         P3 = Utils.NearestPoints(self.virtual_circles[1], self[1])
 
-        return [_buffer.Point(p) for p in [P0, P1, P2, P3]]
+        return [_buffer.PointComposition(position=(p.x, p.y)) for p in [P0, P1, P2, P3]]
 
     def compute_mask(self) -> None:
         P0, P1, P2, P3 = self.get_connected_point()
 
         if self.topology.lower() == 'concave':
-            mask = _buffer.Polygon(coordinate=[P0, P1, P3, P2])
 
-            self._mask = mask - self.virtual_circles[0] - self.virtual_circles[1]
+            mask = _buffer.PolygonComposition(coordinates=[P0._shapely_object, P1._shapely_object, P3._shapely_object, P2._shapely_object])
+
+            self._mask = (mask - self.virtual_circles[0] - self.virtual_circles[1])._shapely_object
 
         elif self.topology.lower() == 'convex':
-            mid_point = _buffer.LineString(coordinate=[self[0].center, self[1].center]).mid_point
+            mid_point = _buffer.LineStringComposition(coordinates=[self[0].center, self[1].center]).mid_point
 
-            mask0 = _buffer.Polygon(coordinate=[mid_point, P0, P2]).scale(factor=1000, origin=mid_point)
+            mask0 = _buffer.PolygonComposition(coordinates=[mid_point._shapely_object, P0._shapely_object, P2._shapely_object]).scale(factor=1000, origin=mid_point._shapely_object)
 
-            mask1 = _buffer.Polygon(coordinate=[mid_point, P1, P3]).scale(factor=1000, origin=mid_point)
+            mask1 = _buffer.PolygonComposition(coordinates=[mid_point._shapely_object, P1._shapely_object, P3._shapely_object]).scale(factor=1000, origin=mid_point._shapely_object)
 
-            self._mask = Utils.Union(mask0, mask1) & Utils.Union(*self.virtual_circles)
+            self._mask = (Utils.Union(mask0, mask1) & Utils.Union(*self.virtual_circles))
 
-        self._mask = _buffer.Polygon(instance=self._mask)
+        self._mask = _buffer.PolygonComposition(instance=self._mask)
+
+        # test.plot().show()
+
+        # self._mask = _buffer.Polygon(instance=self._mask)
 
     def compute_added_section(self) -> None:
         if self.topology == 'convex':
-            _added_section = (self.mask - self[0] - self[1]) & Utils.Intersection(*self.virtual_circles)
+            _added_section = (self.mask - self[0] - self[1]) & (self.virtual_circles[0].intersection(self.virtual_circles[1]))
 
         elif self.topology == 'concave':
             _added_section = self.mask - self[0] - self[1] - Utils.Union(*self.virtual_circles)
 
-        self._added_section = _buffer.GeometryCollection(_added_section).remove_non_polygon()
+        self._added_section = _buffer.GeometryCollection(_added_section._shapely_object).remove_non_polygon()
         self._added_section.Area = _added_section.area
 
     def __render__(self,
@@ -167,39 +174,39 @@ class Connection():
             self.removed_section._render_(ax)
 
     @property
-    def center_line(self) -> _buffer.LineString:
+    def center_line(self) -> _buffer.LineStringComposition:
         if self._center_line is None:
             self.compute_center_line()
         return self._center_line
 
     def compute_center_line(self) -> None:
-        self._center_line = _buffer.LineString(coordinate=[self[0].center, self[1].center])
+        self._center_line = _buffer.LineStringComposition(coordinates=[self[0].center, self[1].center])
 
     @property
-    def extended_center_line(self) -> _buffer.LineString:
+    def extended_center_line(self) -> _buffer.LineStringComposition:
         if self._extended_center_line is None:
             self.compute_extended_center_line()
         return self._extended_center_line
 
     def compute_extended_center_line(self) -> None:
-        line = self.center_line.MakeLength(2 * self[0].radius + 2 * self[1].radius)
+        line = self.center_line.copy()
+        line.make_length(2 * self[0].radius + 2 * self[1].radius)
         self._extended_center_line = line.extend(factor=2)
 
     @property
-    def total_area(self) -> _buffer.Polygon:
+    def total_area(self) -> _buffer.PolygonComposition:
         return Utils.Union(*self, self.added_section)
 
-    def split_geometry(self, Geometry, Position) -> _buffer.Polygon:
-        line0 = self.extended_center_line.centering(center=_buffer.Point(Position))
-
-        line = line0.rotate(angle=90).extend(factor=2)
+    def split_geometry(self, Geometry, Position) -> _buffer.PolygonComposition:
+        line = self.extended_center_line.copy()
+        line.centering(center=Position).rotate(angle=90).extend(factor=2)
 
         temp_geo = Utils.Union(Geometry)
 
         if isinstance(temp_geo, _buffer.GeometryCollection):
             temp_geo = temp_geo.keep_only_largest_polygon()
 
-        split_geometry = split(temp_geo, line).geoms
+        split_geometry = split(temp_geo, line._shapely_object).geoms
 
         split_geometry = split_geometry[0] if split_geometry[0].area < split_geometry[1].area else split_geometry[1]
 
@@ -210,23 +217,24 @@ class Connection():
         P0, P1 = self.extended_center_line.boundary
 
         _, C1 = self[0].center, self[1].center
+        C1 = _buffer.PointComposition(C1)
 
         Position = self.extended_center_line.get_position_parametrisation(x)
 
-        ExternalPart = self.split_geometry(Geometry=self.total_area, Position=Position)
+        external_part = self.split_geometry(Geometry=self.total_area, Position=Position)
 
-        Cost = abs(ExternalPart.area - self[0].area / 2)
+        Cost = abs(external_part.area - self[0].area / 2)
 
         self.core_shift = (Position - C1)
 
-        logging.debug(f' Core positioning optimization: {x = :+.2f} \t -> \t{Cost = :<10.2f} -> \t\t{self.core_shift = }')
+        logging.warning(f' Core positioning optimization: {x = :+.2f} \t -> \t{Cost = :<10.2f} -> \t\t{self.core_shift = }')
 
         return Cost
 
     def optimize_core_position(self) -> None:
         minimize_scalar(self.compute_core_shift, bounds=(0.50001, 0.99), method='bounded', options={'xatol': 0.001})
-        self[0].core.translate(-self.core_shift)
-        self[1].core.translate(self.core_shift)
+        self[0].position.translate(-self.core_shift)
+        self[1].position.translate(self.core_shift)
 
     def plot(self) -> Scene2D:
         figure = Scene2D(unit_size=(6, 6))

@@ -1,22 +1,30 @@
 import numpy
 from shapely.ops import nearest_points
 
-import FiberFusing.Buffer as Buffer
 import FiberFusing._buffer as _buffer
 import shapely.geometry as geo
 from MPSPlots.Render2D import Scene2D, Axis
+from shapely.ops import unary_union
+from itertools import combinations
 
 
 def NearestPoints(Object0, Object1):
-    if isinstance(Object0, geo.Polygon):
-        P = nearest_points(Object0.exterior, Object1.exterior)
-        return Buffer.Point(P[0])
+    if hasattr(Object0, '_shapely_object'):
+        Object0 = Object0._shapely_object
+
+    if hasattr(Object0, '_shapely_object'):
+        Object1 = Object1._shapely_object
+
+    P = nearest_points(Object0.exterior, Object1.exterior)
+
+    return _buffer.PointComposition(position=(P[0].x, P[0].y))
 
 
 def Union(*Objects):
-    output = Buffer.Polygon()
-    for geometry in Objects:
-        output = output.union(geometry)
+
+    Objects = [o._shapely_object if hasattr(o, '_shapely_object') else o for o in Objects]
+
+    output = unary_union(Objects)
 
     if isinstance(output, (geo.GeometryCollection, geo.MultiPolygon)):
         return _buffer.GeometryCollection(output)
@@ -26,15 +34,13 @@ def Union(*Objects):
 
 
 def Intersection(*Objects):
-    Output = Objects[0]
-    for geometry in Objects[1:]:
-        output = Output.intersection(geometry)
+    Objects = [o._shapely_object if hasattr(o, '_shapely_object') else o for o in Objects]
 
-    if isinstance(output, (geo.GeometryCollection, geo.MultiPolygon)):
-        return _buffer.GeometryCollection(output)
+    intersection = unary_union(
+        [a.intersection(b) for a, b in combinations(Objects, 2)]
+    )
 
-    if isinstance(output, geo.Polygon):
-        return _buffer.Polygon(output)
+    return intersection
 
 
 # 4th order accurate gradient function based on 2nd order version from http://projects.scipy.org/scipy/numpy/browser/trunk/numpy/lib/function_base.py
@@ -116,7 +122,7 @@ def multi_plot(*geometry):
     for poly in geometry:
         poly._render_(ax)
 
-    Figure.Show()
+    Figure.show()
 
 
 # -
