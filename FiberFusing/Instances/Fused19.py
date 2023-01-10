@@ -9,12 +9,13 @@ class Fused19(BaseFused):
                  fiber_radius: float,
                  fusion_degree: float,
                  index: float,
-                 Gradient: numpy.ndarray = None):
+                 core_position_scrambling: float = 0):
 
         super().__init__(fiber_radius=fiber_radius,
                          fusion_degree=fusion_degree,
                          angle_list=numpy.linspace(0, 360, 6, endpoint=False),
-                         index=index)
+                         index=index,
+                         core_position_scrambling=core_position_scrambling)
 
         Ring0 = FiberRing(angle_list=numpy.linspace(0, 360, 6, endpoint=False), fusion_degree=self.fusion_degree, fiber_radius=self.fiber_radius)
         Ring1 = FiberRing(angle_list=[0], fusion_degree=self.fusion_degree, fiber_radius=self.fiber_radius)

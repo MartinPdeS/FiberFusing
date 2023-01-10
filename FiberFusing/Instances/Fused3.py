@@ -10,11 +10,12 @@ class Fused3(BaseFused):
                  fiber_radius: float,
                  fusion_degree: float,
                  index: float,
-                 Gradient: numpy.ndarray = None):
+                 core_position_scrambling: float = 0):
 
         super().__init__(fiber_radius=fiber_radius,
                          fusion_degree=fusion_degree,
-                         index=index)
+                         index=index,
+                         core_position_scrambling=core_position_scrambling)
 
         assert 0 <= fusion_degree <= 1, "fusion_degree degree has to be in the range [0, 1]"
 

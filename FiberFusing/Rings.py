@@ -43,7 +43,6 @@ class FiberRing():
         self._Fibers = []
 
         for n, point in enumerate(self.centers):
-            print(point)
             fiber = _buffer.CircleComposition(radius=self.fiber_radius, position=point, name=f' Fiber {n}')
             self._Fibers.append(fiber)
 

@@ -20,11 +20,12 @@ def NearestPoints(Object0, Object1):
     return _buffer.PointComposition(position=(P[0].x, P[0].y))
 
 
-def Union(*Objects):
-
+def Union(*Objects, as_composition=False):
     Objects = [o._shapely_object if hasattr(o, '_shapely_object') else o for o in Objects]
-
     output = unary_union(Objects)
+
+    if as_composition:
+        return _buffer.PolygonComposition(instance=output)
 
     if isinstance(output, (geo.GeometryCollection, geo.MultiPolygon)):
         return _buffer.GeometryCollection(output)

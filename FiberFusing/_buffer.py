@@ -6,11 +6,11 @@ from matplotlib.collections import PatchCollection
 from matplotlib.path import Path
 import copy
 
+from shapely.ops import split
 import shapely.geometry as geo
 from shapely import affinity
 
 from MPSPlots.Render2D import Scene2D, Axis
-import FiberFusing.Utils as Utils
 
 ORIGIN = geo.Point(0, 0)
 RESOLUTION = 128
@@ -40,7 +40,10 @@ class PointComposition():
     is_empty = False
 
     def __post_init__(self) -> None:
-        self._shapely_object = geo.Point(self.position)
+        if isinstance(self.position, PointComposition):
+            self._shapely_object = self.position._shapely_object
+        else:
+            self._shapely_object = geo.Point(self.position)
 
     def _pass_info_output_(function, *args, **kwargs):
         def wrapper(*args, **kwargs):
@@ -73,7 +76,7 @@ class PointComposition():
     def __sub__(self, other):
         assert isinstance(other, self.__class__), f"Cannot add to object not of the same class: {other.__class__}-{self.__class__}"
 
-        return PointComposition(position=(self.x + other.x, self.y + other.y))
+        return PointComposition(position=(self.x - other.x, self.y - other.y))
 
     @_pass_info_output_
     def __neg__(self):
@@ -86,7 +89,6 @@ class PointComposition():
     def translate(self, shift: tuple):
         shift = interpret_point(shift)
         self._shapely_object = affinity.translate(self._shapely_object, shift.x, shift.y)
-
         return self
 
     @property
@@ -154,6 +156,10 @@ class LineStringComposition():
     def center(self):
         return self._shapely_object.centroid
 
+    def intersect(self, other):
+        self._shapely_object = self._shapely_object.intersection(other._shapely_object)
+        self.update_coordinates()
+
     @property
     def boundary(self):
         return self.coordinates
@@ -161,7 +167,9 @@ class LineStringComposition():
     def update_coordinates(self):
         self.coordinates = [PointComposition(position=(p.x, p.y)) for p in self._shapely_object.boundary.geoms]
 
-    def rotate(self, angle, origin=(0, 0)) -> None:
+    def rotate(self, angle, origin=None) -> None:
+        if origin is None:
+            origin = self.mid_point
         origin = interpret_point(origin)
         self._shapely_object = affinity.rotate(self._shapely_object, angle=angle, origin=origin._shapely_object)
         self.update_coordinates()
@@ -263,6 +271,16 @@ class CircleComposition():
     is_empty = False
     has_z = False
 
+    def _pass_info_output_(function, *args, **kwargs):
+        def wrapper(*args, **kwargs):
+            output = function(*args, **kwargs)
+            self = args[0]
+            for attr in self.inherit_attr:
+                setattr(output, attr, getattr(self, attr))
+            return output
+
+        return wrapper
+
     def __post_init__(self) -> None:
         self._shapely_object = self.position._shapely_object.buffer(self.radius, resolution=self.resolution)
 
@@ -272,7 +290,7 @@ class CircleComposition():
 
     @property
     def center(self):
-        return self._shapely_object.centroid.x, self._shapely_object.centroid.y
+        return PointComposition(position=(self._shapely_object.centroid.x, self._shapely_object.centroid.y))
 
     @property
     def area(self):
@@ -307,8 +325,8 @@ class CircleComposition():
         ax._ax.add_collection(collection, autolim=True)
         ax._ax.autoscale_view()
         if self.name:
-            ax._ax.scatter(*self.center)
-            ax._ax.text(*self.center, self.name)
+            ax._ax.scatter(self.position.x, self.position.y, color='k', zorder=10)
+            ax._ax.text(self.position.x, self.position.y, self.name)
 
     def plot(self) -> Scene2D:
         figure = Scene2D(unit_size=(6, 6))
@@ -322,6 +340,7 @@ class CircleComposition():
     def update_coordinates(self) -> None:
         self.position = PointComposition(position=self.center)
 
+    @_pass_info_output_
     def scale(self, factor: float, origin: PointComposition = (0, 0)) -> None:
         origin = interpret_point(origin)
         self._shapely_object = affinity.scale(self._shapely_object, xfact=factor, yfact=factor, origin=origin)
@@ -377,7 +396,7 @@ class CircleComposition():
 
 @dataclass
 class PolygonComposition():
-    coordinates: list = PointComposition
+    coordinates: list = None
     instance: geo.Polygon = None
     name: str = ''
     index: float = 1.0
@@ -410,6 +429,13 @@ class PolygonComposition():
     def update_coordinates(self):
         self.coordinates = [PointComposition(position=(p.x, p.y)) for p in self.coordinates]
 
+    def remove_non_polygon(self):
+        if isinstance(self._shapely_object, geo.GeometryCollection):
+            new_polygon_set = [p for p in self._shapely_object.geoms if isinstance(p, (geo.Polygon, geo.MultiPolygon))]
+            self._shapely_object = geo.Polygon(*new_polygon_set)
+
+        return self
+
     def scale(self, factor: float, origin: PointComposition = (0, 0)) -> None:
         origin = interpret_point(origin)
         self._shapely_object = affinity.scale(self._shapely_object, xfact=factor, yfact=factor, origin=origin._shapely_object)
@@ -440,13 +466,13 @@ class PolygonComposition():
         output._shapely_object = self._shapely_object.convex_hull
         return output
 
-    def _render_(self, ax, object=None):
-        if object is None:
-            object = self._shapely_object
+    def _render_(self, ax, instance=None):
+        if instance is None:
+            instance = self._shapely_object
 
         path = Path.make_compound_path(
-            Path(numpy.asarray(object.exterior.coords)[:, :]),
-            *[Path(numpy.asarray(ring.coords)[:, :]) for ring in object.interiors])
+            Path(numpy.asarray(instance.exterior.coords)[:, :]),
+            *[Path(numpy.asarray(ring.coords)[:, :]) for ring in instance.interiors])
 
         patch = PathPatch(path)
         collection = PatchCollection([patch], alpha=self.alpha, facecolor=self.facecolor, edgecolor=self.edgecolor)
@@ -465,11 +491,10 @@ class PolygonComposition():
 
         if isinstance(self._shapely_object, geo.MultiPolygon):
             for poly in self._shapely_object.geoms:
-                self._render_(object=poly, ax=ax)
+                self._render_(instance=poly, ax=ax)
 
         else:
-            print(self._shapely_object.__class__)
-            self._render_(self._shapely_object, ax)
+            self._render_(instance=self._shapely_object, ax=ax)
 
         return figure
 
@@ -507,7 +532,25 @@ class PolygonComposition():
         output._shapely_object = self._shapely_object.__and__(other._shapely_object)
         return output
 
+    def split_with_line(self, line, return_type: str = 'largest'):
+        assert isinstance(self._shapely_object, geo.Polygon)
 
+        split_geometry = split(self._shapely_object, line.copy().extend(factor=100)._shapely_object).geoms
+
+        if split_geometry[0].area < split_geometry[1].area:
+            largest_section = PolygonComposition(instance=split_geometry[1])
+            smallest_section = PolygonComposition(instance=split_geometry[0])
+        else:
+            largest_section = PolygonComposition(instance=split_geometry[0])
+            smallest_section = PolygonComposition(instance=split_geometry[1])
+
+        match return_type:
+            case 'largest':
+                return largest_section
+            case 'smallest':
+                return smallest_section
+            case 'both':
+                return largest_section, smallest_section
 
 
 

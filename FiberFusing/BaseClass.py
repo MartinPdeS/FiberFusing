@@ -30,7 +30,7 @@ class BaseFused():
     """ Refractive index of the cladding structure. """
     tolerance: float = 1e-2
     """ Tolerance on the optimization problem which aim to minimize the difference between added and removed area of the heuristic algorithm. """
-    gradient: object = None
+    core_position_scrambling: float = 0
     """ Not implemented yet. """
 
     def __post_init__(self):
@@ -52,13 +52,13 @@ class BaseFused():
         return [f.position for f in self.fiber_list]
 
     @property
-    def added_section(self) -> _buffer.Polygon:
+    def added_section(self) -> _buffer.PolygonComposition:
         if self._added_section is None:
             self.compute_added_section()
         return self._added_section
 
     @property
-    def removed_section(self) -> _buffer.Polygon:
+    def removed_section(self) -> _buffer.PolygonComposition:
         if self._removed_section is None:
             self.compute_removed_section()
         return self._removed_section
@@ -154,7 +154,7 @@ class BaseFused():
         for fiber in Custom:
             self.custom_fiber.append(fiber)
 
-    def optimize_geometry(self, bounds: tuple = (0, 1000)) -> _buffer.Polygon:
+    def optimize_geometry(self, bounds: tuple = (0, 1000)) -> _buffer.PolygonComposition:
         self.initialize_connections()
 
         res = minimize_scalar(self.get_cost_value, bounds=bounds, method='bounded', options={'xatol': self.tolerance})
@@ -176,17 +176,24 @@ class BaseFused():
             self._fiber_list.append(fiber)
 
         for n, fiber in enumerate(self._fiber_list):
-            fiber.name = f' Fiber {n}'
+            fiber.name = f' fiber {n}'
 
-    def get_optimized_geometry(self, virtual_shift) -> _buffer.Polygon:
+    def get_optimized_geometry(self, virtual_shift) -> _buffer.PolygonComposition:
         opt_geometry = Utils.Union(*self.fiber_list, self.added_section)
 
         if isinstance(opt_geometry, geo.GeometryCollection):
             opt_geometry = _buffer.GeometryCollection(opt_geometry.geoms).clean()
 
         self.compute_core_position()
+        self.randomize_core_position()
 
         return opt_geometry
+
+    def randomize_core_position(self) -> None:
+        if self.core_position_scrambling != 0:
+            for fiber in self._fiber_list:
+                random_xy = numpy.random.rand(2) * self.core_position_scrambling
+                fiber.position.translate(random_xy)
 
     def initialize_connections(self) -> None:
         self.Connections = []
@@ -245,8 +252,8 @@ class BaseFused():
 
     def plot(self,
              show_fibers: bool = True,
-             show_added: bool = True,
-             show_removed: bool = True) -> Scene2D:
+             show_added: bool = False,
+             show_removed: bool = False) -> Scene2D:
 
         Fig = Scene2D(unit_size=(6, 6))
 

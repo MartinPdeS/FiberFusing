@@ -76,7 +76,7 @@ class Geometry(object):
                 self.y_bound = [auto_y_bound[0], 0]
 
     def get_gradient_mesh(self, Mesh: numpy.ndarray, Axes: Axes) -> numpy.ndarray:
-        Xgrad, Ygrad = Utils.gradientO4(Mesh**2, Axes.x.d, Axes.y.d)
+        Ygrad, Xgrad = Utils.gradientO4(Mesh**2, Axes.x.d, Axes.y.d)
 
         gradient = (Xgrad * Axes.x.Mesh + Ygrad * Axes.y.Mesh)
 
