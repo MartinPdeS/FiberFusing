@@ -1,0 +1,6 @@
+wheel
+scipy
+numpy
+matplotlib
+shapely >= 2.0.0
+MPSPlots

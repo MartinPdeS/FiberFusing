@@ -1,0 +1,13 @@
+wheel
+scipy
+numpy
+matplotlib
+Jinja2
+numpydoc
+coverage
+pytest
+Babel
+sphinx >= 3, != 5.2.0
+sphinx_gallery
+shapely >= 2.0.0
+MPSPlots
