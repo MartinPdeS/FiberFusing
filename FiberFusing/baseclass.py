@@ -17,6 +17,7 @@ from FiberFusing.utility.overlay_structure_on_mesh import OverlayStructureBaseCl
 from FiberFusing.buffer import Circle
 from FiberFusing.sub_structures.ring import FiberRing
 from FiberFusing.sub_structures.line import FiberLine
+from FiberFusing.tools import plot_style
 
 logging.basicConfig(level=logging.INFO)
 
@@ -369,6 +370,8 @@ class BaseFused(ConnectionOptimization, OverlayStructureBaseClass):
 
         if show_structure:
             self.clad_structure._render_on_ax_(ax)
+
+        ax.set_style(**plot_style.geometry)
 
         if show_added:
             added_section = utils.Union(*self.added_section_list)

@@ -393,6 +393,8 @@ class Geometry(object):
             ax = figure.append_ax()
             self.render_gradient_on_ax(ax)
 
+        ax.set_style(**plot_style.geometry)
+
         return figure
 
 # -
