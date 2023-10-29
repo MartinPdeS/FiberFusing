@@ -47,7 +47,7 @@ extensions = [
     'numpydoc',
     'sphinx_gallery.gen_gallery',
     'pyvista.ext.plot_directive',
-]
+] 
 
 
 def reset_mpl(gallery_conf, fname):
