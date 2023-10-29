@@ -3,4 +3,4 @@ numpydoc
 Babel
 sphinx >= 3, != 5.2.0
 sphinx_gallery
-
+pydata_sphinx_theme
