@@ -46,20 +46,11 @@ extensions = [
     'sphinx.ext.mathjax',
     'numpydoc',
     'sphinx_gallery.gen_gallery',
-    'pyvista.ext.plot_directive',
-] 
+]
 
 
 def reset_mpl(gallery_conf, fname):
     use_mpsplots_style()
-
-
-try:
-    import pyvista
-    if sys.platform in ["linux", "linux2"]:
-        pyvista.start_xvfb()  # Works only on linux system!
-except ImportError:
-    print('Could not load pyvista library for 3D renderin')
 
 
 examples_dirs = [
