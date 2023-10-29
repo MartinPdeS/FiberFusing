@@ -1,4 +1,3 @@
-wheel
 scipy
 numpy
 matplotlib
