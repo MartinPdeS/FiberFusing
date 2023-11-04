@@ -425,7 +425,7 @@ class GenericFiber(BaseStructureCollection):
         """
         min_x, min_y, max_x, max_y = self.get_structure_max_min_boundaries()
 
-        coordinate_system = Axes(
+        coordinate_system = CoordinateSystem(
             min_x=min_x,
             max_x=max_x,
             min_y=min_y,
