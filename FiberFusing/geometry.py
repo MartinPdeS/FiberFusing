@@ -328,8 +328,6 @@ class Geometry(object):
             x=self.coordinate_system.x_vector,
             y=self.coordinate_system.y_vector,
             scalar=self.gradient,
-            colormap=colormaps.blue_white_red,
-            colormap_norm=colors.SymLogNorm(linthresh=1e-10)
         )
 
         ax.set_style(
@@ -342,7 +340,9 @@ class Geometry(object):
             log_norm=True,
             position='right',
             numeric_format='%.1e',
-            symmetric=True
+            symmetric=True,
+            colormap=colormaps.blue_white_red,
+            norm=colors.SymLogNorm(linthresh=1e-10)
         )
 
     def render_mesh_on_ax(self, ax: Axis) -> None:
@@ -356,8 +356,6 @@ class Geometry(object):
             x=self.coordinate_system.x_vector,
             y=self.coordinate_system.y_vector,
             scalar=self.mesh,
-            colormap='Blues',
-            colormap_norm=colors.LogNorm(vmin=self.refractive_index_minimum / 1.05)
         )
 
         ax.set_style(
@@ -369,7 +367,9 @@ class Geometry(object):
         ax.add_colorbar(
             discreet=False,
             position='right',
-            numeric_format='%.4f'
+            numeric_format='%.4f',
+            colormap='Blues',
+            norm=colors.LogNorm(vmin=self.refractive_index_minimum / 1.05)
         )
 
     def plot(self, show_patch: bool = True, show_mesh: bool = True, show_gradient: bool = True) -> None:

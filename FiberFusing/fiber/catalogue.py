@@ -98,54 +98,18 @@ class HI1060(GenericFiber):
 
 
 class CapillaryTube(GenericFiber):
-    def __init__(self,
-            wavelength: float,
-            radius: float,
-            index: float = None,
-            position: tuple = (0, 0)) -> None:
+    model = "CapillaryTube"
 
-        super().__init__(wavelength=wavelength, position=position)
+    def __init__(self, wavelength: float, radius: float, delta_n: float = 15e-3):
+        super().__init__(wavelength=wavelength)
         self.radius = radius
-        self.index = index
+
+        index = get_silica_index(wavelength=self.wavelength)
 
         self.create_and_add_new_structure(
-            name='clad',
-            index=self.index,
-            radius=self.radius
-        )
-
-    def set_delta_n(self, value: float) -> None:
-        self.index = self.pure_silica_index + value
-
-
-class FluorineCapillaryTube(GenericFiber):
-    model = "fluorine_doped_1%_capillary"
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        fiber_dict = load_fiber_as_dict(
-            fiber_name=self.model,
-            wavelength=self.wavelength
-        )
-
-        for _, structure in fiber_dict['layers'].items():
-            self.create_and_add_new_structure(**structure)
-
-
-class FluorineCapillaryTube_2(GenericFiber):
-    model = "fluorine_doped_2%_capillary"
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        fiber_dict = load_fiber_as_dict(
-            fiber_name=self.model,
-            wavelength=self.wavelength
-        )
-
-        for _, structure in fiber_dict['layers'].items():
-            self.create_and_add_new_structure(**structure)
+            index=index,
+            radius=self.radius,
+            name='capillary tube')
 
 
 class GradientCore(GenericFiber):

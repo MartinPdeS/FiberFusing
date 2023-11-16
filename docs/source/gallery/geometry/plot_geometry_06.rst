@@ -87,7 +87,7 @@
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.719 seconds)
+   **Total running time of the script:** (0 minutes 3.667 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_geometry_06.py:

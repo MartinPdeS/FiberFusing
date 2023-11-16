@@ -254,7 +254,7 @@ class Point(Alteration):
         ax = figure.append_ax(
             x_label='x',
             y_label='y',
-            colorbar=False,
+            show_colorbar=False,
             equal=True
         )
 
@@ -493,7 +493,7 @@ class Polygon(BaseArea):
         ax = figure.append_ax(
             x_label='x',
             y_label='y',
-            colorbar=False,
+            show_colorbar=False,
             equal=True
         )
 
