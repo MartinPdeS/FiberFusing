@@ -3,6 +3,7 @@
 
 |python|
 |PyPi|
+|PyPi_download|
 |docs|
 |Unittest|
 
@@ -41,19 +42,18 @@ As simple as it gets using pip
 
 ----
 
-Running Unittest
-*****************
-To run the unittests, one need the coverage library.
+Testing
+*******
 
-.. code-block:: python
+To test localy (with cloning the GitHub repository) you'll need to install the dependencies and run the coverage command as
 
-   >>> python3 -m pytest tests
+.. code:: console
 
-
-
-
+   >>> pip install -r requirements/requirements.txt
+   >>> coverage run --source=FiberFusing --module pytest --verbose tests coverage report --show-missing
 
 ----
+
 
 Coding examples
 ***************
@@ -82,6 +82,9 @@ Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@po
 
 .. |PyPi| image:: https://badge.fury.io/py/FiberFusing.svg
    :target: https://pypi.org/project/FiberFusing/
+
+.. |PyPi_download| image:: https://img.shields.io/pypi/dm/PyMieSim.svg
+   :target: https://pypi.org/project/PyMieSim/
 
 .. |Logo| image:: https://github.com/MartinPdeS/FiberFusing/raw/master/docs/images/logo.png
 
