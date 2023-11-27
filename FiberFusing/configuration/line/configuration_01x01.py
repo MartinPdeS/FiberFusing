@@ -12,7 +12,9 @@ class FusedProfile_01x01(BaseFused):
             fiber_radius: float,
             index: float,
             core_position_scrambling: float = 0.,
-            fusion_degree: float = 0.8):
+            fusion_degree: float = None):
+
+        fusion_degree = 0.8 if fusion_degree is None else fusion_degree
 
         super().__init__(index=index, fusion_degree=fusion_degree)
 

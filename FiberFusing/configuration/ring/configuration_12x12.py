@@ -12,7 +12,7 @@ class FusedProfile_12x12(BaseFused):
             fiber_radius: float,
             index: float,
             scale_down: float = 1,
-            fusion_degree=0,
+            fusion_degree: float = None,
             core_position_scrambling: float = 0):
 
         super().__init__(index=index, fusion_degree=fusion_degree)

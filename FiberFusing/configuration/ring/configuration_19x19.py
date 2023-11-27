@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from FiberFusing.baseclass import BaseFused
-import logging
 
 
 class FusedProfile_19x19(BaseFused):
@@ -15,9 +14,6 @@ class FusedProfile_19x19(BaseFused):
             scale_down: float = 1,
             fusion_degree: float = None,
             core_position_scrambling: float = 0):
-
-        if fusion_degree is not None:
-            logging.warning(f"This instance: {self.__class__} do not take fusion_degree as argument.")
 
         super().__init__(index=index)
 
@@ -37,8 +33,6 @@ class FusedProfile_19x19(BaseFused):
         )
 
         self.add_center_fiber(fiber_radius=fiber_radius)
-
-        print(dir(self))
 
         self.randomize_core_position(randomize_position=core_position_scrambling)
 

@@ -30,6 +30,19 @@ __all__ = [
 
 
 def load_fiber(fiber_name: str, wavelength: float, position: tuple = (0, 0)) -> GenericFiber:
+    """
+    Loads a fiber from the MPSTools library.
+
+    :param      fiber_name:  The fiber name
+    :type       fiber_name:  str
+    :param      wavelength:  The wavelength at which the fiber material refractive index is evaluated
+    :type       wavelength:  float
+    :param      position:    The position of the fiber
+    :type       position:    tuple
+
+    :returns:   The generic fiber.
+    :rtype:     GenericFiber
+    """
     fiber = GenericFiber(wavelength=wavelength, position=position)
 
     fiber_dict = load_fiber_as_dict(
@@ -68,11 +81,11 @@ class CapillaryTube(GenericFiber):
 class GradientCore(GenericFiber):
     # Fiber from https://www.nature.com/articles/s41598-018-27072-2
 
-    def __init__(self, *args, core_radius, delta_n, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, wavelength: float, core_radius: float, delta_n: float | str, position: tuple = (0, 0)):
+        super().__init__(wavelength=wavelength, position=position)
 
         self.create_and_add_new_structure(
-            name='outer_clad',
+            name='cladding',
             index=self.pure_silica_index,
             radius=62.5 * micro
         )

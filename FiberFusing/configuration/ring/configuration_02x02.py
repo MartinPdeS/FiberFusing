@@ -11,9 +11,10 @@ class FusedProfile_02x02(BaseFused):
     def __init__(self,
             fiber_radius: float,
             index: float,
-            fusion_degree: float = 0.7,
+            fusion_degree: float = None,
             core_position_scrambling: float = 0):
 
+        fusion_degree = 0.7 if fusion_degree is None else fusion_degree
         super().__init__(index=index, fusion_degree=fusion_degree)
 
         self.add_fiber_ring(
