@@ -107,7 +107,7 @@ class CapillaryTube(GenericFiber):
         index = get_silica_index(wavelength=self.wavelength)
 
         self.create_and_add_new_structure(
-            index=index,
+            index=index + delta_n,
             radius=self.radius,
             name='capillary tube')
 

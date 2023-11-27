@@ -9,8 +9,10 @@ from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.utils import get_rho_gradient, get_silica_index
 from FiberFusing import OpticalStructure
 import pprint
+from copy import deepcopy
 
 # MPSPlots imports
+from matplotlib import colors
 from MPSPlots import colormaps
 from MPSPlots.render2D import SceneList, Axis, Polygon
 
@@ -33,6 +35,36 @@ class BaseStructureCollection():
     @property
     def inner_structure(self):
         return [s for s in self.structure_list if s.name not in ['air', 'outer_clad']]
+
+    def __getitem__(self, idx: int) -> OpticalStructure:
+        return self.structure_list[idx]
+
+    def scale(self, factor: float) -> None:
+        """
+        Return a scaled version of the fiber.
+
+        :param      factor:  The scaling factor
+        :type       factor:  float
+
+        :returns:   No return
+        :rtype:     None
+        """
+        fiber_copy = deepcopy(self)
+        for structure in fiber_copy.structure_list:
+            if structure.radius is None:
+                continue
+
+            structure.radius *= factor
+
+            new_polygon = Circle(
+                position=structure.position,
+                radius=structure.radius,
+                index=structure.index
+            )
+
+            structure.polygon = new_polygon
+
+        return fiber_copy
 
     def create_and_add_new_structure(self, index: float = None, NA: float = None, **kwargs) -> None:
         """
@@ -122,21 +154,6 @@ class GenericFiber(BaseStructureCollection):
     def __post_init__(self):
         self.structure_list = []
         self.add_air()
-
-    def scale(self, factor: float) -> None:
-        for structure in self.structure_list:
-            if structure.radius is None:
-                continue
-
-            structure.radius *= factor
-
-            new_polygon = Circle(
-                position=structure.position,
-                radius=structure.radius,
-                index=structure.index
-            )
-
-            structure.polygon = new_polygon
 
     @property
     def pure_silica_index(self):
@@ -255,11 +272,16 @@ class GenericFiber(BaseStructureCollection):
 
         raster = self.overlay_structures(coordinate_system=coordinate_system, structures_type='fiber_structure')
 
-        ax.add_mesh(
+        artist = ax.add_mesh(
             x=coordinate_system.x_vector,
             y=coordinate_system.y_vector,
             scalar=raster,
-            colormap='Blues'
+        )
+
+        ax.add_colorbar(
+            artist=artist,
+            colormap='Blues',
+            norm=colors.LogNorm()
         )
 
         ax.set_style(**plot_style.geometry, title='Rasterized mesh')
@@ -275,18 +297,16 @@ class GenericFiber(BaseStructureCollection):
 
         rho_gradient = get_rho_gradient(mesh=raster, coordinate_system=coordinate_system)
 
-        ax.add_colorbar(
-            log_norm=True,
-            position='right',
-            numeric_format='%.1e',
-            symmetric=True
-        )
-
-        ax.add_mesh(
+        artist = ax.add_mesh(
             x=coordinate_system.x_vector,
             y=coordinate_system.y_vector,
             scalar=rho_gradient,
-            colormap=colormaps.blue_white_red
+        )
+
+        ax.add_colorbar(
+            artist=artist,
+            colormap=colormaps.blue_white_red,
+            norm=colors.SymLogNorm(linthresh=1e-10)
         )
 
         ax.set_style(**plot_style.geometry, title='Refractive index gradient')

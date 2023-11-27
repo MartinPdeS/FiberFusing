@@ -215,7 +215,7 @@ class Geometry(object):
 
         self.generate_mesh()
 
-        self.gradient = self.get_n2_rho_gradient()
+        self.n2_gradient = self.get_n2_rho_gradient()
 
     def randomize_fiber_structures_index(self, random_factor: float) -> None:
         """
@@ -324,10 +324,10 @@ class Geometry(object):
         :param      ax:   The ax to which append the representation.
         :type       ax:   Axis
         """
-        ax.add_mesh(
+        artist = ax.add_mesh(
             x=self.coordinate_system.x_vector,
             y=self.coordinate_system.y_vector,
-            scalar=self.gradient,
+            scalar=self.n2_gradient,
         )
 
         ax.set_style(
@@ -337,6 +337,7 @@ class Geometry(object):
         )
 
         ax.add_colorbar(
+            artist=artist,
             log_norm=True,
             position='right',
             numeric_format='%.1e',
@@ -352,7 +353,7 @@ class Geometry(object):
         :param      ax:   The ax to which append the representation.
         :type       ax:   Axis
         """
-        ax.add_mesh(
+        artist = ax.add_mesh(
             x=self.coordinate_system.x_vector,
             y=self.coordinate_system.y_vector,
             scalar=self.mesh,
@@ -365,11 +366,12 @@ class Geometry(object):
         )
 
         ax.add_colorbar(
+            artist=artist,
             discreet=False,
             position='right',
             numeric_format='%.4f',
             colormap='Blues',
-            norm=colors.LogNorm(vmin=self.refractive_index_minimum / 1.05)
+            norm=colors.LogNorm(vmin=self.refractive_index_minimum / 1.01)
         )
 
     def plot(self, show_patch: bool = True, show_mesh: bool = True, show_gradient: bool = True) -> None:
