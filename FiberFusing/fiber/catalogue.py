@@ -29,8 +29,8 @@ __all__ = [
 ]
 
 
-def load_fiber(fiber_name: str, wavelength: float) -> GenericFiber:
-    fiber = GenericFiber(wavelength=wavelength)
+def load_fiber(fiber_name: str, wavelength: float, position: tuple = (0, 0)) -> GenericFiber:
+    fiber = GenericFiber(wavelength=wavelength, position=position)
 
     fiber_dict = load_fiber_as_dict(
         fiber_name=fiber_name,

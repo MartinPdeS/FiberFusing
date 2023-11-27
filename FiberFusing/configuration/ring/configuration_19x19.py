@@ -38,6 +38,8 @@ class FusedProfile_19x19(BaseFused):
 
         self.add_center_fiber(fiber_radius=fiber_radius)
 
+        print(dir(self))
+
         self.randomize_core_position(randomize_position=core_position_scrambling)
 
         self.scale_position(factor=scale_down)
