@@ -374,10 +374,19 @@ class Geometry(object):
             norm=colors.LogNorm(vmin=self.refractive_index_minimum / 1.01)
         )
 
-    def plot(self, show_patch: bool = True, show_mesh: bool = True, show_gradient: bool = True) -> None:
+    def plot(self, show_patch: bool = True, show_mesh: bool = True, show_gradient: bool = True) -> SceneList:
         """
-        Plot the different representations [patch, raster-mesh, raster-gradient]
-        of the geometry.
+        Plot the different representations [patch, mesh, gradient] of the geometry.
+
+        :param      show_patch:     The show patch
+        :type       show_patch:     bool
+        :param      show_mesh:      The show mesh
+        :type       show_mesh:      bool
+        :param      show_gradient:  The show gradient
+        :type       show_gradient:  bool
+
+        :returns:   The figure encompassing all the axis
+        :rtype:     SceneList
         """
         self.generate_coordinate_mesh_gradient()
 

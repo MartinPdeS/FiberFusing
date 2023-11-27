@@ -48,6 +48,7 @@ Testing
 To test localy (with cloning the GitHub repository) you'll need to install the dependencies and run the coverage command as
 
 .. code:: console
+
    >>> git clone https://github.com/MartinPdeS/FiberFusing.git
    >>> cd FiberFusing
    >>> pip install -r requirements/requirements.txt
