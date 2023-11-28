@@ -96,7 +96,7 @@ def test_building_geometry_with_cappilary_and_fibers(patch, fused_structure):
         additional_structure_list=[cappilary_tube, clad],
         background=background,
         fiber_list=fiber_list,
-        x_bounds='centering-left',
+        x_bounds='left',
         y_bounds='centering',
         resolution=50
     )

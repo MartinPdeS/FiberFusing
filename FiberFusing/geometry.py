@@ -32,9 +32,9 @@ class Geometry(object):
     """ List of geometrique object representing the fiber structure. """
     fiber_list: list = field(default_factory=list)
     """ List of fiber structure to add. """
-    x_bounds: list = ''
+    x_bounds: list = 'centering'
     """ X boundary to render the structure, argument can be either list or a string from ['auto', 'left', 'right', 'centering']. """
-    y_bounds: list = ''
+    y_bounds: list = 'centering'
     """ Y boundary to render the structure, argument can be either list or a string from ['auto', 'top', 'bottom', 'centering']. """
     resolution: int = 100
     """ Number of point (x and y-direction) to evaluate the rendering. """

@@ -38,7 +38,7 @@
 
 
     from FiberFusing import Geometry, BackGround
-    from FiberFusing.fiber.catalogue import SMF28, get_silica_index
+    from FiberFusing.fiber.catalogue import load_fiber, get_silica_index
     from FiberFusing.configuration.ring import FusedProfile_02x02 as FusedProfile
 
 
@@ -53,7 +53,7 @@
     )
 
     fibers = [
-        SMF28(wavelength=wavelength, position=core) for core in clad.cores
+        load_fiber('SMF28', wavelength=wavelength, position=core) for core in clad.cores
     ]
 
     geometry = Geometry(
@@ -76,7 +76,7 @@
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.318 seconds)
+   **Total running time of the script:** (0 minutes 1.483 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_geometry_02.py:

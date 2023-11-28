@@ -6,26 +6,26 @@
 
 Computation times
 =================
-**00:21.308** total execution time for **gallery_geometry** files:
+**00:23.277** total execution time for **gallery_geometry** files:
 
 +--------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_geometry_plot_geometry_06.py` (``plot_geometry_06.py``) | 00:03.667 | 0.0 MB |
+| :ref:`sphx_glr_gallery_geometry_plot_geometry_06.py` (``plot_geometry_06.py``) | 00:03.889 | 0.0 MB |
 +--------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_geometry_plot_geometry_05.py` (``plot_geometry_05.py``) | 00:03.323 | 0.0 MB |
+| :ref:`sphx_glr_gallery_geometry_plot_geometry_05.py` (``plot_geometry_05.py``) | 00:03.516 | 0.0 MB |
 +--------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_geometry_plot_geometry_10.py` (``plot_geometry_10.py``) | 00:02.498 | 0.0 MB |
+| :ref:`sphx_glr_gallery_geometry_plot_geometry_10.py` (``plot_geometry_10.py``) | 00:02.716 | 0.0 MB |
 +--------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_geometry_plot_geometry_04.py` (``plot_geometry_04.py``) | 00:02.424 | 0.0 MB |
+| :ref:`sphx_glr_gallery_geometry_plot_geometry_04.py` (``plot_geometry_04.py``) | 00:02.639 | 0.0 MB |
 +--------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_geometry_plot_geometry_07.py` (``plot_geometry_07.py``) | 00:02.030 | 0.0 MB |
+| :ref:`sphx_glr_gallery_geometry_plot_geometry_07.py` (``plot_geometry_07.py``) | 00:02.213 | 0.0 MB |
 +--------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_geometry_plot_geometry_09.py` (``plot_geometry_09.py``) | 00:01.974 | 0.0 MB |
+| :ref:`sphx_glr_gallery_geometry_plot_geometry_09.py` (``plot_geometry_09.py``) | 00:02.189 | 0.0 MB |
 +--------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_geometry_plot_geometry_03.py` (``plot_geometry_03.py``) | 00:01.907 | 0.0 MB |
+| :ref:`sphx_glr_gallery_geometry_plot_geometry_03.py` (``plot_geometry_03.py``) | 00:02.102 | 0.0 MB |
 +--------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_geometry_plot_geometry_08.py` (``plot_geometry_08.py``) | 00:01.566 | 0.0 MB |
+| :ref:`sphx_glr_gallery_geometry_plot_geometry_08.py` (``plot_geometry_08.py``) | 00:01.747 | 0.0 MB |
 +--------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_geometry_plot_geometry_02.py` (``plot_geometry_02.py``) | 00:01.318 | 0.0 MB |
+| :ref:`sphx_glr_gallery_geometry_plot_geometry_02.py` (``plot_geometry_02.py``) | 00:01.483 | 0.0 MB |
 +--------------------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_geometry_plot_geometry_01.py` (``plot_geometry_01.py``) | 00:00.601 | 0.0 MB |
+| :ref:`sphx_glr_gallery_geometry_plot_geometry_01.py` (``plot_geometry_01.py``) | 00:00.783 | 0.0 MB |
 +--------------------------------------------------------------------------------+-----------+--------+

@@ -21,7 +21,7 @@
 7x7 Ring - Geometry
 ===================
 
-.. GENERATED FROM PYTHON SOURCE LINES 5-41
+.. GENERATED FROM PYTHON SOURCE LINES 5-42
 
 
 
@@ -50,7 +50,7 @@
 
 
     from FiberFusing import Geometry, BackGround
-    from FiberFusing.fiber.catalogue import SMF28, get_silica_index
+    from FiberFusing.fiber.catalogue import load_fiber, get_silica_index
     from FiberFusing.configuration.ring import FusedProfile_07x07 as FusedProfile
 
     wavelength = 1.55e-6
@@ -64,8 +64,9 @@
     )
 
     fibers = [
-        SMF28(wavelength=wavelength, position=core) for core in clad.cores
+        load_fiber('SMF28', wavelength=wavelength, position=core) for core in clad.cores
     ]
+
 
     geometry = Geometry(
         background=air,
@@ -87,7 +88,7 @@
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.667 seconds)
+   **Total running time of the script:** (0 minutes 3.889 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_geometry_06.py:

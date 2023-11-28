@@ -6,26 +6,26 @@
 
 Computation times
 =================
-**00:00.136** total execution time for **gallery_clad** files:
+**00:11.605** total execution time for **gallery_clad** files:
 
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_clad_01.py` (``plot_clad_01.py``) | 00:00.136 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_clad_05.py` (``plot_clad_05.py``) | 00:03.808 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_clad_02.py` (``plot_clad_02.py``) | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_clad_04.py` (``plot_clad_04.py``) | 00:01.669 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_clad_03.py` (``plot_clad_03.py``) | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_clad_10.py` (``plot_clad_10.py``) | 00:01.580 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_clad_04.py` (``plot_clad_04.py``) | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_clad_03.py` (``plot_clad_03.py``) | 00:01.409 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_clad_05.py` (``plot_clad_05.py``) | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_clad_09.py` (``plot_clad_09.py``) | 00:01.171 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_clad_06.py` (``plot_clad_06.py``) | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_clad_08.py` (``plot_clad_08.py``) | 00:00.882 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_clad_07.py` (``plot_clad_07.py``) | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_clad_02.py` (``plot_clad_02.py``) | 00:00.495 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_clad_08.py` (``plot_clad_08.py``) | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_clad_07.py` (``plot_clad_07.py``) | 00:00.258 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_clad_09.py` (``plot_clad_09.py``) | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_clad_06.py` (``plot_clad_06.py``) | 00:00.191 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_clad_10.py` (``plot_clad_10.py``) | 00:00.000 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_clad_01.py` (``plot_clad_01.py``) | 00:00.143 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+

@@ -55,7 +55,7 @@
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.645 seconds)
+   **Total running time of the script:** (0 minutes 1.669 seconds)
 
 
 .. _sphx_glr_download_gallery_clad_plot_clad_04.py:

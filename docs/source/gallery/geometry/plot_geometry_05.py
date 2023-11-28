@@ -5,7 +5,7 @@
 
 
 from FiberFusing import Geometry, BackGround
-from FiberFusing.fiber.catalogue import SMF28, get_silica_index
+from FiberFusing.fiber.catalogue import load_fiber, get_silica_index
 from FiberFusing.configuration.ring import FusedProfile_05x05 as FusedProfile
 
 wavelength = 1.55e-6
@@ -19,8 +19,9 @@ clad = FusedProfile(
 )
 
 fibers = [
-    SMF28(wavelength=wavelength, position=core) for core in clad.cores
+    load_fiber('SMF28', wavelength=wavelength, position=core) for core in clad.cores
 ]
+
 
 geometry = Geometry(
     background=air,
