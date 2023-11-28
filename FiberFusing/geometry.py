@@ -3,7 +3,6 @@
 
 # Third-party imports
 import numpy
-from collections.abc import Iterable
 from dataclasses import dataclass, field
 from scipy.ndimage import gaussian_filter
 
