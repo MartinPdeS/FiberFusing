@@ -20,6 +20,10 @@ class BaseClass():
     def unfused_structure(self):
         return utils.Union(*self.fiber_list)
 
+    def initialize_cores(self):
+        for fiber in self.fiber_list:
+            fiber.shifted_core = fiber.center
+
     def get_scaling_factor_from_fusion_degree(self, fusion_degree: float) -> float:
         """
         Gets equivalent scaling factor from fusion degree value.
@@ -32,8 +36,7 @@ class BaseClass():
         """
         factor = 1 - fusion_degree * (2 - numpy.sqrt(2))
 
-        distance_between_cores = \
-            2 * self.fiber_radius * factor
+        distance_between_cores = 2 * self.fiber_radius * factor
 
         scaling_factor = distance_between_cores / (2 * self.fiber_radius)
 

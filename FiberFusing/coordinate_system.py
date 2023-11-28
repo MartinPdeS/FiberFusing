@@ -14,23 +14,21 @@ class CoordinateSystem(object):
         self._x_bounds = [min_x, max_x]
         self._y_bounds = [min_y, max_y]
 
-        self.compute_mesh()
+    @property
+    def min_x(self) -> float:
+        return numpy.min(self.x_bounds)
 
     @property
-    def min_x(self):
-        return self.x_bounds[0]
+    def max_x(self) -> float:
+        return numpy.max(self.x_bounds)
 
     @property
-    def max_x(self):
-        return self.x_bounds[1]
+    def min_y(self) -> float:
+        return numpy.min(self.y_bounds)
 
     @property
-    def min_y(self):
-        return self.y_bounds[0]
-
-    @property
-    def max_y(self):
-        return self.y_bounds[1]
+    def max_y(self) -> float:
+        return numpy.max(self.y_bounds)
 
     def centering(self, factor: float = 1.2, zero_included: bool = True) -> None:
         min_bound = min(self.x_bounds[0], self.y_bounds[0]) * factor
@@ -42,9 +40,16 @@ class CoordinateSystem(object):
             self.make_nx_odd()
             self.make_ny_odd()
 
-        self.compute_mesh()
-
     def add_padding(self, padding_factor: float) -> None:
+        """
+        Adds a padding space between the .
+
+        :param      padding_factor:  The padding factor
+        :type       padding_factor:  float
+
+        :returns:   No returns
+        :rtype:     None
+        """
         average_x = (self.min_x + self.max_x) / 2
         difference_x = abs(self.min_x - self.max_x)
 
@@ -67,6 +72,9 @@ class CoordinateSystem(object):
 
         :param      zero_included:  Indicates if zero included
         :type       zero_included:  bool
+
+        :returns:   No returns
+        :rtype:     None
         """
         abs_boundary = abs(self.x_bounds[0]), abs(self.x_bounds[1])
         abs_boundary = max(abs_boundary)
@@ -76,9 +84,16 @@ class CoordinateSystem(object):
         if zero_included:
             self.make_nx_odd()
 
-        self.compute_mesh()
-
     def y_centering(self, zero_included: bool = True) -> None:
+        """
+        Center the y coordinate system around 0
+
+        :param      zero_included:  Indicates if zero included
+        :type       zero_included:  bool
+
+        :returns:   No returns
+        :rtype:     None
+        """
         abs_boundary = abs(self.y_bounds[0]), abs(self.y_bounds[1])
         abs_boundary = max(abs_boundary)
 
@@ -87,7 +102,11 @@ class CoordinateSystem(object):
         if zero_included:
             self.make_ny_odd()
 
-        self.compute_mesh()
+    def set_x_boundary(self, x_bounds: list):
+        self._x_bounds = x_bounds
+
+    def set_y_boundary(self, y_bounds: list):
+        self._y_bounds = y_bounds
 
     def to_unstructured_coordinate(self) -> numpy.ndarray:
         """
@@ -101,9 +120,6 @@ class CoordinateSystem(object):
         coordinates[:, 1] = self.y_mesh.ravel()
 
         return coordinates
-
-    def compute_mesh(self) -> None:
-        self.x_mesh, self.y_mesh = numpy.meshgrid(self.x_vector, self.y_vector)
 
     def make_nx_odd(self) -> None:
         self.nx = self.to_odd(self.nx)
@@ -157,7 +173,6 @@ class CoordinateSystem(object):
     @nx.setter
     def nx(self, value) -> None:
         self._nx = value
-        self.compute_mesh()
 
     # ny property------------
     @property
@@ -167,7 +182,6 @@ class CoordinateSystem(object):
     @ny.setter
     def ny(self, value) -> None:
         self._ny = value
-        self.compute_mesh()
 
     # dx property------------
     @property
@@ -181,11 +195,23 @@ class CoordinateSystem(object):
 
     @property
     def x_vector(self) -> numpy.ndarray:
-        return numpy.linspace(*self.x_bounds, self.nx, endpoint=True)
+        return numpy.linspace(*self.x_bounds, num=self.nx, endpoint=True)
 
     @property
     def y_vector(self) -> numpy.ndarray:
-        return numpy.linspace(*self.y_bounds, self.ny, endpoint=True)
+        return numpy.linspace(*self.y_bounds, num=self.ny, endpoint=True)
+
+    @property
+    def x_mesh(self):
+        x_mesh, _ = numpy.meshgrid(self.x_vector, self.y_vector)
+
+        return x_mesh
+
+    @property
+    def y_mesh(self):
+        _, y_mesh = numpy.meshgrid(self.x_vector, self.y_vector)
+
+        return y_mesh
 
     # x_bound property------------
     @property
@@ -196,8 +222,6 @@ class CoordinateSystem(object):
     def x_bounds(self, value) -> None:
         self._x_bounds = value
 
-        self.compute_mesh()
-
     # y_bound property------------
     @property
     def y_bounds(self) -> tuple:
@@ -206,8 +230,6 @@ class CoordinateSystem(object):
     @y_bounds.setter
     def y_bounds(self, value) -> None:
         self._y_bounds = value
-
-        self.compute_mesh()
 
     def to_odd(self, value: int) -> int:
         return (value // 2) * 2 + 1

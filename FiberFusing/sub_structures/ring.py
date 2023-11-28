@@ -52,13 +52,13 @@ class FiberRing(ConnectionOptimization, BaseClass):
 
 if __name__ == '__main__':
     fiber_ring = FiberRing(
-        number_of_fibers=4,
-        fiber_radius=62e-6,
+        number_of_fibers=2,
+        fiber_radius=62.5e-6,
         angle_shift=20,
         tolerance_factor=1e-10
     )
 
-    fiber_ring.set_fusion_degree(0.2)
+    fiber_ring.set_fusion_degree(0.6)
 
     fiber_ring.init_connected_fibers()
 

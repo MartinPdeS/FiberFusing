@@ -79,7 +79,7 @@ FiberFusing was written by `Martin Poinsinet de Sivry-Houle <https://github.com/
 Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=FiberFusing>`_ .
 
 
-.. |Unittest| image:: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MartinPdeS/f0955be398d59efac69042c1b0fbece2/raw/eb09c1c1b232dba9560ed698d8059a087a5c7b6b/FiberFusingcoverage_badge.json
+.. |Unittest| image:: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MartinPdeS/f0955be398d59efac69042c1b0fbece2/raw/92916f356545527ee2c5a999d2ec16dd02f5e018/FiberFusingcoverage_badge.json
 
 .. |python| image:: https://img.shields.io/pypi/pyversions/fiberfusing.svg
    :target: https://www.python.org/

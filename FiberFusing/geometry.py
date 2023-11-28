@@ -3,6 +3,7 @@
 
 # Third-party imports
 import numpy
+from collections.abc import Iterable
 from dataclasses import dataclass, field
 from scipy.ndimage import gaussian_filter
 
@@ -32,9 +33,9 @@ class Geometry(object):
     """ List of geometrique object representing the fiber structure. """
     fiber_list: list = field(default_factory=list)
     """ List of fiber structure to add. """
-    x_bounds: list = 'auto-centering'
+    x_bounds: list = ''
     """ X boundary to render the structure, argument can be either list or a string from ['auto', 'left', 'right', 'centering']. """
-    y_bounds: list = 'auto-centering'
+    y_bounds: list = ''
     """ Y boundary to render the structure, argument can be either list or a string from ['auto', 'top', 'bottom', 'centering']. """
     resolution: int = 100
     """ Number of point (x and y-direction) to evaluate the rendering. """
@@ -101,6 +102,31 @@ class Geometry(object):
 
         return [self.background, *self.additional_structure_list, *self.fiber_list]
 
+    def interpret_x_boundary(self) -> None:
+        """
+        Interpret the x_bound parameter.
+        If the parameter is in ["left", "right", ""], it returns
+        an auto-evaluated boundary
+
+        :param      x_bound:  The y boundary to be interpreted
+        :type       x_bound:  list
+
+        :returns:   The interpreted y boundary
+        :rtype:     list
+        """
+        if not isinstance(self.x_bounds, str):
+            return self.coordinate_system.set_x_boundary(self.x_bounds)
+
+        match self.x_bounds:
+            case 'right':
+                return self.coordinate_system.set_right()
+            case 'left':
+                return self.coordinate_system.set_left()
+            case 'centering':
+                return self.coordinate_system.x_centering()
+
+        raise ValueError(f"Invalid x_bounds input:{self.x_bounds}, value has to be in [list, 'right', 'left', 'centering']")
+
     def interpret_y_boundary(self) -> None:
         """
         Interpret the y_bound parameter.
@@ -113,17 +139,18 @@ class Geometry(object):
         :returns:   The interpreted y boundary
         :rtype:     list
         """
-        if isinstance(self.y_bounds, (list, tuple)):
-            self.coordinate_system.y_bounds = self.y_bounds
+        if not isinstance(self.y_bounds, str):
+            return self.coordinate_system.set_y_boundary(self.y_bounds)
 
-        elif isinstance(self.y_bounds, str):
-            arguments = self.y_bounds.split('-')
-            if 'centering' in arguments:
-                self.coordinate_system.y_centering()
-            if 'top' in arguments:
-                self.coordinate_system.set_top()
-            if 'bottom' in arguments:
-                self.coordinate_system.set_bottom()
+        match self.y_bounds:
+            case 'top':
+                return self.coordinate_system.set_top()
+            case 'bottom':
+                return self.coordinate_system.set_bottom()
+            case 'centering':
+                return self.coordinate_system.y_centering()
+
+        raise ValueError(f"Invalid y_bounds input:{self.y_bounds}, value has to be in [list, 'top', 'bottom', 'centering']")
 
     def get_boundaries(self) -> tuple:
         """
@@ -152,31 +179,6 @@ class Geometry(object):
             numpy.max(max_x),
             numpy.max(max_y)
         )
-
-    def interpret_x_boundary(self) -> None:
-        """
-        Interpret the x_bound parameter.
-        If the parameter is in ["left", "right", "centering"], it returns
-        an auto-evaluated boundary
-
-        :param      x_bound:  The y boundary to be interpreted
-        :type       x_bound:  list
-
-        :returns:   The interpreted y boundary
-        :rtype:     list
-        """
-        if isinstance(self.x_bounds, (list, tuple)):
-            self.coordinate_system.x_bounds = self.x_bounds
-
-        elif isinstance(self.x_bounds, str):
-            arguments = self.x_bounds.split('-')
-
-            if 'centering' in arguments:
-                self.coordinate_system.x_centering()
-            if 'right' in arguments:
-                self.coordinate_system.set_right()
-            if 'left' in arguments:
-                self.coordinate_system.set_left()
 
     @property
     def refractive_index_maximum(self) -> float:

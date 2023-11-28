@@ -226,10 +226,9 @@ class BaseFused(ConnectionOptimization, OverlayStructureBaseClass):
         ring.set_fusion_degree(fusion_degree=fusion_degree)
         ring.scale_position(factor=scale_position)
         ring.shift_position(shift=position_shift)
+        ring.initialize_cores()
 
-        for fiber in ring.fiber_list:
-            fiber.shifted_core = fiber.center
-            self.fiber_list.append(fiber)
+        self.fiber_list += ring.fiber_list
 
         if compute_fusing:
             ring.init_connected_fibers()
@@ -269,10 +268,9 @@ class BaseFused(ConnectionOptimization, OverlayStructureBaseClass):
         line.set_fusion_degree(fusion_degree=fusion_degree)
         line.scale_position(factor=scale_position)
         line.shift_position(shift=position_shift)
+        line.initialize_cores()
 
-        for fiber in line.fiber_list:
-            fiber.shifted_core = fiber.center
-            self.fiber_list.append(fiber)
+        self.fiber_list += line.fiber_list
 
         if compute_fusing:
             line.init_connected_fibers()
@@ -366,8 +364,29 @@ class BaseFused(ConnectionOptimization, OverlayStructureBaseClass):
             show_fibers: bool = False,
             show_shifted_cores: bool = True,
             show_added: bool = True,
-            show_removed: bool = True) -> SceneList:
+            show_removed: bool = True) -> None:
+        """
+        Add the geometry patches to the axis.
+        Base patch is the clad representation.
+        The boolean paraemters defines which other patch is added
+        to the ax.
 
+        :param      ax:                  The axis to which add the patches
+        :type       ax:                  Axis
+        :param      show_structure:      Added the fused structure to ax
+        :type       show_structure:      bool
+        :param      show_fibers:         Added the unfused fibers to ax
+        :type       show_fibers:         bool
+        :param      show_shifted_cores:  Added the shifted cores to ax
+        :type       show_shifted_cores:  bool
+        :param      show_added:          Added the added section to ax
+        :type       show_added:          bool
+        :param      show_removed:        Added the removed section to ax
+        :type       show_removed:        bool
+
+        :returns:   The scene list.
+        :rtype:     SceneList
+        """
         if show_structure:
             self.clad_structure._render_on_ax_(ax)
 

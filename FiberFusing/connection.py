@@ -109,6 +109,9 @@ class Connection():
         """
         Compute the mask that is connecting the center to the contact point
         with the virtual circles.
+
+        :returns:   No return.
+        :rtype:     None
         """
         P0, P1, P2, P3 = self.get_connected_point()
 
