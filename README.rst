@@ -79,7 +79,7 @@ FiberFusing was written by `Martin Poinsinet de Sivry-Houle <https://github.com/
 Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=FiberFusing>`_ .
 
 
-.. |Unittest| image:: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MartinPdeS/f0955be398d59efac69042c1b0fbece2/raw/92916f356545527ee2c5a999d2ec16dd02f5e018/FiberFusingcoverage_badge.json
+.. |Unittest| image:: https://img.shields.io/endpoint?url=https://gist.github.com/MartinPdeS/49dc3e2c41180ac9018ae803a8acd177/raw
 
 .. |python| image:: https://img.shields.io/pypi/pyversions/fiberfusing.svg
    :target: https://www.python.org/
@@ -87,8 +87,8 @@ Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@po
 .. |PyPi| image:: https://badge.fury.io/py/FiberFusing.svg
    :target: https://pypi.org/project/FiberFusing/
 
-.. |PyPi_download| image:: https://img.shields.io/pypi/dm/PyMieSim.svg
-   :target: https://pypi.org/project/PyMieSim/
+.. |PyPi_download| image:: https://img.shields.io/pypi/dm/fiberfusing.svg
+   :target: https://pypistats.org/packages/fiberfusing
 
 .. |Logo| image:: https://github.com/MartinPdeS/FiberFusing/raw/master/docs/images/logo.png
 

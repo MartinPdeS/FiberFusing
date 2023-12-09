@@ -123,7 +123,7 @@ html_theme_options = {
     "logo": {
         "alt_text": "FiberFusing's logo",
         "text": "FiberFusing",
-        "link": "https://fiberfusing.readthedocs.io/en/master/",
+        "link": "https://fiberfusing.readthedocs.io/en/latest/",
     },
     "icon_links": [
         {
