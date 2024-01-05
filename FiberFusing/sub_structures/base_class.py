@@ -55,7 +55,8 @@ class BaseClass():
 
         self.scale_position(factor=scaling_factor)
 
-    def plot(self,
+    def plot(
+            self,
             show_fibers: bool = True,
             show_added: bool = False,
             show_removed: bool = False,
@@ -85,7 +86,6 @@ class BaseClass():
             y_label=r'y',
             show_grid=True,
             equal_limits=False,
-            equal=True
         )
 
         if show_fibers:

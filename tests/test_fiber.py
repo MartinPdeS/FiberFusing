@@ -49,5 +49,4 @@ def test_graded_index_fiber(patch):
     fiber = catalogue.GradientCore(wavelength=1550e-9, core_radius=8e-6, delta_n=15e-3)
 
     fiber.plot().show().close()
-
 # -

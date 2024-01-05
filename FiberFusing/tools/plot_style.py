@@ -8,5 +8,4 @@ geometry = {
     "x_scale_factor": 1e6,
     "y_scale_factor": 1e6,
     'equal_limits': True,
-    'equal': True
 }

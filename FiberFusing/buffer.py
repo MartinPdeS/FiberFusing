@@ -254,8 +254,6 @@ class Point(Alteration):
         ax = figure.append_ax(
             x_label='x',
             y_label='y',
-            show_colorbar=False,
-            equal=True
         )
 
         self._render_on_ax_(ax)
@@ -360,8 +358,6 @@ class LineString(Alteration):
         ax = figure.append_ax(
             x_label='x',
             y_label='y',
-            colorbar=False,
-            equal=True
         )
 
         self._render_on_ax_(ax, **kwargs)
@@ -372,7 +368,8 @@ class LineString(Alteration):
 class Polygon(BaseArea):
     inherit_attr: list = ('index',)
 
-    def __init__(self,
+    def __init__(
+            self,
             coordinates: list = None,
             instance: geo.Polygon = None,
             index: float = 1.0):
@@ -493,8 +490,6 @@ class Polygon(BaseArea):
         ax = figure.append_ax(
             x_label='x',
             y_label='y',
-            show_colorbar=False,
-            equal=True
         )
 
         self._render_on_ax_(ax=ax)

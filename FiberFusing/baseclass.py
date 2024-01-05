@@ -351,14 +351,14 @@ class BaseFused(ConnectionOptimization, OverlayStructureBaseClass):
             show_grid=True,
             equal_limits=True,
             show_legend=True,
-            equal=True
         )
 
         self.render_patch_on_ax(ax=ax, **kwargs)
 
         return figure
 
-    def render_patch_on_ax(self,
+    def render_patch_on_ax(
+            self,
             ax: Axis,
             show_structure: bool = True,
             show_fibers: bool = False,
