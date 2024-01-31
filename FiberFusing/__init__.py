@@ -1,5 +1,5 @@
 from .geometry import Geometry
-from .buffer import Circle, Point
+from .buffer import Circle, Point, Square
 from .background import BackGround
 
 import numpy

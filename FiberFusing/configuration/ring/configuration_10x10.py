@@ -5,48 +5,45 @@ from FiberFusing.baseclass import BaseFused
 
 
 class FusedProfile_10x10(BaseFused):
-    fusion_range = None
+    fusion_range = [0, 0.3]
     number_of_fibers = 10
 
-    def __init__(self,
-            fiber_radius: float,
-            index: float,
-            fusion_degree: float = None,
-            core_position_scrambling: float = 0):
+    def __post_init__(self):
 
-        super().__init__(index=index, fusion_degree=fusion_degree)
+        super().__post_init__()
 
-        self.add_fiber_ring(
+        self.add_structure(
+            structure_type='ring',
             number_of_fibers=7,
-            fiber_radius=fiber_radius,
+            fusion_degree=self.parametrized_fusion_degree,
+            fiber_radius=self.fiber_radius,
             scale_position=1.3,
-            compute_fusing=False
-        )
-
-        self.add_fiber_ring(
-            number_of_fibers=3,
-            fiber_radius=fiber_radius,
-            scale_position=1,
             angle_shift=25,
-            position_shift=[0, 0],
             compute_fusing=False
         )
 
-        self.randomize_core_position(randomize_position=core_position_scrambling)
+        self.add_structure(
+            structure_type='ring',
+            number_of_fibers=3,
+            fusion_degree=self.parametrized_fusion_degree,
+            fiber_radius=self.fiber_radius,
+            scale_position=1,
+            compute_fusing=False
+        )
+
+        self.add_center_fiber(fiber_radius=self.fiber_radius)
+
+        self.randomize_core_position(random_factor=self.core_position_scrambling)
 
 
 if __name__ == '__main__':
     instance = FusedProfile_10x10(
         fiber_radius=62.5e-6,
-        index=1
+        index=1,
+        fusion_degree=1
     )
 
-    figure = instance.plot(
-        show_structure=True,
-        show_fibers=True,
-        show_shifted_cores=False,
-        show_added=False
-    )
+    figure = instance.plot()
 
     figure.show()
 

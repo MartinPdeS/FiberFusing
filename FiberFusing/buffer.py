@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Built-in imports
+from typing import Self
 import numpy
 import copy
 from collections.abc import Iterable
@@ -19,23 +20,27 @@ from shapely import affinity
 
 # other imports
 from MPSPlots.render2D import SceneList, Axis
+from FiberFusing.coordinate_system import CoordinateSystem
 
 
-def get_polygon_union(*Objects):
-    if len(Objects) == 0:
+def get_polygon_union(*objects):
+    if len(objects) == 0:
         return Polygon(instance=geo.Polygon())
 
-    Objects = [o._shapely_object if hasattr(o, '_shapely_object') else o for o in Objects]
-    output = unary_union(Objects)
+    objects = [o._shapely_object if hasattr(o, '_shapely_object') else o for o in objects]
+    output = unary_union(objects)
 
     return Polygon(instance=output)
 
 
 def interpret_to_point(*args):
-    args = tuple(arg if isinstance(arg, Point) else Point(position=arg) for arg in args)
+    args = tuple(
+        arg if isinstance(arg, Point) else Point(position=arg) for arg in args
+    )
 
     if len(args) == 1:
         return args[0]
+
     return args
 
 
@@ -46,16 +51,14 @@ class Alteration():
                 output = self
             else:
                 output = self.copy()
-                for attr in self.inherit_attr:
-                    setattr(output, attr, getattr(self, attr))
             return function(self, output, *args, **kwargs)
 
         return wrapper
 
-    def copy(self):
+    def copy(self) -> Self:
         return copy.deepcopy(self)
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self._shapely_object.__repr__()
 
     @property
@@ -63,13 +66,13 @@ class Alteration():
         return self._shapely_object.is_empty
 
     @in_place_copy
-    def union(self, output, *others):
+    def union(self, output, *others) -> Self:
         others = tuple(o._shapely_object for o in others)
         output._shapely_object = self._shapely_object.union(*others)
         return output
 
     @in_place_copy
-    def intersection(self, output, *others):
+    def intersection(self, output, *others) -> Self:
         others = tuple(o._shapely_object for o in others)
         output._shapely_object = self._shapely_object.intersection(*others)
         return output
@@ -95,12 +98,16 @@ class Alteration():
 
 class BaseArea(Alteration):
     @property
-    def is_iterable(self):
+    def is_iterable(self) -> bool:
         return isinstance(self._shapely_object, Iterable)
 
     @property
-    def is_multi(self):
+    def is_multi(self) -> bool:
         return isinstance(self._shapely_object, geo.MultiPolygon)
+
+    @property
+    def is_empty(self) -> bool:
+        return self._shapely_object.is_empty
 
     @property
     def is_pure_polygon(self) -> bool:
@@ -113,27 +120,25 @@ class BaseArea(Alteration):
     def exterior(self):
         return self._shapely_object.exterior
 
-    def get_rasterized_mesh(self, coordinate_system: Axis) -> numpy.ndarray:
-        return self.__raster__(coordinate_system=coordinate_system).reshape(coordinate_system.shape).astype(numpy.float64)
+    def get_rasterized_mesh(self, coordinate_system: CoordinateSystem) -> numpy.ndarray:
+        raster = self.__raster__(coordinate_system=coordinate_system)
+        raster = raster.reshape(coordinate_system.shape)
+        return raster.astype(numpy.float64)
 
     @property
-    def is_empty(self):
-        return self._shapely_object.is_empty
-
-    @property
-    def convex_hull(self):
+    def convex_hull(self) -> geo.Polygon:
         return Polygon(instance=self._shapely_object.convex_hull)
 
     @property
-    def area(self):
+    def area(self) -> float:
         return self._shapely_object.area
 
     @property
-    def bounds(self):
+    def bounds(self) -> tuple:
         return self._shapely_object.bounds
 
     @property
-    def center(self):
+    def center(self) -> geo.Point:
         return Point(position=(self._shapely_object.centroid.x, self._shapely_object.centroid.y))
 
     def __add__(self, other):
@@ -193,9 +198,9 @@ class BaseArea(Alteration):
 @dataclass
 class Point(Alteration):
     position: list = (0, 0)
-    index: float = 1.0
-
-    inherit_attr: list = ('index',)
+    """ Position of the point """
+    index: float = None
+    """ The refractive index of the circle object """
 
     def __post_init__(self) -> None:
         if isinstance(self.position, Point):
@@ -263,10 +268,10 @@ class Point(Alteration):
 
 @dataclass
 class LineString(Alteration):
-    coordinates: list = ()
-    index: float = 1.0
-
-    inherit_attr: list = ('index', )
+    coordinates: tuple = ()
+    """ Coordinate of the Line string, it must be two points """
+    index: float = None
+    """ The refractive index of the circle object """
 
     def __post_init__(self) -> None:
         assert len(self.coordinates) == 2, 'LineString class is only intended for two coordinates.'
@@ -279,7 +284,13 @@ class LineString(Alteration):
         self.coordinates = None
 
     @property
-    def boundary(self):
+    def boundary(self) -> list:
+        """
+        Returns the list of boundaries point of the line string
+
+        :returns:   Boundaries points
+        :rtype:     list
+        """
         return [Point(p) for p in self._shapely_object.boundary.geoms]
 
     @property
@@ -290,12 +301,24 @@ class LineString(Alteration):
         self._shapely_object = self._shapely_object.intersection(other._shapely_object)
 
     @property
-    def mid_point(self):
+    def mid_point(self) -> Point:
+        """
+        Returns the point that is midway from both extremitites of the line string
+
+        :returns:   The midpoint
+        :rtype:     Point
+        """
         P0, P1 = self.boundary
         return Point(position=[(P0.x + P1.x) / 2, (P0.y + P1.y) / 2])
 
     @property
-    def length(self):
+    def length(self) -> float:
+        """
+        Returns the length of the string
+
+        :returns:   Length of the string
+        :rtype:     float
+        """
         P0, P1 = self.boundary
         return numpy.sqrt((P0.x - P1.x)**2 + (P0.y - P1.y)**2)
 
@@ -304,11 +327,32 @@ class LineString(Alteration):
         perpendicular.rotate(angle=90, origin=perpendicular.mid_point, in_place=True)
         return perpendicular
 
-    def get_position_parametrisation(self, x: float):
+    def get_position_parametrisation(self, x: float) -> Point:
+        """
+        Returns the point that correspond to a certain parametrisation of the distance
+        from both of the extremities.
+
+        :param      x:    The parameter
+        :type       x:    float
+
+        :returns:   The position parametrisation.
+        :rtype:     Point
+        """
         P0, P1 = self.boundary
         return P0 - (P0 - P1) * x
 
     def _render_on_ax_(self, ax: Axis, **kwargs) -> None:
+        """
+        Renders the Polygon on a specific axis.
+
+        :param      ax:   The axis to which add the plot
+        :type       ax:   Axis
+        :param      kwargs:  The keywords arguments
+        :type       kwargs:  dictionary
+
+        :returns:   No return
+        :rtype:     None
+        """
         ax.add_line(
             x=self._shapely_object.x,
             y=self._shapely_object.y,
@@ -331,7 +375,7 @@ class LineString(Alteration):
 
         return self
 
-    def get_vector(self):
+    def get_vector(self) -> numpy.ndarray:
         P0, P1 = self.boundary
 
         dy = P0.y - P1.y
@@ -342,7 +386,7 @@ class LineString(Alteration):
             norm = numpy.sqrt(1 + (dy / dx)**2)
             return numpy.array([1, dy / dx]) / norm
 
-    def extend(self, factor: float = 1):
+    def extend(self, factor: float = 1) -> Self:
         self._shapely_object = affinity.scale(
             self._shapely_object,
             xfact=factor,
@@ -366,8 +410,6 @@ class LineString(Alteration):
 
 
 class Polygon(BaseArea):
-    inherit_attr: list = ('index',)
-
     def __init__(
             self,
             coordinates: list = None,
@@ -384,12 +426,12 @@ class Polygon(BaseArea):
         else:
             raise ValueError('Either coordinate or instance has to be given in the constructor')
 
-    def get_hole(self):
+    def get_hole(self) -> geo.Polygon:
         """
         Return the hole in the polygon if there is one. Else it returns and empty polygon
 
         :returns:   The hole.
-        :rtype:     { return_type_description }
+        :rtype:     geo.Polygon
         """
         if isinstance(self._shapely_object, geo.MultiPolygon):
             return EmptyPolygon()
@@ -414,7 +456,7 @@ class Polygon(BaseArea):
         """
         return self._shapely_object.interiors
 
-    def remove_non_polygon(self):
+    def remove_non_polygon(self) -> Self:
         """
         Remove non-polyon element of the (multi) polygon.
 
@@ -430,7 +472,7 @@ class Polygon(BaseArea):
 
         return self
 
-    def keep_largest_polygon(self):
+    def keep_largest_polygon(self) -> Self:
         """
         Remove all the smaller polygon only to keep the one with the largest area value.
 
@@ -448,10 +490,10 @@ class Polygon(BaseArea):
         """
         Render the Polygon on a specific axis.
 
-        :param      ax:   { parameter_description }
+        :param      ax:   The axis to which add the plot
         :type       ax:   Axis
 
-        :returns:   { description_of_the_return_value }
+        :returns:   No return
         :rtype:     None
         """
         if isinstance(self._shapely_object, geo.MultiPolygon):
@@ -466,9 +508,12 @@ class Polygon(BaseArea):
         Render the a specific polygon on the given axis.
 
         :param      polygon:        The multi polygon
-        :type       polygon:        { type_description }
-        :param      ax:             { parameter_description }
-        :type       ax:             { type_description }
+        :type       polygon:        geo.Polygon
+        :param      ax:             The axis to which add the plot
+        :type       ax:             Axis
+
+        :returns:   The scene list.
+        :rtype:     SceneList
         """
 
         # TODO: rings -> https://sgillies.net/2010/04/06/painting-punctured-polygons-with-matplotlib.html
@@ -481,9 +526,12 @@ class Polygon(BaseArea):
         Plot the Polygon structure.
 
         :param      polygon:        The multi polygon
-        :type       polygon:        { type_description }
-        :param      ax:             { parameter_description }
-        :type       ax:             { type_description }
+        :type       polygon:        geo.Polygon
+        :param      ax:             The axis to which add the plot
+        :type       ax:             Axis
+
+        :returns:   The scene list.
+        :rtype:     SceneList
         """
         figure = SceneList(unit_size=(6, 6))
 
@@ -496,12 +544,12 @@ class Polygon(BaseArea):
 
         return figure
 
-    def __raster__(self, coordinate_system: Axis) -> numpy.ndarray:
+    def __raster__(self, coordinate_system: CoordinateSystem) -> numpy.ndarray:
         """
         Rasterize the polygone using a coordinate set.
 
         :param      coordinate:  The coordinate
-        :type       coordinate:  numpy.ndarray
+        :type       coordinate:  CoordinateSystem
 
         :returns:   The rasterize mesh
         :rtype:     numpy.ndarray
@@ -530,7 +578,7 @@ class Polygon(BaseArea):
         :param      coordinate:  The coordinate
         :type       coordinate:  numpy.ndarray
 
-        :returns:   { description_of_the_return_value }
+        :returns:   Boolean array stating true if coordinate value is within polygon
         :rtype:     numpy.ndarray
         """
         exterior = numpy.zeros(coordinate.shape[0])
@@ -550,19 +598,85 @@ class Polygon(BaseArea):
         return path_exterior.contains_points(coordinate).astype(bool)
 
 
+@dataclass
 class Circle(Polygon):
-    def __init__(self,
-            position: list,
-            radius: float,
-            resolution: int = 128,
-            *args,
-            **kwargs):
+    position: tuple
+    """ The center position of the circle """
+    radius: float
+    """ The circle radius """
+    resolution: int = 128
+    """ The number of points that defines the circle circumference """
+    index: float = None
+    """ The refractive index of the circle object """
 
-        self.radius = radius
-        position = interpret_to_point(position)
-        instance = position._shapely_object.buffer(radius, resolution=resolution)
+    def __post_init__(self):
 
-        super().__init__(instance=instance, *args, **kwargs)
+        self.position = interpret_to_point(self.position)
+
+        instance = self.position._shapely_object.buffer(
+            self.radius,
+            resolution=self.resolution
+        )
+
+        super().__init__(instance=instance)
+
+        self.core = self.center.copy()
+
+
+@dataclass
+class Ellipse(Polygon):
+    position: tuple
+    """ The center position of the circle """
+    radius: float
+    """ The circle radius """
+    resolution: int = 128
+    """ The number of points that defines the circle circumference """
+    index: float = None
+    """ The refractive index of the circle object """
+    ratio: float = 1
+    """ Ratio between the two axis """
+
+    def __post_init__(self):
+
+        self.position = interpret_to_point(self.position)
+
+        instance = self.position._shapely_object.buffer(
+            self.radius,
+            resolution=self.resolution
+        )
+
+        instance = affinity.scale(
+            instance,
+            xfact=1,
+            yfact=self.ratio,
+            origin=(0, 0)
+        )
+
+        super().__init__(instance=instance)
+
+        self.core = self.center.copy()
+
+
+@dataclass
+class Square(Polygon):
+    position: tuple
+    """ The center position of the square """
+    length: float
+    """ The length of the size of the square """
+    index: float = None
+    """ The refractive index of the circle object """
+
+    def __post_init__(self):
+        self.position = interpret_to_point(self.position)
+
+        instance = geo.box(
+            self.position.x - self.length / 2,
+            self.position.y - self.length / 2,
+            self.position.x + self.length / 2,
+            self.position.y + self.length / 2
+        )
+
+        super().__init__(instance=instance)
 
         self.core = self.center.copy()
 

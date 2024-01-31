@@ -25,6 +25,7 @@ fused_structures = [
 def test_building_clad_structure(patch, fused_structure):
 
     clad = fused_structure(
+        fusion_degree='auto',
         fiber_radius=62.5e-6,
         index=1.4444
     )

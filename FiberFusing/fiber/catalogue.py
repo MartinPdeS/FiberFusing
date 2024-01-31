@@ -29,7 +29,7 @@ __all__ = [
 ]
 
 
-def load_fiber(fiber_name: str, wavelength: float, position: tuple = (0, 0)) -> GenericFiber:
+def load_fiber(fiber_name: str, wavelength: float, position: tuple = (0, 0), remove_cladding: bool = False) -> GenericFiber:
     """
     Loads a fiber from the MPSTools library.
 
@@ -50,7 +50,10 @@ def load_fiber(fiber_name: str, wavelength: float, position: tuple = (0, 0)) -> 
         wavelength=wavelength
     )
 
-    for _, structure in fiber_dict['layers'].items():
+    for name, structure in fiber_dict['layers'].items():
+        if remove_cladding and structure['name'].lower() in ['cladding', 'clad']:
+            continue
+
         fiber.create_and_add_new_structure(**structure)
 
     return fiber
