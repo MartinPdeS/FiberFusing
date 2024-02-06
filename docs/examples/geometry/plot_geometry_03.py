@@ -13,7 +13,7 @@ air = BackGround(index=1.0)
 
 clad = FusedProfile(
     fiber_radius=62.5e-6,
-    fusion_degree=0.2,
+    fusion_degree=0.5,
     index=get_silica_index(wavelength=wavelength)
 )
 
@@ -26,7 +26,7 @@ geometry = Geometry(
     additional_structure_list=[clad],
     x_bounds='centering',
     y_bounds='centering',
-    resolution=250
+    resolution=350
 )
 
 _ = geometry.add_fiber(*fibers)

@@ -9,7 +9,7 @@ micro = 1e-6
 
 
 @dataclass
-class OpticalStructure():
+class CircleOpticalStructure():
     name: str
     """ Name of the structure """
     index: float

@@ -10,12 +10,12 @@ from scipy.ndimage import gaussian_filter
 from MPSPlots import colormaps
 from MPSPlots.render2D import SceneList, Axis
 
+from MPSTools.tools.mathematics import get_rho_gradient
+
 # FiberFusing imports
-from FiberFusing import utils
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.tools import plot_style
 import FiberFusing
-# from  import BackGround
 
 from matplotlib import colors
 
@@ -23,8 +23,7 @@ from matplotlib import colors
 @dataclass
 class Geometry(object):
     """
-    Class represent the refractive index (RI) geometrique profile which
-    can be used to retrieve the supermodes.
+    Class represent the refractive index (RI) geometric profile.
     """
     background: object
     """ Geometrique object representing the background (usually air). """
@@ -32,9 +31,9 @@ class Geometry(object):
     """ List of geometrique object representing the fiber structure. """
     fiber_list: list = field(default_factory=list)
     """ List of fiber structure to add. """
-    x_bounds: list = 'centering'
+    x_bounds: list | str = 'centering'
     """ X boundary to render the structure, argument can be either list or a string from ['auto', 'left', 'right', 'centering']. """
-    y_bounds: list = 'centering'
+    y_bounds: list | str = 'centering'
     """ Y boundary to render the structure, argument can be either list or a string from ['auto', 'top', 'bottom', 'centering']. """
     resolution: int = 100
     """ Number of point (x and y-direction) to evaluate the rendering. """
@@ -296,7 +295,7 @@ class Geometry(object):
         :returns:   The n 2 rho gradient.
         :rtype:     numpy.ndarray
         """
-        gradient = utils.get_rho_gradient(
+        gradient = get_rho_gradient(
             mesh=self.mesh**2,
             coordinate_system=self.coordinate_system
         )
@@ -391,7 +390,11 @@ class Geometry(object):
         """
         self.generate_coordinate_mesh_gradient()
 
-        figure = SceneList(unit_size=(4, 4), tight_layout=True, ax_orientation='horizontal')
+        figure = SceneList(
+            unit_size=(4, 4),
+            tight_layout=True,
+            ax_orientation='horizontal'
+        )
 
         if show_patch:
             ax = figure.append_ax()

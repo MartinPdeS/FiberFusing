@@ -6,8 +6,9 @@ from dataclasses import dataclass
 from FiberFusing import Circle
 from FiberFusing.tools import plot_style
 from FiberFusing.coordinate_system import CoordinateSystem
-from FiberFusing.utils import get_rho_gradient, get_silica_index
-from FiberFusing import OpticalStructure
+from FiberFusing.utils import get_silica_index
+from MPSTools.tools.mathematics import get_rho_gradient
+from FiberFusing import CircleOpticalStructure
 import pprint
 from copy import deepcopy
 
@@ -36,7 +37,7 @@ class BaseStructureCollection():
     def inner_structure(self):
         return [s for s in self.structure_list if s.name not in ['air', 'outer_clad']]
 
-    def __getitem__(self, idx: int) -> OpticalStructure:
+    def __getitem__(self, idx: int) -> CircleOpticalStructure:
         return self.structure_list[idx]
 
     def scale(self, factor: float) -> None:
@@ -83,7 +84,7 @@ class BaseStructureCollection():
         """
         index = self._interpret_index_or_NA_to_index(index=index, NA=NA)
 
-        new_structure = OpticalStructure(
+        new_structure = CircleOpticalStructure(
             **kwargs,
             index=index,
             position=self.position

@@ -13,7 +13,6 @@ import shapely.geometry as geo
 # Local imports
 from MPSPlots.render2D import Axis, SceneList
 from FiberFusing import utils
-from FiberFusing.utility.connection_optimization import ConnectionOptimization
 from FiberFusing.utility.overlay_structure_on_mesh import OverlayStructureBaseClass
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.buffer import Circle
@@ -31,14 +30,14 @@ class NameSpace():
 
 
 @dataclass
-class BaseFused(ConnectionOptimization, OverlayStructureBaseClass):
+class BaseFused(OverlayStructureBaseClass):
     fiber_radius: float
     """ Radius of the fiber in the assembly """
     index: float
     """ Refractive index of the cladding structure. """
     tolerance_factor: float = 1e-2
     """ Tolerance on the optimization problem which aim to minimize the difference between added and removed area of the heuristic algorithm. """
-    fusion_degree: float = 'auto'
+    fusion_degree: float | str = 'auto'
     """ Fusion degree of the assembly must be within [0, 1] """
     core_position_scrambling: float = 0
     """ Scrambling value of the core positions """
