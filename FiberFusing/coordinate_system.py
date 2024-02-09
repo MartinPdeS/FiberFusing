@@ -3,7 +3,6 @@
 
 # Built-in imports
 import numpy
-import matplotlib.pyplot as plt
 
 
 class CoordinateSystem(object):
@@ -237,17 +236,5 @@ class CoordinateSystem(object):
     def to_even(self, value: int) -> int:
         return (value // 2) * 2
 
-    def plot(self):
-        figure, ax = plt.subplots(1, 1)
-        ax.grid('on')
-        ax.set_xticks(self.x_vector)
-        ax.set_yticks(self.y_vector)
-        ax.set_xlim(self.x_bounds)
-        ax.set_ylim(self.y_bounds)
-        ax.set_title('Mesh grid')
-        ax.set_xlabel('x-direction')
-        ax.set_ylabel('y-direction')
-        ax.set_aspect('equal')
-        plt.show()
 
 # -
