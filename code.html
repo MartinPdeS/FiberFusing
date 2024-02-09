@@ -1,0 +1,1566 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Source code &#8212; FiberFusing 1.1.1
+ documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "light";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.1.2/css/all.min.css?digest=ac02cc09edc035673794" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.1.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.7/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=61a4c737" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css?v=265c6c44" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794" />
+  <script src="_static/vendor/fontawesome/6.1.2/js/all.min.js?digest=ac02cc09edc035673794"></script>
+
+    <script src="_static/documentation_options.js?v=83302504"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'code';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="gallery/index.html" />
+    <link rel="prev" title="Theoretical background" href="theory.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>
+    Back to top
+  </button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__primary"
+          id="__primary"/>
+  <label class="overlay overlay-primary" for="__primary"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          name="__secondary"
+          id="__secondary"/>
+  <label class="overlay overlay-secondary" for="__secondary"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+  
+    <nav class="bd-header navbar navbar-expand-lg bd-navbar">
+<div class="bd-header__inner bd-page-width">
+  <label class="sidebar-toggle primary-toggle" for="__primary">
+    <span class="fa-solid fa-bars"></span>
+  </label>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+   
+
+<a class="navbar-brand logo" href="https://fiberfusing.readthedocs.io/en/latest/">
+  
+  
+  
+  
+  
+    <p class="title logo__title">FiberFusing</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="theory.html">
+                        Theoretical background
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Source code
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="gallery/index.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="references.html">
+                        References
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+        </div>
+      
+      
+        <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="versionswitcherbutton" type="button" role="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="listbox" aria-controls="versionswitcherlist" aria-label="Version switcher list">
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="versionswitcherlist" class="version-switcher__menu dropdown-menu list-group-flush py-0" role="listbox" aria-labelledby="versionswitcherbutton">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/FiberFusing" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/fiberfusing/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+ <script>
+ document.write(`
+   <button class="btn navbar-btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script>
+    </div>
+  
+
+  
+    <label class="sidebar-toggle secondary-toggle" for="__secondary" tabindex="0">
+      <span class="fa-solid fa-outdent"></span>
+    </label>
+  
+</div>
+
+    </nav>
+  
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      <div class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          <div class="navbar-item"><nav class="navbar-nav">
+  <p class="sidebar-header-items__title"
+     role="heading"
+     aria-level="1"
+     aria-label="Site Navigation">
+    Site Navigation
+  </p>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="theory.html">
+                        Theoretical background
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item current active">
+                      <a class="nav-link nav-internal" href="#">
+                        Source code
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="gallery/index.html">
+                        Examples
+                      </a>
+                    </li>
+                
+
+                    <li class="nav-item">
+                      <a class="nav-link nav-internal" href="references.html">
+                        References
+                      </a>
+                    </li>
+                
+  </ul>
+</nav></div>
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<script>
+document.write(`
+  <div class="version-switcher__container dropdown">
+    <button id="versionswitcherbutton" type="button" role="button" class="version-switcher__button btn btn-sm navbar-btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="listbox" aria-controls="versionswitcherlist" aria-label="Version switcher list">
+      Choose version  <!-- this text may get changed later by javascript -->
+      <span class="caret"></span>
+    </button>
+    <div id="versionswitcherlist" class="version-switcher__menu dropdown-menu list-group-flush py-0" role="listbox" aria-labelledby="versionswitcherbutton">
+    <!-- dropdown will be populated by javascript on page load -->
+    </div>
+  </div>
+`);
+</script></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links navbar-nav"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/FiberFusing" title="GitHub" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/fiberfusing/" title="PyPI" class="nav-link" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><span><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i></span>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+
+
+<nav aria-label="Breadcrumb">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page">Source code</li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article" role="main">
+                  
+  <section id="source-code">
+<span id="id1"></span><h1>Source code<a class="headerlink" href="#source-code" title="Link to this heading">#</a></h1>
+<section id="geometry">
+<h2>Geometry<a class="headerlink" href="#geometry" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">FiberFusing.geometry.</span></span><span class="sig-name descname"><span class="pre">Geometry</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">background:</span> <span class="pre">object</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">additional_structure_list:</span> <span class="pre">list</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiber_list:</span> <span class="pre">list</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_bounds:</span> <span class="pre">list</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'centering'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_bounds:</span> <span class="pre">list</span> <span class="pre">|</span> <span class="pre">str</span> <span class="pre">=</span> <span class="pre">'centering'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resolution:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_scrambling:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gaussian_filter:</span> <span class="pre">int</span> <span class="pre">=</span> <span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary_pad_factor:</span> <span class="pre">float</span> <span class="pre">=</span> <span class="pre">1.3</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FiberFusing.geometry.Geometry" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class represent the refractive index (RI) geometric profile.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.background">
+<span class="sig-name descname"><span class="pre">background</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">object</span></em><a class="headerlink" href="#FiberFusing.geometry.Geometry.background" title="Link to this definition">#</a></dt>
+<dd><p>Geometrique object representing the background (usually air).</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.additional_structure_list">
+<span class="sig-name descname"><span class="pre">additional_structure_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#FiberFusing.geometry.Geometry.additional_structure_list" title="Link to this definition">#</a></dt>
+<dd><p>List of geometrique object representing the fiber structure.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.fiber_list">
+<span class="sig-name descname"><span class="pre">fiber_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#FiberFusing.geometry.Geometry.fiber_list" title="Link to this definition">#</a></dt>
+<dd><p>List of fiber structure to add.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.x_bounds">
+<span class="sig-name descname"><span class="pre">x_bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'centering'</span></em><a class="headerlink" href="#FiberFusing.geometry.Geometry.x_bounds" title="Link to this definition">#</a></dt>
+<dd><p>X boundary to render the structure, argument can be either list or a string from [‘auto’, ‘left’, ‘right’, ‘centering’].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.y_bounds">
+<span class="sig-name descname"><span class="pre">y_bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'centering'</span></em><a class="headerlink" href="#FiberFusing.geometry.Geometry.y_bounds" title="Link to this definition">#</a></dt>
+<dd><p>Y boundary to render the structure, argument can be either list or a string from [‘auto’, ‘top’, ‘bottom’, ‘centering’].</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.resolution">
+<span class="sig-name descname"><span class="pre">resolution</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">100</span></em><a class="headerlink" href="#FiberFusing.geometry.Geometry.resolution" title="Link to this definition">#</a></dt>
+<dd><p>Number of point (x and y-direction) to evaluate the rendering.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.index_scrambling">
+<span class="sig-name descname"><span class="pre">index_scrambling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#FiberFusing.geometry.Geometry.index_scrambling" title="Link to this definition">#</a></dt>
+<dd><p>Index scrambling for degeneracy lifting.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.gaussian_filter">
+<span class="sig-name descname"><span class="pre">gaussian_filter</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#FiberFusing.geometry.Geometry.gaussian_filter" title="Link to this definition">#</a></dt>
+<dd><p>Standard deviation of the gaussian blurring for the mesh and gradient.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.boundary_pad_factor">
+<span class="sig-name descname"><span class="pre">boundary_pad_factor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1.3</span></em><a class="headerlink" href="#FiberFusing.geometry.Geometry.boundary_pad_factor" title="Link to this definition">#</a></dt>
+<dd><p>The factor that multiply the boundary value in order to keep padding between mesh and boundary.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.generate_coordinate_system">
+<span class="sig-name descname"><span class="pre">generate_coordinate_system</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.generate_coordinate_system" title="Link to this definition">#</a></dt>
+<dd><p>Generates the coordinate system (CoordinateSystem) for the mesh construction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No returns</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.add_fiber">
+<span class="sig-name descname"><span class="pre">add_fiber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">fibers</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.add_fiber" title="Link to this definition">#</a></dt>
+<dd><p>Adds a fiber structure to the geometry. The fibers than can be added
+have to be defined with the generic_fiber class in fiber_catalogue.py</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fibers</strong> (<em>tuple</em>) – The fibers to be added</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.add_structure">
+<span class="sig-name descname"><span class="pre">add_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">structures</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.add_structure" title="Link to this definition">#</a></dt>
+<dd><p>Adds a custom structure to the geometry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>structures</strong> (<em>tuple</em>) – The fibers to be added</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.structure_list">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">structure_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#FiberFusing.geometry.Geometry.structure_list" title="Link to this definition">#</a></dt>
+<dd><p>Returns list of all the optical structure to be considered for the mesh construct.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of the optical structures</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.interpret_x_boundary">
+<span class="sig-name descname"><span class="pre">interpret_x_boundary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.interpret_x_boundary" title="Link to this definition">#</a></dt>
+<dd><p>Interpret the x_bound parameter.
+If the parameter is in [“left”, “right”, “”], it returns
+an auto-evaluated boundary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>x_bound</strong> (<em>list</em>) – The y boundary to be interpreted</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The interpreted y boundary</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.interpret_y_boundary">
+<span class="sig-name descname"><span class="pre">interpret_y_boundary</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.interpret_y_boundary" title="Link to this definition">#</a></dt>
+<dd><p>Interpret the y_bound parameter.
+If the parameter is in [“top”, “bottom”, “centering”], it returns
+an auto-evaluated boundary</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>y_bound</strong> (<em>list</em>) – The y boundary to be interpreted</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The interpreted y boundary</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.get_boundaries">
+<span class="sig-name descname"><span class="pre">get_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.get_boundaries" title="Link to this definition">#</a></dt>
+<dd><p>Gets the boundaries containing the collection of defined structures.
+The list returns min_x, min_y, max_x, max_y.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The boundaries.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.refractive_index_maximum">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">refractive_index_maximum</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#FiberFusing.geometry.Geometry.refractive_index_maximum" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.refractive_index_minimum">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">refractive_index_minimum</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#FiberFusing.geometry.Geometry.refractive_index_minimum" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.get_index_range">
+<span class="sig-name descname"><span class="pre">get_index_range</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.get_index_range" title="Link to this definition">#</a></dt>
+<dd><p>Returns the list of all index associated to the element of the geometry.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.rotate">
+<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.rotate" title="Link to this definition">#</a></dt>
+<dd><p>Rotate the full geometry</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>angle</strong> (<em>float</em>) – Angle to rotate the geometry, in degrees.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.generate_coordinate_mesh_gradient">
+<span class="sig-name descname"><span class="pre">generate_coordinate_mesh_gradient</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.generate_coordinate_mesh_gradient" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.randomize_fiber_structures_index">
+<span class="sig-name descname"><span class="pre">randomize_fiber_structures_index</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">random_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.randomize_fiber_structures_index" title="Link to this definition">#</a></dt>
+<dd><p>Randomize the refractive index of the fiber structures</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>random_factor</strong> (<em>float</em>) – The random factor</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>No returns</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.rasterize_polygons">
+<span class="sig-name descname"><span class="pre">rasterize_polygons</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinates</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.rasterize_polygons" title="Link to this definition">#</a></dt>
+<dd><p>Returns the rasterize mesh of the object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>coordinates</strong> (<em>{ type_description }</em>) – The coordinates to which evaluate the mesh.</p></li>
+<li><p><strong>n_x</strong> (<em>int</em>) – The number of point in the x direction</p></li>
+<li><p><strong>n_y</strong> (<em>int</em>) – The number of point in the y direction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The rasterized mesh</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.add_background_to_mesh">
+<span class="sig-name descname"><span class="pre">add_background_to_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.add_background_to_mesh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.generate_mesh">
+<span class="sig-name descname"><span class="pre">generate_mesh</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.generate_mesh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.get_n2_rho_gradient">
+<span class="sig-name descname"><span class="pre">get_n2_rho_gradient</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.get_n2_rho_gradient" title="Link to this definition">#</a></dt>
+<dd><p>Returns the n squared radial gradient.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The n 2 rho gradient.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.render_patch_on_ax">
+<span class="sig-name descname"><span class="pre">render_patch_on_ax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Axis</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.render_patch_on_ax" title="Link to this definition">#</a></dt>
+<dd><p>Add the patch representation of the geometry into the give ax.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ax</strong> (<em>Axis</em>) – The ax to which append the representation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.render_gradient_on_ax">
+<span class="sig-name descname"><span class="pre">render_gradient_on_ax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Axis</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.render_gradient_on_ax" title="Link to this definition">#</a></dt>
+<dd><p>Add the rasterized representation of the gradient of the geometrys into the give ax.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ax</strong> (<em>Axis</em>) – The ax to which append the representation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.render_mesh_on_ax">
+<span class="sig-name descname"><span class="pre">render_mesh_on_ax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Axis</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.render_mesh_on_ax" title="Link to this definition">#</a></dt>
+<dd><p>Add the rasterized representation of the geometry into the give ax.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ax</strong> (<em>Axis</em>) – The ax to which append the representation.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.geometry.Geometry.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show_patch</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_mesh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_gradient</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">SceneList</span></span></span><a class="headerlink" href="#FiberFusing.geometry.Geometry.plot" title="Link to this definition">#</a></dt>
+<dd><p>Plot the different representations [patch, mesh, gradient] of the geometry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>show_patch</strong> (<em>bool</em>) – The show patch</p></li>
+<li><p><strong>show_mesh</strong> (<em>bool</em>) – The show mesh</p></li>
+<li><p><strong>show_gradient</strong> (<em>bool</em>) – The show gradient</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The figure encompassing all the axis</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SceneList</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="fused-configuration">
+<h2>Fused configuration<a class="headerlink" href="#fused-configuration" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><span class="target" id="module-FiberFusing.configuration"></span></div></blockquote>
+</section>
+<section id="axes">
+<h2>Axes<a class="headerlink" href="#axes" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">FiberFusing.coordinate_system.</span></span><span class="sig-name descname"><span class="pre">CoordinateSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">nx</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ny</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.min_x">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">min_x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.min_x" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.max_x">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_x</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.max_x" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.min_y">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">min_y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.min_y" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.max_y">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_y</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.max_y" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.centering">
+<span class="sig-name descname"><span class="pre">centering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">zero_included</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.centering" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.add_padding">
+<span class="sig-name descname"><span class="pre">add_padding</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">padding_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.add_padding" title="Link to this definition">#</a></dt>
+<dd><p>Adds a padding space between the .</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>padding_factor</strong> (<em>float</em>) – The padding factor</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>No returns</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.x_centering">
+<span class="sig-name descname"><span class="pre">x_centering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zero_included</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.x_centering" title="Link to this definition">#</a></dt>
+<dd><p>Center the x coordinate system around 0</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>zero_included</strong> (<em>bool</em>) – Indicates if zero included</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>No returns</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.y_centering">
+<span class="sig-name descname"><span class="pre">y_centering</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zero_included</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.y_centering" title="Link to this definition">#</a></dt>
+<dd><p>Center the y coordinate system around 0</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>zero_included</strong> (<em>bool</em>) – Indicates if zero included</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>No returns</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.set_x_boundary">
+<span class="sig-name descname"><span class="pre">set_x_boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.set_x_boundary" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.set_y_boundary">
+<span class="sig-name descname"><span class="pre">set_y_boundary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_bounds</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.set_y_boundary" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.to_unstructured_coordinate">
+<span class="sig-name descname"><span class="pre">to_unstructured_coordinate</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.to_unstructured_coordinate" title="Link to this definition">#</a></dt>
+<dd><p>Returns an unstructured coordinate representation of the object.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Unstructured coordinate representation of the object.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.make_nx_odd">
+<span class="sig-name descname"><span class="pre">make_nx_odd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.make_nx_odd" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.make_ny_odd">
+<span class="sig-name descname"><span class="pre">make_ny_odd</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.make_ny_odd" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.make_nx_even">
+<span class="sig-name descname"><span class="pre">make_nx_even</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.make_nx_even" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.make_ny_even">
+<span class="sig-name descname"><span class="pre">make_ny_even</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.make_ny_even" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.shape">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.shape" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.dA">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dA</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.dA" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.rho_mesh">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">rho_mesh</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.rho_mesh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.theta_mesh">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">theta_mesh</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.theta_mesh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.set_left">
+<span class="sig-name descname"><span class="pre">set_left</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.set_left" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.set_right">
+<span class="sig-name descname"><span class="pre">set_right</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.set_right" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.set_top">
+<span class="sig-name descname"><span class="pre">set_top</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.set_top" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.set_bottom">
+<span class="sig-name descname"><span class="pre">set_bottom</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.set_bottom" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.nx">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nx</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.nx" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.ny">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ny</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.ny" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.dx">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dx</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.dx" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.dy">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.dy" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.x_vector">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x_vector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.x_vector" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.y_vector">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y_vector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.y_vector" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.x_mesh">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x_mesh</span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.x_mesh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.y_mesh">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y_mesh</span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.y_mesh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.x_bounds">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x_bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.x_bounds" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.y_bounds">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y_bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.y_bounds" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.to_odd">
+<span class="sig-name descname"><span class="pre">to_odd</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.to_odd" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.to_even">
+<span class="sig-name descname"><span class="pre">to_even</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.to_even" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</section>
+<section id="basefused">
+<h2>BaseFused<a class="headerlink" href="#basefused" title="Link to this heading">#</a></h2>
+<blockquote>
+<div><dl class="py class">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">FiberFusing.baseclass.</span></span><span class="sig-name descname"><span class="pre">BaseFused</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fiber_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tolerance_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_degree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">core_position_scrambling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_down_position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">OverlayStructureBaseClass</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.fiber_radius">
+<span class="sig-name descname"><span class="pre">fiber_radius</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.fiber_radius" title="Link to this definition">#</a></dt>
+<dd><p>Radius of the fiber in the assembly</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.index">
+<span class="sig-name descname"><span class="pre">index</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.index" title="Link to this definition">#</a></dt>
+<dd><p>Refractive index of the cladding structure.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.tolerance_factor">
+<span class="sig-name descname"><span class="pre">tolerance_factor</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0.01</span></em><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.tolerance_factor" title="Link to this definition">#</a></dt>
+<dd><p>Tolerance on the optimization problem which aim to minimize the difference between added and removed area of the heuristic algorithm.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.fusion_degree">
+<span class="sig-name descname"><span class="pre">fusion_degree</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'auto'</span></em><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.fusion_degree" title="Link to this definition">#</a></dt>
+<dd><p>Fusion degree of the assembly must be within [0, 1]</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.core_position_scrambling">
+<span class="sig-name descname"><span class="pre">core_position_scrambling</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.core_position_scrambling" title="Link to this definition">#</a></dt>
+<dd><p>Scrambling value of the core positions</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.scale_down_position">
+<span class="sig-name descname"><span class="pre">scale_down_position</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.scale_down_position" title="Link to this definition">#</a></dt>
+<dd><p>Factor to scale down the whole assembly</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.compute_parametrized_fusion_degree">
+<span class="sig-name descname"><span class="pre">compute_parametrized_fusion_degree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.compute_parametrized_fusion_degree" title="Link to this definition">#</a></dt>
+<dd><p>Calculates the parametrized fusion degree which maps a value from 0 to 1 into
+a value between the fusion range of the specific geometry.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The parametrized fusion degree.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.asserts_fusion_degree">
+<span class="sig-name descname"><span class="pre">asserts_fusion_degree</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.asserts_fusion_degree" title="Link to this definition">#</a></dt>
+<dd><p>Asserts the possible values of the fusion degree</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>No return</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.refractive_index_list">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">refractive_index_list</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.refractive_index_list" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.is_multi">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">is_multi</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.is_multi" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.clad_structure">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clad_structure</span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.clad_structure" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.structure_dictionary">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">structure_dictionary</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span></em><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.structure_dictionary" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.overlay_structures_on_mesh">
+<span class="sig-name descname"><span class="pre">overlay_structures_on_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mesh</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinate_system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#FiberFusing.coordinate_system.CoordinateSystem" title="FiberFusing.coordinate_system.CoordinateSystem"><span class="pre">CoordinateSystem</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.overlay_structures_on_mesh" title="Link to this definition">#</a></dt>
+<dd><p>Return a mesh overlaying all the structures in the order they were defined.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>coordinate_system</strong> (<a class="reference internal" href="#FiberFusing.coordinate_system.CoordinateSystem" title="FiberFusing.coordinate_system.CoordinateSystem"><em>CoordinateSystem</em></a>) – The coordinates axis</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The raster mesh of the structures.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>numpy.ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.get_shapely_object">
+<span class="sig-name descname"><span class="pre">get_shapely_object</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.get_shapely_object" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.bounds">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.bounds" title="Link to this definition">#</a></dt>
+<dd><p>Return the boundaries of the structure.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.boundaries">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">boundaries</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">tuple</span></em><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.boundaries" title="Link to this definition">#</a></dt>
+<dd><p>Return the boundaries of the structure.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.get_structure_max_min_boundaries">
+<span class="sig-name descname"><span class="pre">get_structure_max_min_boundaries</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.get_structure_max_min_boundaries" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.center">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">center</span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.center" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.fiber">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fiber</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.fiber" title="Link to this definition">#</a></dt>
+<dd><p>Return list of all the fiber in the structure</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of the structure fiber components</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.cores">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">cores</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.cores" title="Link to this definition">#</a></dt>
+<dd><p>Return a list of the cores</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List of the cores</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.add_single_fiber">
+<span class="sig-name descname"><span class="pre">add_single_fiber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fiber_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.add_single_fiber" title="Link to this definition">#</a></dt>
+<dd><p>Adds a single fiber.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fiber_radius</strong> (<em>float</em>) – The fiber radius</p></li>
+<li><p><strong>position</strong> (<em>tuple</em>) – The position</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The self instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.add_single_circle_structure">
+<span class="sig-name descname"><span class="pre">add_single_circle_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fiber_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.add_single_circle_structure" title="Link to this definition">#</a></dt>
+<dd><p>Adds a single structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fiber_radius</strong> (<em>float</em>) – The fiber radius</p></li>
+<li><p><strong>position</strong> (<em>tuple</em>) – The position</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The self instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.add_center_fiber">
+<span class="sig-name descname"><span class="pre">add_center_fiber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fiber_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.add_center_fiber" title="Link to this definition">#</a></dt>
+<dd><p>Add a single fiber of given radius at the center of the structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fiber_radius</strong> (<em>float</em>) – The fiber radius</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The self instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.add_center_structure">
+<span class="sig-name descname"><span class="pre">add_center_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fiber_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.add_center_structure" title="Link to this definition">#</a></dt>
+<dd><p>Add a single structure of given radius at the center of the structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fiber_radius</strong> (<em>float</em>) – The fiber radius</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The self instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.add_structure">
+<span class="sig-name descname"><span class="pre">add_structure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">structure_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_fibers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fiber_radius</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fusion_degree</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_position</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">position_shift</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">[0,</span> <span class="pre">0]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">compute_fusing</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle_shift</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.add_structure" title="Link to this definition">#</a></dt>
+<dd><p>Add a ring of equi-distant and same radius fiber with a given
+radius and degree of fusion</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>structure_type</strong> (<em>str</em>) – The structure type</p></li>
+<li><p><strong>number_of_fibers</strong> (<em>int</em>) – The number of fibers in the structure</p></li>
+<li><p><strong>fusion_degree</strong> (<em>float</em>) – The fusion degree for the structure</p></li>
+<li><p><strong>fiber_radius</strong> (<em>float</em>) – The fiber radius</p></li>
+<li><p><strong>angle_shift</strong> (<em>float</em>) – The angle shift</p></li>
+<li><p><strong>compute_fusing</strong> (<em>bool</em>) – If set to True the computation of the fusion process will be executed</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The self instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.add_custom_fiber">
+<span class="sig-name descname"><span class="pre">add_custom_fiber</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">fibers</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.add_custom_fiber" title="Link to this definition">#</a></dt>
+<dd><p>Add any custom defined fiber</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fibers</strong> (<em>list</em>) – The custom fibers</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.get_core_positions">
+<span class="sig-name descname"><span class="pre">get_core_positions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.get_core_positions" title="Link to this definition">#</a></dt>
+<dd><p>Return a list of the core positions</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The core positions.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.randomize_core_position">
+<span class="sig-name descname"><span class="pre">randomize_core_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">random_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.randomize_core_position" title="Link to this definition">#</a></dt>
+<dd><p>Shuffle the position of the fiber cores.
+It can be used to add realism to the fusion process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>random_factor</strong> (<em>float</em>) – The randomize position</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The self instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.get_rasterized_mesh">
+<span class="sig-name descname"><span class="pre">get_rasterized_mesh</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">coordinate_system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#FiberFusing.coordinate_system.CoordinateSystem" title="FiberFusing.coordinate_system.CoordinateSystem"><span class="pre">CoordinateSystem</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.get_rasterized_mesh" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.rotate">
+<span class="sig-name descname"><span class="pre">rotate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.rotate" title="Link to this definition">#</a></dt>
+<dd><p>Rotates the full structure, including the fiber cores.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The self instance</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.shift">
+<span class="sig-name descname"><span class="pre">shift</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.shift" title="Link to this definition">#</a></dt>
+<dd><p>Rotates the full structure, including the fiber cores.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The self instance</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.scale_position">
+<span class="sig-name descname"><span class="pre">scale_position</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Self</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.scale_position" title="Link to this definition">#</a></dt>
+<dd><p>Scale down the distance between each cores.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>factor</strong> (<em>float</em>) – The scaling factor</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The self instance</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Self</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.plot">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">SceneList</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.plot" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="FiberFusing.baseclass.BaseFused.render_patch_on_ax">
+<span class="sig-name descname"><span class="pre">render_patch_on_ax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Axis</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_structure</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_fibers</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_shifted_cores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_added</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_removed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#FiberFusing.baseclass.BaseFused.render_patch_on_ax" title="Link to this definition">#</a></dt>
+<dd><p>Add the geometry patches to the axis.
+Base patch is the clad representation.
+The boolean paraemters defines which other patch is added
+to the ax.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>Axis</em>) – The axis to which add the patches</p></li>
+<li><p><strong>show_structure</strong> (<em>bool</em>) – Added the fused structure to ax</p></li>
+<li><p><strong>show_fibers</strong> (<em>bool</em>) – Added the unfused fibers to ax</p></li>
+<li><p><strong>show_shifted_cores</strong> (<em>bool</em>) – Added the shifted cores to ax</p></li>
+<li><p><strong>show_added</strong> (<em>bool</em>) – Added the added section to ax</p></li>
+<li><p><strong>show_removed</strong> (<em>bool</em>) – Added the removed section to ax</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The scene list.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>SceneList</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</div></blockquote>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#geometry">Geometry</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry"><code class="docutils literal notranslate"><span class="pre">Geometry</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.background"><code class="docutils literal notranslate"><span class="pre">Geometry.background</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.additional_structure_list"><code class="docutils literal notranslate"><span class="pre">Geometry.additional_structure_list</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.fiber_list"><code class="docutils literal notranslate"><span class="pre">Geometry.fiber_list</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.x_bounds"><code class="docutils literal notranslate"><span class="pre">Geometry.x_bounds</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.y_bounds"><code class="docutils literal notranslate"><span class="pre">Geometry.y_bounds</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.resolution"><code class="docutils literal notranslate"><span class="pre">Geometry.resolution</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.index_scrambling"><code class="docutils literal notranslate"><span class="pre">Geometry.index_scrambling</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.gaussian_filter"><code class="docutils literal notranslate"><span class="pre">Geometry.gaussian_filter</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.boundary_pad_factor"><code class="docutils literal notranslate"><span class="pre">Geometry.boundary_pad_factor</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.generate_coordinate_system"><code class="docutils literal notranslate"><span class="pre">Geometry.generate_coordinate_system()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.add_fiber"><code class="docutils literal notranslate"><span class="pre">Geometry.add_fiber()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.add_structure"><code class="docutils literal notranslate"><span class="pre">Geometry.add_structure()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.structure_list"><code class="docutils literal notranslate"><span class="pre">Geometry.structure_list</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.interpret_x_boundary"><code class="docutils literal notranslate"><span class="pre">Geometry.interpret_x_boundary()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.interpret_y_boundary"><code class="docutils literal notranslate"><span class="pre">Geometry.interpret_y_boundary()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.get_boundaries"><code class="docutils literal notranslate"><span class="pre">Geometry.get_boundaries()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.refractive_index_maximum"><code class="docutils literal notranslate"><span class="pre">Geometry.refractive_index_maximum</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.refractive_index_minimum"><code class="docutils literal notranslate"><span class="pre">Geometry.refractive_index_minimum</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.get_index_range"><code class="docutils literal notranslate"><span class="pre">Geometry.get_index_range()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.rotate"><code class="docutils literal notranslate"><span class="pre">Geometry.rotate()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.generate_coordinate_mesh_gradient"><code class="docutils literal notranslate"><span class="pre">Geometry.generate_coordinate_mesh_gradient()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.randomize_fiber_structures_index"><code class="docutils literal notranslate"><span class="pre">Geometry.randomize_fiber_structures_index()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.rasterize_polygons"><code class="docutils literal notranslate"><span class="pre">Geometry.rasterize_polygons()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.add_background_to_mesh"><code class="docutils literal notranslate"><span class="pre">Geometry.add_background_to_mesh()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.generate_mesh"><code class="docutils literal notranslate"><span class="pre">Geometry.generate_mesh()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.get_n2_rho_gradient"><code class="docutils literal notranslate"><span class="pre">Geometry.get_n2_rho_gradient()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.render_patch_on_ax"><code class="docutils literal notranslate"><span class="pre">Geometry.render_patch_on_ax()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.render_gradient_on_ax"><code class="docutils literal notranslate"><span class="pre">Geometry.render_gradient_on_ax()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.render_mesh_on_ax"><code class="docutils literal notranslate"><span class="pre">Geometry.render_mesh_on_ax()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.geometry.Geometry.plot"><code class="docutils literal notranslate"><span class="pre">Geometry.plot()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#fused-configuration">Fused configuration</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#axes">Axes</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.min_x"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.min_x</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.max_x"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.max_x</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.min_y"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.min_y</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.max_y"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.max_y</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.centering"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.centering()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.add_padding"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.add_padding()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.x_centering"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.x_centering()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.y_centering"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.y_centering()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.set_x_boundary"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.set_x_boundary()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.set_y_boundary"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.set_y_boundary()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.to_unstructured_coordinate"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.to_unstructured_coordinate()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.make_nx_odd"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.make_nx_odd()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.make_ny_odd"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.make_ny_odd()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.make_nx_even"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.make_nx_even()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.make_ny_even"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.make_ny_even()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.shape"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.shape</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.dA"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.dA</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.rho_mesh"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.rho_mesh</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.theta_mesh"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.theta_mesh</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.set_left"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.set_left()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.set_right"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.set_right()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.set_top"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.set_top()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.set_bottom"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.set_bottom()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.nx"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.nx</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.ny"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.ny</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.dx"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.dx</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.dy"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.dy</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.x_vector"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.x_vector</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.y_vector"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.y_vector</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.x_mesh"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.x_mesh</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.y_mesh"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.y_mesh</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.x_bounds"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.x_bounds</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.y_bounds"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.y_bounds</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.to_odd"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.to_odd()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.to_even"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.to_even()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basefused">BaseFused</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused"><code class="docutils literal notranslate"><span class="pre">BaseFused</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.fiber_radius"><code class="docutils literal notranslate"><span class="pre">BaseFused.fiber_radius</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.index"><code class="docutils literal notranslate"><span class="pre">BaseFused.index</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.tolerance_factor"><code class="docutils literal notranslate"><span class="pre">BaseFused.tolerance_factor</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.fusion_degree"><code class="docutils literal notranslate"><span class="pre">BaseFused.fusion_degree</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.core_position_scrambling"><code class="docutils literal notranslate"><span class="pre">BaseFused.core_position_scrambling</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.scale_down_position"><code class="docutils literal notranslate"><span class="pre">BaseFused.scale_down_position</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.compute_parametrized_fusion_degree"><code class="docutils literal notranslate"><span class="pre">BaseFused.compute_parametrized_fusion_degree()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.asserts_fusion_degree"><code class="docutils literal notranslate"><span class="pre">BaseFused.asserts_fusion_degree()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.refractive_index_list"><code class="docutils literal notranslate"><span class="pre">BaseFused.refractive_index_list</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.is_multi"><code class="docutils literal notranslate"><span class="pre">BaseFused.is_multi</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.clad_structure"><code class="docutils literal notranslate"><span class="pre">BaseFused.clad_structure</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.structure_dictionary"><code class="docutils literal notranslate"><span class="pre">BaseFused.structure_dictionary</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.overlay_structures_on_mesh"><code class="docutils literal notranslate"><span class="pre">BaseFused.overlay_structures_on_mesh()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.get_shapely_object"><code class="docutils literal notranslate"><span class="pre">BaseFused.get_shapely_object()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.bounds"><code class="docutils literal notranslate"><span class="pre">BaseFused.bounds</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.boundaries"><code class="docutils literal notranslate"><span class="pre">BaseFused.boundaries</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.get_structure_max_min_boundaries"><code class="docutils literal notranslate"><span class="pre">BaseFused.get_structure_max_min_boundaries()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.center"><code class="docutils literal notranslate"><span class="pre">BaseFused.center</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.fiber"><code class="docutils literal notranslate"><span class="pre">BaseFused.fiber</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.cores"><code class="docutils literal notranslate"><span class="pre">BaseFused.cores</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.add_single_fiber"><code class="docutils literal notranslate"><span class="pre">BaseFused.add_single_fiber()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.add_single_circle_structure"><code class="docutils literal notranslate"><span class="pre">BaseFused.add_single_circle_structure()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.add_center_fiber"><code class="docutils literal notranslate"><span class="pre">BaseFused.add_center_fiber()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.add_center_structure"><code class="docutils literal notranslate"><span class="pre">BaseFused.add_center_structure()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.add_structure"><code class="docutils literal notranslate"><span class="pre">BaseFused.add_structure()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.add_custom_fiber"><code class="docutils literal notranslate"><span class="pre">BaseFused.add_custom_fiber()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.get_core_positions"><code class="docutils literal notranslate"><span class="pre">BaseFused.get_core_positions()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.randomize_core_position"><code class="docutils literal notranslate"><span class="pre">BaseFused.randomize_core_position()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.get_rasterized_mesh"><code class="docutils literal notranslate"><span class="pre">BaseFused.get_rasterized_mesh()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.rotate"><code class="docutils literal notranslate"><span class="pre">BaseFused.rotate()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.shift"><code class="docutils literal notranslate"><span class="pre">BaseFused.shift()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.scale_position"><code class="docutils literal notranslate"><span class="pre">BaseFused.scale_position()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.plot"><code class="docutils literal notranslate"><span class="pre">BaseFused.plot()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.baseclass.BaseFused.render_patch_on_ax"><code class="docutils literal notranslate"><span class="pre">BaseFused.render_patch_on_ax()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div class="tocsection sourcelink">
+    <a href="_sources/code.rst.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=ac02cc09edc035673794"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=ac02cc09edc035673794"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+  <p class="copyright">
+    
+      © Copyright 2023, Martin Poinsinet de Sivry-Houle.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.2.6.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item"><p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.14.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
