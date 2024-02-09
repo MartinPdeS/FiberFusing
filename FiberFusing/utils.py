@@ -102,7 +102,7 @@ def pathify(polygon) -> Path:
     :param      polygon:         The polygon
     :type       polygon:         { type_description }
 
-    :returns:   The path of the polygon
+    :returns:   The path of the polygon 
     :rtype:     Path
 
     :raises     AssertionError:  { exception_description }
