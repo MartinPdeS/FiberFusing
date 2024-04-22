@@ -7,14 +7,16 @@ from FiberFusing import Geometry, BackGround
 from FiberFusing.fiber.catalogue import load_fiber, get_silica_index
 from FiberFusing.configuration.ring import FusedProfile_02x02 as FusedProfile
 
-
+import logging
+logging.basicConfig()
+logging.getLogger().setLevel(logging.INFO)
 wavelength = 1.55e-6
 
 air = BackGround(index=1.0)
 
 clad = FusedProfile(
     fiber_radius=62.5e-6,
-    fusion_degree=0.2,
+    fusion_degree=0.9,
     index=get_silica_index(wavelength=wavelength)
 )
 

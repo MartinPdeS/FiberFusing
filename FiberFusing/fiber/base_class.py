@@ -4,7 +4,6 @@
 import numpy
 from dataclasses import dataclass
 from FiberFusing import Circle
-from FiberFusing.tools import plot_style
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.utils import get_silica_index
 from MPSTools.tools.mathematics import get_rho_gradient
@@ -245,7 +244,14 @@ class GenericFiber(BaseStructureCollection):
 
             ax.add_artist(artist)
 
-        ax.set_style(**plot_style.geometry, title='Fiber structure')
+        ax.set_style(
+            title='Fiber structure',
+            x_label=r'x-distance [$\mu$m]',
+            y_label=r'y-distance [$\mu$m]',
+            x_scale_factor=1e6,
+            y_scale_factor=1e6,
+            equal_limits=True,
+        )
 
     def render_raster_on_ax(self, ax: Axis, structure, coordinate_system: CoordinateSystem) -> None:
         boolean_raster = structure.polygon.get_rasterized_mesh(coordinate_system=coordinate_system)
@@ -285,7 +291,14 @@ class GenericFiber(BaseStructureCollection):
             norm=colors.LogNorm()
         )
 
-        ax.set_style(**plot_style.geometry, title='Rasterized mesh')
+        ax.set_style(
+            title='Rasterized mesh',
+            x_label=r'x-distance [$\mu$m]',
+            y_label=r'y-distance [$\mu$m]',
+            x_scale_factor=1e6,
+            y_scale_factor=1e6,
+            equal_limits=True,
+        )
 
     def render_gradient_on_ax(self, ax: Axis, coordinate_system: CoordinateSystem) -> None:
         """
@@ -310,7 +323,14 @@ class GenericFiber(BaseStructureCollection):
             norm=colors.SymLogNorm(linthresh=1e-10)
         )
 
-        ax.set_style(**plot_style.geometry, title='Refractive index gradient')
+        ax.set_style(
+            title='Refractive index gradient',
+            x_label=r'x-distance [$\mu$m]',
+            y_label=r'y-distance [$\mu$m]',
+            x_scale_factor=1e6,
+            y_scale_factor=1e6,
+            equal_limits=True
+        )
 
     def shift_coordinates(self, coordinate_system: CoordinateSystem, x_shift: float, y_shift: float) -> numpy.ndarray:
         """

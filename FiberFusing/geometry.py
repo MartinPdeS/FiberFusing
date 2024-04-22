@@ -14,7 +14,6 @@ from MPSTools.tools.mathematics import get_rho_gradient
 
 # FiberFusing imports
 from FiberFusing.coordinate_system import CoordinateSystem
-from FiberFusing.tools import plot_style
 import FiberFusing
 
 from matplotlib import colors
@@ -309,7 +308,14 @@ class Geometry(object):
         :param      ax:   The ax to which append the representation.
         :type       ax:   Axis
         """
-        ax.set_style(**plot_style.geometry, title='Coupler index structure')
+        ax.set_style(
+            title='Coupler index structure',
+            x_label=r'x-distance [$\mu$m]',
+            y_label=r'y-distance [$\mu$m]',
+            x_scale_factor=1e6,
+            y_scale_factor=1e6,
+            equal_limits=True,
+        )
 
         for structure in self.additional_structure_list:
             structure.render_patch_on_ax(ax=ax)
@@ -331,8 +337,12 @@ class Geometry(object):
         )
 
         ax.set_style(
-            **plot_style.geometry,
             title='Refractive index gradient',
+            x_label=r'x-distance [$\mu$m]',
+            y_label=r'y-distance [$\mu$m]',
+            x_scale_factor=1e6,
+            y_scale_factor=1e6,
+            equal_limits=True,
             show_colorbar=True,
         )
 
@@ -360,8 +370,12 @@ class Geometry(object):
         )
 
         ax.set_style(
-            **plot_style.geometry,
             title='Rasterized mesh',
+            x_label=r'x-distance [$\mu$m]',
+            y_label=r'y-distance [$\mu$m]',
+            x_scale_factor=1e6,
+            y_scale_factor=1e6,
+            equal_limits=True,
             show_colorbar=True,
         )
 
@@ -408,8 +422,13 @@ class Geometry(object):
             ax = figure.append_ax()
             self.render_gradient_on_ax(ax)
 
-        ax.set_style(**plot_style.geometry)
+        ax.set_style(
+            title='Fiber structure',
+            x_label=r'x-distance [$\mu$m]',
+            y_label=r'y-distance [$\mu$m]',
+            x_scale_factor=1e6,
+            y_scale_factor=1e6,
+            equal_limits=True,
+        )
 
         return figure
-
-# -

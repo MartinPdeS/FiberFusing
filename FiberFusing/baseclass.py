@@ -18,33 +18,50 @@ from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.buffer import Circle
 from FiberFusing.sub_structures.ring import FiberRing
 from FiberFusing.sub_structures.line import FiberLine
-from FiberFusing.tools import plot_style
 
 logging.basicConfig(level=logging.INFO)
 
 
-class NameSpace():
+class NameSpace:
+    """
+    A flexible class that allows the dynamic addition of attributes via keyword arguments.
+    """
+
     def __init__(self, **kwargs):
+        """
+        Initializes an instance with attributes specified by the keyword arguments.
+
+        :param kwargs: Arbitrary keyword arguments to set as attributes.
+        """
         for key, value in kwargs.items():
             setattr(self, key, value)
 
 
 @dataclass
 class BaseFused(OverlayStructureBaseClass):
+    """
+    Represents a base class for managing the fusion of optical fiber structures, allowing customization of fiber properties and spatial configuration. This class facilitates the dynamic assembly of fiber optics structures and automates the overlay of these structures on a given mesh.
+
+    Attributes:
+        fiber_radius (float): Radius of individual fibers in the structure.
+        index (float): Refractive index of the fibers' cladding.
+        tolerance_factor (float): A tolerance value used in optimization algorithms to balance the area difference between added and removed sections during the fusion process.
+        fusion_degree (float | str): Specifies the degree of fusion, ranging from 0 (no fusion) to 1 (full fusion), or 'auto' to automatically determine based on geometry.
+        core_position_scrambling (float): Introduces randomness to core positions to simulate practical imperfections.
+        scale_down_position (float): Scaling factor to adjust the overall size of the assembly.
+    """
+
     fiber_radius: float
-    """ Radius of the fiber in the assembly """
     index: float
-    """ Refractive index of the cladding structure. """
     tolerance_factor: float = 1e-2
-    """ Tolerance on the optimization problem which aim to minimize the difference between added and removed area of the heuristic algorithm. """
     fusion_degree: float | str = 'auto'
-    """ Fusion degree of the assembly must be within [0, 1] """
     core_position_scrambling: float = 0
-    """ Scrambling value of the core positions """
     scale_down_position: float = 1
-    """ Factor to scale down the whole assembly """
 
     def __post_init__(self):
+        """
+        Initializes the fiber and core lists and any required structures immediately after the dataclass fields have been populated.
+        """
         self.fiber_list = []
         self.core_list = []
         self._clad_structure = None
@@ -56,11 +73,10 @@ class BaseFused(OverlayStructureBaseClass):
 
     def compute_parametrized_fusion_degree(self) -> float:
         """
-        Calculates the parametrized fusion degree which maps a value from 0 to 1 into
-        a value between the fusion range of the specific geometry.
+        Calculates a fusion degree adjusted to the specific requirements of the structure's geometry.
 
-        :returns:   The parametrized fusion degree.
-        :rtype:     float
+        Returns:
+            float: The adjusted fusion degree, mapping an abstract range [0, 1] to the actual usable range defined by the structure's physical constraints.
         """
         if str(self.fusion_degree).lower() == 'auto':
             self.fusion_degree = 0.8 if self.fusion_range is not None else None
@@ -74,10 +90,10 @@ class BaseFused(OverlayStructureBaseClass):
 
     def asserts_fusion_degree(self) -> None:
         """
-        Asserts the possible values of the fusion degree
+        Validates the fusion degree to ensure it lies within acceptable bounds.
 
-        :returns:   No return
-        :rtype:     None
+        Raises:
+            AssertionError: If the fusion degree is not scalar when required, or is out of the bounds [0, 1].
         """
         if self.fusion_range is None:
             assert self.fusion_degree is None, f"This instance: {self.__class__} do not take fusion_degree as argument."
@@ -113,13 +129,14 @@ class BaseFused(OverlayStructureBaseClass):
 
     def overlay_structures_on_mesh(self, mesh: numpy.ndarray, coordinate_system: CoordinateSystem) -> numpy.ndarray:
         """
-        Return a mesh overlaying all the structures in the order they were defined.
+        Applies the current fiber structure configuration onto a provided mesh, considering the specified coordinate system.
 
-        :param      coordinate_system:  The coordinates axis
-        :type       coordinate_system:  CoordinateSystem
+        Parameters:
+            mesh (numpy.ndarray): The mesh on which to overlay the structure.
+            coordinate_system (CoordinateSystem): The coordinate system to use for the overlay.
 
-        :returns:   The raster mesh of the structures.
-        :rtype:     numpy.ndarray
+        Returns:
+            numpy.ndarray: A mesh with the fiber structures applied.
         """
         structure_list = [
             NameSpace(index=self.index, polygon=self.clad_structure)
@@ -177,15 +194,14 @@ class BaseFused(OverlayStructureBaseClass):
 
     def add_single_fiber(self, fiber_radius: float, position: tuple = (0, 0)) -> Self:
         """
-        Adds a single fiber.
+        Adds a single fiber to the structure at the specified position.
 
-        :param      fiber_radius:  The fiber radius
-        :type       fiber_radius:  float
-        :param      position:      The position
-        :type       position:      tuple
+        Parameters:
+            fiber_radius (float): The radius of the fiber to add.
+            position (tuple, optional): The x, y coordinates for the fiber. Defaults to (0, 0).
 
-        :returns:   The self instance
-        :rtype:     Self
+        Returns:
+            Self: Returns the instance to allow for method chaining.
         """
         fiber = Circle(
             radius=fiber_radius,
@@ -285,24 +301,20 @@ class BaseFused(OverlayStructureBaseClass):
             compute_fusing: bool = False,
             angle_shift: float = 0.0) -> Self:
         """
-        Add a ring of equi-distant and same radius fiber with a given
-        radius and degree of fusion
+        Adds a predefined structure of fibers, such as a ring or line, with customizable properties and spatial configuration.
 
-        :param      structure_type:    The structure type
-        :type       structure_type:    str
-        :param      number_of_fibers:  The number of fibers in the structure
-        :type       number_of_fibers:  int
-        :param      fusion_degree:     The fusion degree for the structure
-        :type       fusion_degree:     float
-        :param      fiber_radius:      The fiber radius
-        :type       fiber_radius:      float
-        :param      angle_shift:       The angle shift
-        :type       angle_shift:       float
-        :param      compute_fusing:    If set to True the computation of the fusion process will be executed
-        :type       compute_fusing:    bool
+        Parameters:
+            structure_type (str): The type of structure to add ('ring' or 'line').
+            number_of_fibers (int): Number of fibers in the structure.
+            fiber_radius (float): Radius of each fiber in the structure.
+            fusion_degree (float): The degree of fusion for this structure.
+            scale_position (float): Factor to scale the position of each fiber.
+            position_shift (list): A 2D vector [x, y] to shift the entire structure.
+            compute_fusing (bool): Whether to compute the fusing operation for the structure.
+            angle_shift (float): The angle by which to rotate the structure.
 
-        :returns:   The self instance
-        :rtype:     Self
+        Returns:
+            Self: Returns the instance to allow for method chaining.
         """
         match structure_type.lower():
             case 'ring':
@@ -461,7 +473,13 @@ class BaseFused(OverlayStructureBaseClass):
         if show_structure:
             self.clad_structure._render_on_ax_(ax)
 
-        ax.set_style(**plot_style.geometry)
+        ax.set_style(
+            x_label=r'x-distance [$\mu$m]',
+            y_label=r'y-distance [$\mu$m]',
+            x_scale_factor=1e6,
+            y_scale_factor=1e6,
+            equal_limits=True,
+        )
 
         if show_added:
             added_section = utils.Union(*self.added_section_list)
@@ -483,7 +501,7 @@ class BaseFused(OverlayStructureBaseClass):
 
         if show_shifted_cores:
             for n, fiber in enumerate(self.fiber_list):
-                fiber.shifted_core._render_on_ax_(
+                fiber.shifted_core.render_on_axis(
                     ax,
                     marker='x',
                     marker_size=40,

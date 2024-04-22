@@ -6,7 +6,7 @@ import numpy
 from dataclasses import dataclass
 
 # Local imports
-from FiberFusing.buffer import Point
+import FiberFusing as ff
 from FiberFusing.utility.connection_optimization import ConnectionOptimization
 from FiberFusing.sub_structures.base_class import BaseClass
 
@@ -47,7 +47,7 @@ class FiberLine(ConnectionOptimization, BaseClass):
         ]
 
         core_positions = [
-            Point(position=position) for position in core_positions
+            ff.Point(position=position) for position in core_positions
         ]
 
         return core_positions

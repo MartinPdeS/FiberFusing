@@ -7,15 +7,15 @@ import logging
 from scipy.optimize import minimize_scalar
 
 # Local imports
-from FiberFusing.buffer import Circle, Point, Polygon, LineString, EmptyPolygon
+import FiberFusing as ff
 from FiberFusing import utils
 
 
 class Connection():
     def __init__(self, fiber0, fiber1):
         self.fiber_list = [fiber0, fiber1]
-        self.added_section = EmptyPolygon()
-        self.removed_section = EmptyPolygon()
+        self.added_section = ff.EmptyPolygon()
+        self.removed_section = ff.EmptyPolygon()
         self.topology = "not defined"
         self.shift = "not-defined"
 
@@ -51,7 +51,7 @@ class Connection():
         else:
             self.topology = 'concave'
 
-    def get_conscripted_circles(self, type='exterior') -> Circle:
+    def get_conscripted_circles(self, type='exterior') -> ff.Circle:
         """
         Return the connection two circonscript circles, which can be either of type exterior
         or interior.
@@ -60,7 +60,7 @@ class Connection():
         :type       type:  str
 
         :returns:   The conscripted circles.
-        :rtype:     Circle
+        :rtype:     ff.Circle
         """
         extended_line = self.get_center_line(extended=True)
         line = self.get_center_line(extended=False)
@@ -75,7 +75,7 @@ class Connection():
         if type.lower() in ['interior', 'convex']:
             radius = numpy.sqrt(self.shift**2 + (line.length / 2)**2) + self[0].radius
 
-        return Circle(position=point, radius=radius)
+        return ff.Circle(position=point, radius=radius)
 
     def compute_virtual_circles(self) -> None:
         if self.topology == "not defined":
@@ -103,7 +103,7 @@ class Connection():
         P2 = utils.NearestPoints(self.virtual_circles[0], self[1])
         P3 = utils.NearestPoints(self.virtual_circles[1], self[1])
 
-        return [Point(position=(p.x, p.y)) for p in [P0, P1, P2, P3]]
+        return [ff.Point(position=(p.x, p.y)) for p in [P0, P1, P2, P3]]
 
     def compute_mask(self) -> None:
         """
@@ -117,23 +117,23 @@ class Connection():
 
         if self.topology.lower() == 'concave':
 
-            mask = Polygon(coordinates=[P0._shapely_object, P1._shapely_object, P3._shapely_object, P2._shapely_object])
+            mask = ff.Polygon(coordinates=[P0._shapely_object, P1._shapely_object, P3._shapely_object, P2._shapely_object])
 
             self.mask = (mask - self.virtual_circles[0] - self.virtual_circles[1])
 
             # utils.multi_plot(*self.fiber_list, self.mask, *self.virtual_circles)
 
         elif self.topology.lower() == 'convex':
-            mid_point = LineString(coordinates=[self[0].center, self[1].center]).mid_point
+            mid_point = ff.LineString(coordinates=[self[0].center, self[1].center]).mid_point
 
-            mask0 = Polygon(coordinates=[mid_point._shapely_object, P0._shapely_object, P2._shapely_object])
+            mask0 = ff.Polygon(coordinates=[mid_point._shapely_object, P0._shapely_object, P2._shapely_object])
             mask0.scale(
                 factor=1000,
                 origin=mid_point._shapely_object,
                 in_place=True
             )
 
-            mask1 = Polygon(coordinates=[mid_point._shapely_object, P1._shapely_object, P3._shapely_object])
+            mask1 = ff.Polygon(coordinates=[mid_point._shapely_object, P1._shapely_object, P3._shapely_object])
             mask1.scale(
                 factor=1000,
                 origin=mid_point._shapely_object,
@@ -151,9 +151,9 @@ class Connection():
             union = self.virtual_circles[0].union(self.virtual_circles[1], in_place=False)
             self.added_section = self.mask - self[0] - self[1] - union
 
-        self.added_section.remove_non_polygon()
+        self.added_section.remove_non_polygon_elements()
 
-    def get_center_line(self, extended: bool = False) -> LineString:
+    def get_center_line(self, extended: bool = False) -> ff.LineString:
         """
         Returns the line connecting the two centers of the connected fibers.
         If extended is true that line is extended up to the boundary of the two fibers.
@@ -162,9 +162,9 @@ class Connection():
         :type       extended:  bool
 
         :returns:   The center line.
-        :rtype:     LineString
+        :rtype:     ff.LineString
         """
-        line = LineString(coordinates=[self[0].center, self[1].center])
+        line = ff.LineString(coordinates=[self[0].center, self[1].center])
 
         if extended is True:
             line = line.make_length(line.length + self[0].radius + self[1].radius)
@@ -172,62 +172,59 @@ class Connection():
         return line
 
     @property
-    def total_area(self) -> Polygon:
+    def total_area(self) -> ff.Polygon:
         """
         Returns polygone representating the total area of the connected two fibers.
 
         :returns:   Total area
-        :rtype:     Polygon
+        :rtype:     ff.Polygon
         """
         output = utils.Union(*self, self.added_section)
-        output.remove_non_polygon()
+        output.remove_non_polygon_elements()
 
         return output
 
-    def split_geometry(self, geometry, position) -> Polygon:
+    def split_geometry(self, geometry: ff.Polygon, position: ff.Point, return_largest: bool = True) -> ff.Polygon:
         """
         Split the connection at a certain position x which is the parametrised
         point covering the full connection.
 
         :param      geometry:  The geometry
-        :type       geometry:  Polygon
+        :type       geometry:  ff.Polygon
         :param      position:  The parametrized position
         :type       position:  float
 
         :returns:   The splitted geometry
-        :rtype:     Polygon
+        :rtype:     ff.Polygon
         """
-        line = self.get_center_line(extended=False)
+        split_line = self.get_center_line(extended=False)
 
-        line.centering(center=position).rotate(
-            angle=90,
-            in_place=True,
-            origin=line.mid_point
-        )
+        split_line = split_line.centering(center=position)
 
-        line.extend(factor=2)
+        split_line = split_line.rotate(angle=90, origin=split_line.mid_point)
 
-        external_part = utils.Union(geometry.copy()).remove_non_polygon().keep_largest_polygon()
+        split_line = split_line.extend(factor=2)
 
-        return external_part.split_with_line(line=line, return_type='largest')
+        external_part = utils.Union(geometry.copy()).remove_non_polygon_elements().keep_largest_polygon()
+
+        return external_part.split_with_line(line=split_line, return_largest=return_largest)
 
     def compute_area_mismatch_cost(self, x: float = 0.5) -> float:
         line = self.get_center_line(extended=True)
-        position0 = line.get_position_parametrisation(1 - x)
-        position1 = line.get_position_parametrisation(x)
+        position0 = line.get_position_parametrization(1 - x)
+        position1 = line.get_position_parametrization(x)
 
-        large_section = self.split_geometry(
+        small_section = self.split_geometry(
             geometry=self.total_area,
-            position=position0
+            position=position0,
+            return_largest=False
         )
 
-        small_area = abs(large_section.area - self.total_area.area)
-
-        cost = abs(small_area - self[0].area / 2.)
+        cost = abs(small_section.area - self[0].area / 2.)
 
         self.core_shift = (position0 - self[0].center), (position1 - self[1].center)
 
-        logging.debug(f'Core positioning optimization: {x = :+.2f} \t -> \t{cost = :<10.2f} -> \t\t{self.core_shift = }')
+        logging.info(f'Core positioning optimization: {x = :+.2f} \t -> \t{cost = :<10.2e} -> \t\t core shift: {self.core_shift[0].x, self.core_shift[0].y}')
 
         return cost
 

@@ -1,6 +1,10 @@
-from .geometry import Geometry
-from .buffer import Circle, Point, Square
-from .background import BackGround
+from .geometry import Geometry  # noqa: F401
+from .components.point import Point  # noqa: F401
+from .components.linestring import LineString  # noqa: F401
+from .components.polygon import Polygon, EmptyPolygon  # noqa: F401
+from .buffer import Circle, Square  # noqa: F401
+from .background import BackGround  # noqa: F401
+
 
 import numpy
 from dataclasses import dataclass

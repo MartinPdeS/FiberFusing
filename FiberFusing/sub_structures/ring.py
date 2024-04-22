@@ -6,7 +6,7 @@ import numpy
 from dataclasses import dataclass
 
 # Local imports
-from FiberFusing.buffer import Point
+import FiberFusing as ff
 from FiberFusing.utility.connection_optimization import ConnectionOptimization
 from FiberFusing.sub_structures.base_class import BaseClass
 
@@ -41,7 +41,7 @@ class FiberRing(ConnectionOptimization, BaseClass):
 
         distance_from_center = factor * self.fiber_radius
 
-        first_core = Point(position=[0, distance_from_center])
+        first_core = ff.Point(position=[0, distance_from_center])
 
         core_position = [
             first_core.rotate(angle=angle, origin=[0, 0]) for angle in self.angle_list

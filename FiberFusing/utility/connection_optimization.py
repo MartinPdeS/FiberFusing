@@ -72,7 +72,7 @@ class ConnectionOptimization():
             added_section_list.append(new_added_section)
 
         added_section = utils.Union(*added_section_list) - utils.Union(*self.fiber_list)
-        added_section.remove_non_polygon()
+        added_section.remove_non_polygon_elements()
 
         return added_section
 

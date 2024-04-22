@@ -6,7 +6,7 @@ import numpy
 
 
 class OverlayStructureBaseClass:
-    def _overlay_structure_on_mesh_(self, structure_list: dict, mesh: numpy.ndarray, coordinate_system: 'Axis') -> numpy.ndarray:
+    def _overlay_structure_on_mesh_(self, structure_list: dict, mesh: numpy.ndarray, coordinate_system: object) -> numpy.ndarray:
         """
         Return a mesh overlaying all the structures in the order they were defined.
 
@@ -34,3 +34,5 @@ class OverlayStructureBaseClass:
             mesh += raster
 
         return mesh
+
+# -
