@@ -93,18 +93,21 @@ class BaseFused(OverlayStructureBaseClass):
         Validates the fusion degree to ensure it lies within acceptable bounds.
 
         Raises:
-            AssertionError: If the fusion degree is not scalar when required, or is out of the bounds [0, 1].
+            ValueError: If the fusion degree is not a scalar when required, or is out of the acceptable bounds [0, 1].
+            TypeError: If the fusion degree is required but None is provided.
         """
         if self.fusion_range is None:
-            assert self.fusion_degree is None, f"This instance: {self.__class__} do not take fusion_degree as argument."
+            if self.fusion_degree is not None:
+                raise ValueError(f"This instance of {self.__class__.__name__} does not take 'fusion_degree' as an argument.")
         else:
-            assert numpy.isscalar(self.fusion_degree), f"Fusion degree: [{self.fusion_degree}] has te be a scalar value."
+            if not numpy.isscalar(self.fusion_degree):
+                raise TypeError(f"Fusion degree: [{self.fusion_degree}] must be a scalar value.")
 
-        if numpy.isscalar(self.fusion_degree):
-            assert 0 <= self.fusion_degree <= 1, f"User provided fusion degree: {self.fusion_degree} has to be in the range [0, 1]"
+            if not 0 <= self.fusion_degree <= 1:
+                raise ValueError(f"User provided fusion degree: {self.fusion_degree} must be in the range [0, 1].")
 
     @property
-    def refractive_index_list(self) -> list:
+    def refractive_index_list(self) -> list[float]:
         return [self.index]
 
     @property
@@ -120,12 +123,7 @@ class BaseFused(OverlayStructureBaseClass):
 
     @property
     def structure_dictionary(self) -> dict:
-        return {
-            'name': {
-                'index': self.index,
-                'polygon': self.clad_structure
-            }
-        }
+        return {'name': {'index': self.index, 'polygon': self.clad_structure}}
 
     def overlay_structures_on_mesh(self, mesh: numpy.ndarray, coordinate_system: CoordinateSystem) -> numpy.ndarray:
         """
