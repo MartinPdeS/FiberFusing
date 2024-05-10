@@ -35,7 +35,7 @@ def test_building_geometry(patch, boundaries):
 
     geometry.add_structure(clad)
 
-    geometry.generate_coordinate_mesh_gradient()
+    geometry.generate_coordinate_mesh()
 
     geometry.plot().show().close()
 
