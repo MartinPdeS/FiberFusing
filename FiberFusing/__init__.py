@@ -42,5 +42,9 @@ class CircleOpticalStructure():
 
         return V
 
+    def scale(self, factor: float) -> None:
+        self.radius *= factor
+        self.__post_init__()
+
 
 # -

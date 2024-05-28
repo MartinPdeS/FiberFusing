@@ -172,7 +172,7 @@ class Geometry(object):
         """
         Rotates all structures within the geometry by a given angle.
 
-        Args: 
+        Args:
             angle (float): Angle to rotate the geometry, in degrees.
         """
         for structure in self.structure_list:

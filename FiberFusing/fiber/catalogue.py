@@ -32,7 +32,7 @@ __all__ = [
 ]
 
 
-def load_fiber(fiber_name: str, wavelength: float, position: Tuple[float, float] = (0, 0), remove_cladding: bool = False) -> GenericFiber:
+def load_fiber(fiber_name: str, wavelength: float, position: Tuple[float, float] = (0, 0), remove_cladding: bool = True) -> GenericFiber:
     """
     Loads a fiber configuration from a specified source using the MPSTools library and constructs
     a GenericFiber object based on the specifications provided.
