@@ -4,15 +4,16 @@ from .components.linestring import LineString  # noqa: F401
 from .components.polygon import Polygon, EmptyPolygon  # noqa: F401
 from .buffer import Circle, Square  # noqa: F401
 from .background import BackGround  # noqa: F401
+from pydantic.dataclasses import dataclass
+from pydantic import ConfigDict
 
-
+from typing import Optional, Tuple
 import numpy
-from dataclasses import dataclass
 
 micro = 1e-6
 
 
-@dataclass
+@dataclass(config=ConfigDict(extra='forbid'), kw_only=True)
 class CircleOpticalStructure():
     name: str
     """ Name of the structure """
@@ -20,11 +21,11 @@ class CircleOpticalStructure():
     """ Refractive index of the structure """
     radius: float
     """ Radius of the circle representing the slice of the structure """
-    position: tuple
+    position: Tuple[float, float]
     """ Center position of the circle """
-    is_graded: bool = False
+    is_graded: Optional[bool] = False
     """ True if the structure is refractive index graded """
-    delta_n: float = None
+    delta_n: Optional[float] = None
     """ Delta refractvive index of the grading """
 
     def __post_init__(self) -> None:

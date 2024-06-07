@@ -86,7 +86,7 @@ class BaseStructureCollection():
         new_structure = CircleOpticalStructure(
             **kwargs,
             index=index,
-            position=self.position
+            position=(self.position.x, self.position.y)
         )
 
         setattr(self, new_structure.name, new_structure)
