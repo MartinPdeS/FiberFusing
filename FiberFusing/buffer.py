@@ -1,21 +1,23 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from dataclasses import dataclass
+from typing import Tuple, Optional
+from pydantic.dataclasses import dataclass
+from pydantic import ConfigDict
 
 import shapely.geometry as geo
 from shapely import affinity
 
 from FiberFusing.components.utils import interpret_to_point
-from FiberFusing.components.polygon import Polygon
+from FiberFusing.components.polygon import _Polygon, Polygon  # noqa: F401
 
 
-@dataclass
-class Circle(Polygon):
-    position: tuple
+@dataclass(config=ConfigDict(extra='forbid'), kw_only=True)
+class Circle(_Polygon):
+    position: Tuple[float, float]
     radius: float
-    resolution: int = 128
-    index: float | None = None
+    resolution: Optional[int] = 128
+    index: Optional[float] = None
 
     def __post_init__(self):
         """
@@ -29,18 +31,18 @@ class Circle(Polygon):
             resolution=self.resolution
         )
 
-        super().__init__(instance=circle)
+        self._shapely_object = circle
 
         self.core = self.center.copy()
 
 
-@dataclass
-class Ellipse(Polygon):
+@dataclass(config=ConfigDict(extra='forbid'), kw_only=True)
+class Ellipse(_Polygon):
     position: tuple
     radius: float
-    resolution: int = 128
-    index: float | None = None
-    ratio: float = 1  # Default ratio of 1 makes this a circle
+    resolution: Optional[int] = 128
+    index: Optional[float] = None
+    ratio: Optional[float] = 1  # Default ratio of 1 makes this a circle
 
     def __post_init__(self):
         """
@@ -65,11 +67,11 @@ class Ellipse(Polygon):
         self.core = self.center.copy()
 
 
-@dataclass
-class Square(Polygon):
+@dataclass(config=ConfigDict(extra='forbid'), kw_only=True)
+class Square(_Polygon):
     position: tuple
     length: float
-    index: float | None = None
+    index: Optional[float] = None
 
     def __post_init__(self):
         """

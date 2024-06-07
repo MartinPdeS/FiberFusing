@@ -1,22 +1,26 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from dataclasses import dataclass, field
+from typing import Optional, Tuple
 import numpy as np
+
+from pydantic.dataclasses import dataclass
+from dataclasses import field
+from pydantic import ConfigDict
+
 from shapely.affinity import scale
 import shapely.geometry as geo
-from typing import Tuple
 
 from MPSPlots.render2D import SceneList
 from FiberFusing.components.base_class import Alteration
 import FiberFusing as ff
 
 
-@dataclass
+@dataclass(config=ConfigDict(extra='forbid', arbitrary_types_allowed=True))
 class LineString(Alteration):
-    coordinates: Tuple | None = field(default=None)
-    instance: geo.LineString | None = field(default=None)
-    index: float | None = field(default=None)
+    coordinates: Optional[Tuple] = field(default=None, repr=False)
+    instance: Optional[geo.LineString] = field(default=None, repr=False)
+    index: Optional[float] = field(default=None)
 
     def __post_init__(self):
         """

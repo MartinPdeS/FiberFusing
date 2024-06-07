@@ -1,24 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Third-party imports
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Union
 import numpy
-from dataclasses import dataclass, field
+from dataclasses import field
 from scipy.ndimage import gaussian_filter
+from pydantic.dataclasses import dataclass
+from pydantic import ConfigDict
 
-# MPSPlots imports
 from MPSPlots.render2D import SceneList, Axis
+from matplotlib import colors
 
-
-# FiberFusing imports
 from FiberFusing.coordinate_system import CoordinateSystem
 import FiberFusing
 
-from matplotlib import colors
 
-
-@dataclass
+@dataclass(config=ConfigDict(extra='forbid'), kw_only=True)
 class Geometry(object):
     """
     Represents the refractive index (RI) geometric profile including background and fiber structures.
@@ -35,14 +32,14 @@ class Geometry(object):
         boundary_pad_factor (float): Factor multiplying the boundary value to keep padding between mesh and boundary.
     """
     background: object
-    additional_structure_list: List[object] = field(default_factory=list)
-    fiber_list: List[object] = field(default_factory=list)
-    x_bounds: List[float] | str = 'centering'
-    y_bounds: List[float] | str = 'centering'
-    resolution: int = 100
-    index_scrambling: float = 0.0
+    additional_structure_list: Optional[List[object]] = field(default_factory=list)
+    fiber_list: Optional[List[object]] = (field(default_factory=list))
+    x_bounds: Optional[Union[Tuple[float, float], str]] = 'centering'
+    y_bounds: Optional[Union[Tuple[float, float], str]] = 'centering'
+    resolution: Optional[int] = 100
+    index_scrambling: Optional[float] = 0.0
     gaussian_filter: Optional[int] = None
-    boundary_pad_factor: float = 1.3
+    boundary_pad_factor: Optional[float] = 1.3
 
     def generate_coordinate_system(self) -> None:
         """
@@ -88,7 +85,7 @@ class Geometry(object):
         """
         Interprets the x_bounds parameter and applies the appropriate boundary setting to the coordinate system.
         """
-        if isinstance(self.x_bounds, list):
+        if isinstance(self.x_bounds, list | tuple):
             self.coordinate_system.set_x_boundary(self.x_bounds)
         else:
             match self.x_bounds:
@@ -105,7 +102,7 @@ class Geometry(object):
         """
         Interprets the y_bounds parameter and applies the appropriate boundary setting to the coordinate system.
         """
-        if isinstance(self.y_bounds, list):
+        if isinstance(self.y_bounds, list | tuple):
             self.coordinate_system.set_y_boundary(self.y_bounds)
         else:
             match self.y_bounds:

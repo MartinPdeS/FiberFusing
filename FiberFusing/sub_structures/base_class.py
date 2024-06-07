@@ -132,7 +132,7 @@ class BaseClass():
         self.fiber_list = []
 
         for idx, point in enumerate(centers):
-            fiber_circle = Circle(radius=self.fiber_radius, position=point)
+            fiber_circle = Circle(radius=self.fiber_radius, position=(point.x, point.y))
 
             self.fiber_list.append(fiber_circle)
 

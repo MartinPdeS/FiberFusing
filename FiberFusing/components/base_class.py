@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import copy
-from typing import Self, Iterable
+from typing import Iterable
 import numpy
 from shapely import affinity
 import shapely.geometry as geo
@@ -22,24 +22,24 @@ class Alteration():
 
         return wrapper
 
-    def copy(self) -> Self:
+    def copy(self) -> 'Alteration':
         return copy.deepcopy(self)
 
     def __repr__(self) -> str:
         return self._shapely_object.__repr__()
 
     @property
-    def is_empty(self):
+    def is_empty(self) -> bool:
         return self._shapely_object.is_empty
 
     @in_place_copy
-    def union(self, output, *others) -> Self:
+    def union(self, output, *others) -> 'Alteration':
         others = tuple(o._shapely_object for o in others)
         output._shapely_object = self._shapely_object.union(*others)
         return output
 
     @in_place_copy
-    def intersection(self, output, *others) -> Self:
+    def intersection(self, output, *others) -> 'Alteration':
         others = tuple(o._shapely_object for o in others)
         output._shapely_object = self._shapely_object.intersection(*others)
         return output
@@ -123,7 +123,7 @@ class BaseArea(Alteration):
         output._shapely_object = self._shapely_object.__and__(other._shapely_object)
         return output
 
-    def scale_position(self, factor: float) -> Self:
+    def scale_position(self, factor: float) -> 'BaseArea':
         new_position = affinity.scale(
             self.center._shapely_object,
             xfact=factor,
@@ -138,7 +138,7 @@ class BaseArea(Alteration):
 
         return self
 
-    def shift_position(self, shift: list) -> Self:
+    def shift_position(self, shift: list) -> 'BaseArea':
         self.core.translate(shift=shift, in_place=True)
         self.translate(shift=shift, in_place=True)
 

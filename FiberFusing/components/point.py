@@ -2,21 +2,22 @@
 # -*- coding: utf-8 -*-
 
 # Built-in imports
+from typing import Optional, Tuple
 import numpy
-from typing import Self
+from pydantic.dataclasses import dataclass
+from pydantic import ConfigDict
 
-from dataclasses import dataclass
 from FiberFusing.components.base_class import Alteration
 import shapely.geometry as geo
 from MPSPlots.render2D import SceneList, Axis
 import FiberFusing as ff
 
 
-@dataclass
+@dataclass(config=ConfigDict(extra='forbid', arbitrary_types_allowed=True))
 class Point(Alteration):
-    position: list | None = None
-    instance: geo.Point | None = None
-    index: float | None = None
+    position: Optional[Tuple[float, float]] = None
+    instance: Optional[geo.Point] = None
+    index: Optional[float] = None
 
     def __post_init__(self):
         """
@@ -37,14 +38,14 @@ class Point(Alteration):
         """Returns the y-coordinate of the point."""
         return self._shapely_object.y
 
-    def shift_position(self, shift: tuple[float, float]) -> Self:
+    def shift_position(self, shift: Tuple[float, float]) -> 'Point':
         """
         Shifts the point by a given offset and returns a new Point instance.
         """
         point_shift = ff.components.utils.interpret_to_point(shift)
         return self.__add__(point_shift)
 
-    def __add__(self, other) -> Self:
+    def __add__(self, other) -> 'Point':
         """
         Adds the coordinates of another point to this one and returns a new Point instance.
         """
@@ -52,26 +53,26 @@ class Point(Alteration):
 
         return Point(position=(self.x + other.x, self.y + other.y))
 
-    def __sub__(self, other) -> Self:
+    def __sub__(self, other) -> 'Point':
         """
         Subtracts the coordinates of another point from this one and returns a new Point instance.
         """
         other = ff.components.utils.interpret_to_point(other)
         return Point(position=(self.x - other.x, self.y - other.y))
 
-    def __neg__(self) -> Self:
+    def __neg__(self) -> 'Point':
         """
         Negates the coordinates of this point and returns a new Point instance.
         """
         return Point(position=[-self.x, -self.y])
 
-    def __mul__(self, factor: float) -> Self:
+    def __mul__(self, factor: float) -> 'Point':
         """
         Multiplies the coordinates of this point by a scalar and returns a new Point instance.
         """
         return Point(position=[self.x * factor, self.y * factor])
 
-    def distance(self, other) -> float:
+    def distance(self, other: 'Point') -> float:
         """
         Computes the Euclidean distance between this point and another point.
         """
