@@ -15,28 +15,50 @@ micro = 1e-6
 
 @dataclass(config=ConfigDict(extra='forbid'), kw_only=True)
 class CircleOpticalStructure():
+    """
+    Initialize a CircleOpticalStructure instance.
+
+    Args:
+        name (str): Name of the structure.
+        index (float): Refractive index of the structure.
+        radius (float): Radius of the circle representing the slice of the structure.
+        position (Tuple[float, float]): Center position of the circle.
+        is_graded (Optional[bool], optional): True if the structure has a graded refractive index. Defaults to False.
+        delta_n (Optional[float], optional): Delta refractive index of the grading. Defaults to None.
+    """
     name: str
-    """ Name of the structure """
     index: float
-    """ Refractive index of the structure """
     radius: float
-    """ Radius of the circle representing the slice of the structure """
     position: Tuple[float, float]
-    """ Center position of the circle """
     is_graded: Optional[bool] = False
-    """ True if the structure is refractive index graded """
     delta_n: Optional[float] = None
-    """ Delta refractvive index of the grading """
 
     def __post_init__(self) -> None:
         self.polygon = Circle(position=self.position, radius=self.radius)
 
-    def compute_index_from_NA(self) -> float:
-        index = numpy.sqrt(self.NA**2 + self.exterior_structure.index**2)
+    def compute_index_from_NA(self, NA: float, exterior_index: float) -> float:
+        """
+        Compute the refractive index from the numerical aperture (NA).
 
-        return index
+        Args:
+            NA (float): Numerical aperture.
+            exterior_index (float): Refractive index of the exterior structure.
+
+        Returns:
+            float: Computed refractive index.
+        """
+        return numpy.sqrt(NA**2 + exterior_index**2)
 
     def get_V_number(self, wavelength: float) -> float:
+        """
+        Compute the V-number for the optical structure.
+
+        Args:
+            wavelength (float): Wavelength of the light.
+
+        Returns:
+            float: Computed V-number.
+        """
         delta_index = numpy.sqrt(self.index**2 - self.exterior_structure.index**2)
 
         V = 2 * numpy.pi / wavelength * delta_index * self.radius
@@ -44,6 +66,12 @@ class CircleOpticalStructure():
         return V
 
     def scale(self, factor: float) -> None:
+        """
+        Scale the radius of the optical structure by a given factor.
+
+        Args:
+            factor (float): Scaling factor.
+        """
         self.radius *= factor
         self.__post_init__()
 

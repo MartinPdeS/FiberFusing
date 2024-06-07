@@ -21,6 +21,8 @@ from FiberFusing.fiber.base_class import GenericFiber
 from FiberFusing import micro
 from MPSTools.fiber_catalogue.loader import load_fiber_as_dict
 from MPSTools.material_catalogue.loader import get_silica_index
+from FiberFusing.components.point import Point
+
 
 __all__ = [
     'load_fiber',
@@ -46,6 +48,9 @@ def load_fiber(fiber_name: str, wavelength: float, position: Tuple[float, float]
     Returns:
         GenericFiber: A configured GenericFiber object.
     """
+    if isinstance(position, Point):
+        position = (position.x, position.y)
+
     fiber = GenericFiber(wavelength=wavelength, position=position)
     fiber_dict = load_fiber_as_dict(fiber_name=fiber_name, wavelength=wavelength)
 

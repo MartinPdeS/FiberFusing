@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from typing import Tuple, Optional
+from pydantic.dataclasses import dataclass
+from pydantic import ConfigDict
+
 import numpy
-from dataclasses import dataclass
 from FiberFusing import Circle
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.utils import get_silica_index
@@ -86,7 +89,7 @@ class BaseStructureCollection():
         new_structure = CircleOpticalStructure(
             **kwargs,
             index=index,
-            position=(self.position.x, self.position.y)
+            position=self.position
         )
 
         setattr(self, new_structure.name, new_structure)
@@ -144,11 +147,11 @@ class BaseStructureCollection():
         return mesh
 
 
-@dataclass
+@dataclass(config=ConfigDict(extra='forbid'), kw_only=True)
 class GenericFiber(BaseStructureCollection):
     wavelength: float
     """ Wavelenght at which evaluate the computation """
-    position: tuple = (0, 0)
+    position: Optional[Tuple[float, float]] = (0, 0)
     """ Position of the fiber """
 
     def __post_init__(self):
