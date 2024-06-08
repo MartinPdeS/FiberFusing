@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import copy
-from typing import Iterable
+from typing import Iterable, Tuple
 import numpy
 from shapely import affinity
 import shapely.geometry as geo
@@ -101,7 +101,7 @@ class BaseArea(Alteration):
         return self._shapely_object.area
 
     @property
-    def bounds(self) -> tuple:
+    def bounds(self) -> Tuple[float, float]:
         return self._shapely_object.bounds
 
     @property
@@ -138,13 +138,13 @@ class BaseArea(Alteration):
 
         return self
 
-    def shift_position(self, shift: list) -> 'BaseArea':
+    def shift_position(self, shift: Tuple[float, float]) -> 'BaseArea':
         self.core.translate(shift=shift, in_place=True)
         self.translate(shift=shift, in_place=True)
 
         return self
 
-    def split_with_line(self, line, return_largest: bool = True) -> object:
+    def split_with_line(self, line, return_largest: bool = True) -> 'ff.Polygon':
         assert self.is_pure_polygon, f"Error: non-pure polygone is catch before spliting: {self._shapely_object.__class__}."
 
         split_geometry = split(self._shapely_object, line.copy().extend(factor=100)._shapely_object).geoms
