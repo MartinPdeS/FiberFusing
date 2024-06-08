@@ -1,23 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-Building a custom fiber type in the following way:
-
-fiber = CustomFiber(wavelength=1550e-9)
-
-fiber.add_silica_pure_cladding()
-
-fiber.create_and_add_new_structure(name='core', radius=40e-6 / 2, NA=0.115)
-
-fiber.create_and_add_new_structure(name='core', radius=4.1e-6, NA=0.13)
-
-fiber.plot().show()
-
-"""
-
 from typing import Tuple, List, Dict, Union
-from FiberFusing.fiber.base_class import GenericFiber
+from FiberFusing.fiber.generic_fiber import GenericFiber
 from FiberFusing import micro
 from MPSTools.fiber_catalogue.loader import load_fiber_as_dict
 from MPSTools.material_catalogue.loader import get_silica_index

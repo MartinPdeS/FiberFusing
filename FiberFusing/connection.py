@@ -14,7 +14,7 @@ from FiberFusing import utils
 from FiberFusing.buffer import Circle
 
 
-@dataclass(config=ConfigDict(extra='forbid', arbitrary_types_allowed=True))
+@dataclass(config=ConfigDict(extra='forbid', arbitrary_types_allowed=True, strict=True))
 class Connection():
     fiber0: Circle
     fiber1: Circle

@@ -11,8 +11,10 @@ from shapely import affinity
 from FiberFusing.components.utils import interpret_to_point
 from FiberFusing.components.polygon import _Polygon, Polygon  # noqa: F401
 
+config_dict = ConfigDict(extra='forbid', strict=True)
 
-@dataclass(config=ConfigDict(extra='forbid'), kw_only=True)
+
+@dataclass(config=config_dict, kw_only=True)
 class Circle(_Polygon):
     position: Tuple[float, float]
     radius: float
@@ -36,7 +38,7 @@ class Circle(_Polygon):
         self.core = self.center.copy()
 
 
-@dataclass(config=ConfigDict(extra='forbid'), kw_only=True)
+@dataclass(config=config_dict, kw_only=True)
 class Ellipse(_Polygon):
     position: tuple
     radius: float
@@ -67,7 +69,7 @@ class Ellipse(_Polygon):
         self.core = self.center.copy()
 
 
-@dataclass(config=ConfigDict(extra='forbid'), kw_only=True)
+@dataclass(config=config_dict, kw_only=True)
 class Square(_Polygon):
     position: tuple
     length: float

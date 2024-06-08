@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import annotations
 from typing import Union, Optional
 import logging
 from dataclasses import dataclass
@@ -189,7 +190,7 @@ class BaseFused(OverlayStructureBaseClass):
         """
         return [fiber.core for fiber in self.fiber_list]
 
-    def add_single_fiber(self, fiber_radius: float, position: tuple = (0, 0)) -> 'BaseFused':
+    def add_single_fiber(self, fiber_radius: float, position: tuple = (0, 0)) -> BaseFused:
         """
         Adds a single fiber to the structure at the specified position.
 
@@ -198,7 +199,7 @@ class BaseFused(OverlayStructureBaseClass):
             position (tuple, optional): The x, y coordinates for the fiber. Defaults to (0, 0).
 
         Returns:
-            'BaseFused': Returns the instance to allow for method chaining.
+            BaseFused: Returns the instance to allow for method chaining.
         """
         fiber = Circle(
             radius=fiber_radius,
@@ -213,7 +214,7 @@ class BaseFused(OverlayStructureBaseClass):
 
         return self
 
-    def add_single_circle_structure(self, fiber_radius: float, position: tuple = (0, 0)) -> 'BaseFused':
+    def add_single_circle_structure(self, fiber_radius: float, position: tuple = (0, 0)) -> BaseFused:
         """
         Adds a single structure.
 
@@ -223,7 +224,7 @@ class BaseFused(OverlayStructureBaseClass):
         :type       position:      tuple
 
         :returns:   The self instance
-        :rtype:     'BaseFused'
+        :rtype:     BaseFused
         """
         fiber = Circle(
             radius=fiber_radius,
@@ -234,7 +235,7 @@ class BaseFused(OverlayStructureBaseClass):
 
         return self
 
-    def add_center_fiber(self, fiber_radius: float) -> 'BaseFused':
+    def add_center_fiber(self, fiber_radius: float) -> BaseFused:
         """
         Add a single fiber of given radius at the center of the structure.
 
@@ -242,11 +243,11 @@ class BaseFused(OverlayStructureBaseClass):
         :type       fiber_radius:  float
 
         :returns:   The self instance
-        :rtype:     'BaseFused'
+        :rtype:     BaseFused
         """
         return self.add_single_fiber(fiber_radius=fiber_radius, position=(0, 0))
 
-    def add_center_structure(self, fiber_radius: float) -> 'BaseFused':
+    def add_center_structure(self, fiber_radius: float) -> BaseFused:
         """
         Add a single structure of given radius at the center of the structure.
 
@@ -254,7 +255,7 @@ class BaseFused(OverlayStructureBaseClass):
         :type       fiber_radius:  float
 
         :returns:   The self instance
-        :rtype:     'BaseFused'
+        :rtype:     BaseFused
         """
         return self.add_single_circle_structure(fiber_radius=fiber_radius, position=(0, 0))
 
@@ -264,7 +265,7 @@ class BaseFused(OverlayStructureBaseClass):
             fusion_degree: float = 0.0,
             scale_position: float = 1.0,
             position_shift: list = [0, 0],
-            compute_fusing: bool = False) -> 'BaseFused':
+            compute_fusing: bool = False) -> BaseFused:
 
         if compute_fusing:
             structure.set_fusion_degree(fusion_degree=fusion_degree)
@@ -296,7 +297,7 @@ class BaseFused(OverlayStructureBaseClass):
             scale_position: float = 1.0,
             position_shift: list = [0, 0],
             compute_fusing: bool = False,
-            angle_shift: float = 0.0) -> 'BaseFused':
+            angle_shift: float = 0.0) -> BaseFused:
         """
         Adds a predefined structure of fibers, such as a ring or line, with customizable properties and spatial configuration.
 
@@ -311,7 +312,7 @@ class BaseFused(OverlayStructureBaseClass):
             angle_shift (float): The angle by which to rotate the structure.
 
         Returns:
-            'BaseFused': Returns the instance to allow for method chaining.
+            BaseFused: Returns the instance to allow for method chaining.
         """
         match structure_type.lower():
             case 'ring':
@@ -352,7 +353,7 @@ class BaseFused(OverlayStructureBaseClass):
         """
         return [fiber.core for fiber in self.fiber_list]
 
-    def randomize_core_position(self, random_factor: float = 0) -> 'BaseFused':
+    def randomize_core_position(self, random_factor: float = 0) -> BaseFused:
         """
         Shuffle the position of the fiber cores.
         It can be used to add realism to the fusion process.
@@ -361,7 +362,7 @@ class BaseFused(OverlayStructureBaseClass):
         :type       random_factor:  float
 
         :returns:   The self instance
-        :rtype:     'BaseFused'
+        :rtype:     BaseFused
         """
         if random_factor == 0:
             return
@@ -378,12 +379,12 @@ class BaseFused(OverlayStructureBaseClass):
     def get_rasterized_mesh(self, coordinate_system: CoordinateSystem) -> numpy.ndarray:
         return self.clad_structure.get_rasterized_mesh(coordinate_system=coordinate_system)
 
-    def rotate(self, *args, **kwargs) -> 'BaseFused':
+    def rotate(self, *args, **kwargs) -> BaseFused:
         """
         Rotates the full structure, including the fiber cores.
 
         :returns:   The self instance
-        :rtype:     'BaseFused'
+        :rtype:     BaseFused
         """
         for fiber in self.fiber_list:
             fiber.core.rotate(*args, **kwargs, in_place=True)
@@ -392,12 +393,12 @@ class BaseFused(OverlayStructureBaseClass):
 
         return self
 
-    def shift(self, *args, **kwargs) -> 'BaseFused':
+    def shift(self, *args, **kwargs) -> BaseFused:
         """
         Rotates the full structure, including the fiber cores.
 
         :returns:   The self instance
-        :rtype:     'BaseFused'
+        :rtype:     BaseFused
         """
         for fiber in self.fiber_list:
             fiber.core.shift(*args, **kwargs, in_place=True)
@@ -406,7 +407,7 @@ class BaseFused(OverlayStructureBaseClass):
 
         return self
 
-    def scale_position(self, factor: float) -> 'BaseFused':
+    def scale_position(self, factor: float) -> BaseFused:
         """
         Scale down the distance between each cores.
 
@@ -414,7 +415,7 @@ class BaseFused(OverlayStructureBaseClass):
         :type       factor:  float
 
         :returns:   The self instance
-        :rtype:     'BaseFused'
+        :rtype:     BaseFused
         """
         for fiber in self.fiber_list:
             fiber.scale_position(factor=factor)

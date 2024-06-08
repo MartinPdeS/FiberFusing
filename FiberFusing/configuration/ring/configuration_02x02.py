@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from FiberFusing.baseclass import BaseFused
+from FiberFusing.base_fused import BaseFused
 
 
 class FusedProfile_02x02(BaseFused):
