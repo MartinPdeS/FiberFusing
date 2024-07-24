@@ -54,7 +54,7 @@ dependencies = [
 
 
 [tool.setuptools_scm]
-write_to = "SuPyMode/_version.py"
+write_to = "FiberFusing/_version.py"
 version_scheme = "post-release"
 local_scheme = "no-local-version"
 
