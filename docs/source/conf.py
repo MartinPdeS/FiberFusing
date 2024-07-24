@@ -7,13 +7,8 @@ from sphinx_gallery.sorting import ExplicitOrder
 from packaging.version import parse
 from MPSPlots.styles import use_mpsplots_style
 
-
-from FiberFusing.directories import (
-    project_path,
-    doc_css_path,
-    version_path,
-    examples_path
-)
+import FiberFusing
+from FiberFusing.directories import project_path, doc_css_path, examples_path
 
 
 sys.path.insert(0, project_path)
@@ -38,9 +33,7 @@ copyright = '2023, Martin Poinsinet de Sivry-Houle'
 author = 'Martin Poinsinet de Sivry-Houle'
 
 
-with open(version_path, "r+") as f:
-    version = release = f.read()
-
+version = FiberFusing.__version__
 
 extensions = [
     'sphinx.ext.mathjax',
@@ -107,16 +100,10 @@ default_role = "autolink"
 pygments_style = "sphinx"
 
 # -- Sphinx-gallery configuration --------------------------------------------
+binder_branch = "main"
 
-v = parse(release)
-if v.release is None:
-    raise ValueError(f"Ill-formed version: {version!r}. Version should follow PEP440")
-
-if v.is_devrelease:
-    binder_branch = "main"
-else:
-    major, minor = v.release[:2]
-    binder_branch = f"v{major}.{minor}.x"
+major, minor = version[:2]
+binder_branch = f"v{major}.{minor}.x"
 
 html_theme_options = {
     # Navigation bar
