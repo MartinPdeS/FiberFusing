@@ -36,7 +36,7 @@ dependencies = [
     "scipy>=1.11.3",
     "numpy>=1.26.0",
     "shapely >= 2.0.0",
-    "MPSPlots==1.4.5"
+    "MPSPlots==1.4.11.post0"
 ]
 
 
