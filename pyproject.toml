@@ -7,10 +7,7 @@ name = "FiberFusing"
 dynamic = ["version"]
 description = "A package fiber fusing simulation."
 license = {file = "LICENSE"}
-# documentation = 'https://fiberfusing.readthedocs.io/'
-# platforms = ['unix', 'linux', 'osx']
 readme = "README.rst"
-# url = 'https://github.com/MartinPdeS/FiberFusing'
 requires-python = ">=3.10"
 authors = [{ name="Martin Poinsinet de Sivry-Houle", email="martin.poinsinet.de.sivry@gmail.com"}]
 classifiers = [
