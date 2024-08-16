@@ -14,7 +14,7 @@ air = BackGround(index=1.0)
 
 clad = FusedProfile(
     fiber_radius=62.5e-6,
-    fusion_degree=0.3,
+    fusion_degree='auto',
     index=get_silica_index(wavelength=wavelength)
 )
 

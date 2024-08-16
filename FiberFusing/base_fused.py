@@ -107,86 +107,69 @@ class BaseFused(OverlayStructureBaseClass):
 
     @property
     def refractive_index_list(self) -> list[float]:
+        """Return a list containing the refractive index of the fiber cladding."""
         return [self.index]
 
     @property
     def is_multi(self) -> bool:
+        """Return True if the clad structure is a MultiPolygon."""
         return isinstance(self.clad_structure._shapely_object, geo.MultiPolygon)
 
     @property
     def clad_structure(self):
+        """Return the clad structure, computing it if necessary."""
         if self._clad_structure is None:
             return utils.Union(*self.structure_list)
-        else:
-            return self._clad_structure
+        return self._clad_structure
 
     @property
     def structure_dictionary(self) -> dict:
+        """Return a dictionary representation of the structure."""
         return {'name': {'index': self.index, 'polygon': self.clad_structure}}
 
     def overlay_structures_on_mesh(self, mesh: numpy.ndarray, coordinate_system: CoordinateSystem) -> numpy.ndarray:
         """
-        Applies the current fiber structure configuration onto a provided mesh, considering the specified coordinate system.
+        Apply the current fiber structure configuration onto a provided mesh.
 
         Parameters:
             mesh (numpy.ndarray): The mesh on which to overlay the structure.
             coordinate_system (CoordinateSystem): The coordinate system to use for the overlay.
 
         Returns:
-            numpy.ndarray: A mesh with the fiber structures applied.
+            numpy.ndarray: The mesh with fiber structures overlaid.
         """
-        structure_list = [
-            NameSpace(index=self.index, polygon=self.clad_structure)
-        ]
+        structure_list = [NameSpace(index=self.index, polygon=self.clad_structure)]
 
         return self._overlay_structure_on_mesh_(
-            structure_list=structure_list,
-            mesh=mesh,
-            coordinate_system=coordinate_system
+            structure_list=structure_list, mesh=mesh, coordinate_system=coordinate_system
         )
 
     def get_shapely_object(self):
+        """Return the Shapely object representing the clad structure."""
         return self.clad_structure._shapely_object
 
     @property
     def bounds(self) -> tuple:
-        """
-        Return the boundaries of the structure.
-        """
-        return self.clad_structure.bounds
-
-    @property
-    def boundaries(self) -> tuple:
-        """
-        Return the boundaries of the structure.
-        """
+        """Return the boundaries of the clad structure."""
         return self.clad_structure.bounds
 
     def get_structure_max_min_boundaries(self) -> tuple:
+        """Return the maximum and minimum boundaries of the clad structure."""
         return self.clad_structure.bounds
 
     @property
     def center(self):
+        """Return the center of the clad structure."""
         return self.clad_structure.center
 
     @property
     def fiber(self) -> list:
-        """
-        Return list of all the fiber in the structure
-
-        :returns:   List of the structure fiber components
-        :rtype:     list
-        """
+        """Return a list of all fibers in the structure."""
         return self.fiber_list
 
     @property
     def cores(self) -> list:
-        """
-        Return a list of the cores
-
-        :returns:   List of the cores
-        :rtype:     list
-        """
+        """Return a list of core positions."""
         return [fiber.core for fiber in self.fiber_list]
 
     def add_single_fiber(self, fiber_radius: float, position: tuple = (0, 0)) -> BaseFused:
@@ -213,38 +196,37 @@ class BaseFused(OverlayStructureBaseClass):
 
         return self
 
-    def add_single_circle_structure(self, fiber_radius: float, position: tuple = (0, 0)) -> BaseFused:
+    def add_single_fiber(self, fiber_radius: float, position: tuple = (0, 0)) -> BaseFused:
         """
-        Adds a single structure.
+        Add a single fiber to the structure at the specified position.
 
-        :param      fiber_radius:  The fiber radius
-        :type       fiber_radius:  float
-        :param      position:      The position
-        :type       position:      tuple
+        Parameters:
+            fiber_radius (float): The radius of the fiber.
+            position (tuple): The x, y coordinates for the fiber. Defaults to (0, 0).
 
-        :returns:   The self instance
-        :rtype:     BaseFused
+        Returns:
+            BaseFused: The updated BaseFused instance.
         """
-        fiber = Circle(
-            radius=fiber_radius,
-            position=position
-        )
+        fiber = Circle(radius=fiber_radius, position=position)
+        fiber.shifted_core = fiber.center
 
         self.structure_list.append(fiber)
+        self.fiber_list.append(fiber)
 
         return self
 
     def add_center_fiber(self, fiber_radius: float) -> BaseFused:
         """
-        Add a single fiber of given radius at the center of the structure.
+        Add a single fiber at the center of the structure.
 
-        :param      fiber_radius:  The fiber radius
-        :type       fiber_radius:  float
+        Parameters:
+            fiber_radius (float): The radius of the fiber.
 
-        :returns:   The self instance
-        :rtype:     BaseFused
+        Returns:
+            BaseFused: The updated BaseFused instance.
         """
         return self.add_single_fiber(fiber_radius=fiber_radius, position=(0, 0))
+
 
     def add_center_structure(self, fiber_radius: float) -> BaseFused:
         """
@@ -259,13 +241,26 @@ class BaseFused(OverlayStructureBaseClass):
         return self.add_single_circle_structure(fiber_radius=fiber_radius, position=(0, 0))
 
     def _add_structure_to_instance_(
-            self,
-            structure: FiberRing | FiberLine,
-            fusion_degree: float = 0.0,
-            scale_position: float = 1.0,
-            position_shift: list = [0, 0],
-            compute_fusing: bool = False) -> BaseFused:
+        self,
+        structure: FiberRing | FiberLine,
+        fusion_degree: float = 0.0,
+        scale_position: float = 1.0,
+        position_shift: list = [0, 0],
+        compute_fusing: bool = False
+    ) -> BaseFused:
+        """
+        Internal method to add a fiber structure to the instance.
 
+        Parameters:
+            structure (FiberRing | FiberLine): The fiber structure to add.
+            fusion_degree (float): The degree of fusion.
+            scale_position (float): Factor to scale the position.
+            position_shift (list): Shift vector for the position.
+            compute_fusing (bool): Whether to compute the fusing operation.
+
+        Returns:
+            BaseFused: The updated BaseFused instance.
+        """
         if compute_fusing:
             structure.set_fusion_degree(fusion_degree=fusion_degree)
 
@@ -281,7 +276,6 @@ class BaseFused(OverlayStructureBaseClass):
             self.removed_section_list.append(structure.removed_section)
             self.added_section_list.append(structure.added_section)
             self.structure_list.append(structure.fused_structure)
-
         else:
             self.structure_list.append(structure.unfused_structure)
 
@@ -335,55 +329,61 @@ class BaseFused(OverlayStructureBaseClass):
 
     def add_custom_fiber(self, *fibers) -> None:
         """
-        Add any custom defined fiber
+        Add custom-defined fibers to the structure.
 
-        :param      fibers:  The custom fibers
-        :type       fibers:  list
+        Parameters:
+            fibers: Custom fiber objects to be added.
         """
-        for fiber in fibers:
-            self.fiber_list.append(fiber)
+        self.fiber_list.extend(fibers)
 
     def get_core_positions(self) -> list:
         """
-        Return a list of the core positions
+        Return a list of core positions for all fibers in the structure.
 
-        :returns:   The core positions.
-        :rtype:     list
+        Returns:
+            list: A list of core positions.
         """
         return [fiber.core for fiber in self.fiber_list]
 
     def randomize_core_position(self, random_factor: float = 0) -> BaseFused:
         """
-        Shuffle the position of the fiber cores.
-        It can be used to add realism to the fusion process.
+        Randomize the position of fiber cores to simulate real-world imperfections.
 
-        :param      random_factor:  The randomize position
-        :type       random_factor:  float
+        Parameters:
+            random_factor (float): Factor determining the randomness in position.
 
-        :returns:   The self instance
-        :rtype:     BaseFused
+        Returns:
+            BaseFused: The updated BaseFused instance.
         """
         if random_factor == 0:
-            return
+            return self
 
-        logging.info("Randomizing the core positions")
+        logging.info("Randomizing core positions.")
 
-        if random_factor != 0:
-            for fiber in self.fiber_list:
-                random_xy = numpy.random.rand(2) * random_factor
-                fiber.core.translate(random_xy, in_place=True)
+        for fiber in self.fiber_list:
+            random_xy = numpy.random.rand(2) * random_factor
+            fiber.core.translate(random_xy, in_place=True)
 
         return self
 
     def get_rasterized_mesh(self, coordinate_system: CoordinateSystem) -> numpy.ndarray:
+        """
+        Generate a rasterized mesh of the structure.
+
+        Parameters:
+            coordinate_system (CoordinateSystem): The coordinate system to use.
+
+        Returns:
+            numpy.ndarray: The rasterized mesh.
+        """
         return self.clad_structure.get_rasterized_mesh(coordinate_system=coordinate_system)
 
     def rotate(self, *args, **kwargs) -> BaseFused:
         """
-        Rotates the full structure, including the fiber cores.
+        Rotate the entire structure, including fiber cores.
 
-        :returns:   The self instance
-        :rtype:     BaseFused
+        Returns:
+            BaseFused: The updated BaseFused instance.
         """
         for fiber in self.fiber_list:
             fiber.core.rotate(*args, **kwargs, in_place=True)
@@ -394,10 +394,10 @@ class BaseFused(OverlayStructureBaseClass):
 
     def shift(self, *args, **kwargs) -> BaseFused:
         """
-        Rotates the full structure, including the fiber cores.
+        Shift the entire structure, including fiber cores.
 
-        :returns:   The self instance
-        :rtype:     BaseFused
+        Returns:
+            BaseFused: The updated BaseFused instance.
         """
         for fiber in self.fiber_list:
             fiber.core.shift(*args, **kwargs, in_place=True)
@@ -408,70 +408,64 @@ class BaseFused(OverlayStructureBaseClass):
 
     def scale_position(self, factor: float) -> BaseFused:
         """
-        Scale down the distance between each cores.
+        Scale the positions of fibers in the structure.
 
-        :param      factor:  The scaling factor
-        :type       factor:  float
+        Parameters:
+            factor (float): Scaling factor for the positions.
 
-        :returns:   The self instance
-        :rtype:     BaseFused
+        Returns:
+            BaseFused: The updated BaseFused instance.
         """
         for fiber in self.fiber_list:
             fiber.scale_position(factor=factor)
 
         return self
 
+    def format_ax(self, ax: plt.Axes) -> None:
+        """
+        Format the plot axes.
 
-    def format_ax(self, ax) -> None:
+        Parameters:
+            ax (plt.Axes): The axes to format.
+        """
         ax.set(xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
         ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)
         ax.set_aspect('equal')
 
-
     def plot(self, **kwargs) -> None:
+        """
+        Plot the structure using matplotlib.
+
+        Parameters:
+            kwargs: Additional keyword arguments for rendering.
+        """
         figure, ax = plt.subplots(1, 1)
         self.format_ax(ax=ax)
         self.render_patch_on_ax(ax=ax, **kwargs)
-
         plt.show()
 
     def render_patch_on_ax(
-            self,
-            ax: plt.Axes,
-            show_structure: bool = True,
-            show_fibers: bool = False,
-            show_shifted_cores: bool = True,
-            show_added: bool = True,
-            show_removed: bool = True) -> None:
+        self,
+        ax: plt.Axes,
+        show_structure: bool = True,
+        show_fibers: bool = False,
+        show_shifted_cores: bool = True,
+        show_added: bool = True,
+        show_removed: bool = True
+    ) -> None:
         """
-        Add the geometry patches to the axis.
-        Base patch is the clad representation.
-        The boolean paraemters defines which other patch is added
-        to the ax.
+        Render the structure's geometry on the given axis.
 
-        :param      ax:                  The axis to which add the patches
-        :type       ax:                  plt.Axes
-        :param      show_structure:      Added the fused structure to ax
-        :type       show_structure:      bool
-        :param      show_fibers:         Added the unfused fibers to ax
-        :type       show_fibers:         bool
-        :param      show_shifted_cores:  Added the shifted cores to ax
-        :type       show_shifted_cores:  bool
-        :param      show_added:          Added the added section to ax
-        :type       show_added:          bool
-        :param      show_removed:        Added the removed section to ax
-        :type       show_removed:        bool
-
-        :returns:   The scene list.
-        :rtype:     SceneList
+        Parameters:
+            ax (plt.Axes): The axis to render on.
+            show_structure (bool): Whether to show the fused structure.
+            show_fibers (bool): Whether to show the unfused fibers.
+            show_shifted_cores (bool): Whether to show the shifted cores.
+            show_added (bool): Whether to show added sections.
+            show_removed (bool): Whether to show removed sections.
         """
         if show_structure:
             self.clad_structure._render_on_ax_(ax)
-
-        ax.set(
-            xlabel=r'x-distance [m]',
-            ylabel=r'y-distance [m]',
-        )
 
         if show_added:
             added_section = utils.Union(*self.added_section_list)
@@ -482,22 +476,12 @@ class BaseFused(OverlayStructureBaseClass):
             removed_section._render_on_ax_(ax=ax, facecolor='red', label='removed section')
 
         if show_fibers:
-            for n, fiber in enumerate(self.fiber_list):
+            for fiber in self.fiber_list:
                 fiber._render_on_ax_(ax)
-                fiber.center._render_on_ax_(
-                    ax,
-                    marker='o',
-                    s=40,
-                    label='core',
-                )
+                fiber.center._render_on_ax_(ax, marker='o', s=40, label='core')
 
         if show_shifted_cores:
-            for n, fiber in enumerate(self.fiber_list):
-                fiber.shifted_core.render_on_axis(
-                    ax,
-                    marker='x',
-                    s=40,
-                    label='shifted core',
-                )
+            for fiber in self.fiber_list:
+                fiber.shifted_core.render_on_axis(ax, marker='x', s=40, label='shifted core')
 
 #  -
