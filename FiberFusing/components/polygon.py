@@ -8,17 +8,18 @@ import numpy
 
 from matplotlib.path import Path
 import shapely.geometry as geo
-
-from MPSPlots.render2D import SceneList, Axis
+import matplotlib.pyplot as plt
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.components.base_class import BaseArea
+from FiberFusing.plottings import plot_polygon
 
 from pydantic.dataclasses import dataclass
 from dataclasses import field
 from pydantic import ConfigDict
 
+config = ConfigDict(extra='forbid', arbitrary_types_allowed=True, kw_only=True)
 
-@dataclass(config=ConfigDict(extra='forbid', arbitrary_types_allowed=True), kw_only=True)
+@dataclass(config=config)
 class Polygon(BaseArea):
     """
     Initialize a Polygon instance with a set of coordinates or an existing Shapely Polygon.
@@ -110,12 +111,12 @@ class Polygon(BaseArea):
 
         return self
 
-    def _render_on_ax_(self, ax: Axis, **kwargs) -> None:
+    def _render_on_ax_(self, ax: plt.Axes, **kwargs) -> None:
         """
         Render the Polygon on a specific axis.
 
         :param      ax:   The axis to which add the plot
-        :type       ax:   Axis
+        :type       ax:   plt.Axes
 
         :returns:   No return
         :rtype:     None
@@ -127,14 +128,14 @@ class Polygon(BaseArea):
         else:
             self.render_simple_polygon_on_axis(ax=ax, polygon=self._shapely_object, **kwargs)
 
-    def render_simple_polygon_on_axis(self, polygon: geo.Polygon, ax: Axis, **kwargs) -> None:
+    def render_simple_polygon_on_axis(self, polygon: geo.Polygon, ax: plt.Axes, **kwargs) -> None:
         """
         Render the a specific polygon on the given axis.
 
         :param      polygon:        The multi polygon
         :type       polygon:        geo.Polygon
         :param      ax:             The axis to which add the plot
-        :type       ax:             Axis
+        :type       ax:             plt.Axes
 
         :returns:   The scene list.
         :rtype:     SceneList
@@ -143,27 +144,8 @@ class Polygon(BaseArea):
         # TODO: rings -> https://sgillies.net/2010/04/06/painting-punctured-polygons-with-matplotlib.html
         coordinates = numpy.atleast_2d(polygon.exterior.coords)
 
-        ax.add_polygon(coordinates=coordinates, **kwargs)
-
-    def plot(self) -> SceneList:
-        """
-        Plot the Polygon structure.
-
-        :param      polygon:        The multi polygon
-        :type       polygon:        geo.Polygon
-        :param      ax:             The axis to which add the plot
-        :type       ax:             Axis
-
-        :returns:   The scene list.
-        :rtype:     SceneList
-        """
-        figure = SceneList(unit_size=(6, 6))
-
-        ax = figure.append_ax(x_label='x', y_label='y')
-
-        self._render_on_ax_(ax=ax)
-
-        return figure
+        coordinates = numpy.atleast_2d(polygon.exterior.coords)
+        plot_polygon(ax, polygon, **kwargs)
 
     def rasterize(self, coordinate_system: CoordinateSystem) -> numpy.ndarray:
         """
@@ -312,12 +294,12 @@ class _Polygon(BaseArea):
 
         return self
 
-    def _render_on_ax_(self, ax: Axis, **kwargs) -> None:
+    def _render_on_ax_(self, ax: plt.Axes, **kwargs) -> None:
         """
         Render the Polygon on a specific axis.
 
         :param      ax:   The axis to which add the plot
-        :type       ax:   Axis
+        :type       ax:   plt.Axes
 
         :returns:   No return
         :rtype:     None
@@ -329,14 +311,14 @@ class _Polygon(BaseArea):
         else:
             self.render_simple_polygon_on_axis(ax=ax, polygon=self._shapely_object, **kwargs)
 
-    def render_simple_polygon_on_axis(self, polygon: geo.Polygon, ax: Axis, **kwargs) -> None:
+    def render_simple_polygon_on_axis(self, polygon: geo.Polygon, ax: plt.Axes, **kwargs) -> None:
         """
         Render the a specific polygon on the given axis.
 
         :param      polygon:        The multi polygon
         :type       polygon:        geo.Polygon
         :param      ax:             The axis to which add the plot
-        :type       ax:             Axis
+        :type       ax:             plt.Axes
 
         :returns:   The scene list.
         :rtype:     SceneList
@@ -345,27 +327,7 @@ class _Polygon(BaseArea):
         # TODO: rings -> https://sgillies.net/2010/04/06/painting-punctured-polygons-with-matplotlib.html
         coordinates = numpy.atleast_2d(polygon.exterior.coords)
 
-        ax.add_polygon(coordinates=coordinates, **kwargs)
-
-    def plot(self) -> SceneList:
-        """
-        Plot the Polygon structure.
-
-        :param      polygon:        The multi polygon
-        :type       polygon:        geo.Polygon
-        :param      ax:             The axis to which add the plot
-        :type       ax:             Axis
-
-        :returns:   The scene list.
-        :rtype:     SceneList
-        """
-        figure = SceneList(unit_size=(6, 6))
-
-        ax = figure.append_ax(x_label='x', y_label='y')
-
-        self._render_on_ax_(ax=ax)
-
-        return figure
+        plot_polygon(ax=ax, poly=polygon)
 
     def rasterize(self, coordinate_system: CoordinateSystem) -> numpy.ndarray:
         """

@@ -12,6 +12,7 @@ from shapely.affinity import scale
 import shapely.geometry as geo
 
 from MPSPlots.render2D import SceneList
+import matplotlib.pyplot as plt
 from FiberFusing.components.base_class import Alteration
 import FiberFusing as ff
 
@@ -106,12 +107,5 @@ class LineString(Alteration):
         """ Returns a new LineString scaled by the specified factor. """
         scaled_string = scale(self._shapely_object, xfact=factor, yfact=factor, origin='center')
         return LineString(instance=scaled_string)
-
-    def plot(self, **kwargs) -> 'SceneList':
-        """ Plots the line string. """
-        figure = SceneList(unit_size=(6, 6))
-        ax = figure.append_ax(x_label='x', y_label='y')
-        self.render_on_axis(ax, **kwargs)
-        return figure
 
 # -

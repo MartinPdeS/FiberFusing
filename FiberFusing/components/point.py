@@ -9,7 +9,7 @@ from pydantic import ConfigDict
 
 from FiberFusing.components.base_class import Alteration
 import shapely.geometry as geo
-from MPSPlots.render2D import SceneList, Axis
+import matplotlib.pyplot as plt
 import FiberFusing as ff
 
 
@@ -78,28 +78,11 @@ class Point(Alteration):
         """
         return numpy.sqrt((self.x - other.x)**2 + (self.y - other.y)**2)
 
-    def render_on_axis(self, ax: Axis, text: str = None, text_shift: tuple = (1.01, 1.01), **kwargs) -> None:
+    def render_on_axis(self, ax: plt.Axes, text: str = None, text_shift: tuple = (1.01, 1.01), **kwargs) -> None:
         """
         Renders this point on the given axis, optionally with text.
         """
-        ax.add_scatter(x=self.x, y=self.y, **kwargs)
-
-        if text is not None:
-            ax.add_text(
-                position=(self.x * text_shift[0], self.y * text_shift[1]),
-                text=text
-            )
-
-    def plot(self, **kwargs) -> SceneList:
-        """
-        Plots the point within a new plotting scene.
-        """
-        figure = SceneList(unit_size=(6, 6))
-
-        ax = figure.append_ax(x_label='x', y_label='y')
-
-        self._render_on_ax_(ax)
-
-        return figure
+        ax.scatter(self.x, self.y)
+        ax.scatter(self.x, self.y, **kwargs)
 
 # -

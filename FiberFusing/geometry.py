@@ -6,16 +6,18 @@ import numpy
 from dataclasses import field
 from scipy.ndimage import gaussian_filter
 from pydantic.dataclasses import dataclass
-from pydantic import ConfigDict
 
-from MPSPlots.render2D import SceneList, Axis
+import matplotlib.pyplot as plt
 from matplotlib import colors
+from functools import wraps
 
 from FiberFusing.coordinate_system import CoordinateSystem
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+import matplotlib.colors as colors
 import FiberFusing
 
 
-@dataclass(config=ConfigDict(extra='forbid'), kw_only=True)
+@dataclass(config=dict(extra='forbid', kw_only=True))
 class Geometry(object):
     """
     Represents the refractive index (RI) geometric profile including background and fiber structures.
@@ -248,61 +250,48 @@ class Geometry(object):
 
         return mesh
 
-    def render_patch_on_ax(self, ax: Axis) -> None:
+    def format_ax(self, ax) -> None:
+        ax.set(xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
+        ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)
+        ax.set_aspect('equal')
+
+    def render_patch_on_ax(self, ax: plt.Axes) -> None:
         """
         Renders the patch representation of the geometry onto a given matplotlib axis.
 
         Args:
-            ax (Axes): The matplotlib axis to which the patch representation will be appended.
+            ax (plt.Axes): The matplotlib axis to which the patch representation will be appended.
         """
-        ax.set_style(
-            title='Coupler index structure',
-            x_label=r'x-distance [$\mu$m]',
-            y_label=r'y-distance [$\mu$m]',
-            x_scale_factor=1e6,
-            y_scale_factor=1e6,
-            equal_limits=True,
-        )
-
         for structure in self.additional_structure_list:
             structure.render_patch_on_ax(ax=ax)
 
         for fiber in self.fiber_list:
             fiber.render_patch_on_ax(ax=ax)
 
-    def render_mesh_on_ax(self, ax: Axis) -> None:
+        self.format_ax(ax=ax)
+
+
+    def render_mesh_on_ax(self, ax: plt.Axes) -> None:
         """
         Renders the rasterized representation of the geometry onto a given matplotlib axis.
 
         Args:
-            ax (Axes): The matplotlib axis to which the rasterized representation will be appended.
+            ax (plt.Axes): The matplotlib axis to which the rasterized representation will be appended.
         """
-        artist = ax.add_mesh(
-            x=self.coordinate_system.x_vector,
-            y=self.coordinate_system.y_vector,
-            scalar=self.mesh,
+        image = ax.pcolormesh(
+            self.coordinate_system.x_vector,
+            self.coordinate_system.y_vector,
+            self.mesh,
+            cmap='Blues',
+            norm=colors.LogNorm()
         )
 
-        ax.set_style(
-            title='Rasterized mesh',
-            x_label=r'x-distance [$\mu$m]',
-            y_label=r'y-distance [$\mu$m]',
-            x_scale_factor=1e6,
-            y_scale_factor=1e6,
-            equal_limits=True,
-            show_colorbar=True,
-        )
+        divider = make_axes_locatable(ax)
+        cax = divider.append_axes('right', size='5%', pad=0.05)
+        figure = ax.get_figure()
+        figure.colorbar(image, cax=cax, orientation='vertical');
 
-        ax.add_colorbar(
-            artist=artist,
-            discreet=False,
-            position='right',
-            numeric_format='%.4f',
-            colormap='Blues',
-            norm=colors.LogNorm(vmin=self.refractive_index_minimum / 1.01)
-        )
-
-    def plot(self, show_patch: bool = True, show_mesh: bool = True) -> SceneList:
+    def render_plot(self, show_patch: bool = True, show_mesh: bool = True) -> plt.Figure:
         """
         Plot the different representations [patch, mesh] of the geometry.
 
@@ -312,31 +301,33 @@ class Geometry(object):
         :type       show_mesh:      bool
 
         :returns:   The figure encompassing all the axis
-        :rtype:     SceneList
+        :rtype:     plt.Figure
         """
         self.generate_coordinate_mesh()
+        n_ax = bool(show_patch) + bool(show_mesh)
 
-        figure = SceneList(
-            unit_size=(4, 4),
-            tight_layout=True,
-            ax_orientation='horizontal'
-        )
+        unit_size = numpy.array([1, n_ax])
+        figure, axes = plt.subplots(*unit_size, figsize=5 * numpy.flip(unit_size))
+
+        axes_iter = iter(axes.flatten())
 
         if show_patch:
-            ax = figure.append_ax()
+            ax = next(axes_iter)
             self.render_patch_on_ax(ax)
+            ax.set(title='Coupler index structure')
+            self.format_ax(ax=ax)
 
         if show_mesh:
-            ax = figure.append_ax()
+            ax = next(axes_iter)
+            ax.set(title='Rasterized mesh')
+            self.format_ax(ax=ax)
             self.render_mesh_on_ax(ax)
 
-        ax.set_style(
-            title='Fiber structure',
-            x_label=r'x-distance [$\mu$m]',
-            y_label=r'y-distance [$\mu$m]',
-            x_scale_factor=1e6,
-            y_scale_factor=1e6,
-            equal_limits=True,
-        )
+        plt.tight_layout()
 
         return figure
+
+    @wraps(render_plot)
+    def plot(self, *args, **kwargs):
+        self.render_plot(*args, **kwargs)
+        plt.show()

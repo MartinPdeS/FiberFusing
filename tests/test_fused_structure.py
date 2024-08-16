@@ -4,6 +4,7 @@
 from unittest.mock import patch
 import pytest
 from FiberFusing import configuration
+import matplotlib.pyplot as plt
 
 
 fused_structures = [
@@ -21,16 +22,16 @@ test_ids = [f.__name__ for f in fused_structures]
 
 
 @pytest.mark.parametrize('fused_structure', fused_structures, ids=test_ids)
-def test_building_clad_structure(fused_structure):
-    with patch("matplotlib.pyplot.show") as mocked_show:
-        clad = fused_structure(
-            fusion_degree='auto',
-            fiber_radius=62.5e-6,
-            index=1.4444
-        )
+@patch("matplotlib.pyplot.show")
+def test_building_clad_structure(mock_show, fused_structure):
+    clad = fused_structure(
+        fusion_degree='auto',
+        fiber_radius=62.5e-6,
+        index=1.4444
+    )
 
-        plot = clad.plot()
-        plot.show()
-        mocked_show.assert_called_once()  # Verify that show was called exactly once
+    clad.plot()
+    mock_show.assert_called_once()  # Verify that show was called exactly once
+    plt.close()
 
 # -

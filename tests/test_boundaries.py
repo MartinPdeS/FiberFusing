@@ -4,7 +4,7 @@
 from unittest.mock import patch
 import pytest
 from itertools import product
-
+import matplotlib.pyplot as plt
 from FiberFusing import Geometry, configuration, BackGround
 
 
@@ -37,6 +37,7 @@ def test_building_geometry(patch, boundaries):
 
     geometry.generate_coordinate_mesh()
 
-    geometry.plot().show().close()
+    geometry.plot()
+    plt.close()
 
 # -

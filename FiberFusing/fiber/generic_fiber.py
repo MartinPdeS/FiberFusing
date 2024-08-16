@@ -12,10 +12,10 @@ from FiberFusing.utils import get_silica_index
 from FiberFusing.fiber.structure_collection import BaseClass
 import pprint
 
-from matplotlib import colors
-from MPSPlots.render2D import SceneList, Axis, Polygon
+import matplotlib.pyplot as plt
 
 pp = pprint.PrettyPrinter(indent=4, sort_dicts=False, compact=True, width=1)
+from FiberFusing.plottings import plot_polygon
 
 
 @dataclass(config=ConfigDict(extra='forbid'), kw_only=True)
@@ -143,78 +143,15 @@ class GenericFiber(BaseClass):
             radius=radius
         )
 
-    def render_patch_on_ax(self, ax: Axis) -> None:
+    def render_patch_on_ax(self, ax: plt.Axes) -> None:
         """
         Renders the patch representation of the fiber geometry on the given axis.
 
         Args:
-            ax (Axis): The axis to render on.
+            ax (plt.Axes): The axis to render on.
         """
         for structure in self.fiber_structure:
-            artist = Polygon(instance=structure.polygon._shapely_object)
-            ax.add_artist(artist)
-
-        ax.set_style(
-            title='Fiber structure',
-            x_label=r'x-distance [$\mu$m]',
-            y_label=r'y-distance [$\mu$m]',
-            x_scale_factor=1e6,
-            y_scale_factor=1e6,
-            equal_limits=True,
-        )
-
-    def render_raster_on_ax(self, ax: Axis, structure, coordinate_system: CoordinateSystem) -> None:
-        """
-        Renders the raster representation of a structure on the given axis.
-
-        Args:
-            ax (Axis): The axis to render on.
-            structure: The structure to rasterize.
-            coordinate_system (CoordinateSystem): The coordinate system to use.
-        """
-        boolean_raster = structure.polygon.get_rasterized_mesh(coordinate_system=coordinate_system)
-        ax.add_mesh(
-            x=coordinate_system.x_vector,
-            y=coordinate_system.y_vector,
-            scalar=boolean_raster,
-            colormap='Blues'
-        )
-
-    def render_mesh_on_ax(self, ax: Axis, coordinate_system: CoordinateSystem) -> None:
-        """
-        Renders the rasterized representation of the fiber geometry on the given axis.
-
-        Args:
-            ax (Axis): The axis to render on.
-            coordinate_system (CoordinateSystem): The coordinate system to use.
-        """
-        ax.add_colorbar(
-            discreet=False,
-            position='right',
-            numeric_format='%.4f'
-        )
-
-        raster = self.overlay_structures(coordinate_system=coordinate_system, structures_type='fiber_structure')
-        artist = ax.add_mesh(
-            x=coordinate_system.x_vector,
-            y=coordinate_system.y_vector,
-            scalar=raster,
-        )
-
-        ax.add_colorbar(
-            artist=artist,
-            colormap='Blues',
-            norm=colors.LogNorm()
-        )
-
-        ax.set_style(
-            title='Rasterized mesh',
-            x_label=r'x-distance [$\mu$m]',
-            y_label=r'y-distance [$\mu$m]',
-            x_scale_factor=1e6,
-            y_scale_factor=1e6,
-            equal_limits=True,
-        )
+            plot_polygon(ax=ax, poly=structure.polygon)
 
     def shift_coordinates(self, coordinate_system: CoordinateSystem, x_shift: float, y_shift: float) -> numpy.ndarray:
         """
@@ -331,38 +268,29 @@ class GenericFiber(BaseClass):
             coordinate_system=coordinate_system
         )
 
-    def plot(self, resolution: int = 300) -> SceneList:
+    def format_ax(self, ax) -> None:
+        ax.set(xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
+        ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)
+        ax.set_aspect('equal')
+
+    def plot(self) -> None:
         """
         Plots the different representations [patch, raster-mesh] of the fiber geometry.
 
         Args:
             resolution (int): The resolution to raster the structures. Default is 300.
-
-        Returns:
-            SceneList: The scene list with the plotted representations.
         """
-        min_x, min_y, max_x, max_y = self.get_structure_max_min_boundaries()
+        figure, ax = plt.subplots(1, 1, squeeze=True)
 
-        coordinate_system = CoordinateSystem(
-            min_x=min_x,
-            max_x=max_x,
-            min_y=min_y,
-            max_y=max_y,
-            nx=resolution,
-            ny=resolution
-        )
+        self.render_patch_on_ax(ax=ax)
 
-        coordinate_system.add_padding(padding_factor=1.2)
+        ax.set(title='Fiber structure')
 
-        figure = SceneList(unit_size=(4, 4), tight_layout=True, ax_orientation='horizontal')
+        self.format_ax(ax=ax)
 
-        ax0 = figure.append_ax()
-        ax1 = figure.append_ax()
+        plt.tight_layout()
 
-        self.render_patch_on_ax(ax=ax0)
-        self.render_mesh_on_ax(ax=ax1, coordinate_system=coordinate_system)
-
-        return figure
+        plt.show()
 
     def get_structures_boundaries(self) -> numpy.ndarray:
         """

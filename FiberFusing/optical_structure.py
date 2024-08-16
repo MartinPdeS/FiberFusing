@@ -11,7 +11,7 @@ from typing import Optional, Tuple
 import numpy
 
 
-@dataclass(config=ConfigDict(extra='forbid'), kw_only=True)
+@dataclass(config=ConfigDict(extra='forbid', kw_only=True))
 class CircleOpticalStructure():
     """
     Initialize a CircleOpticalStructure instance.

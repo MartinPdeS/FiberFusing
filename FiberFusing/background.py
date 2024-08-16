@@ -27,7 +27,7 @@ class NameSpace:
             setattr(self, key, value)
 
 
-@dataclass(config=ConfigDict(extra='forbid'), kw_only=True)
+@dataclass(config=ConfigDict(extra='forbid', kw_only=True))
 class BackGround(OverlayStructureBaseClass):
     """
     Represents a background structure to be overlayed on a mesh, characterized by a circular shape.

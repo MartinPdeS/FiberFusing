@@ -7,7 +7,7 @@ from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
 
 
-@dataclass(config=ConfigDict(extra='forbid', strict=True), kw_only=True)
+@dataclass(config=ConfigDict(extra='forbid', strict=True, kw_only=True))
 class CoordinateSystem(object):
     nx: int
     ny: int

@@ -11,14 +11,13 @@ import numpy
 import shapely.geometry as geo
 
 # Local imports
-from MPSPlots.render2D import Axis, SceneList
 from FiberFusing import utils
 from FiberFusing.utility.overlay_structure_on_mesh import OverlayStructureBaseClass
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.buffer import Circle
 from FiberFusing.sub_structures.ring import FiberRing
 from FiberFusing.sub_structures.line import FiberLine
-
+import matplotlib.pyplot as plt
 logging.basicConfig(level=logging.INFO)
 
 
@@ -422,25 +421,23 @@ class BaseFused(OverlayStructureBaseClass):
 
         return self
 
-    def plot(self, **kwargs) -> SceneList:
 
-        figure = SceneList(unit_size=(6, 6))
+    def format_ax(self, ax) -> None:
+        ax.set(xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
+        ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)
+        ax.set_aspect('equal')
 
-        ax = figure.append_ax(
-            x_label=r'x',
-            y_label=r'y',
-            show_grid=True,
-            equal_limits=True,
-            show_legend=True,
-        )
 
+    def plot(self, **kwargs) -> None:
+        figure, ax = plt.subplots(1, 1)
+        self.format_ax(ax=ax)
         self.render_patch_on_ax(ax=ax, **kwargs)
 
-        return figure
+        plt.show()
 
     def render_patch_on_ax(
             self,
-            ax: Axis,
+            ax: plt.Axes,
             show_structure: bool = True,
             show_fibers: bool = False,
             show_shifted_cores: bool = True,
@@ -453,7 +450,7 @@ class BaseFused(OverlayStructureBaseClass):
         to the ax.
 
         :param      ax:                  The axis to which add the patches
-        :type       ax:                  Axis
+        :type       ax:                  plt.Axes
         :param      show_structure:      Added the fused structure to ax
         :type       show_structure:      bool
         :param      show_fibers:         Added the unfused fibers to ax
@@ -471,40 +468,36 @@ class BaseFused(OverlayStructureBaseClass):
         if show_structure:
             self.clad_structure._render_on_ax_(ax)
 
-        ax.set_style(
-            x_label=r'x-distance [$\mu$m]',
-            y_label=r'y-distance [$\mu$m]',
-            x_scale_factor=1e6,
-            y_scale_factor=1e6,
-            equal_limits=True,
+        ax.set(
+            xlabel=r'x-distance [m]',
+            ylabel=r'y-distance [m]',
         )
 
         if show_added:
             added_section = utils.Union(*self.added_section_list)
             added_section._render_on_ax_(ax=ax, facecolor='green', label='added section')
 
-        # if show_removed:
-        #     removed_section = utils.Union(*self.removed_section_list)
-        #     removed_section._render_on_ax_(ax=ax, facecolor='red', label='removed section')
+        if show_removed:
+            removed_section = utils.Union(*self.removed_section_list)
+            removed_section._render_on_ax_(ax=ax, facecolor='red', label='removed section')
 
-        # if show_fibers:
-        #     for n, fiber in enumerate(self.fiber_list):
-        #         fiber._render_on_ax_(ax)
-        #         fiber.center._render_on_ax_(
-        #             ax,
-        #             marker='o',
-        #             marker_size=40,
-        #             label='core',
-        #         )
+        if show_fibers:
+            for n, fiber in enumerate(self.fiber_list):
+                fiber._render_on_ax_(ax)
+                fiber.center._render_on_ax_(
+                    ax,
+                    marker='o',
+                    s=40,
+                    label='core',
+                )
 
-        # if show_shifted_cores:
-        #     for n, fiber in enumerate(self.fiber_list):
-        #         fiber.shifted_core.render_on_axis(
-        #             ax,
-        #             marker='x',
-        #             marker_size=40,
-        #             edge_color=None,
-        #             label='shifted core',
-        #         )
+        if show_shifted_cores:
+            for n, fiber in enumerate(self.fiber_list):
+                fiber.shifted_core.render_on_axis(
+                    ax,
+                    marker='x',
+                    s=40,
+                    label='shifted core',
+                )
 
 #  -
