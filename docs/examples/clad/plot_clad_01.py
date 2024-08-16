@@ -12,6 +12,6 @@ clad = Circle(
     index=1.4444,
 )
 
-figure = clad.plot()
+clad.plot()
 
-_ = figure.show()
+# -

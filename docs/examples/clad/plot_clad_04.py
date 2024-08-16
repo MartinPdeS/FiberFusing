@@ -12,8 +12,6 @@ clad = FusedProfile(
     core_position_scrambling=0
 )
 
-figure = clad.plot()
-
-_ = figure.show()
+clad.plot()
 
 # -

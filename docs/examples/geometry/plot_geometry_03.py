@@ -31,9 +31,6 @@ geometry = Geometry(
 
 _ = geometry.add_fiber(*fibers)
 
-figure = geometry.plot()
-
-_ = figure.show()
-
+geometry.plot()
 
 # -
