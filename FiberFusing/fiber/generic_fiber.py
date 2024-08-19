@@ -11,14 +11,12 @@ from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.utils import get_silica_index
 from FiberFusing.fiber.structure_collection import BaseClass
 import pprint
-
 import matplotlib.pyplot as plt
-
 pp = pprint.PrettyPrinter(indent=4, sort_dicts=False, compact=True, width=1)
 from FiberFusing.plottings import plot_polygon
 
 
-@dataclass(config=ConfigDict(extra='forbid'), kw_only=True)
+@dataclass(config=ConfigDict(extra='forbid', kw_only=True))
 class GenericFiber(BaseClass):
     """
     Represents a generic fiber with specific wavelength and position attributes.
@@ -297,7 +295,7 @@ class GenericFiber(BaseClass):
         Returns an array representing the boundaries of each of the existing structures.
 
         Returns:
-        numpy.ndarray: The structures boundaries.
+            numpy.ndarray: The structures boundaries.
         """
         boundaries = []
         for structure in self.structure_list:
