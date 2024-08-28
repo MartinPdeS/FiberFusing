@@ -5,7 +5,7 @@
 |PyPi|
 |PyPi_download|
 |docs|
-|Unittest|
+|coverage|
 
 FiberFusing
 ===========
@@ -79,8 +79,6 @@ FiberFusing was written by `Martin Poinsinet de Sivry-Houle <https://github.com/
 Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=FiberFusing>`_ .
 
 
-.. |Unittest| image:: https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/MartinPdeS/49dc3e2c41180ac9018ae803a8acd177/raw
-
 .. |python| image:: https://img.shields.io/pypi/pyversions/fiberfusing.svg
    :target: https://www.python.org/
 
@@ -94,3 +92,7 @@ Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@po
 
 .. |docs| image:: https://readthedocs.org/projects/fiberfusing/badge/?version=latest
    :target: https://fiberfusing.readthedocs.io/en/latest/?badge=latest
+
+.. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/FiberFusing/python-coverage-comment-action-data/badge.svg
+   :alt: Unittest coverage
+   :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/FiberFusing/blob/python-coverage-comment-action-data/htmlcov/index.html
