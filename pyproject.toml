@@ -28,7 +28,7 @@ keywords = [
 ]
 
 dependencies = [
-    "pydantic==2.6.3",
+    "pydantic==2.9.0",
     "MPSTools",
     "scipy>=1.11.3",
     "numpy>=1.26.0",
