@@ -1,0 +1,17 @@
+*.DS_store
+*.ipynb_checkpoints*
+*__pycache__*
+*.so
+*.pytest_cache
+
+dist
+build
+*.egg*
+Perso/
+
+CMakeCache.txt
+CMakeFiles
+install_manifest.txt
+cmake_install.cmake
+htmlcov
+.coverage
