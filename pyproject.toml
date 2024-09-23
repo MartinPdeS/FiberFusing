@@ -28,11 +28,11 @@ keywords = [
 ]
 
 dependencies = [
-    "pydantic==2.6.3",
+    "pydantic>=2.6.3",
     "MPSTools",
     "scipy>=1.11.3",
     "numpy>=1.26.0",
-    "shapely >= 2.0.0",
+    "shapely>=2.0.0",
     "MPSPlots"
 ]
 
