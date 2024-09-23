@@ -1,98 +1,88 @@
-|Logo|
+|logo|
 
+|python| |PyPi| |PyPi_download| |docs| |coverage|
 
-|python|
-|PyPi|
-|PyPi_download|
-|docs|
-|coverage|
-
+========================
 FiberFusing
-===========
-Python package for fiber fusing simulations. This package allow the user to defined an initial fibre configuration and simulate the fusion process as a funciton of the fusion degree parameter. At the moment a total of seven pre-defined structure are present: 1x1, 2x2, 3x3, 4x4, 6x6, 7x7, 19x19.
+========================
 
+FiberFusing is a Python package designed for simulating the fiber fusing process. With this tool, users can define an initial fiber configuration and simulate the fusion process as a function of the fusion degree parameter. The package currently supports seven predefined structures:
+
+1x1, 2x2, 3x3, 4x4, 6x6, 7x7, and 19x19 configurations.
 
 ----
 
 Documentation
 **************
-All the latest available documentation is available `here <https://fiberfusing.readthedocs.io/en/latest/>`_ or you can click the following badge:
+For the most up-to-date documentation, visit the official `FiberFusing Docs <https://fiberfusing.readthedocs.io/en/latest/>`_ or click the badge below:
 
 |docs|
-
-
-
-
 
 ----
 
 Installation
 ************
-As simple as it gets using pip
+Getting started with FiberFusing is easy. Simply install via `pip`:
 
-.. code-block:: python
+.. code-block:: bash
 
-   >>> pip install FiberFusing
+    pip install FiberFusing
 
 |PyPi|
-
-
-
-
 
 ----
 
 Testing
 *******
+To run tests locally after cloning the GitHub repository, you’ll need to install the dependencies and run the following commands:
 
-To test localy (with cloning the GitHub repository) you'll need to install the dependencies and run the coverage command as
+.. code-block:: bash
 
-.. code:: console
+    git clone https://github.com/MartinPdeS/FiberFusing.git
+    cd FiberFusing
+    pip install FiberFusing[testing]
+    pytest
 
-   >>> git clone https://github.com/MartinPdeS/FiberFusing.git
-   >>> cd FiberFusing
-   >>> pip install -r requirements/requirements.txt
-   >>> coverage run --source=FiberFusing --module pytest --verbose tests
-   >>> coverage report --show-missing
+For more detailed testing instructions, consult the documentation.
 
 ----
-
-
 
 Coding examples
 ***************
-Plenty of examples are available online, I invite you to check the `examples <https://fiberfusing.readthedocs.io/en/latest/Examples.html>`_
-section of the documentation.
-
-
-
-
+Explore a wide range of examples demonstrating the usage of FiberFusing in the `Examples section <https://fiberfusing.readthedocs.io/en/latest/Examples.html>`_ of the documentation.
 
 ----
 
-Contact Information
-*******************
-As of 2021 the project is still under development if you want to collaborate it would be a pleasure. I encourage you to contact me.
+Contributing & Contact
+***********************
+FiberFusing is an open project and collaboration is encouraged! If you're interested in contributing or have any questions, feel free to reach out.
 
-FiberFusing was written by `Martin Poinsinet de Sivry-Houle <https://github.com/MartinPdS>`_  .
+**Author:** `Martin Poinsinet de Sivry-Houle <https://github.com/MartinPdeS>`_
+**Email:** `martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=FiberFusing>`_
 
-Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=FiberFusing>`_ .
+We welcome feedback and contributions to improve FiberFusing and expand its capabilities.
 
+----
 
 .. |python| image:: https://img.shields.io/pypi/pyversions/fiberfusing.svg
    :target: https://www.python.org/
+   :alt: Python version
 
 .. |PyPi| image:: https://badge.fury.io/py/FiberFusing.svg
    :target: https://pypi.org/project/FiberFusing/
+   :alt: PyPi
 
 .. |PyPi_download| image:: https://img.shields.io/pypi/dm/fiberfusing.svg
    :target: https://pypistats.org/packages/fiberfusing
+   :alt: PyPi download statistics
 
-.. |Logo| image:: https://github.com/MartinPdeS/FiberFusing/raw/master/docs/images/logo.png
+.. |logo| image:: https://github.com/MartinPdeS/FiberFusing/raw/master/docs/images/logo.png
+   :alt: FiberFusing's logo
 
 .. |docs| image:: https://github.com/martinpdes/fiberfusing/actions/workflows/deploy_documentation.yml/badge.svg
-   :target: https://fiberfusing.readthedocs.io/en/latest
+   :target: https://martinpdes.github.io/FiberFusing/
+   :alt: Documentation Status
 
 .. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/FiberFusing/python-coverage-comment-action-data/badge.svg
-   :alt: Unittest coverage
    :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/FiberFusing/blob/python-coverage-comment-action-data/htmlcov/index.html
+   :alt: Unittest coverage

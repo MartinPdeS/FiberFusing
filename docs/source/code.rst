@@ -32,13 +32,4 @@ Axes
      :member-order: bysource
 
 
-BaseFused
----------
-
- .. autoclass:: FiberFusing.baseclass.BaseFused
-     :members:
-     :inherited-members:
-     :member-order: bysource
-
-
 
