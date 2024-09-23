@@ -90,8 +90,8 @@ Email:`martin.poinsinet-de-sivry@polymtl.ca <mailto:martin.poinsinet-de-sivry@po
 
 .. |Logo| image:: https://github.com/MartinPdeS/FiberFusing/raw/master/docs/images/logo.png
 
-.. |docs| image:: https://readthedocs.org/projects/fiberfusing/badge/?version=latest
-   :target: https://fiberfusing.readthedocs.io/en/latest/?badge=latest
+.. |docs| image:: https://github.com/martinpdes/fiberfusing/actions/workflows/deploy_documentation.yml/badge.svg
+   :target: https://fiberfusing.readthedocs.io/en/latest/code.html
 
 .. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/FiberFusing/python-coverage-comment-action-data/badge.svg
    :alt: Unittest coverage
