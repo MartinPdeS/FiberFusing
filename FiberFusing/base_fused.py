@@ -573,6 +573,7 @@ class BaseFused(OverlayStructureBaseClass):
         ax.set(xlabel='x-distance [m]', ylabel='y-distance [m]')
 
         self.render_patch_on_ax(ax=ax, **kwargs)
+        ax.set_aspect('equal')
         plt.show()
 
     def render_patch_on_ax(

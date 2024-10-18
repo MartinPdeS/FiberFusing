@@ -11,86 +11,52 @@ FiberFusing.example.clad
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="1x1 Ring - Clad">
+    <div class="sphx-glr-thumbcontainer" tooltip="3x3 Line - Clad">
 
 .. only:: html
 
-  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_clad_01_thumb.png
+  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_line_3_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_clad_plot_clad_01.py`
+  :ref:`sphx_glr_gallery_clad_plot_line_3.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">1x1 Ring - Clad</div>
+      <div class="sphx-glr-thumbnail-title">3x3 Line - Clad</div>
     </div>
 
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="2x2 Ring - Clad">
+    <div class="sphx-glr-thumbcontainer" tooltip="4x4 Line - Clad">
 
 .. only:: html
 
-  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_clad_02_thumb.png
+  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_line_4_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_clad_plot_clad_02.py`
+  :ref:`sphx_glr_gallery_clad_plot_line_4.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">2x2 Ring - Clad</div>
+      <div class="sphx-glr-thumbnail-title">4x4 Line - Clad</div>
     </div>
 
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="3x3 Ring - Clad">
+    <div class="sphx-glr-thumbcontainer" tooltip="5x5 Line - Clad">
 
 .. only:: html
 
-  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_clad_03_thumb.png
+  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_line_5_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_clad_plot_clad_03.py`
+  :ref:`sphx_glr_gallery_clad_plot_line_5.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">3x3 Ring - Clad</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="4x4 Ring - Clad">
-
-.. only:: html
-
-  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_clad_04_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_clad_plot_clad_04.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">4x4 Ring - Clad</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="7x7 Ring - Clad">
-
-.. only:: html
-
-  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_clad_05_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_clad_plot_clad_05.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">7x7 Ring - Clad</div>
+      <div class="sphx-glr-thumbnail-title">5x5 Line - Clad</div>
     </div>
 
 
@@ -100,10 +66,10 @@ FiberFusing.example.clad
 
 .. only:: html
 
-  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_clad_06_thumb.png
+  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_ring_12_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_clad_plot_clad_06.py`
+  :ref:`sphx_glr_gallery_clad_plot_ring_12.py`
 
 .. raw:: html
 
@@ -117,10 +83,10 @@ FiberFusing.example.clad
 
 .. only:: html
 
-  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_clad_07_thumb.png
+  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_ring_19_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_clad_plot_clad_07.py`
+  :ref:`sphx_glr_gallery_clad_plot_ring_19.py`
 
 .. raw:: html
 
@@ -130,52 +96,69 @@ FiberFusing.example.clad
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="3x3 Line - Clad">
+    <div class="sphx-glr-thumbcontainer" tooltip="2x2 Ring - Clad">
 
 .. only:: html
 
-  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_clad_08_thumb.png
+  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_ring_2_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_clad_plot_clad_08.py`
+  :ref:`sphx_glr_gallery_clad_plot_ring_2.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">3x3 Line - Clad</div>
+      <div class="sphx-glr-thumbnail-title">2x2 Ring - Clad</div>
     </div>
 
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="3x3 Line - Clad">
+    <div class="sphx-glr-thumbcontainer" tooltip="4x4 Ring - Clad">
 
 .. only:: html
 
-  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_clad_09_thumb.png
+  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_ring_4_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_clad_plot_clad_09.py`
+  :ref:`sphx_glr_gallery_clad_plot_ring_4.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">3x3 Line - Clad</div>
+      <div class="sphx-glr-thumbnail-title">4x4 Ring - Clad</div>
     </div>
 
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="3x3 Line - Clad">
+    <div class="sphx-glr-thumbcontainer" tooltip="7x7 Ring - Clad">
 
 .. only:: html
 
-  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_clad_10_thumb.png
+  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_ring_7_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_clad_plot_clad_10.py`
+  :ref:`sphx_glr_gallery_clad_plot_ring_7.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">3x3 Line - Clad</div>
+      <div class="sphx-glr-thumbnail-title">7x7 Ring - Clad</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="1x1 Ring - Clad">
+
+.. only:: html
+
+  .. image:: /gallery/clad/images/thumb/sphx_glr_plot_single_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_clad_plot_single.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">1x1 Ring - Clad</div>
     </div>
 
 
@@ -187,16 +170,15 @@ FiberFusing.example.clad
 .. toctree::
    :hidden:
 
-   /gallery/clad/plot_clad_01
-   /gallery/clad/plot_clad_02
-   /gallery/clad/plot_clad_03
-   /gallery/clad/plot_clad_04
-   /gallery/clad/plot_clad_05
-   /gallery/clad/plot_clad_06
-   /gallery/clad/plot_clad_07
-   /gallery/clad/plot_clad_08
-   /gallery/clad/plot_clad_09
-   /gallery/clad/plot_clad_10
+   /gallery/clad/plot_line_3
+   /gallery/clad/plot_line_4
+   /gallery/clad/plot_line_5
+   /gallery/clad/plot_ring_12
+   /gallery/clad/plot_ring_19
+   /gallery/clad/plot_ring_2
+   /gallery/clad/plot_ring_4
+   /gallery/clad/plot_ring_7
+   /gallery/clad/plot_single
 
 
 
