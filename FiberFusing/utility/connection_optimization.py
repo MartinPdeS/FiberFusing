@@ -71,7 +71,7 @@ class ConnectionOptimization():
 
             added_section_list.append(new_added_section)
 
-        added_section = utils.Union(*added_section_list) - utils.Union(*self.fiber_list)
+        added_section = utils.union_geometries(*added_section_list) - utils.union_geometries(*self.fiber_list)
         added_section.remove_non_polygon_elements()
 
         return added_section
@@ -88,7 +88,7 @@ class ConnectionOptimization():
         for connection in self.connected_fibers:
             removed_section_list.append(connection.removed_section)
 
-        removed_section = utils.Union(*removed_section_list)
+        removed_section = utils.union_geometries(*removed_section_list)
         return removed_section
 
     def get_removed_area(self) -> float:
@@ -100,7 +100,7 @@ class ConnectionOptimization():
         """
         disconnected_fibers_area = len(self.fiber_list) * self.fiber_list[0].area
 
-        connected_fibers_area = utils.Union(*self.fiber_list).area
+        connected_fibers_area = utils.union_geometries(*self.fiber_list).area
 
         return disconnected_fibers_area - connected_fibers_area
 
@@ -125,7 +125,7 @@ class ConnectionOptimization():
         for connection in self.connected_fibers:
             limit.append(connection.limit_added_area)
 
-        overall_limit = utils.Union(*limit) - utils.Union(*self.fiber_list)
+        overall_limit = utils.union_geometries(*limit) - utils.union_geometries(*self.fiber_list)
 
         total_removed_area = self.get_removed_area()
 
@@ -225,7 +225,7 @@ class ConnectionOptimization():
 
         added_section = self.get_added_section()
 
-        opt_geometry = utils.Union(*self.fiber_list, added_section)
+        opt_geometry = utils.union_geometries(*self.fiber_list, added_section)
 
         return opt_geometry
 

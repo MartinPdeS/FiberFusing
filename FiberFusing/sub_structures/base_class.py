@@ -14,11 +14,11 @@ from MPSPlots.render2D import SceneList
 class BaseClass():
     @property
     def fused_structure(self):
-        return utils.Union(*self.fiber_list, self.added_section)
+        return utils.union_geometries(*self.fiber_list, self.added_section)
 
     @property
     def unfused_structure(self):
-        return utils.Union(*self.fiber_list)
+        return utils.union_geometries(*self.fiber_list)
 
     def initialize_cores(self):
         for fiber in self.fiber_list:

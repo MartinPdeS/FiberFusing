@@ -18,24 +18,35 @@ import FiberFusing
 
 
 @dataclass(config=dict(extra='forbid', kw_only=True))
-class Geometry(object):
+class Geometry:
     """
     Represents the refractive index (RI) geometric profile including background and fiber structures.
 
-    Attributes:
-        background (object): Geometric object representing the background (usually air).
-        additional_structure_list (List[object]): List of geometric objects representing additional structures.
-        fiber_list (List[object]): List of fiber structures.
-        x_bounds (Union[List[float], str]): X boundaries for rendering the structure. Can be a list of bounds or a keyword from ['auto', 'left', 'right', 'centering'].
-        y_bounds (Union[List[float], str]): Y boundaries for rendering the structure. Can be a list of bounds or a keyword from ['auto', 'top', 'bottom', 'centering'].
-        resolution (int): Number of points in x and y directions for evaluating the rendering.
-        index_scrambling (float): Index scrambling for degeneracy lifting.
-        gaussian_filter (Optional[int]): Standard deviation of the Gaussian blurring for the mesh.
-        boundary_pad_factor (float): Factor multiplying the boundary value to keep padding between mesh and boundary.
+    Attributes
+    ----------
+    background : object
+        Geometric object representing the background (usually air).
+    additional_structure_list : List[object], optional
+        List of geometric objects representing additional structures. Default is an empty list.
+    fiber_list : List[object], optional
+        List of fiber structures. Default is an empty list.
+    x_bounds : Union[Tuple[float, float], str], optional
+        X boundaries for rendering the structure. Can be a tuple of bounds or one of ['auto', 'left', 'right', 'centering']. Default is 'centering'.
+    y_bounds : Union[Tuple[float, float], str], optional
+        Y boundaries for rendering the structure. Can be a tuple of bounds or one of ['auto', 'top', 'bottom', 'centering']. Default is 'centering'.
+    resolution : int, optional
+        Number of points in x and y directions for evaluating the rendering. Default is 100.
+    index_scrambling : float, optional
+        Index scrambling for degeneracy lifting. Default is 0.0.
+    gaussian_filter : Optional[int], optional
+        Standard deviation of the Gaussian blurring for the mesh. Default is None.
+    boundary_pad_factor : float, optional
+        Factor multiplying the boundary value to keep padding between mesh and boundary. Default is 1.3.
     """
+
     background: object
     additional_structure_list: Optional[List[object]] = field(default_factory=list)
-    fiber_list: Optional[List[object]] = (field(default_factory=list))
+    fiber_list: Optional[List[object]] = field(default_factory=list)
     x_bounds: Optional[Union[Tuple[float, float], str]] = 'centering'
     y_bounds: Optional[Union[Tuple[float, float], str]] = 'centering'
     resolution: Optional[int] = 100
@@ -45,49 +56,70 @@ class Geometry(object):
 
     def generate_coordinate_system(self) -> None:
         """
-        Generates the coordinate system for the mesh construction.
+        Generate the coordinate system for the mesh construction.
+
+        Raises
+        ------
+        ValueError
+            If boundaries cannot be determined from the structures.
         """
-        min_x, min_y, max_x, max_y = self.get_boundaries()
+        try:
+            min_x, min_y, max_x, max_y = self.get_boundaries()
+        except ValueError as e:
+            raise ValueError(f"Failed to generate coordinate system: {str(e)}")
+
         self.coordinate_system = CoordinateSystem(
             min_x=min_x, max_x=max_x, min_y=min_y, max_y=max_y, nx=self.resolution, ny=self.resolution
         )
+
         self.coordinate_system.centering(factor=self.boundary_pad_factor)
         self.interpret_y_boundary()
         self.interpret_x_boundary()
 
     def add_fiber(self, *fibers: object) -> None:
         """
-        Adds fiber structures to the geometry.
+        Add fiber structures to the geometry.
 
-        Args:
-            fibers (object): Fiber structures to be added, defined using the generic_fiber class in fiber_catalogue.py.
+        Parameters
+        ----------
+        fibers : object
+            Fiber structures to be added.
         """
         self.fiber_list.extend(fibers)
 
     def add_structure(self, *structures: object) -> None:
         """
-        Adds custom structures to the geometry.
+        Add custom structures to the geometry.
 
-        Args:
-            structures (object): Custom structures to be added.
+        Parameters
+        ----------
+        structures : object
+            Custom structures to be added.
         """
         self.additional_structure_list.extend(structures)
 
     @property
     def structure_list(self) -> List[object]:
         """
-        Returns a list of all optical structures considered for the mesh construction.
+        Get a list of all optical structures considered for the mesh construction.
 
-        Returns:
-            List[object]: List of the optical structures.
+        Returns
+        -------
+        List[object]
+            List of the optical structures.
         """
         return [self.background, *self.additional_structure_list, *self.fiber_list]
 
     def interpret_x_boundary(self) -> None:
         """
-        Interprets the x_bounds parameter and applies the appropriate boundary setting to the coordinate system.
+        Interpret the x_bounds parameter and apply the appropriate boundary setting to the coordinate system.
+
+        Raises
+        ------
+        ValueError
+            If x_bounds is invalid.
         """
-        if isinstance(self.x_bounds, list | tuple):
+        if isinstance(self.x_bounds, (list, tuple)):
             self.coordinate_system.set_x_boundary(self.x_bounds)
         else:
             match self.x_bounds:
@@ -102,9 +134,14 @@ class Geometry(object):
 
     def interpret_y_boundary(self) -> None:
         """
-        Interprets the y_bounds parameter and applies the appropriate boundary setting to the coordinate system.
+        Interpret the y_bounds parameter and apply the appropriate boundary setting to the coordinate system.
+
+        Raises
+        ------
+        ValueError
+            If y_bounds is invalid.
         """
-        if isinstance(self.y_bounds, list | tuple):
+        if isinstance(self.y_bounds, (list, tuple)):
             self.coordinate_system.set_y_boundary(self.y_bounds)
         else:
             match self.y_bounds:
@@ -119,77 +156,88 @@ class Geometry(object):
 
     def get_boundaries(self) -> Tuple[float, float, float, float]:
         """
-        Calculates the boundaries from the collection of defined structures.
+        Calculate the boundaries from the collection of defined structures.
 
-        Returns:
-            Tuple[float, float, float, float]: The boundaries as (min_x, min_y, max_x, max_y).
+        Returns
+        -------
+        Tuple[float, float, float, float]
+            The boundaries as (min_x, min_y, max_x, max_y).
 
-        Raises:
-            ValueError: If no structures are provided for computing the mesh.
+        Raises
+        ------
+        ValueError
+            If no structures are provided for computing the mesh.
         """
         if not self.additional_structure_list and not self.fiber_list:
             raise ValueError('No internal structures provided for computation of the mesh.')
 
-        # Collect all min and max boundaries from each structure
         min_x, min_y, max_x, max_y = zip(
             *(obj.get_structure_max_min_boundaries() for obj in self.additional_structure_list + self.fiber_list)
         )
-
-        # Calculate the overall min and max boundaries
         return (numpy.min(min_x), numpy.min(min_y), numpy.max(max_x), numpy.max(max_y))
 
     @property
     def refractive_index_maximum(self) -> float:
         """
-        Calculates the maximum refractive index across all structures.
+        Calculate the maximum refractive index across all structures.
 
-        Returns:
-            float: Maximum refractive index.
+        Returns
+        -------
+        float
+            Maximum refractive index.
         """
         return max(index for obj in self.structure_list for index in obj.refractive_index_list)
 
     @property
     def refractive_index_minimum(self) -> float:
         """
-        Calculates the minimum refractive index across all non-background structures.
+        Calculate the minimum refractive index across all non-background structures.
 
-        Returns:
-            float: Minimum refractive index.
+        Returns
+        -------
+        float
+            Minimum refractive index.
         """
         return min(index for obj in self.structure_list if not isinstance(obj, FiberFusing.background.BackGround) for index in obj.refractive_index_list)
 
     def get_index_range(self) -> List[float]:
         """
-        Returns a list of all refractive indices associated with the elements of the geometry.
+        Get a list of all refractive indices associated with the elements of the geometry.
 
-        Returns:
-            List[float]: List of refractive indices.
+        Returns
+        -------
+        List[float]
+            List of refractive indices.
         """
         return [float(obj.index) for obj in self.structure_list]
 
     def rotate(self, angle: float) -> None:
         """
-        Rotates all structures within the geometry by a given angle.
+        Rotate all structures within the geometry by a given angle.
 
-        Args:
-            angle (float): Angle to rotate the geometry, in degrees.
+        Parameters
+        ----------
+        angle : float
+            Angle to rotate the geometry, in degrees.
         """
         for structure in self.structure_list:
-            structure = structure.rotate(angle=angle)
+            structure.rotate(angle=angle)
 
     def generate_coordinate_mesh(self) -> None:
         """
-        Generates a coordinate system and then creates a mesh based on this system.
+        Generate a coordinate system and then create a mesh based on this system.
         """
         self.generate_coordinate_system()
         self.mesh = self.generate_mesh()
 
     def randomize_fiber_structures_index(self, random_factor: float) -> None:
         """
-        Randomizes the refractive index of fiber structures by a specified factor.
+        Randomize the refractive index of fiber structures by a specified factor.
 
-        Args:
-            random_factor (float): Factor to randomize the refractive index.
+        Parameters
+        ----------
+        random_factor : float
+            Factor to randomize the refractive index.
         """
         for fiber in self.fiber_list:
             for structure in fiber.inner_structure:
@@ -198,16 +246,19 @@ class Geometry(object):
 
     def rasterize_polygons(self, coordinates: numpy.ndarray) -> numpy.ndarray:
         """
-        Rasterizes the polygons defined in the geometry onto a mesh.
+        Rasterize the polygons defined in the geometry onto a mesh.
 
-        Args:
-            coordinates (numpy.ndarray): The coordinates at which to evaluate the mesh.
+        Parameters
+        ----------
+        coordinates : numpy.ndarray
+            The coordinates at which to evaluate the mesh.
 
-        Returns:
-            numpy.ndarray: The rasterized mesh.
+        Returns
+        -------
+        numpy.ndarray
+            The rasterized mesh.
         """
         mesh = numpy.zeros(self.coordinate_system.shape)
-
         self.background.overlay_structures_on_mesh(mesh=mesh, coordinate_system=self.coordinate_system)
 
         for structure in self.additional_structure_list:
@@ -223,11 +274,21 @@ class Geometry(object):
 
     def add_background_to_mesh(self, mesh: numpy.ndarray) -> None:
         """
-        Adds the rasterized background to the provided mesh.
+        Add the rasterized background to the provided mesh.
 
-        Args:
-            mesh (numpy.ndarray): The mesh to which the background is added.
+        Parameters
+        ----------
+        mesh : numpy.ndarray
+            The mesh to which the background is added. Must match the shape of the coordinate system.
+
+        Raises
+        ------
+        ValueError
+            If the mesh dimensions do not match the coordinate system.
         """
+        if mesh.shape != self.coordinate_system.shape:
+            raise ValueError("The provided mesh dimensions do not match the coordinate system shape.")
+
         raster = self.background.get_rasterized_mesh(coordinate_system=self.coordinate_system)
         mask = raster != 0
         mesh[mask] = 0
@@ -236,12 +297,21 @@ class Geometry(object):
 
     def generate_mesh(self) -> numpy.ndarray:
         """
-        Generates the full mesh for the geometry using the defined coordinate system.
+        Generate the full mesh for the geometry using the defined coordinate system.
 
-        Returns:
-            numpy.ndarray: The fully generated mesh.
+        Returns
+        -------
+        numpy.ndarray
+            The fully generated mesh.
+
+        Raises
+        ------
+        AttributeError
+            If the coordinate system has not been generated before calling this method.
         """
-        # Convert coordinate system mesh grids to a single array of coordinates.
+        if not hasattr(self, 'coordinate_system'):
+            raise AttributeError("Coordinate system has not been generated. Call generate_coordinate_system() first.")
+
         coordinates = numpy.vstack((self.coordinate_system.x_mesh.flatten(), self.coordinate_system.y_mesh.flatten())).T
         mesh = self.rasterize_polygons(coordinates=coordinates)
 

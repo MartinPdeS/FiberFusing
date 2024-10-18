@@ -11,7 +11,6 @@ __all__ = [
     'example_directory',
     'doc_path',
     'doc_css_path',
-    'logo_path',
     'version_path',
     'examples_path',
 ]
@@ -25,8 +24,6 @@ example_directory = root_path.joinpath('examples')
 doc_path = project_path.joinpath('docs')
 
 doc_css_path = doc_path.joinpath('source/_static/default.css')
-
-logo_path = doc_path.joinpath('images/logo.png')
 
 version_path = root_path.joinpath('VERSION')
 

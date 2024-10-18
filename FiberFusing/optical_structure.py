@@ -8,22 +8,30 @@ from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
 
 from typing import Optional, Tuple
-import numpy
+import numpy as np
 
 
 @dataclass(config=ConfigDict(extra='forbid', kw_only=True))
-class CircleOpticalStructure():
+class CircleOpticalStructure:
     """
-    Initialize a CircleOpticalStructure instance.
+    Represents a circular optical structure.
 
-    Args:
-        name (str): Name of the structure.
-        index (float): Refractive index of the structure.
-        radius (float): Radius of the circle representing the slice of the structure.
-        position (Tuple[float, float]): Center position of the circle.
-        is_graded (Optional[bool], optional): True if the structure has a graded refractive index. Defaults to False.
-        delta_n (Optional[float], optional): Delta refractive index of the grading. Defaults to None.
+    Attributes
+    ----------
+    name : str
+        Name of the structure.
+    index : float
+        Refractive index of the structure.
+    radius : float
+        Radius of the circle representing the structure.
+    position : Tuple[float, float]
+        Center position of the circle.
+    is_graded : Optional[bool], optional
+        Indicates if the structure has a graded refractive index. Default is False.
+    delta_n : Optional[float], optional
+        Delta refractive index for graded structures. Default is None.
     """
+
     name: str
     index: float
     radius: float
@@ -32,46 +40,57 @@ class CircleOpticalStructure():
     delta_n: Optional[float] = None
 
     def __post_init__(self) -> None:
+        """
+        Initialize the circular polygon representation of the structure.
+        """
         self.polygon = Circle(position=self.position, radius=self.radius)
 
     def compute_index_from_NA(self, NA: float, exterior_index: float) -> float:
         """
         Compute the refractive index from the numerical aperture (NA).
 
-        Args:
-            NA (float): Numerical aperture.
-            exterior_index (float): Refractive index of the exterior structure.
+        Parameters
+        ----------
+        NA : float
+            Numerical aperture.
+        exterior_index : float
+            Refractive index of the exterior structure.
 
-        Returns:
-            float: Computed refractive index.
+        Returns
+        -------
+        float
+            Computed refractive index.
         """
-        return numpy.sqrt(NA**2 + exterior_index**2)
+        return np.sqrt(NA**2 + exterior_index**2)
 
-    def get_V_number(self, wavelength: float) -> float:
+    def get_V_number(self, wavelength: float, exterior_index: float) -> float:
         """
         Compute the V-number for the optical structure.
 
-        Args:
-            wavelength (float): Wavelength of the light.
+        Parameters
+        ----------
+        wavelength : float
+            Wavelength of the light.
+        exterior_index : float
+            Refractive index of the exterior structure.
 
-        Returns:
-            float: Computed V-number.
+        Returns
+        -------
+        float
+            Computed V-number.
         """
-        delta_index = numpy.sqrt(self.index**2 - self.exterior_structure.index**2)
-
-        V = 2 * numpy.pi / wavelength * delta_index * self.radius
-
-        return V
+        delta_index = np.sqrt(self.index**2 - exterior_index**2)
+        V_number = (2 * np.pi / wavelength) * delta_index * self.radius
+        return V_number
 
     def scale(self, factor: float) -> None:
         """
         Scale the radius of the optical structure by a given factor.
 
-        Args:
-            factor (float): Scaling factor.
+        Parameters
+        ----------
+        factor : float
+            Scaling factor.
         """
         self.radius *= factor
-        self.__post_init__()
-
-
-# -
+        self.polygon = Circle(position=self.position, radius=self.radius)

@@ -15,17 +15,28 @@ from FiberFusing.buffer import Circle
 
 
 @dataclass(config=ConfigDict(extra='forbid', arbitrary_types_allowed=True, strict=True))
-class Connection():
+class Connection:
+    """
+    Represents a connection between two fiber circles.
+
+    Attributes
+    ----------
+    fiber0 : Circle
+        The first fiber in the connection.
+    fiber1 : Circle
+        The second fiber in the connection.
+    """
     fiber0: Circle
     fiber1: Circle
 
     def __post_init__(self):
         """
-        Initialize a Connection instance between two fibers.
+        Initialize the Connection instance between two fibers.
 
-        Args:
-            fiber0: The first fiber object.
-            fiber1: The second fiber object.
+        Notes
+        -----
+        - Initializes additional attributes such as `added_section`, `removed_section`, `topology`,
+          and `shift`.
         """
         self.fiber_list = [self.fiber0, self.fiber1]
         self.added_section = ff.EmptyPolygon()
@@ -37,9 +48,12 @@ class Connection():
         """
         Set the shift and topology for the connection and compute related properties.
 
-        Args:
-            shift (float): The shift value for the connection.
-            topology (str): The topology type for the connection.
+        Parameters
+        ----------
+        shift : float
+            The shift value for the connection.
+        topology : str
+            The topology type for the connection.
         """
         self.shift = shift
         self.topology = topology
@@ -50,12 +64,16 @@ class Connection():
 
     def __getitem__(self, idx: int) -> Circle:
         """
-        Get a fiber by index.
+        Retrieve a fiber by index.
 
-        Args:
-            idx: The index of the fiber to retrieve.
+        Parameters
+        ----------
+        idx : int
+            The index of the fiber to retrieve.
 
-        Returns:
+        Returns
+        -------
+        Circle
             The fiber object at the specified index.
         """
         return self.fiber_list[idx]
@@ -64,9 +82,12 @@ class Connection():
         """
         Set a fiber at a specified index.
 
-        Args:
-            idx: The index at which to set the fiber.
-            item: The fiber object to set.
+        Parameters
+        ----------
+        idx : int
+            The index at which to set the fiber.
+        item : Circle
+            The fiber object to set.
         """
         self.fiber_list[idx] = item
 
@@ -75,31 +96,43 @@ class Connection():
         """
         Calculate the distance between the centers of the two fibers.
 
-        Returns:
-            float: The distance between the fiber centers.
+        Returns
+        -------
+        float
+            The distance between the fiber centers.
         """
         return self[0].center.distance(self[1].center)
 
     @property
-    def limit_added_area(self) -> object:
+    def limit_added_area(self) -> ff.Polygon:
         """
         Calculate the limit added area formed by the union of the two fibers.
 
-        Returns:
-            Polygon: The polygon representing the limit added area.
+        Returns
+        -------
+        ff.Polygon
+            The polygon representing the limit added area.
         """
         return self[0].union(self[1]).convex_hull - self[0] - self[1]
 
     def compute_removed_section(self) -> None:
         """
         Compute the removed section of the connection.
+
+        Notes
+        -----
+        - Calculates the area of the removed section based on intersections.
         """
-        self.removed_section = utils.Intersection(*self)  # here
-        self.removed_section.Area = self[1].area + self[0].area - utils.Union(*self).area  # here
+        self.removed_section = utils.intersection_geometries(*self)
+        self.removed_section.Area = self[1].area + self[0].area - utils.union_geometries(*self).area
 
     def compute_topology(self) -> None:
         """
         Determine the topology of the connection based on the area of the removed section.
+
+        Notes
+        -----
+        - Sets topology as 'convex' or 'concave' based on comparison with the limit added area.
         """
         if self.removed_section.Area > self.limit_added_area.area:
             self.topology = 'convex'
@@ -108,14 +141,22 @@ class Connection():
 
     def get_conscripted_circles(self, type: str = 'exterior') -> Circle:
         """
-        Return the two conscripted circles of the connection, which can be either of type exterior
-        or interior.
+        Return the conscripted circles of the connection, which can be either 'exterior' or 'interior'.
 
-        Args:
-            type (str): The type of conscripted circle to compute ('exterior' or 'interior').
+        Parameters
+        ----------
+        type : str, optional
+            The type of conscripted circle to compute ('exterior' or 'interior'). Default is 'exterior'.
 
-        Returns:
-            Circle: The conscripted circle based on the specified type.
+        Returns
+        -------
+        Circle
+            The conscripted circle based on the specified type.
+
+        Raises
+        ------
+        ValueError
+            If the type is invalid.
         """
         extended_line = self.get_center_line(extended=True)
         line = self.get_center_line(extended=False)
@@ -135,8 +176,10 @@ class Connection():
         """
         Compute the conscripted virtual circles based on the current topology.
 
-        Raises:
-            Exception: If the topology is not defined.
+        Raises
+        ------
+        Exception
+            If the topology is not defined.
         """
         if self.topology == "not defined":
             raise Exception("Trying to compute conscripted virtual circles without a defined topology!")
@@ -154,70 +197,53 @@ class Connection():
         """
         Return a list of contact points from the connected fibers and virtual circles.
 
-        Returns:
-            list: A list of contact points as ff.Point instances.
+        Returns
+        -------
+        list
+            A list of contact points as ff.Point instances.
         """
-        P0 = utils.NearestPoints(self.virtual_circles[0], self[0])
-        P1 = utils.NearestPoints(self.virtual_circles[1], self[0])
-        P2 = utils.NearestPoints(self.virtual_circles[0], self[1])
-        P3 = utils.NearestPoints(self.virtual_circles[1], self[1])
+        P0 = utils.nearest_points_exterior(self.virtual_circles[0], self[0])
+        P1 = utils.nearest_points_exterior(self.virtual_circles[1], self[0])
+        P2 = utils.nearest_points_exterior(self.virtual_circles[0], self[1])
+        P3 = utils.nearest_points_exterior(self.virtual_circles[1], self[1])
 
         return [ff.Point(position=(p.x, p.y)) for p in [P0, P1, P2, P3]]
 
     def compute_mask(self) -> None:
         """
-        Compute the mask that connects the center to the contact points
-        with the virtual circles.
+        Compute the mask that connects the center to the contact points with the virtual circles.
 
-        The mask is computed differently depending on whether the topology
-        is 'concave' or 'convex'.
-
-        Returns:
-            None
+        Notes
+        -----
+        - The mask computation varies depending on whether the topology is 'concave' or 'convex'.
         """
         P0, P1, P2, P3 = self.get_connected_point()
 
         if self.topology.lower() == 'concave':
-            coordinates = [
-                (p._shapely_object.x, p._shapely_object.y) for p in [P0, P1, P3, P2]
-            ]
+            coordinates = [(p._shapely_object.x, p._shapely_object.y) for p in [P0, P1, P3, P2]]
             mask = ff.Polygon(coordinates=coordinates)
             self.mask = (mask - self.virtual_circles[0] - self.virtual_circles[1])
 
         elif self.topology.lower() == 'convex':
             mid_point = ff.LineString(coordinates=[self[0].center, self[1].center]).mid_point
 
-            coordinates0 = [
-                (p._shapely_object.x, p._shapely_object.y) for p in [mid_point, P0, P2]
-            ]
+            coordinates0 = [(p._shapely_object.x, p._shapely_object.y) for p in [mid_point, P0, P2]]
             mask0 = ff.Polygon(coordinates=coordinates0)
-            mask0.scale(
-                factor=1000,
-                origin=mid_point._shapely_object,
-                in_place=True
-            )
+            mask0.scale(factor=1000, origin=mid_point._shapely_object, in_place=True)
 
-            coordinates1 = [
-                (p._shapely_object.x, p._shapely_object.y) for p in [mid_point, P1, P3]
-            ]
+            coordinates1 = [(p._shapely_object.x, p._shapely_object.y) for p in [mid_point, P1, P3]]
             mask1 = ff.Polygon(coordinates=coordinates1)
-            mask1.scale(
-                factor=1000,
-                origin=mid_point._shapely_object,
-                in_place=True
-            )
+            mask1.scale(factor=1000, origin=mid_point._shapely_object, in_place=True)
 
-            self.mask = (utils.Union(mask0, mask1) & utils.Union(*self.virtual_circles))
+            self.mask = (utils.union_geometries(mask0, mask1) & utils.union_geometries(*self.virtual_circles))
 
     def compute_added_section(self) -> None:
         """
-        Compute the added section of the connection.
+        Compute the added section of the connection based on the topology.
 
-        The added section is computed differently depending on whether the topology
-        is 'convex' or 'concave'.
-
-        Returns:
-            None
+        Notes
+        -----
+        - The added section computation varies depending on whether the topology is 'convex' or 'concave'.
         """
         if self.topology == 'convex':
             intersection = self.virtual_circles[0].intersection(self.virtual_circles[1], in_place=False)
@@ -231,14 +257,17 @@ class Connection():
 
     def get_center_line(self, extended: bool = False) -> ff.LineString:
         """
-        Returns the line connecting the centers of the two connected fibers.
-        If extended is True, the line is extended to the boundaries of the two fibers.
+        Get the line connecting the centers of the two connected fibers.
 
-        Parameters:
-            extended (bool): Indicates if the line should be extended.
+        Parameters
+        ----------
+        extended : bool, optional
+            Indicates if the line should be extended. Default is False.
 
-        Returns:
-            ff.LineString: The line connecting the centers of the two fibers.
+        Returns
+        -------
+        ff.LineString
+            The line connecting the centers of the two fibers.
         """
         line = ff.LineString(coordinates=[self[0].center, self[1].center])
 
@@ -255,7 +284,7 @@ class Connection():
         Returns:
             ff.Polygon: The polygon representing the total area.
         """
-        output = utils.Union(*self, self.added_section)
+        output = utils.union_geometries(*self, self.added_section)
         output.remove_non_polygon_elements()
 
         return output
@@ -277,7 +306,7 @@ class Connection():
         split_line = split_line.rotate(angle=90, origin=split_line.mid_point)
         split_line = split_line.extend(factor=2)
 
-        external_part = utils.Union(geometry.copy()).remove_non_polygon_elements().keep_largest_polygon()
+        external_part = utils.union_geometries(geometry.copy()).remove_non_polygon_elements().keep_largest_polygon()
 
         return external_part.split_with_line(line=split_line, return_largest=return_largest)
 
