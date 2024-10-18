@@ -62,7 +62,7 @@ For more detailed testing instructions, consult the documentation.
 
 Coding examples
 ***************
-Explore a wide range of examples demonstrating the usage of FiberFusing in the `Examples section <https://fiberfusing.readthedocs.io/en/latest/Examples.html>`_ of the documentation.
+Explore a wide range of examples demonstrating the usage of FiberFusing in the `Examples section <https://martinpdes.github.io/FiberFusing/gallery/index.html>`_ of the documentation.
 
 ----
 
