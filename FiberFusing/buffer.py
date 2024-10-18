@@ -121,7 +121,7 @@ class Square(_Polygon):
     """
     Represents a square geometry centered at a specified position with a given side length.
 
-    Attributes
+    Parameters
     ----------
     position : tuple
         The center position of the square.

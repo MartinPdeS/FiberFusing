@@ -22,7 +22,7 @@ class Geometry:
     """
     Represents the refractive index (RI) geometric profile including background and fiber structures.
 
-    Attributes
+    Parameters
     ----------
     background : object
         Geometric object representing the background (usually air).

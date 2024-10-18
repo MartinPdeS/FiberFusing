@@ -12,7 +12,7 @@ class CoordinateSystem:
     """
     Represents a 2D coordinate system defined by grid points and boundaries.
 
-    Attributes
+    Parameters
     ----------
     nx : int
         The number of grid points along the x-axis.
@@ -286,7 +286,7 @@ class CoordinateSystem:
 
         Notes
         -----
-        - Computes the grid spacing (dx, dy), area element (dA), and vector and mesh representations
+        Computes the grid spacing (dx, dy), area element (dA), and vector and mesh representations
         of the grid in Cartesian and polar coordinates (theta and rho).
         """
         self.dx = numpy.abs(self.min_x - self.max_x) / (self.nx - 1)

@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from FiberFusing import Geometry, configuration, BackGround
 from FiberFusing.fiber import catalogue
 
-# Define the different fused structures from configurations
+# Define different fused structures from configurations
 fused_structures = [
     configuration.ring.FusedProfile_02x02,
     configuration.ring.FusedProfile_03x03,
@@ -19,13 +19,18 @@ fused_structures = [
     configuration.line.FusedProfile_05x05,
 ]
 
-
-# Parameterize the test cases to run with each structure
 @pytest.mark.parametrize('fused_structure', fused_structures)
 @patch("matplotlib.pyplot.show")
 def test_building_geometry(mock_show, fused_structure):
     """
-    Test that the Geometry class can build and plot a structure without additional components.
+    Test the creation and plotting of a Geometry instance with a single fused structure.
+
+    Parameters
+    ----------
+    mock_show : MagicMock
+        Mock object for `plt.show()` to prevent actual rendering during tests.
+    fused_structure : callable
+        The structure configuration callable to test.
     """
     clad = fused_structure(fusion_degree='auto', fiber_radius=62.5e-6, index=1.4444)
     background = BackGround(index=1)
@@ -42,12 +47,18 @@ def test_building_geometry(mock_show, fused_structure):
     geometry.plot()
     plt.close()
 
-
 @pytest.mark.parametrize('fused_structure', fused_structures)
 @patch("matplotlib.pyplot.show")
 def test_building_geometry_with_capillary(mock_show, fused_structure):
     """
-    Test that the Geometry class can build and plot a structure with a capillary tube.
+    Test the creation and plotting of a Geometry instance with a capillary tube and a fused structure.
+
+    Parameters
+    ----------
+    mock_show : MagicMock
+        Mock object for `plt.show()` to prevent actual rendering during tests.
+    fused_structure : callable
+        The structure configuration callable to test.
     """
     clad = fused_structure(fusion_degree='auto', fiber_radius=62.5e-6, index=1.4444)
     background = BackGround(index=1)
@@ -65,12 +76,18 @@ def test_building_geometry_with_capillary(mock_show, fused_structure):
     geometry.plot()
     plt.close()
 
-
 @pytest.mark.parametrize('fused_structure', fused_structures)
 @patch("matplotlib.pyplot.show")
 def test_building_geometry_with_capillary_and_fibers(mock_show, fused_structure):
     """
-    Test that the Geometry class can build and plot a structure with a capillary tube and additional fibers.
+    Test the creation and plotting of a Geometry instance with a capillary tube and additional fibers.
+
+    Parameters
+    ----------
+    mock_show : MagicMock
+        Mock object for `plt.show()` to prevent actual rendering during tests.
+    fused_structure : callable
+        The structure configuration callable to test.
     """
     clad = fused_structure(fusion_degree='auto', fiber_radius=62.5e-6, index=1.4444)
     background = BackGround(index=1)
@@ -93,5 +110,6 @@ def test_building_geometry_with_capillary_and_fibers(mock_show, fused_structure)
     geometry.plot()
     plt.close()
 
-if __name__ == '__main__':
-    pytest.main([__file__])
+# Execute tests if the script is run directly
+if __name__ == "__main__":
+    pytest.main(["-W", "error", __file__])

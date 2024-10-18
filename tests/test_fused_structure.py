@@ -18,10 +18,7 @@ fused_structures = [
     configuration.line.FusedProfile_05x05,
 ]
 
-test_ids = [f.__name__ for f in fused_structures]
-
-
-@pytest.mark.parametrize('fused_structure', fused_structures, ids=test_ids)
+@pytest.mark.parametrize('fused_structure', fused_structures, ids=lambda x: x.__name__)
 @patch("matplotlib.pyplot.show")
 def test_building_clad_structure(mock_show, fused_structure):
     clad = fused_structure(
@@ -35,5 +32,5 @@ def test_building_clad_structure(mock_show, fused_structure):
     plt.close()
 
 
-if __name__ == '__main__':
-    pytest.main([__file__])
+if __name__ == "__main__":
+    pytest.main(["-W error", __file__])

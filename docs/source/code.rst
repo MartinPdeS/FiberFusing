@@ -1,35 +1,21 @@
-:orphan:
-
 .. _source_code:
 
-Source code
-===========
+Source Code Documentation
+=========================
 
-Geometry
---------
-
- .. autoclass:: FiberFusing.geometry.Geometry
-     :members:
-     :inherited-members:
-     :member-order: bysource
+This section provides an overview of the primary classes used in the `FiberFusing` package. Each class includes detailed descriptions of its members and inherited members, organized by their source order for easy reference.
 
 
-Fused configuration
--------------------
+.. toctree::
+   :maxdepth: 2
+   :caption: Classes and Modules
 
- .. automodule:: FiberFusing.configuration
-     :members:
-     :inherited-members:
-     :member-order: bysource
-
-
-Axes
-----
-
- .. autoclass:: FiberFusing.coordinate_system.CoordinateSystem
-     :members:
-     :inherited-members:
-     :member-order: bysource
+   code/geometry.rst
+   code/coordinate_system.rst
+   code/buffer.rst
+   code/components.rst
+   code/overlay_structure.rst
+   code/utils.rst
 
 
 

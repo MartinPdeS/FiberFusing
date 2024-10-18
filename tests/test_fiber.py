@@ -67,5 +67,5 @@ def test_graded_index_fiber(mock_show):
     plt.close()
     mock_show.assert_called()
 
-if __name__ == '__main__':
-    pytest.main([__file__])
+if __name__ == "__main__":
+    pytest.main(["-W error", __file__])

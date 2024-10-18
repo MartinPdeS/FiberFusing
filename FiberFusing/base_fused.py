@@ -2,20 +2,16 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import annotations
-from typing import Union, Optional
+from typing import Union, Optional, List
 import logging
 from dataclasses import dataclass
 import shapely.geometry as geo
-from FiberFusing.utility.overlay_structure_on_mesh import OverlayStructureBaseClass
+from FiberFusing.overlay_structure_on_mesh import OverlayStructureBaseClass
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.buffer import Circle
-from FiberFusing.sub_structures.ring import FiberRing
-from FiberFusing.sub_structures.line import FiberLine
+from FiberFusing.fiber_structure import FiberLine, FiberRing
 import matplotlib.pyplot as plt
-from dataclasses import dataclass
-from typing import Optional, Union, List
 import numpy as np
-import shapely.geometry as geo
 from FiberFusing.utils import union_geometries
 from MPSPlots.styles import mps
 
@@ -44,7 +40,7 @@ class BaseFused(OverlayStructureBaseClass):
     and spatial configuration. This class facilitates the dynamic assembly of fiber optics structures and automates
     the overlay of these structures on a given mesh.
 
-    Attributes
+    Parameters
     ----------
     fiber_radius : float
         Radius of individual fibers in the structure.

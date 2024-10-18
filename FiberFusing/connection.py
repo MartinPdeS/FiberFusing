@@ -19,7 +19,7 @@ class Connection:
     """
     Represents a connection between two fiber circles.
 
-    Attributes
+    Parameters
     ----------
     fiber0 : Circle
         The first fiber in the connection.

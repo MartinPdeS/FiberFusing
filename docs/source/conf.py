@@ -3,7 +3,6 @@
 
 import sys
 from sphinx_gallery.sorting import FileNameSortKey
-from sphinx_gallery.sorting import ExplicitOrder
 from MPSPlots.styles import use_mpsplots_style
 
 import FiberFusing
@@ -19,7 +18,7 @@ def setup(app):
 
 
 autodoc_mock_imports = [
-    'numpy',
+    # 'numpy',
     'matplotlib',
     'scipy'
     'numpydoc',
@@ -28,7 +27,7 @@ autodoc_mock_imports = [
 
 
 project = 'FiberFusing'
-copyright = '2023, Martin Poinsinet de Sivry-Houle'
+copyright = '2024, Martin Poinsinet de Sivry-Houle'
 author = 'Martin Poinsinet de Sivry-Houle'
 
 
@@ -36,28 +35,36 @@ version = FiberFusing.__version__
 
 extensions = [
     'sphinx.ext.mathjax',
-    'numpydoc',
+    'pyvista.ext.plot_directive',
     'sphinx_gallery.gen_gallery',
+    'sphinx.ext.autodoc',
+    'sphinx.ext.napoleon',
+    'sphinx.ext.viewcode',
+    'sphinx.ext.autosectionlabel',
+    'sphinx.ext.intersphinx',
 ]
+
+# Napoleon settings for docstrings
+napoleon_google_docstring = False
+napoleon_numpy_docstring = True
 
 
 def reset_mpl(gallery_conf, fname):
     use_mpsplots_style()
 
+examples_files = [
+    'clad', 'geometry'
+]
 
 examples_dirs = [
     examples_path.joinpath('clad'),
     examples_path.joinpath('geometry')
 ]
 
-subsection_order = ExplicitOrder(
-    ["../examples/clad", "../examples/geometry"]
-)
 
 sphinx_gallery_conf = {
-    'examples_dirs': '../examples',
-    'gallery_dirs': 'gallery',
-    'subsection_order': subsection_order,
+    "examples_dirs": ['../examples/' + f for f in examples_files],
+    "gallery_dirs": ['gallery/' + f for f in examples_files],
     'image_scrapers': ('matplotlib'),
     'ignore_pattern': '/__',
     'plot_gallery': True,
@@ -79,23 +86,22 @@ autodoc_default_options = {
     'show-inheritance': True,
 }
 
+autosectionlabel_prefix_document = True
 numpydoc_show_class_members = False
+add_module_names = False
 
 source_suffix = '.rst'
-
 master_doc = 'index'
-
 language = 'en'
-
 highlight_language = 'python3'
-
 html_theme = "pydata_sphinx_theme"
+
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 exclude_trees = []
-default_role = "autolink"
+#default_role = "autolink"
 pygments_style = "sphinx"
 
 # -- Sphinx-gallery configuration --------------------------------------------
@@ -122,6 +128,11 @@ html_theme_options = {
             "url": "https://pypi.org/project/fiberfusing/",
             "icon": "fa-solid fa-box",
         },
+        {
+            "name": "Anaconda",
+            "url": "https://anaconda.org/MartinPdeS/fiberfusing",
+            "icon": "fa-brands fa-python",
+        },
     ],
     "navbar_align": "left",
     "navbar_end": ["version-switcher", "navbar-icon-links"],
@@ -146,7 +157,7 @@ latex_documents = [
 ]
 
 man_pages = [
-    (master_doc, 'supymode', 'FiberFusing Documentation',
+    (master_doc, 'fiberfusing', 'FiberFusing Documentation',
      [author], 1)
 ]
 
