@@ -1,10 +1,23 @@
+FiberFusing
+===========
+
 |logo|
 
-|python| |PyPi| |PyPi_download| |docs| |coverage|
 
-========================
-FiberFusing
-========================
+.. list-table::
+   :widths: 10 25 25
+   :header-rows: 0
+
+   * - Meta
+     - |python|
+     - |docs|
+   * - Testing
+     - |ci/cd|
+     - |coverage|
+   * - PyPi
+     - |PyPi|
+     - |PyPi_download|
+
 
 FiberFusing is a Python package designed for simulating the fiber fusing process. With this tool, users can define an initial fiber configuration and simulate the fusion process as a function of the fusion degree parameter. The package currently supports seven predefined structures:
 
@@ -86,3 +99,7 @@ We welcome feedback and contributions to improve FiberFusing and expand its capa
 .. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/FiberFusing/python-coverage-comment-action-data/badge.svg
    :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/FiberFusing/blob/python-coverage-comment-action-data/htmlcov/index.html
    :alt: Unittest coverage
+
+.. |ci/cd| image:: https://github.com/martinpdes/fiberfusing/actions/workflows/deploy_coverage.yml/badge.svg
+   :target: https://martinpdes.github.io/FiberFusing/actions
+   :alt: Unittest Status
