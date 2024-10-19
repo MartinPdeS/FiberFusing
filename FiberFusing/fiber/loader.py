@@ -4,8 +4,7 @@
 import yaml
 import numpy as np
 from pathlib import Path
-from MPSTools.material_catalogue.loader import get_material_index
-
+from PyOptik import MaterialBank
 
 def get_fiber_file_path(fiber_name: str) -> Path:
     """
@@ -50,7 +49,8 @@ def process_layers(layers: dict, wavelength: float = None) -> dict:
     for idx, layer in layers.items():
         layer_index = layer.get('index')
         if 'material' in layer and wavelength:
-            layer_index = get_material_index(layer['material'], wavelength)
+            layer_index = getattr(MaterialBank, layer['material']).compute_refractive_index(wavelength)[0]
+
         elif 'NA' in layer and outer_layer:
             layer_index = np.sqrt(layer['NA']**2 + outer_layer['index']**2)
 

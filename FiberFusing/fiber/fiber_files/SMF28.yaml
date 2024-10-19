@@ -5,7 +5,7 @@ layers:
   layer_1:
     name: 'cladding'
     radius: 62.5e-6
-    material: silica
+    material: fused_silica
 
   layer_2:
     name: 'core'

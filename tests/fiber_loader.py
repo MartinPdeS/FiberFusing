@@ -1,6 +1,5 @@
 import pytest
 from FiberFusing.fiber.generic_fiber import GenericFiber
-from FiberFusing.components.point import Point
 from FiberFusing.fiber.catalogue import load_fiber, make_fiber
 
 
