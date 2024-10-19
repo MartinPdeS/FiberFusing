@@ -17,6 +17,9 @@ FiberFusing
    * - PyPi
      - |PyPi|
      - |PyPi_download|
+   * - Anaconda
+     - |anaconda|
+     - |anaconda_download|
 
 
 FiberFusing is a Python package designed for simulating the fiber fusing process. With this tool, users can define an initial fiber configuration and simulate the fusion process as a function of the fusion degree parameter. The package currently supports seven predefined structures:
@@ -103,3 +106,11 @@ We welcome feedback and contributions to improve FiberFusing and expand its capa
 .. |ci/cd| image:: https://github.com/martinpdes/fiberfusing/actions/workflows/deploy_coverage.yml/badge.svg
    :target: https://martinpdes.github.io/FiberFusing/actions
    :alt: Unittest Status
+
+.. |anaconda_download| image:: https://anaconda.org/martinpdes/fiberfusing/badges/downloads.svg
+   :alt: Anaconda downloads
+   :target: https://anaconda.org/martinpdes/fiberfusing
+
+.. |anaconda| image:: https://anaconda.org/martinpdes/fiberfusing/badges/version.svg
+   :alt: Anaconda version
+   :target: https://anaconda.org/martinpdes/fiberfusing
