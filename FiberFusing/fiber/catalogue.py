@@ -7,6 +7,7 @@ from FiberFusing import micro
 from FiberFusing.fiber.loader import load_fiber_as_dict
 from MPSTools.material_catalogue.loader import get_silica_index
 from FiberFusing.components.point import Point
+from PyOptik import MaterialBank
 
 
 __all__ = [
@@ -111,7 +112,7 @@ class CapillaryTube(GenericFiber):
     def __init__(self, wavelength: float, radius: float, delta_n: float = 0.015):
         super().__init__(wavelength=wavelength)
         self.radius = radius
-        index = get_silica_index(wavelength=self.wavelength)
+        index = MaterialBank.fused_silica.compute_refractive_index(self.wavelength)[0]
         self.create_and_add_new_structure(index=index + delta_n, radius=self.radius, name='capillary tube')
 
 
