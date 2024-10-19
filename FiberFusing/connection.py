@@ -1,14 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Built-in imports
 import numpy
 import logging
 from scipy.optimize import minimize_scalar
 from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
-
-# Local imports
 import FiberFusing as ff
 from FiberFusing import utils
 from FiberFusing.buffer import Circle

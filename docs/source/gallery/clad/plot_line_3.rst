@@ -26,7 +26,7 @@
 
 
 .. image-sg:: /gallery/clad/images/sphx_glr_plot_line_3_001.png
-   :alt: plot line 3
+   :alt: Fiber structure
    :srcset: /gallery/clad/images/sphx_glr_plot_line_3_001.png
    :class: sphx-glr-single-img
 
@@ -131,14 +131,14 @@
         core_position_scrambling=0
     )
 
-    clad.plot()
+    clad.plot(show_cores=True, show_centers=True)
 
     # -
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.993 seconds)
+   **Total running time of the script:** (0 minutes 0.990 seconds)
 
 
 .. _sphx_glr_download_gallery_clad_plot_line_3.py:

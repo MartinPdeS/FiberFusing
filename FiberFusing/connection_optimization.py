@@ -1,7 +1,7 @@
+from typing import Tuple
 import logging
 from scipy.optimize import minimize_scalar
 from itertools import combinations
-
 from FiberFusing.connection import Connection
 from FiberFusing.buffer import Polygon
 from FiberFusing import utils
@@ -70,7 +70,7 @@ class ConnectionOptimization:
             self._removed_section = self.get_removed_section()
         return self._removed_section
 
-    def iterate_over_connected_fibers(self) -> tuple:
+    def iterate_over_connected_fibers(self) -> Tuple:
         """
         Generator that iterates over all connected fibers in the structure.
 
@@ -224,11 +224,11 @@ class ConnectionOptimization:
             The boundaries for the virtual shift.
         """
         logging.info("Computing the optimal structure geometry")
-        optimal_shift = self.find_optimal_virtual_shift(bounds)
-        self._clad_structure = self.compute_shifted_geometry(virtual_shift=optimal_shift)
+        self.find_optimal_virtual_shift(bounds)
+        self._clad_structure = self.compute_shifted_geometry()
         self.optimize_core_positions()
 
-    def compute_shifted_geometry(self, virtual_shift: float) -> Polygon:
+    def compute_shifted_geometry(self) -> Polygon:
         """
         Computes the clad geometry for a given virtual shift.
 

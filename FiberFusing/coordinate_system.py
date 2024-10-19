@@ -203,8 +203,8 @@ class CoordinateSystem:
         """
         self.dx = abs(self.max_x - self.min_x) / (self.nx - 1)
         self.dy = abs(self.max_y - self.min_y) / (self.ny - 1)
-        self.x_vector = np.linspace(self.min_x, self.max_x, num=self.nx, endpoint=True)
-        self.y_vector = np.linspace(self.min_y, self.max_y, num=self.ny, endpoint=True)
+        self.x_vector = np.linspace(*self.x_bounds, num=self.nx, endpoint=True)
+        self.y_vector = np.linspace(*self.y_bounds, num=self.ny, endpoint=True)
         self.x_mesh, self.y_mesh = np.meshgrid(self.x_vector, self.y_vector)
 
     def set_left(self) -> None:
@@ -227,8 +227,8 @@ class CoordinateSystem:
         """
         Set the coordinate system boundaries to align the grid to the top.
         """
-        self.max_y = 0
-        self.min_y = self.max_y - (self.ny - 1) * self.dy
+        self.min_y = 0
+        self.max_y = self.min_y + (self.ny - 1) * self.dy
         self.compute_parameters()
 
     def set_bottom(self) -> None:

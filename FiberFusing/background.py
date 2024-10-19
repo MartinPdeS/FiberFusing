@@ -7,7 +7,7 @@ from pydantic import ConfigDict
 import numpy as np
 
 from FiberFusing.coordinate_system import CoordinateSystem
-from FiberFusing.overlay_structure_on_mesh import OverlayStructureBaseClass
+from FiberFusing.helper import OverlayStructureBaseClass
 from FiberFusing import Circle
 
 

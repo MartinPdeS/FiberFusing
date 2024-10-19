@@ -6,7 +6,6 @@ from typing import Optional, Tuple
 import numpy
 from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
-
 from FiberFusing.components.base_class import Alteration
 import shapely.geometry as geo
 import matplotlib.pyplot as plt

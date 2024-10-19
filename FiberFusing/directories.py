@@ -8,11 +8,8 @@ import FiberFusing
 __all__ = [
     'root_path',
     'project_path',
-    'example_directory',
     'doc_path',
     'doc_css_path',
-    'version_path',
-    'examples_path',
 ]
 
 root_path = Path(FiberFusing.__path__[0])
@@ -24,10 +21,6 @@ example_directory = root_path.joinpath('examples')
 doc_path = project_path.joinpath('docs')
 
 doc_css_path = doc_path.joinpath('source/_static/default.css')
-
-version_path = root_path.joinpath('VERSION')
-
-examples_path = root_path.joinpath('examples')
 
 
 if __name__ == '__main__':

@@ -124,8 +124,8 @@ def test_set_top():
     system = CoordinateSystem(nx=11, ny=11, min_x=-5.0, max_x=5.0, min_y=-5.0, max_y=5.0)
     initial_dy = system.dy
     system.set_top()
-    assert system.max_y == 0
-    assert system.min_y == pytest.approx(-((system.ny - 1) * initial_dy))
+    assert system.max_y == ((system.ny - 1) * initial_dy)
+    assert system.min_y == 0
 
 def test_set_bottom():
     system = CoordinateSystem(nx=11, ny=11, min_x=-5.0, max_x=5.0, min_y=-5.0, max_y=5.0)

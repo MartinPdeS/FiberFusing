@@ -1,18 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
-from typing import Iterable, List, Optional, Union, Tuple
 import numpy
-from MPSPlots.styles import mps
-
+from typing import Iterable, List, Optional, Union, Tuple
 from matplotlib.path import Path
 import shapely.geometry as geo
 import matplotlib.pyplot as plt
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.components.base_class import BaseArea
 from FiberFusing.plottings import plot_polygon
-
 from pydantic.dataclasses import dataclass
 from dataclasses import field
 from pydantic import ConfigDict
@@ -25,10 +21,14 @@ class Polygon(BaseArea):
     """
     Initialize a Polygon instance with a set of coordinates or an existing Shapely Polygon.
 
-    Parameters:
-        coordinates (list, optional): A list of tuples representing the x, y coordinate pairs.
-        instance (geo.Polygon, optional): An existing Shapely Polygon object.
-        index (float, optional): A numerical index associated with the polygon.
+    Parameters
+    ----------
+    coordinates : list, optional
+        A list of tuples representing the x, y coordinate pairs.
+    instance : geo.Polygon, optional
+        An existing Shapely Polygon object.
+    index : float, optional
+        A numerical index associated with the polygon.
 
     Raises:
         ValueError: If neither coordinates nor instance is provided.

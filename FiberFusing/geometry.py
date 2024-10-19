@@ -6,14 +6,11 @@ import numpy
 from dataclasses import field
 from scipy.ndimage import gaussian_filter
 from pydantic.dataclasses import dataclass
-
+import FiberFusing
 import matplotlib.pyplot as plt
-from matplotlib import colors
-
 from FiberFusing.coordinate_system import CoordinateSystem
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.colors as colors
-import FiberFusing
 from MPSPlots.styles import mps
 from FiberFusing.helper import _plot_helper
 
@@ -332,10 +329,13 @@ class Geometry:
             ax (plt.Axes): The matplotlib axis to which the patch representation will be appended.
         """
         for structure in self.additional_structure_list:
-            structure.plot(ax=ax)
+            structure.plot(ax=ax, show=False)
 
         for fiber in self.fiber_list:
             fiber.plot(ax=ax, show=False)
+
+        ax.set(title='Fiber structure', xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
+        ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)
 
     @_plot_helper
     def plot_raster(self, ax: plt.Axes = None, show: bool = True) -> None:
@@ -355,8 +355,10 @@ class Geometry:
 
         divider = make_axes_locatable(ax)
         cax = divider.append_axes('right', size='5%', pad=0.05)
-        figure = ax.get_figure()
-        figure.colorbar(image, cax=cax, orientation='vertical')
+        ax.get_figure().colorbar(image, cax=cax, orientation='vertical')
+
+        ax.set(title='Fiber structure', xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
+        ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)
 
     def plot(self, show_patch: bool = True, show_mesh: bool = True, show: bool = True) -> plt.Figure:
         """
@@ -376,16 +378,19 @@ class Geometry:
         unit_size = numpy.array([1, n_ax])
 
         with plt.style.context(mps):
-            figure, axes = plt.subplots(
+            _, axes = plt.subplots(
                 *unit_size,
                 figsize=5 * numpy.flip(unit_size),
-                subplot_kw=dict(aspect='auto', xlabel='x-distance [m]', ylabel='y-distance [m]'))
+                sharex=True,
+                sharey=True,
+                subplot_kw=dict(aspect='equal', xlabel='x-distance [m]', ylabel='y-distance [m]'),
+            )
 
         axes_iter = iter(axes.flatten())
 
         if show_patch:
             ax = next(axes_iter)
-            self.plot_patch(ax, show=False)
+            self.plot_patch(axes[0], show=False)
 
         if show_mesh:
             ax = next(axes_iter)

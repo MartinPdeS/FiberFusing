@@ -6,24 +6,24 @@
 
 Computation times
 =================
-**00:08.903** total execution time for **gallery_clad** files:
+**00:00.990** total execution time for **gallery_clad** files:
 
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_ring_7.py` (``plot_ring_7.py``)   | 00:02.492 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_line_3.py` (``plot_line_3.py``)   | 00:00.990 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_line_5.py` (``plot_line_5.py``)   | 00:01.774 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_line_4.py` (``plot_line_4.py``)   | 00:00.000 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_ring_4.py` (``plot_ring_4.py``)   | 00:01.524 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_line_5.py` (``plot_line_5.py``)   | 00:00.000 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_line_4.py` (``plot_line_4.py``)   | 00:01.346 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_ring_12.py` (``plot_ring_12.py``) | 00:00.000 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_line_3.py` (``plot_line_3.py``)   | 00:00.993 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_ring_19.py` (``plot_ring_19.py``) | 00:00.000 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_ring_2.py` (``plot_ring_2.py``)   | 00:00.364 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_ring_2.py` (``plot_ring_2.py``)   | 00:00.000 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_ring_19.py` (``plot_ring_19.py``) | 00:00.177 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_ring_4.py` (``plot_ring_4.py``)   | 00:00.000 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_ring_12.py` (``plot_ring_12.py``) | 00:00.137 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_ring_7.py` (``plot_ring_7.py``)   | 00:00.000 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+
-| :ref:`sphx_glr_gallery_clad_plot_single.py` (``plot_single.py``)   | 00:00.097 | 0.0 MB |
+| :ref:`sphx_glr_gallery_clad_plot_single.py` (``plot_single.py``)   | 00:00.000 | 0.0 MB |
 +--------------------------------------------------------------------+-----------+--------+

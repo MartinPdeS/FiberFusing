@@ -2,19 +2,17 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import annotations
-from typing import Union, Optional, List
+from typing import Union, Optional, List, Dict, Tuple
+import matplotlib.pyplot as plt
+import numpy as np
 import logging
 from dataclasses import dataclass
 import shapely.geometry as geo
-from FiberFusing.overlay_structure_on_mesh import OverlayStructureBaseClass
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.buffer import Circle
 from FiberFusing.fiber_structure import FiberLine, FiberRing
-import matplotlib.pyplot as plt
-import numpy as np
 from FiberFusing.utils import union_geometries
-from MPSPlots.styles import mps
-from FiberFusing.helper import _plot_helper
+from FiberFusing.helper import _plot_helper, OverlayStructureBaseClass
 
 logging.basicConfig(level=logging.INFO)
 
@@ -167,17 +165,6 @@ class BaseFused(OverlayStructureBaseClass):
         if self._clad_structure is None:
             self._clad_structure = union_geometries(*self.structure_list)
         return self._clad_structure
-
-
-
-
-
-
-
-
-
-
-
 
     @property
     def structure_dictionary(self) -> Dict[str, Dict[str, object]]:
@@ -604,5 +591,5 @@ class BaseFused(OverlayStructureBaseClass):
             for idx, fiber in enumerate(self.fiber_list):
                 fiber.center.plot(ax, marker='o', size=40, label=f'Center$_{idx}$', show=False)
 
-        # for fiber in self.fiber_list:
-        #     fiber.plot(ax, show=False)
+        for fiber in self.fiber_list:
+            fiber.plot(ax, show=False)

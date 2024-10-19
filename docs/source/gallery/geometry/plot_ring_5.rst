@@ -28,9 +28,9 @@ This script demonstrates how to create and visualize a 5x5 ring geometry using t
 
 
     from FiberFusing import Geometry, BackGround
-    from FiberFusing.fiber.catalogue import load_fiber, get_silica_index
+    from FiberFusing.fiber.catalogue import load_fiber
     from FiberFusing.configuration.ring import FusedProfile_05x05
-
+    from PyOptik import MaterialBank
 
 
 
@@ -43,11 +43,12 @@ This script demonstrates how to create and visualize a 5x5 ring geometry using t
 
 Define the operational parameters
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-46
+.. GENERATED FROM PYTHON SOURCE LINES 14-47
 
 .. code-block:: python3
 
     wavelength = 1.55e-6  # Wavelength in meters (1.55 micrometers)
+    index = MaterialBank.fused_silica.compute_refractive_index(wavelength)[0]
 
     # Set up the background medium (air)
     air_background = BackGround(index=1.0)
@@ -56,7 +57,7 @@ Define the operational parameters
     cladding = FusedProfile_05x05(
         fiber_radius=62.5e-6,  # Radius of the fibers in the cladding (in meters)
         fusion_degree=0.1,  # Degree of fusion in the structure
-        index=get_silica_index(wavelength=wavelength)  # Refractive index of silica at the specified wavelength
+        index=index  # Refractive index of silica at the specified wavelength
     )
 
     # Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure
@@ -78,15 +79,25 @@ Define the operational parameters
     geometry.add_fiber(*fibers)
 
     # Plot the resulting geometry
-    geometry.plot()
+    geometry.plot(show_mesh=True)
 
 
 
 .. image-sg:: /gallery/geometry/images/sphx_glr_plot_ring_5_001.png
-   :alt: Coupler index structure, Rasterized mesh
+   :alt: plot ring 5
    :srcset: /gallery/geometry/images/sphx_glr_plot_ring_5_001.png
    :class: sphx-glr-single-img
 
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    Axes(0.125,0.11;0.352273x0.77) False
+    Axes(0.125,0.11;0.352273x0.77) False
+    Axes(0.125,0.11;0.352273x0.77) False
+    Axes(0.125,0.11;0.352273x0.77) False
+    Axes(0.125,0.11;0.352273x0.77) False
 
 
 
@@ -94,7 +105,7 @@ Define the operational parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.822 seconds)
+   **Total running time of the script:** (0 minutes 2.988 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_ring_5.py:

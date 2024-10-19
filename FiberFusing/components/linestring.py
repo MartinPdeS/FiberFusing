@@ -3,16 +3,11 @@
 
 from typing import Optional, Tuple
 import numpy as np
-
 from pydantic.dataclasses import dataclass
 from dataclasses import field
 from pydantic import ConfigDict
-
 from shapely.affinity import scale
 import shapely.geometry as geo
-
-from MPSPlots.render2D import SceneList
-import matplotlib.pyplot as plt
 from FiberFusing.components.base_class import Alteration
 import FiberFusing as ff
 

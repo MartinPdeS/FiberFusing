@@ -93,7 +93,7 @@ class GenericFiber(BaseClass):
 
         self.wavelength = new_value
         for structure in self.structure_list:
-            structure.refractive_index = self.pure_silica_index  # Update refractive index based on the new wavelength
+            structure.refractive_index = self.pure_silica_index
 
 
     def update_position(self, new_value: Tuple[float, float]) -> None:
@@ -389,9 +389,8 @@ class GenericFiber(BaseClass):
         resolution : int, optional
             Resolution for rasterizing structures. Default is 300.
         """
-        print(ax, show_center, )
-        # for structure in self.fiber_structure:
-        #     plot_polygon(ax=ax, poly=structure.polygon)
+        for structure in self.fiber_structure:
+            plot_polygon(ax=ax, poly=structure.polygon)
 
         # if show_center:
         #     self.center.plot(ax, marker='o', size=140, color='black', label='Center')

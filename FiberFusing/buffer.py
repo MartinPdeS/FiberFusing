@@ -4,7 +4,6 @@
 from typing import Tuple, Optional
 from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
-
 import shapely.geometry as geo
 from shapely import affinity
 
