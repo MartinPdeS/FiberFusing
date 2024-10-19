@@ -9,12 +9,13 @@ from pydantic.dataclasses import dataclass
 
 import matplotlib.pyplot as plt
 from matplotlib import colors
-from functools import wraps
 
 from FiberFusing.coordinate_system import CoordinateSystem
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.colors as colors
 import FiberFusing
+from MPSPlots.styles import mps
+from FiberFusing.helper import _plot_helper
 
 
 @dataclass(config=dict(extra='forbid', kw_only=True))
@@ -322,12 +323,8 @@ class Geometry:
 
         return mesh
 
-    def format_ax(self, ax) -> None:
-        ax.set(xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
-        ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)
-        ax.set_aspect('equal')
-
-    def render_patch_on_ax(self, ax: plt.Axes) -> None:
+    @_plot_helper
+    def plot_patch(self, ax: plt.Axes = None, show: bool = True) -> None:
         """
         Renders the patch representation of the geometry onto a given matplotlib axis.
 
@@ -335,15 +332,13 @@ class Geometry:
             ax (plt.Axes): The matplotlib axis to which the patch representation will be appended.
         """
         for structure in self.additional_structure_list:
-            structure.render_patch_on_ax(ax=ax)
+            structure.plot(ax=ax)
 
         for fiber in self.fiber_list:
-            fiber.render_patch_on_ax(ax=ax)
+            fiber.plot(ax=ax, show=False)
 
-        self.format_ax(ax=ax)
-
-
-    def render_mesh_on_ax(self, ax: plt.Axes) -> None:
+    @_plot_helper
+    def plot_raster(self, ax: plt.Axes = None, show: bool = True) -> None:
         """
         Renders the rasterized representation of the geometry onto a given matplotlib axis.
 
@@ -361,9 +356,9 @@ class Geometry:
         divider = make_axes_locatable(ax)
         cax = divider.append_axes('right', size='5%', pad=0.05)
         figure = ax.get_figure()
-        figure.colorbar(image, cax=cax, orientation='vertical');
+        figure.colorbar(image, cax=cax, orientation='vertical')
 
-    def render_plot(self, show_patch: bool = True, show_mesh: bool = True) -> plt.Figure:
+    def plot(self, show_patch: bool = True, show_mesh: bool = True, show: bool = True) -> plt.Figure:
         """
         Plot the different representations [patch, mesh] of the geometry.
 
@@ -376,30 +371,25 @@ class Geometry:
         :rtype:     plt.Figure
         """
         self.generate_coordinate_mesh()
-        n_ax = bool(show_patch) + bool(show_mesh)
 
+        n_ax = bool(show_patch) + bool(show_mesh)
         unit_size = numpy.array([1, n_ax])
-        figure, axes = plt.subplots(*unit_size, figsize=5 * numpy.flip(unit_size))
+
+        with plt.style.context(mps):
+            figure, axes = plt.subplots(
+                *unit_size,
+                figsize=5 * numpy.flip(unit_size),
+                subplot_kw=dict(aspect='auto', xlabel='x-distance [m]', ylabel='y-distance [m]'))
 
         axes_iter = iter(axes.flatten())
 
         if show_patch:
             ax = next(axes_iter)
-            self.render_patch_on_ax(ax)
-            ax.set(title='Coupler index structure')
-            self.format_ax(ax=ax)
+            self.plot_patch(ax, show=False)
 
         if show_mesh:
             ax = next(axes_iter)
-            ax.set(title='Rasterized mesh')
-            self.format_ax(ax=ax)
-            self.render_mesh_on_ax(ax)
+            self.plot_raster(ax, show=False)
 
-        plt.tight_layout()
-
-        return figure
-
-    @wraps(render_plot)
-    def plot(self, *args, **kwargs):
-        self.render_plot(*args, **kwargs)
-        plt.show()
+        if show:
+            plt.show()

@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from FiberFusing.utils import union_geometries
 from MPSPlots.styles import mps
+from FiberFusing.helper import _plot_helper
 
 logging.basicConfig(level=logging.INFO)
 
@@ -558,35 +559,16 @@ class BaseFused(OverlayStructureBaseClass):
 
         return self
 
-    def plot(self, **kwargs) -> None:
+    @_plot_helper
+    def plot(self,
+            ax: plt.Axis = None,
+            show_structure: bool = True,
+            show_centers: bool = False,
+            show_cores: bool = True,
+            show_added: bool = True,
+            show_removed: bool = True) -> None:
         """
         Plot the structure using matplotlib.
-
-        Parameters
-        ----------
-        kwargs : dict
-            Additional keyword arguments for rendering.
-        """
-        with plt.style.context(mps):
-            figure, ax = plt.subplots(1, 1)
-
-        ax.set(xlabel='x-distance [m]', ylabel='y-distance [m]')
-
-        self.render_patch_on_ax(ax=ax, **kwargs)
-        ax.set_aspect('equal')
-        plt.show()
-
-    def render_patch_on_ax(
-        self,
-        ax: plt.Axes,
-        show_structure: bool = True,
-        show_fibers: bool = False,
-        show_shifted_cores: bool = True,
-        show_added: bool = True,
-        show_removed: bool = True
-    ) -> None:
-        """
-        Render the structure's geometry on the given axis.
 
         Parameters
         ----------
@@ -594,7 +576,7 @@ class BaseFused(OverlayStructureBaseClass):
             The axis to render on.
         show_structure : bool, optional
             Whether to show the fused structure. Default is True.
-        show_fibers : bool, optional
+        show_centers : bool, optional
             Whether to show the unfused fibers. Default is False.
         show_shifted_cores : bool, optional
             Whether to show the shifted cores. Default is True.
@@ -604,21 +586,23 @@ class BaseFused(OverlayStructureBaseClass):
             Whether to show removed sections. Default is True.
         """
         if show_structure:
-            self.clad_structure._render_on_ax_(ax)
+            self.clad_structure.plot(ax, show=False)
 
         if show_added:
             added_section = union_geometries(*self.added_section_list)
-            added_section._render_on_ax_(ax=ax, facecolor='green', label='added section')
+            added_section.plot(ax=ax, facecolor='green', show=False)
 
         if show_removed:
             removed_section = union_geometries(*self.removed_section_list)
-            removed_section._render_on_ax_(ax=ax, facecolor='red', label='removed section')
+            removed_section.plot(ax=ax, facecolor='red', show=False)
 
-        if show_fibers:
-            for fiber in self.fiber_list:
-                fiber._render_on_ax_(ax)
-                fiber.center._render_on_ax_(ax, marker='o', s=40, label='core')
+        if show_cores:
+            for idx, fiber in enumerate(self.fiber_list):
+                fiber.shifted_core.plot(ax, marker='x', size=40, label=f'Core$_{idx}$', show=False)
 
-        if show_shifted_cores:
-            for fiber in self.fiber_list:
-                fiber.shifted_core.render_on_axis(ax, marker='x', s=40, label='shifted core')
+        if show_centers:
+            for idx, fiber in enumerate(self.fiber_list):
+                fiber.center.plot(ax, marker='o', size=40, label=f'Center$_{idx}$', show=False)
+
+        # for fiber in self.fiber_list:
+        #     fiber.plot(ax, show=False)

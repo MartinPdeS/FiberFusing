@@ -13,6 +13,6 @@ clad = FusedProfile(
     core_position_scrambling=0
 )
 
-clad.plot()
+clad.plot(show_cores=True, show_centers=True)
 
 # -

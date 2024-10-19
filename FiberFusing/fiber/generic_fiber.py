@@ -14,6 +14,7 @@ import pprint
 import matplotlib.pyplot as plt
 pp = pprint.PrettyPrinter(indent=4, sort_dicts=False, compact=True, width=1)
 from FiberFusing.plottings import plot_polygon
+from FiberFusing.helper import _plot_helper
 
 
 @dataclass(config=ConfigDict(extra='forbid', kw_only=True))
@@ -201,18 +202,6 @@ class GenericFiber(BaseClass):
             radius=radius
         )
 
-    def render_patch_on_ax(self, ax: plt.Axes) -> None:
-        """
-        Render the patch representation of the fiber geometry on the provided axis.
-
-        Parameters
-        ----------
-        ax : plt.Axes
-            The axis on which to render the patch.
-        """
-        for structure in self.fiber_structure:
-            plot_polygon(ax=ax, poly=structure.polygon)
-
     def shift_coordinates(self, coordinate_system: CoordinateSystem, x_shift: float, y_shift: float) -> numpy.ndarray:
         """
         Shift the coordinates of the given coordinate system.
@@ -390,20 +379,8 @@ class GenericFiber(BaseClass):
             coordinate_system=coordinate_system
         )
 
-    def format_ax(self, ax) -> None:
-        """
-        Format the axis for visualization.
-
-        Parameters
-        ----------
-        ax : plt.Axes
-            The axis to format.
-        """
-        ax.set(xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
-        ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)
-        ax.set_aspect('equal')
-
-    def plot(self) -> None:
+    @_plot_helper
+    def plot(self, ax: plt.Axes = None, show_center: bool = False, show_core: bool = True) -> None:
         """
         Plot the fiber geometry representation including patch and raster-mesh.
 
@@ -412,17 +389,15 @@ class GenericFiber(BaseClass):
         resolution : int, optional
             Resolution for rasterizing structures. Default is 300.
         """
-        figure, ax = plt.subplots(1, 1, squeeze=True)
+        print(ax, show_center, )
+        # for structure in self.fiber_structure:
+        #     plot_polygon(ax=ax, poly=structure.polygon)
 
-        self.render_patch_on_ax(ax=ax)
+        # if show_center:
+        #     self.center.plot(ax, marker='o', size=140, color='black', label='Center')
 
-        ax.set(title='Fiber structure')
-
-        self.format_ax(ax=ax)
-
-        plt.tight_layout()
-
-        plt.show()
+        # if show_core:
+        #     self.center.plot(ax, marker='x', size=140, color='tab:blue', label='Core')
 
     def get_structures_boundaries(self) -> numpy.ndarray:
         """

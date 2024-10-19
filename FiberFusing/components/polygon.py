@@ -4,7 +4,7 @@
 
 from typing import Iterable, List, Optional, Union, Tuple
 import numpy
-
+from MPSPlots.styles import mps
 
 from matplotlib.path import Path
 import shapely.geometry as geo
@@ -16,6 +16,7 @@ from FiberFusing.plottings import plot_polygon
 from pydantic.dataclasses import dataclass
 from dataclasses import field
 from pydantic import ConfigDict
+from FiberFusing.helper import _plot_helper
 
 config = ConfigDict(extra='forbid', arbitrary_types_allowed=True, kw_only=True)
 
@@ -111,7 +112,8 @@ class Polygon(BaseArea):
 
         return self
 
-    def _render_on_ax_(self, ax: plt.Axes, **kwargs) -> None:
+    @_plot_helper
+    def plot(self, ax: plt.Axes, **kwargs) -> None:
         """
         Render the Polygon on a specific axis.
 
@@ -121,31 +123,14 @@ class Polygon(BaseArea):
         :returns:   No return
         :rtype:     None
         """
+        # TODO: rings -> https://sgillies.net/2010/04/06/painting-punctured-polygons-with-matplotlib.html
+
         if isinstance(self._shapely_object, geo.MultiPolygon):
             for polygon in self._shapely_object.geoms:
-                self.render_simple_polygon_on_axis(ax=ax, polygon=polygon, **kwargs)
+                plot_polygon(ax, polygon, **kwargs)
 
         else:
-            self.render_simple_polygon_on_axis(ax=ax, polygon=self._shapely_object, **kwargs)
-
-    def render_simple_polygon_on_axis(self, polygon: geo.Polygon, ax: plt.Axes, **kwargs) -> None:
-        """
-        Render the a specific polygon on the given axis.
-
-        :param      polygon:        The multi polygon
-        :type       polygon:        geo.Polygon
-        :param      ax:             The axis to which add the plot
-        :type       ax:             plt.Axes
-
-        :returns:   The scene list.
-        :rtype:     SceneList
-        """
-
-        # TODO: rings -> https://sgillies.net/2010/04/06/painting-punctured-polygons-with-matplotlib.html
-        coordinates = numpy.atleast_2d(polygon.exterior.coords)
-
-        coordinates = numpy.atleast_2d(polygon.exterior.coords)
-        plot_polygon(ax, polygon, **kwargs)
+            plot_polygon(ax, self._shapely_object, **kwargs)
 
     def rasterize(self, coordinate_system: CoordinateSystem) -> numpy.ndarray:
         """
@@ -294,7 +279,8 @@ class _Polygon(BaseArea):
 
         return self
 
-    def _render_on_ax_(self, ax: plt.Axes, **kwargs) -> None:
+    @_plot_helper
+    def plot(self, ax: plt.Axes = None, **kwargs) -> None:
         """
         Render the Polygon on a specific axis.
 
@@ -306,28 +292,10 @@ class _Polygon(BaseArea):
         """
         if isinstance(self._shapely_object, geo.MultiPolygon):
             for polygon in self._shapely_object.geoms:
-                self.render_simple_polygon_on_axis(ax=ax, polygon=polygon, **kwargs)
+                plot_polygon(ax=ax, poly=polygon, **kwargs)
 
         else:
-            self.render_simple_polygon_on_axis(ax=ax, polygon=self._shapely_object, **kwargs)
-
-    def render_simple_polygon_on_axis(self, polygon: geo.Polygon, ax: plt.Axes, **kwargs) -> None:
-        """
-        Render the a specific polygon on the given axis.
-
-        :param      polygon:        The multi polygon
-        :type       polygon:        geo.Polygon
-        :param      ax:             The axis to which add the plot
-        :type       ax:             plt.Axes
-
-        :returns:   The scene list.
-        :rtype:     SceneList
-        """
-
-        # TODO: rings -> https://sgillies.net/2010/04/06/painting-punctured-polygons-with-matplotlib.html
-        coordinates = numpy.atleast_2d(polygon.exterior.coords)
-
-        plot_polygon(ax=ax, poly=polygon)
+            plot_polygon(ax=ax, poly=self._shapely_object, **kwargs)
 
     def rasterize(self, coordinate_system: CoordinateSystem) -> numpy.ndarray:
         """
