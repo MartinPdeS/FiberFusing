@@ -18,7 +18,6 @@ def setup(app):
 
 
 autodoc_mock_imports = [
-    # 'numpy',
     'matplotlib',
     'scipy'
     'numpydoc',

@@ -26,6 +26,10 @@ FiberFusing is a Python package designed for simulating the fiber fusing process
 
 1x1, 2x2, 3x3, 4x4, 6x6, 7x7, and 19x19 configurations.
 
+As follows, an example of 3x3 fused fiber.
+|example_3x3|
+
+
 ----
 
 Documentation
@@ -114,3 +118,6 @@ We welcome feedback and contributions to improve FiberFusing and expand its capa
 .. |anaconda| image:: https://anaconda.org/martinpdes/fiberfusing/badges/version.svg
    :alt: Anaconda version
    :target: https://anaconda.org/martinpdes/fiberfusing
+
+.. |example_3x3| image:: https://github.com/MartinPdeS/FiberFusing/raw/master/docs/images/example_3x3.png
+   :alt: Example for 3 fiber structure

@@ -20,6 +20,8 @@ example_directory = root_path.joinpath('examples')
 
 doc_path = project_path.joinpath('docs')
 
+examples_path = project_path.joinpath('docs/examples')
+
 doc_css_path = doc_path.joinpath('source/_static/default.css')
 
 
