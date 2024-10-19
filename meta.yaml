@@ -24,6 +24,7 @@ requirements:
     - pip
     - martinpdes::mpsplots
   run:
+    - pyyaml ~= 6.0
     - martinpdes::mpsplots
     - scipy ~=1.14
     - pydantic ~=2.9
