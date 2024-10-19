@@ -1,0 +1,18 @@
+# always from the outer-mode to inner-most
+
+layers:
+  layer_1:
+    name: 'cladding'
+    radius: 62.5e-6
+    material: silica
+
+  layer_2:
+    name: 'inner-clad'
+    radius: 9.8e-6
+    NA: 0.117
+
+  layer_3:
+    name: 'core'
+    radius: 4.5e-6
+    NA: 0.13
+

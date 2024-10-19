@@ -72,9 +72,10 @@ class Geometry:
             min_x=min_x, max_x=max_x, min_y=min_y, max_y=max_y, nx=self.resolution, ny=self.resolution
         )
 
-        self.coordinate_system.centering(factor=self.boundary_pad_factor)
+        self.coordinate_system.center(factor=self.boundary_pad_factor)
         self.interpret_y_boundary()
         self.interpret_x_boundary()
+
 
     def add_fiber(self, *fibers: object) -> None:
         """
@@ -120,7 +121,7 @@ class Geometry:
             If x_bounds is invalid.
         """
         if isinstance(self.x_bounds, (list, tuple)):
-            self.coordinate_system.set_x_boundary(self.x_bounds)
+            self.coordinate_system.x_bounds = self.x_bounds
         else:
             match self.x_bounds:
                 case 'right':
@@ -142,7 +143,7 @@ class Geometry:
             If y_bounds is invalid.
         """
         if isinstance(self.y_bounds, (list, tuple)):
-            self.coordinate_system.set_y_boundary(self.y_bounds)
+            self.coordinate_system.y_bounds = self.y_bounds
         else:
             match self.y_bounds:
                 case 'top':
@@ -229,6 +230,7 @@ class Geometry:
         """
         self.generate_coordinate_system()
         self.mesh = self.generate_mesh()
+
 
     def randomize_fiber_structures_index(self, random_factor: float) -> None:
         """

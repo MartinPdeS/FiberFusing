@@ -1,10 +1,10 @@
 package:
-  name: pyfinitdiff
+  name: fiberfusing
   version: {{ GIT_DESCRIBE_TAG }}
 
 source:
   path: ../
-  git_url: https://github.com/MartinPdeS/PyFinitDiff.git
+  git_url: https://github.com/MartinPdeS/FiberFusing.git
 
 build:
   noarch: python
@@ -34,29 +34,27 @@ requirements:
 about:
   home: https://github.com/MartinPdeS/PyFinitDiff
   license: MIT
-  summary: "A package for refractive index values."
-  description: PyOptik is a library that helps the end-user to build it's own refractive index library.
+  summary: "A package fiber fusing configuration simulating the transverse fusion of fiber optics."
+  description: FiberFusing is a library that simulate the fusing of fiber optics through scanning flame. It's compuation is based on "The shape of the taper" from Birks.
   dev_url: https://github.com/MartinPdeS/PyFinitDiff
   doc_url: https://pyfinitdiff.readthedocs.io
   license_file: LICENSE
   keywords:
-    - finite-difference
-    - solving
-    - linear algebra
+    - fiber optics
+    - fusion
+    - fiber components
 
 test:
   imports:
-    - PyFinitDiff
+    - FiberFusing
   requires:
-    - pip
-    - pint
-    - pytest>=0.6
-    - pytest-cov>=2.0
-    - pytest-json-report==1.5.0
-    - mypy>=0.910
-    - flake8>=3.9
-    - tox>=3.24
-    - coverage==7.6.1
+    - pytest >=0.6
+    - pytest-cov >=2.0
+    - pytest-json-report ~=1.5
+    - mypy >=0.910
+    - flake8 >=3.9
+    - tox >=3.24
+    - coverage ~=7.6
   commands:
     - python -m pytest
   source_files:

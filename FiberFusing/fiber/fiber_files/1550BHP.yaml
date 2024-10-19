@@ -1,0 +1,14 @@
+# always from the outer-mode to inner-most
+# Specs: https://www.thorlabs.com/drawings/47f35ca99a493bc9-ED5E9368-9B4C-71F6-D6654290E79ED3E6/1550BHP-SpecSheet.pdf
+
+layers:
+  layer_1:
+    name: 'clad'
+    radius: 62.5e-6
+    material: silica
+
+  layer_2:
+    name: 'core'
+    radius: 4.5e-6
+    NA: 0.13
+

@@ -1,0 +1,8 @@
+# always from the outer-mode to inner-most
+
+layers:
+  layer_1:
+    name: 'outer-clad'
+    radius: 62.5e-6
+    material: fluorine_doped_silica_1%
+

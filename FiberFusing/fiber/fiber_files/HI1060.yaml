@@ -1,0 +1,14 @@
+# always from the outer-mode to inner-most
+# Specs: https://www.corning.com/media/worldwide/csm/documents/HI%201060%20Specialty%20Fiber%20PDF.pdf
+
+layers:
+  layer_1:
+    name: 'clad'
+    radius: 62.5e-6
+    material: silica
+
+  layer_2:
+    name: 'core'
+    radius: 2.65e-6
+    NA: 0.14
+

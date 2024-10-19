@@ -1,0 +1,14 @@
+# always from the outer-mode to inner-most
+# specs: https://www.thorlabs.com/drawings/47f35ca99a493bc9-ED5E9368-9B4C-71F6-D6654290E79ED3E6/SMF-28-J9-SpecSheet.pdf
+
+layers:
+  layer_1:
+    name: 'cladding'
+    radius: 62.5e-6
+    material: silica
+
+  layer_2:
+    name: 'core'
+    radius: 4.1e-6
+    NA: 0.14
+
