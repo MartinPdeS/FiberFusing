@@ -1,0 +1,91 @@
+[build-system]
+requires = ["setuptools>=40.8.0", "wheel", "setuptools_scm[toml]>=8.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "FiberFusing"
+dynamic = ["version"]
+description = "A package fiber fusing configuration simulating the transverse fusion of fiber optics."
+license = {file = "LICENSE"}
+readme = "README.rst"
+requires-python = ">=3.10"
+authors = [{ name="Martin Poinsinet de Sivry-Houle", email="martin.poinsinet.de.sivry@gmail.com"}]
+classifiers = [
+    'Programming Language :: Python',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.11',
+    'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: Implementation :: CPython',
+    'Development Status :: 4 - Beta',
+    'Topic :: Scientific/Engineering :: Physics',
+    'License :: OSI Approved :: MIT License',
+    'Intended Audience :: Science/Research',
+]
+
+keywords = [
+    "fiber",
+    "fusing",
+]
+
+dependencies = [
+    "pyyaml ~= 6.0",
+    "pydantic >=2.9",
+    "scipy ~=1.11",
+    "numpy ~=1.26",
+    "shapely ~=2.0",
+    "MPSPlots",
+    "PyOptik"
+]
+
+[project.urls]
+Homepage = "https://github.com/MartinPdeS/FiberFusing"
+Documentation = "https://martinpdes.github.io/FiberFusing/"
+Repository = "https://github.com/MartinPdeS/FiberFusing.git"
+
+[tool.setuptools_scm]
+write_to = "FiberFusing/_version.py"
+version_scheme = "post-release"
+local_scheme = "no-local-version"
+
+[project.optional-dependencies]
+testing = [
+    "pytest ~=7.4",
+    "pytest-cov ~=2.0",
+    "pytest-json-report ~=1.5",
+    "mypy ~=0.910",
+    "flake8 ~=3.9",
+    "tox ~=3.24",
+    "coverage ~=7.6"
+]
+
+documentation = [
+    "numpydoc ~=1.8",
+    "sphinx >=6",
+    "sphinx-gallery ~=0.17",
+    "sphinx-rtd-theme ~=2.0",
+    "pydata-sphinx-theme ~=0.15"
+]
+
+[tool.pytest.ini_options]
+minversion = "6.0"
+xfail_strict = true
+log_cli_level = "INFO"
+testpaths = ["tests"]
+addopts = [
+    '-v',
+    '-rA',
+    '-rw',
+    '--cov=FiberFusing',
+    '--cov-report=html',
+    "--cov-report=term"
+]
+
+[tool.coverage.run]
+source = ['FiberFusing']
+omit = [
+    '*\__init__.py',
+    '*/_version.py',
+    '*/directories.py',
+]
+branch = true
+relative_files = true

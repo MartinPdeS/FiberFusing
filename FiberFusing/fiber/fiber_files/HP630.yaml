@@ -1,0 +1,13 @@
+# always from the outer-mode to inner-most
+
+layers:
+  layer_1:
+    name: 'cladding'
+    radius: 62.5e-6
+    material: fused_silica
+
+  layer_2:
+    name: 'core'
+    radius: 1.75e-6
+    NA: 0.13
+
