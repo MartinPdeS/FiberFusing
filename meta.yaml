@@ -23,9 +23,11 @@ requirements:
     - setuptools-scm >=8.0
     - pip
     - martinpdes::mpsplots
+    - martinpdes::pyoptik
   run:
     - pyyaml ~= 6.0
     - martinpdes::mpsplots
+    - martinpdes::pyoptik
     - scipy ~=1.14
     - pydantic ~=2.9
     - numpy ~=1.26
