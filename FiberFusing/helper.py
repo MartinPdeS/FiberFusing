@@ -1,5 +1,7 @@
+import numpy
 from MPSPlots.styles import mps
 import matplotlib.pyplot as plt
+
 
 def _plot_helper(function):
     def wrapper(self, ax: plt.Axes = None, show: bool = True, **kwargs):
@@ -12,21 +14,16 @@ def _plot_helper(function):
 
         function(self, ax=ax, **kwargs)
 
-
-
-        handles, labels = ax.get_legend_handles_labels()
+        _, labels = ax.get_legend_handles_labels()
 
         # Only add a legend if there are labels
         if labels:
             ax.legend()
 
-
         if show:
             plt.show()
 
     return wrapper
-
-import numpy
 
 
 class OverlayStructureBaseClass:

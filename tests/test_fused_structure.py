@@ -18,6 +18,7 @@ fused_structures = [
     configuration.line.FusedProfile_05x05,
 ]
 
+
 @pytest.mark.parametrize('fused_structure', fused_structures, ids=lambda x: x.__name__)
 @patch("matplotlib.pyplot.show")
 def test_building_clad_structure(mock_show, fused_structure):

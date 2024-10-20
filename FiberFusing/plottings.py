@@ -4,11 +4,6 @@ from matplotlib.patches import PathPatch
 from matplotlib.collections import PatchCollection
 
 
-import numpy as np
-from matplotlib.path import Path
-from matplotlib.patches import PathPatch
-from matplotlib.collections import PatchCollection
-
 def plot_polygon(ax, poly, alpha=0.3, scale_factor=1, **kwargs):
     """
     Plots a polygon on a given matplotlib axis with x and y axes scaled by a factor.

@@ -12,6 +12,7 @@ x_boundaries = ['left', 'right', 'centering', [-1, 1]]
 y_boundaries = ['top', 'bottom', 'centering', [-1, 1]]
 boundary_combinations = list(product(x_boundaries, y_boundaries))
 
+
 @pytest.mark.parametrize('boundaries', boundary_combinations)
 @patch("matplotlib.pyplot.show")
 def test_building_geometry(mock_show, boundaries):
@@ -50,6 +51,7 @@ def test_building_geometry(mock_show, boundaries):
     # Plot the geometry (mocked)
     geometry.plot()
     plt.close()
+
 
 # Run the tests if the file is executed directly
 if __name__ == "__main__":

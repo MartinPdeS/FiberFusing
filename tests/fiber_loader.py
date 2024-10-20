@@ -59,6 +59,7 @@ def test_make_fiber_with_position(sample_structure_list, sample_wavelength):
     fiber = make_fiber(wavelength=sample_wavelength, structure_list=sample_structure_list, position=position)
     assert fiber.position == position, "The fiber position should match the specified position."
 
+
 # Run the tests if the file is executed directly
 if __name__ == "__main__":
     pytest.main(["-W error", __file__])

@@ -12,9 +12,10 @@ from FiberFusing.utils import get_silica_index
 from FiberFusing.fiber.structure_collection import BaseClass
 import pprint
 import matplotlib.pyplot as plt
-pp = pprint.PrettyPrinter(indent=4, sort_dicts=False, compact=True, width=1)
 from FiberFusing.plottings import plot_polygon
 from FiberFusing.helper import _plot_helper
+
+pp = pprint.PrettyPrinter(indent=4, sort_dicts=False, compact=True, width=1)
 
 
 @dataclass(config=ConfigDict(extra='forbid', kw_only=True))
@@ -94,7 +95,6 @@ class GenericFiber(BaseClass):
         self.wavelength = new_value
         for structure in self.structure_list:
             structure.refractive_index = self.pure_silica_index
-
 
     def update_position(self, new_value: Tuple[float, float]) -> None:
         """
@@ -331,7 +331,6 @@ class GenericFiber(BaseClass):
 
         return graded_index_mesh
 
-
     def overlay_structures(self, coordinate_system: CoordinateSystem, structures_type: str = 'inner_structure') -> numpy.ndarray:
         """
         Overlay the structures on a mesh.
@@ -441,6 +440,3 @@ class GenericFiber(BaseClass):
             The max and min x and y boundaries.
         """
         return self.get_structure_max_min_boundaries()
-
-
-# -

@@ -8,6 +8,7 @@ from matplotlib.path import Path
 from matplotlib.patches import PathPatch
 from matplotlib.collections import PatchCollection
 
+
 def get_silica_index(wavelength: float) -> float:
     """
     Calculate the refractive index of silica using the Sellmeier equation.

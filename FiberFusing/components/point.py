@@ -79,14 +79,13 @@ class Point(Alteration):
         return numpy.sqrt((self.x - other.x)**2 + (self.y - other.y)**2)
 
     @_plot_helper
-    def plot(self,
-        ax: plt.Axes = None,
-        marker: str = 'x',
-        size: int = 20,
-        label: str = None) -> None:
+    def plot(
+            self,
+            ax: plt.Axes = None,
+            marker: str = 'x',
+            size: int = 20,
+            label: str = None) -> None:
         """
         Renders this point on the given axis, optionally with text.
         """
         ax.scatter(self.x, self.y, label=label, marker=marker, s=size)
-
-# -

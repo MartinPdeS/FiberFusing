@@ -19,6 +19,7 @@ fused_structures = [
     configuration.line.FusedProfile_05x05,
 ]
 
+
 @pytest.mark.parametrize('fused_structure', fused_structures)
 @patch("matplotlib.pyplot.show")
 def test_building_geometry(mock_show, fused_structure):
@@ -46,6 +47,7 @@ def test_building_geometry(mock_show, fused_structure):
     geometry.generate_coordinate_mesh()
     geometry.plot()
     plt.close()
+
 
 @pytest.mark.parametrize('fused_structure', fused_structures)
 @patch("matplotlib.pyplot.show")
@@ -75,6 +77,7 @@ def test_building_geometry_with_capillary(mock_show, fused_structure):
     geometry.generate_coordinate_mesh()
     geometry.plot()
     plt.close()
+
 
 @pytest.mark.parametrize('fused_structure', fused_structures)
 @patch("matplotlib.pyplot.show")
@@ -109,6 +112,7 @@ def test_building_geometry_with_capillary_and_fibers(mock_show, fused_structure)
     geometry.generate_coordinate_mesh()
     geometry.plot()
     plt.close()
+
 
 # Execute tests if the script is run directly
 if __name__ == "__main__":

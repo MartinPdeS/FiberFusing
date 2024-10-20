@@ -10,6 +10,7 @@ from FiberFusing.coordinate_system import CoordinateSystem
 from shapely.ops import split
 import FiberFusing as ff
 
+
 class Alteration:
     def in_place_copy(func):
         """

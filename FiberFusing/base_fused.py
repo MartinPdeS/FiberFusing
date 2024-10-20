@@ -547,7 +547,8 @@ class BaseFused(OverlayStructureBaseClass):
         return self
 
     @_plot_helper
-    def plot(self,
+    def plot(
+            self,
             ax: plt.Axis = None,
             show_structure: bool = True,
             show_centers: bool = False,

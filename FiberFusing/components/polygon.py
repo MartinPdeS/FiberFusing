@@ -16,6 +16,7 @@ from FiberFusing.helper import _plot_helper
 
 config = ConfigDict(extra='forbid', arbitrary_types_allowed=True, kw_only=True)
 
+
 @dataclass(config=config)
 class Polygon(BaseArea):
     """

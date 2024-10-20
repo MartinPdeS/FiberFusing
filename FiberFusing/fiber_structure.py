@@ -5,6 +5,7 @@ from FiberFusing import utils
 import FiberFusing as ff
 from FiberFusing.connection_optimization import ConnectionOptimization
 
+
 class BaseClass:
     """
     Base class for managing and visualizing fused and unfused fiber structures.
@@ -168,6 +169,7 @@ class FiberLine(ConnectionOptimization, BaseClass):
         ]
 
         return core_positions
+
 
 @dataclass
 class FiberRing(ConnectionOptimization, BaseClass):

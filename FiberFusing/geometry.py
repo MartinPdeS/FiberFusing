@@ -74,7 +74,6 @@ class Geometry:
         self.interpret_y_boundary()
         self.interpret_x_boundary()
 
-
     def add_fiber(self, *fibers: object) -> None:
         """
         Add fiber structures to the geometry.
@@ -228,7 +227,6 @@ class Geometry:
         """
         self.generate_coordinate_system()
         self.mesh = self.generate_mesh()
-
 
     def randomize_fiber_structures_index(self, random_factor: float) -> None:
         """

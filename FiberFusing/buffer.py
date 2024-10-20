@@ -58,6 +58,7 @@ class Circle(_Polygon):
         self._shapely_object = circle
         self.core = self.center.copy()
 
+
 @dataclass(config=config_dict)
 class Ellipse(_Polygon):
     """
@@ -114,6 +115,7 @@ class Ellipse(_Polygon):
 
         super().__init__(instance=ellipse)
         self.core = self.center.copy()
+
 
 @dataclass(config=config_dict)
 class Square(_Polygon):

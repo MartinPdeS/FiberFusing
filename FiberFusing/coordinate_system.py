@@ -124,7 +124,6 @@ class CoordinateSystem:
         if zero_included:
             self.ensure_odd('nx')
 
-
     def center(self, factor: float = 1.2, zero_included: bool = False) -> None:
         """
         Center the coordinate system by scaling the boundaries.
@@ -152,7 +151,6 @@ class CoordinateSystem:
         if zero_included:
             self.ensure_odd('nx')
             self.ensure_odd('ny')
-
 
     def add_padding(self, padding_factor: float) -> None:
         """

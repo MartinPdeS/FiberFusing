@@ -6,6 +6,7 @@ import numpy as np
 from pathlib import Path
 from PyOptik import MaterialBank
 
+
 def get_fiber_file_path(fiber_name: str) -> Path:
     """
     Determines the file path for the given fiber name.

@@ -51,9 +51,11 @@ napoleon_numpy_docstring = True
 def reset_mpl(gallery_conf, fname):
     use_mpsplots_style()
 
+
 examples_files = [
     'clad', 'geometry'
 ]
+
 
 examples_dirs = [
     examples_path.joinpath('clad'),
@@ -100,7 +102,7 @@ html_theme = "pydata_sphinx_theme"
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 exclude_trees = []
-#default_role = "autolink"
+# default_role = "autolink"
 pygments_style = "sphinx"
 
 # -- Sphinx-gallery configuration --------------------------------------------
