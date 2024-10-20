@@ -2,6 +2,5 @@
 max-line-length = 300
 exclude = [".git"]
 count = true
-; extend-ignore = ["E203"]
 per-file-ignores =
     __init__.py: F403, F401
