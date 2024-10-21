@@ -111,7 +111,7 @@ class CapillaryTube(GenericFiber):
     def __init__(self, wavelength: float, radius: float, delta_n: float = 0.015):
         super().__init__(wavelength=wavelength)
         self.radius = radius
-        index = MaterialBank.fused_silica.compute_refractive_index(self.wavelength)[0]
+        index = MaterialBank.fused_silica.compute_refractive_index(self.wavelength)
         self.create_and_add_new_structure(index=index + delta_n, radius=self.radius, name='capillary tube')
 
 

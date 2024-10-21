@@ -50,7 +50,7 @@ def process_layers(layers: dict, wavelength: float = None) -> dict:
     for idx, layer in layers.items():
         layer_index = layer.get('index')
         if 'material' in layer and wavelength:
-            layer_index = getattr(MaterialBank, layer['material']).compute_refractive_index(wavelength)[0]
+            layer_index = getattr(MaterialBank, layer['material']).compute_refractive_index(wavelength)
 
         elif 'NA' in layer and outer_layer:
             layer_index = np.sqrt(layer['NA']**2 + outer_layer['index']**2)
