@@ -1,2 +1,4 @@
-FiberFusing.example.geometry
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.. _geometry_index:
+
+Geometry Examples
+=================

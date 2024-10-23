@@ -3,6 +3,7 @@
 =================
 """
 
+# %%
 from FiberFusing.configuration.ring import FusedProfile_12x12 as FusedProfile
 
 clad = FusedProfile(

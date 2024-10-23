@@ -1,3 +1,5 @@
+.. _code_coordinate_system:
+
 Coordinate System Module
 ------------------------
 

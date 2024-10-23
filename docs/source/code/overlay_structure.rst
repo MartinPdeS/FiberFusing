@@ -1,3 +1,5 @@
+.. _code_overlay_structure:
+
 Overlay Structure Module
 ------------------------
 

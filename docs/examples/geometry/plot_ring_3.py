@@ -12,7 +12,6 @@ from PyOptik import MaterialBank
 # %%
 # Define the operational parameters
 wavelength = 1.55e-6  # Wavelength in meters (1.55 micrometers)
-index = MaterialBank.fused_silica.compute_refractive_index(wavelength)
 
 # Set up the background medium (air)
 air_background = BackGround(index=1.0)
@@ -21,7 +20,7 @@ air_background = BackGround(index=1.0)
 cladding = FusedProfile_03x03(
     fiber_radius=62.5e-6,  # Radius of the fibers in the cladding (in meters)
     fusion_degree=0.5,  # Degree of fusion in the structure
-    index=index  # Refractive index of silica at the specified wavelength
+    index=MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
 )
 
 # Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure

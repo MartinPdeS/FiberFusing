@@ -1,3 +1,5 @@
+.. _code_utils:
+
 Utilities Module
 ----------------
 

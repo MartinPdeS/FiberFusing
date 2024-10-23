@@ -5,8 +5,9 @@ This script demonstrates how to create and visualize a 7x7 ring geometry using t
 """
 
 from FiberFusing import Geometry, BackGround
-from FiberFusing.fiber.catalogue import load_fiber, get_silica_index
+from FiberFusing.fiber.catalogue import load_fiber
 from FiberFusing.configuration.ring import FusedProfile_07x07
+from PyOptik import MaterialBank
 
 # %%
 # Define the operational parameters
@@ -19,7 +20,7 @@ air_background = BackGround(index=1.0)
 cladding = FusedProfile_07x07(
     fiber_radius=62.5e-6,  # Radius of the fibers in the cladding (in meters)
     fusion_degree=0.2,  # Degree of fusion in the structure
-    index=get_silica_index(wavelength=wavelength)  # Refractive index of silica at the specified wavelength
+    index=MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
 )
 
 # Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure

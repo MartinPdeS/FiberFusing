@@ -3,6 +3,7 @@
 ===============
 """
 
+# %%
 from FiberFusing.configuration.line import FusedProfile_04x04 as FusedProfile
 
 

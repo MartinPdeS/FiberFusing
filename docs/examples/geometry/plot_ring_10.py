@@ -5,8 +5,9 @@ This script demonstrates how to create and visualize a 10x10 ring geometry using
 """
 
 from FiberFusing import Geometry, BackGround
-from FiberFusing.fiber.catalogue import load_fiber, get_silica_index
+from FiberFusing.fiber.catalogue import load_fiber
 from FiberFusing.configuration.ring import FusedProfile_10x10
+from PyOptik import MaterialBank
 
 # %%
 # Define operational parameters
@@ -18,7 +19,7 @@ air_background = BackGround(index=1.0)
 # Create the cladding structure based on the fused fiber profile
 cladding = FusedProfile_10x10(
     fiber_radius=62.5e-6,  # Radius of the fibers in the cladding (in meters)
-    index=get_silica_index(wavelength=wavelength)  # Refractive index of silica at the specified wavelength
+    index=MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
 )
 
 # Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure

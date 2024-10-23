@@ -1,2 +1,4 @@
-FiberFusing.example.clad
-~~~~~~~~~~~~~~~~~~~~~~~~
+.. _clad_index:
+
+Clad Examples
+=============
