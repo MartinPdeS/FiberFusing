@@ -52,6 +52,8 @@ class Geometry:
     gaussian_filter: Optional[int] = None
     boundary_pad_factor: Optional[float] = 1.3
 
+    initialized: bool = False
+
     def generate_coordinate_system(self) -> None:
         """
         Generate the coordinate system for the mesh construction.
@@ -69,8 +71,8 @@ class Geometry:
         self.coordinate_system = CoordinateSystem(
             min_x=min_x, max_x=max_x, min_y=min_y, max_y=max_y, nx=self.resolution, ny=self.resolution
         )
-
         self.coordinate_system.center(factor=self.boundary_pad_factor)
+
         self.interpret_y_boundary()
         self.interpret_x_boundary()
 
@@ -225,8 +227,10 @@ class Geometry:
         """
         Generate a coordinate system and then create a mesh based on this system.
         """
-        self.generate_coordinate_system()
-        self.mesh = self.generate_mesh()
+        if self.initialized is False:
+            self.generate_coordinate_system()
+            self.mesh = self.generate_mesh()
+            self.initialized = True
 
     def randomize_fiber_structures_index(self, random_factor: float) -> None:
         """
@@ -242,7 +246,7 @@ class Geometry:
                 adjustment = structure.index * self.index_scrambling * numpy.random.rand() * random_factor
                 structure.index += adjustment
 
-    def rasterize_polygons(self, coordinates: numpy.ndarray) -> numpy.ndarray:
+    def rasterize_polygons(self) -> numpy.ndarray:
         """
         Rasterize the polygons defined in the geometry onto a mesh.
 
@@ -310,8 +314,7 @@ class Geometry:
         if not hasattr(self, 'coordinate_system'):
             raise AttributeError("Coordinate system has not been generated. Call generate_coordinate_system() first.")
 
-        coordinates = numpy.vstack((self.coordinate_system.x_mesh.flatten(), self.coordinate_system.y_mesh.flatten())).T
-        mesh = self.rasterize_polygons(coordinates=coordinates)
+        mesh = self.rasterize_polygons()
 
         if self.gaussian_filter is not None:
             mesh = gaussian_filter(mesh, sigma=self.gaussian_filter)
@@ -348,7 +351,7 @@ class Geometry:
             self.coordinate_system.y_vector,
             self.mesh,
             cmap='Blues',
-            norm=colors.LogNorm()
+            norm=colors.PowerNorm(gamma=5)
         )
 
         divider = make_axes_locatable(ax)
@@ -357,6 +360,7 @@ class Geometry:
 
         ax.set(title='Fiber structure', xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
         ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)
+        ax.grid(True)
 
     def plot(self, show_patch: bool = True, show_mesh: bool = True, show: bool = True) -> plt.Figure:
         """

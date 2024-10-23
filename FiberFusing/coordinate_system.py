@@ -35,12 +35,9 @@ class CoordinateSystem:
     min_y: float
     max_y: float
 
-    def __post_init__(self):
-        self.compute_parameters()
-
     @property
     def shape(self) -> Tuple[int, int]:
-        return (self.nx, self.ny)
+        return (self.ny, self.nx)
 
     @property
     def x_bounds(self) -> Tuple[float, float]:
@@ -124,7 +121,7 @@ class CoordinateSystem:
         if zero_included:
             self.ensure_odd('nx')
 
-    def center(self, factor: float = 1.2, zero_included: bool = False) -> None:
+    def center(self, factor: float = 1.0, zero_included: bool = False) -> None:
         """
         Center the coordinate system by scaling the boundaries.
 
@@ -149,6 +146,7 @@ class CoordinateSystem:
         self.max_y *= factor
 
         if zero_included:
+            dsa
             self.ensure_odd('nx')
             self.ensure_odd('ny')
 
@@ -193,46 +191,67 @@ class CoordinateSystem:
             if key not in valid_attributes:
                 raise ValueError(f"Invalid attribute '{key}'. Valid attributes are: {valid_attributes}")
             setattr(self, key, value)
-        self.compute_parameters()
 
-    def compute_parameters(self) -> None:
-        """
-        Compute the grid parameters such as step sizes, vectors, and meshes.
-        """
-        self.dx = abs(self.max_x - self.min_x) / (self.nx - 1)
-        self.dy = abs(self.max_y - self.min_y) / (self.ny - 1)
-        self.x_vector = np.linspace(*self.x_bounds, num=self.nx, endpoint=True)
-        self.y_vector = np.linspace(*self.y_bounds, num=self.ny, endpoint=True)
-        self.x_mesh, self.y_mesh = np.meshgrid(self.x_vector, self.y_vector)
+    @property
+    def dx(self) -> float:
+        return self.x_vector[1] - self.x_vector[0]
+
+    @property
+    def dy(self) -> float:
+        return self.y_vector[1] - self.y_vector[0]
+
+    @property
+    def x_bounds(self) -> Tuple:
+        return (self.min_x, self.max_x)
+
+    @property
+    def y_bounds(self) -> Tuple:
+        return (self.min_y, self.max_y)
+
+    @property
+    def x_vector(self) -> np.ndarray:
+        return np.linspace(*self.x_bounds, num=self.nx, endpoint=True)
+
+    @property
+    def y_vector(self) -> np.ndarray:
+        return np.linspace(*self.y_bounds, num=self.ny, endpoint=True)
+
+    @property
+    def x_mesh(self) -> np.ndarray:
+        x_mesh, y_mesh = np.meshgrid(self.x_vector, self.y_vector)
+
+        return x_mesh
+
+    @property
+    def y_mesh(self) -> np.ndarray:
+        x_mesh, y_mesh = np.meshgrid(self.x_vector, self.y_vector)
+
+        return y_mesh
 
     def set_right(self) -> None:
         """
         Set the coordinate system boundaries to align the grid to the left.
         """
         self.min_x = 0
-        self.max_x = self.min_x + (self.nx - 1) * self.dx
-        self.compute_parameters()
+        self.nx = int(self.nx / 2) + 1
 
     def set_left(self) -> None:
         """
         Set the coordinate system boundaries to align the grid to the right.
         """
         self.max_x = 0
-        self.min_x = self.max_x - (self.nx - 1) * self.dx
-        self.compute_parameters()
+        self.nx = int(self.nx / 2) + 1
 
     def set_top(self) -> None:
         """
         Set the coordinate system boundaries to align the grid to the top.
         """
         self.min_y = 0
-        self.max_y = self.min_y + (self.ny - 1) * self.dy
-        self.compute_parameters()
+        self.ny = int(self.ny / 2) + 1
 
     def set_bottom(self) -> None:
         """
         Set the coordinate system boundaries to align the grid to the bottom.
         """
         self.max_y = 0
-        self.min_y = self.max_y - (self.ny - 1) * self.dy
-        self.compute_parameters()
+        self.ny = int(self.ny / 2) + 1
