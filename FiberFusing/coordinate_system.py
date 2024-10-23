@@ -205,7 +205,7 @@ class CoordinateSystem:
         self.y_vector = np.linspace(*self.y_bounds, num=self.ny, endpoint=True)
         self.x_mesh, self.y_mesh = np.meshgrid(self.x_vector, self.y_vector)
 
-    def set_left(self) -> None:
+    def set_right(self) -> None:
         """
         Set the coordinate system boundaries to align the grid to the left.
         """
@@ -213,7 +213,7 @@ class CoordinateSystem:
         self.max_x = self.min_x + (self.nx - 1) * self.dx
         self.compute_parameters()
 
-    def set_right(self) -> None:
+    def set_left(self) -> None:
         """
         Set the coordinate system boundaries to align the grid to the right.
         """

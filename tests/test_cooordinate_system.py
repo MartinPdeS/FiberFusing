@@ -121,16 +121,16 @@ def test_set_left():
     system = CoordinateSystem(nx=11, ny=11, min_x=-5.0, max_x=5.0, min_y=-5.0, max_y=5.0)
     initial_dx = system.dx
     system.set_left()
-    assert system.min_x == 0
-    assert system.max_x == pytest.approx((system.nx - 1) * initial_dx)
+    assert system.max_x == 0
+    assert system.min_x == pytest.approx(-((system.nx - 1) * initial_dx))
 
 
 def test_set_right():
     system = CoordinateSystem(nx=11, ny=11, min_x=-5.0, max_x=5.0, min_y=-5.0, max_y=5.0)
     initial_dx = system.dx
     system.set_right()
-    assert system.max_x == 0
-    assert system.min_x == pytest.approx(-((system.nx - 1) * initial_dx))
+    assert system.min_x == 0
+    assert system.max_x == pytest.approx((system.nx - 1) * initial_dx)
 
 
 def test_set_top():
