@@ -120,7 +120,7 @@ class Geometry:
             If x_bounds is invalid.
         """
         if isinstance(self.x_bounds, (list, tuple)):
-            self.coordinate_system.x_bounds = self.x_bounds
+            self.coordinate_system.x_min, self.coordinate_system.x_max = self.x_bounds
         else:
             match self.x_bounds:
                 case 'right':
@@ -142,7 +142,7 @@ class Geometry:
             If y_bounds is invalid.
         """
         if isinstance(self.y_bounds, (list, tuple)):
-            self.coordinate_system.y_bounds = self.y_bounds
+            self.coordinate_system.y_min, self.coordinate_system.y_max = self.y_bounds
         else:
             match self.y_bounds:
                 case 'top':

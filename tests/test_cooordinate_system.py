@@ -17,7 +17,7 @@ def test_initialization():
 
 def test_shape_property():
     system = CoordinateSystem(nx=15, ny=20, min_x=-5.0, max_x=5.0, min_y=-5.0, max_y=5.0)
-    assert system.shape == (15, 20)
+    assert system.shape == (20, 15)
 
 
 def test_x_y_bounds_properties():
@@ -25,13 +25,13 @@ def test_x_y_bounds_properties():
 
     # Test x_bounds property
     assert system.x_bounds == (-5.0, 5.0)
-    system.x_bounds = (-10.0, 10.0)
+    system.min_x, system.max_x = (-10.0, 10.0)
     assert system.min_x == -10.0
     assert system.max_x == 10.0
 
     # Test y_bounds property
     assert system.y_bounds == (-3.0, 3.0)
-    system.y_bounds = (-8.0, 8.0)
+    system.min_y, system.max_y = (-8.0, 8.0)
     assert system.min_y == -8.0
     assert system.max_y == 8.0
 

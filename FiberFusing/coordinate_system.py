@@ -146,7 +146,6 @@ class CoordinateSystem:
         self.max_y *= factor
 
         if zero_included:
-            dsa
             self.ensure_odd('nx')
             self.ensure_odd('ny')
 
