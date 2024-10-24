@@ -10,7 +10,7 @@ def _plot_helper(function):
                 _, ax = plt.subplots(1, 1)
                 ax.set_aspect('equal')
                 ax.set(title='Fiber structure', xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
-                ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)
+                ax.ticklabel_format(axis='both', style='sci')  # , scilimits=(-6, -6), useOffset=False)
 
         function(self, ax=ax, **kwargs)
 

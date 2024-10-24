@@ -20,7 +20,7 @@ fused_structures = [
 ]
 
 
-@pytest.mark.parametrize('fused_structure', fused_structures)
+@pytest.mark.parametrize('fused_structure', fused_structures, ids=lambda x: x.__name__)
 @patch("matplotlib.pyplot.show")
 def test_building_geometry(mock_show, fused_structure):
     """
@@ -49,7 +49,7 @@ def test_building_geometry(mock_show, fused_structure):
     plt.close()
 
 
-@pytest.mark.parametrize('fused_structure', fused_structures)
+@pytest.mark.parametrize('fused_structure', fused_structures, ids=lambda x: x.__name__)
 @patch("matplotlib.pyplot.show")
 def test_building_geometry_with_capillary(mock_show, fused_structure):
     """
@@ -79,7 +79,7 @@ def test_building_geometry_with_capillary(mock_show, fused_structure):
     plt.close()
 
 
-@pytest.mark.parametrize('fused_structure', fused_structures)
+@pytest.mark.parametrize('fused_structure', fused_structures, ids=lambda x: x.__name__)
 @patch("matplotlib.pyplot.show")
 def test_building_geometry_with_capillary_and_fibers(mock_show, fused_structure):
     """

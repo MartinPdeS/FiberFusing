@@ -1,47 +1,43 @@
 import numpy as np
-from matplotlib.path import Path
-from matplotlib.patches import PathPatch
-from matplotlib.collections import PatchCollection
+import matplotlib.pyplot as plt
+import shapely.geometry as geo
+from matplotlib.patches import Polygon as MplPolygon
 
 
-def plot_polygon(ax, poly, alpha=0.3, scale_factor=1, **kwargs):
+def plot_polygon(ax: plt.Axes, polygon: geo.base.BaseGeometry, facecolor: str = 'lightblue', alpha: float = 0.5, **kwargs):
     """
-    Plots a polygon on a given matplotlib axis with x and y axes scaled by a factor.
+    Plots a filled polygon or multipolygon, handling any holes on the given Matplotlib axis.
 
     Parameters
     ----------
-    ax : matplotlib.axes.Axes
-        The axis on which to plot the polygon.
-    poly : shapely.geometry.Polygon
-        The polygon object containing the exterior and interior coordinates.
-    alpha : float, optional
-        The transparency level of the polygon fill. Default is 0.3.
-    scale_factor : float, optional
-        The factor by which to scale the x and y coordinates. Default is 100.
-    **kwargs : dict, optional
-        Additional keyword arguments passed to `PathPatch` and `PatchCollection`.
-
-    Returns
-    -------
-    PatchCollection
-        The collection of patches added to the axis.
+    polygon : geo.base.BaseGeometry
+        The polygon or multipolygon to plot.
+    ax : plt.Axes, optional
+        The Matplotlib axis where the polygon should be plotted. If None, a new figure and axis will be created.
+    **kwargs
+        Additional keyword arguments passed to the plot function (e.g., facecolor, edgecolor, alpha).
     """
-    # Scale the exterior coordinates
-    exterior_coords = np.asarray(poly.exterior.coords)[:, :2] * scale_factor
-    exterior_path = Path(exterior_coords)
+    # Function to add a single polygon to the axis
+    def add_polygon_to_ax(polygon_obj):
+        # Plot the exterior as a filled polygon
+        exterior_coords = np.array(polygon_obj.exterior.coords)
+        exterior_patch = MplPolygon(exterior_coords, facecolor=facecolor, edgecolor='black', alpha=alpha, **kwargs)
+        ax.add_patch(exterior_patch)
 
-    # Scale each interior ring's coordinates
-    interior_paths = [Path(np.asarray(ring.coords)[:, :2] * scale_factor) for ring in poly.interiors]
+        # Plot each hole (interior) as another polygon with the background color (transparent effect)
+        for interior in polygon_obj.interiors:
+            hole_coords = np.array(interior.coords)
+            hole_patch = MplPolygon(hole_coords, facecolor='white', edgecolor='black', alpha=1)
+            ax.add_patch(hole_patch)
 
-    # Combine the exterior and interior paths into a compound path
-    compound_path = Path.make_compound_path(exterior_path, *interior_paths)
+    # Check if the geometry is a MultiPolygon or a single Polygon
+    if isinstance(polygon, geo.MultiPolygon):
+        for poly in polygon.geoms:
+            add_polygon_to_ax(poly)
+    elif isinstance(polygon, geo.Polygon):
+        add_polygon_to_ax(polygon)
+    else:
+        raise TypeError("Input geometry must be a Polygon or MultiPolygon.")
 
-    # Create the path patch and patch collection
-    patch = PathPatch(compound_path, **kwargs)
-    collection = PatchCollection([patch], alpha=alpha, **kwargs)
-
-    # Add the patch collection to the axis and update the view
-    ax.add_collection(collection, autolim=True)
     ax.autoscale_view()
-
-    return collection
+    ax.set_aspect('equal', 'box')

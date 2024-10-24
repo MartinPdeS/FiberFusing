@@ -384,7 +384,7 @@ class BaseArea(Alteration):
 
         return self
 
-    def shift_position(self, shift: Tuple[float, float]) -> 'BaseArea':
+    def shift_position(self, shift: Tuple[float, float], inplace: bool = True) -> 'BaseArea':
         """
         Shift the position of the shape.
 
@@ -398,8 +398,9 @@ class BaseArea(Alteration):
         BaseArea
             The shifted shape.
         """
-        self.core.translate(shift=shift, in_place=True)
-        self.translate(shift=shift, in_place=True)
+        if hasattr(self, 'core'):
+            self.core.translate(shift=shift, in_place=inplace)
+        self.translate(shift=shift, in_place=inplace)
         return self
 
     def split_with_line(self, line, return_largest: bool = True) -> 'ff.Polygon':

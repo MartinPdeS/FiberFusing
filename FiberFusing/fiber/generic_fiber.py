@@ -389,13 +389,7 @@ class GenericFiber(BaseClass):
             Resolution for rasterizing structures. Default is 300.
         """
         for structure in self.fiber_structure:
-            plot_polygon(ax=ax, poly=structure.polygon)
-
-        # if show_center:
-        #     self.center.plot(ax, marker='o', size=140, color='black', label='Center')
-
-        # if show_core:
-        #     self.center.plot(ax, marker='x', size=140, color='tab:blue', label='Core')
+            plot_polygon(ax=ax, polygon=structure.polygon._shapely_object)
 
     def get_structures_boundaries(self) -> numpy.ndarray:
         """

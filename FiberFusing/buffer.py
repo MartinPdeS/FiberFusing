@@ -8,13 +8,13 @@ import shapely.geometry as geo
 from shapely import affinity
 
 from FiberFusing.components.utils import interpret_to_point
-from FiberFusing.components.polygon import _Polygon, Polygon  # noqa: F401
+from FiberFusing.components.polygon import Polygon
 
 config_dict = ConfigDict(extra='forbid', strict=True, kw_only=True)
 
 
 @dataclass(config=config_dict)
-class Circle(_Polygon):
+class Circle(Polygon):
     """
     Represents a circular geometry centered at a specified position with a given radius.
 
@@ -60,7 +60,7 @@ class Circle(_Polygon):
 
 
 @dataclass(config=config_dict)
-class Ellipse(_Polygon):
+class Ellipse(Polygon):
     """
     Represents an elliptical geometry centered at a specified position with a given radius and axis ratio.
 
@@ -118,7 +118,7 @@ class Ellipse(_Polygon):
 
 
 @dataclass(config=config_dict)
-class Square(_Polygon):
+class Square(Polygon):
     """
     Represents a square geometry centered at a specified position with a given side length.
 
