@@ -30,8 +30,8 @@
 | FiberFusing/connection.py                              |      120 |        6 |       18 |        4 |     91% |89, 134-137, 168, 182, 224->exit, 249->253 |
 | FiberFusing/connection\_optimization.py                |       75 |        2 |       14 |        2 |     96% |69->71, 203-204 |
 | FiberFusing/coordinate\_system.py                      |      109 |        4 |       18 |        0 |     97% |44, 48, 52, 56 |
-| FiberFusing/fiber/catalogue.py                         |       40 |        9 |       10 |        2 |     74% |42, 73-77, 93-94, 154-155 |
-| FiberFusing/fiber/generic\_fiber.py                    |      108 |       51 |       30 |        0 |     46% |67-73, 92-97, 108-109, 132-135, 158-161, 173-175, 223-227, 254-271, 306-332, 350-351, 436 |
+| FiberFusing/fiber/catalogue.py                         |       41 |        9 |       10 |        2 |     75% |42, 73-77, 93-94, 155-156 |
+| FiberFusing/fiber/generic\_fiber.py                    |      106 |       23 |       30 |        3 |     76% |54->53, 85-86, 150-152, 238, 242->248, 245-246, 283-309, 327-328, 413 |
 | FiberFusing/fiber/loader.py                            |       40 |        3 |       12 |        3 |     88% |55->58, 92, 110-111 |
 | FiberFusing/fiber/structure\_collection.py             |       53 |       13 |       14 |        3 |     70% |28, 38, 55, 67-78, 116, 122, 159 |
 | FiberFusing/fiber\_structure.py                        |       73 |        0 |        6 |        0 |    100% |           |
@@ -39,8 +39,8 @@
 | FiberFusing/helper.py                                  |       31 |        1 |       10 |        1 |     95% |        49 |
 | FiberFusing/optical\_structure.py                      |       29 |        6 |        0 |        0 |     79% |64, 82-84, 95-96 |
 | FiberFusing/plottings.py                               |       21 |        1 |        8 |        1 |     93% |        40 |
-| FiberFusing/utils.py                                   |       39 |        5 |        4 |        1 |     86% |100, 121-122, 139-140 |
-|                                              **TOTAL** | **1567** |  **206** |  **300** |   **48** | **83%** |           |
+| FiberFusing/utils.py                                   |       39 |       11 |        4 |        1 |     72% |26-37, 100, 121-122, 139-140 |
+|                                              **TOTAL** | **1566** |  **184** |  **300** |   **51** | **85%** |           |
 
 
 ## Setup coverage badge
