@@ -141,18 +141,19 @@ class GradientCore(GenericFiber):
 
     def __init__(self, wavelength: float, core_radius: float, delta_n: Union[float, str], position: Tuple[float, float] = (0, 0)):
         super().__init__(wavelength=wavelength, position=position)
+        silica_index = MaterialBank.fused_silica.compute_refractive_index(self.wavelength)
 
         # Add the cladding layer
         self.create_and_add_new_structure(
             name='cladding',
-            index=self.pure_silica_index,
+            index=silica_index,
             radius=62.5 * micro
         )
 
         # Convert delta_n if provided as a percentage string
         if isinstance(delta_n, str):
             factor = float(delta_n.strip('%')) / 100
-            delta_n = self.pure_silica_index * factor
+            delta_n = silica_index * factor
 
         # Add the gradient index core
         self.create_and_add_new_structure(
@@ -160,5 +161,5 @@ class GradientCore(GenericFiber):
             is_graded=True,
             delta_n=delta_n,
             radius=core_radius,
-            index=self.pure_silica_index
+            index=silica_index
         )

@@ -121,3 +121,6 @@ We welcome feedback and contributions to improve FiberFusing and expand its capa
 
 .. |example_3x3| image:: https://github.com/MartinPdeS/FiberFusing/raw/master/docs/images/example_3x3.png
    :alt: Example for 3 fiber structure
+
+.. |colab| image:: https://colab.research.google.com/assets/colab-badge.svg
+   :target: https://colab.research.google.com/github/MartinPdeS/FiberFusing/blob/master/notebook.ipynb

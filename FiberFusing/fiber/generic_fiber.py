@@ -2,23 +2,19 @@
 # -*- coding: utf-8 -*-
 
 from typing import Tuple, Optional
-from pydantic.dataclasses import dataclass
-from pydantic import ConfigDict
-
 import numpy
 from FiberFusing import Circle
 from FiberFusing.coordinate_system import CoordinateSystem
-from FiberFusing.utils import get_silica_index
 from FiberFusing.fiber.structure_collection import BaseClass
 import pprint
 import matplotlib.pyplot as plt
 from FiberFusing.plottings import plot_polygon
 from FiberFusing.helper import _plot_helper
+from PyOptik import MaterialBank
 
 pp = pprint.PrettyPrinter(indent=4, sort_dicts=False, compact=True, width=1)
 
 
-@dataclass(config=ConfigDict(extra='forbid', kw_only=True))
 class GenericFiber(BaseClass):
     """
     Represents a generic fiber with wavelength and position attributes.
@@ -31,24 +27,11 @@ class GenericFiber(BaseClass):
         The position of the fiber. Defaults to (0, 0).
     """
 
-    wavelength: float
-    position: Optional[Tuple[float, float]] = (0, 0)
-
-    def __post_init__(self):
+    def __init__(self, wavelength: float, position: Optional[Tuple[float, float]] = (0, 0)):
+        self._wavelength = wavelength
+        self.position = position
         self.structure_list = []
         self.add_air()
-
-    @property
-    def pure_silica_index(self) -> float:
-        """
-        Calculate the refractive index of pure silica for the given wavelength.
-
-        Returns
-        -------
-        float
-            The refractive index of pure silica.
-        """
-        return get_silica_index(wavelength=self.wavelength)
 
     def set_position(self, position: Tuple[float, float]) -> None:
         """
@@ -76,25 +59,19 @@ class GenericFiber(BaseClass):
                     index=structure.index
                 )
 
-    def update_wavelength(self, new_value: float) -> None:
-        """
-        Update the wavelength of the fiber and recalculate dependent properties.
+    @property
+    def wavelength(self):
+        return self._wavelength
 
-        Parameters
-        ----------
-        new_value : float
-            The new wavelength value.
-
-        Notes
-        -----
-        - Updates wavelength and recalculates relevant structures.
-        """
-        if new_value <= 0:
+    @wavelength.setter
+    def wavelength(self, value: float):
+        if value <= 0:
             raise ValueError("Wavelength must be a positive value.")
 
-        self.wavelength = new_value
+        self._wavelength = value
+
         for structure in self.structure_list:
-            structure.refractive_index = self.pure_silica_index
+            structure.refractive_index = MaterialBank.fused_silica.compute_refractive_index(value)
 
     def update_position(self, new_value: Tuple[float, float]) -> None:
         """
@@ -198,7 +175,7 @@ class GenericFiber(BaseClass):
         """
         self.create_and_add_new_structure(
             name=name,
-            index=self.pure_silica_index,
+            index=MaterialBank.fused_silica.compute_refractive_index(self.wavelength),
             radius=radius
         )
 
