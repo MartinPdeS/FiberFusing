@@ -12,21 +12,21 @@
 | FiberFusing/components/point.py                        |       42 |        5 |        2 |        1 |     86% |27, 45-46, 67, 73 |
 | FiberFusing/components/polygon.py                      |       76 |        7 |       26 |        5 |     84% |74, 83, 106-107, 111, 180-181 |
 | FiberFusing/components/utils.py                        |       23 |        1 |       12 |        2 |     91% |51->46, 57 |
-| FiberFusing/configuration/line/configuration\_01x01.py |       13 |        7 |        2 |        1 |     47% |12-18, 22-30 |
-| FiberFusing/configuration/line/configuration\_02x02.py |       12 |        3 |        2 |        1 |     71% |     26-35 |
-| FiberFusing/configuration/line/configuration\_03x03.py |       12 |        3 |        2 |        1 |     71% |     27-36 |
-| FiberFusing/configuration/line/configuration\_04x04.py |       12 |        3 |        2 |        1 |     71% |     27-36 |
-| FiberFusing/configuration/line/configuration\_05x05.py |       12 |        3 |        2 |        1 |     71% |     27-36 |
-| FiberFusing/configuration/ring/configuration\_01x01.py |       13 |        3 |        2 |        1 |     73% |     22-30 |
-| FiberFusing/configuration/ring/configuration\_02x02.py |       12 |        3 |        2 |        1 |     71% |     27-35 |
-| FiberFusing/configuration/ring/configuration\_03x03.py |       12 |        3 |        2 |        1 |     71% |     27-41 |
-| FiberFusing/configuration/ring/configuration\_04x04.py |       12 |        3 |        2 |        1 |     71% |     27-41 |
-| FiberFusing/configuration/ring/configuration\_05x05.py |       12 |        3 |        2 |        1 |     71% |     27-41 |
-| FiberFusing/configuration/ring/configuration\_06x06.py |       12 |        6 |        2 |        1 |     50% |13-23, 27-41 |
-| FiberFusing/configuration/ring/configuration\_07x07.py |       13 |        7 |        2 |        1 |     47% |13-25, 29-42 |
-| FiberFusing/configuration/ring/configuration\_10x10.py |       14 |        8 |        2 |        1 |     44% |13-36, 40-48 |
-| FiberFusing/configuration/ring/configuration\_12x12.py |       14 |        8 |        2 |        1 |     44% |13-37, 41-53 |
-| FiberFusing/configuration/ring/configuration\_19x19.py |       15 |        9 |        2 |        1 |     41% |13-39, 43-55 |
+| FiberFusing/configuration/line/configuration\_01x01.py |        9 |        4 |        0 |        0 |     56% |     12-18 |
+| FiberFusing/configuration/line/configuration\_02x02.py |        8 |        0 |        0 |        0 |    100% |           |
+| FiberFusing/configuration/line/configuration\_03x03.py |        8 |        0 |        0 |        0 |    100% |           |
+| FiberFusing/configuration/line/configuration\_04x04.py |        8 |        0 |        0 |        0 |    100% |           |
+| FiberFusing/configuration/line/configuration\_05x05.py |        8 |        0 |        0 |        0 |    100% |           |
+| FiberFusing/configuration/ring/configuration\_01x01.py |        9 |        0 |        0 |        0 |    100% |           |
+| FiberFusing/configuration/ring/configuration\_02x02.py |        8 |        0 |        0 |        0 |    100% |           |
+| FiberFusing/configuration/ring/configuration\_03x03.py |        8 |        0 |        0 |        0 |    100% |           |
+| FiberFusing/configuration/ring/configuration\_04x04.py |        8 |        0 |        0 |        0 |    100% |           |
+| FiberFusing/configuration/ring/configuration\_05x05.py |        8 |        0 |        0 |        0 |    100% |           |
+| FiberFusing/configuration/ring/configuration\_06x06.py |        8 |        3 |        0 |        0 |     62% |     13-23 |
+| FiberFusing/configuration/ring/configuration\_07x07.py |        9 |        4 |        0 |        0 |     56% |     13-25 |
+| FiberFusing/configuration/ring/configuration\_10x10.py |       10 |        5 |        0 |        0 |     50% |     13-36 |
+| FiberFusing/configuration/ring/configuration\_12x12.py |       10 |        5 |        0 |        0 |     50% |     13-37 |
+| FiberFusing/configuration/ring/configuration\_19x19.py |       11 |        6 |        0 |        0 |     45% |     13-39 |
 | FiberFusing/connection.py                              |      120 |        6 |       18 |        4 |     91% |89, 134-137, 168, 182, 224->exit, 249->253 |
 | FiberFusing/connection\_optimization.py                |       75 |        2 |       14 |        2 |     96% |69->71, 203-204 |
 | FiberFusing/coordinate\_system.py                      |      109 |        4 |       18 |        0 |     97% |44, 48, 52, 56 |
@@ -40,7 +40,7 @@
 | FiberFusing/optical\_structure.py                      |       29 |        6 |        0 |        0 |     79% |64, 82-84, 95-96 |
 | FiberFusing/plottings.py                               |       21 |        1 |        8 |        1 |     93% |        40 |
 | FiberFusing/utils.py                                   |       58 |       21 |        4 |        1 |     65% |100, 121-122, 139-140, 157-160, 182-188, 209-218 |
-|                                              **TOTAL** | **1641** |  **297** |  **328** |   **66** | **79%** |           |
+|                                              **TOTAL** | **1581** |  **252** |  **298** |   **51** | **81%** |           |
 
 
 ## Setup coverage badge
