@@ -37,21 +37,3 @@ class FusedProfile_19x19(BaseFused):
         self.randomize_core_position(random_factor=self.core_position_scrambling)
 
         self.scale_position(factor=self.scale_down_position)
-
-
-if __name__ == '__main__':
-    instance = FusedProfile_19x19(
-        fiber_radius=62.5,
-        index=1,
-        scale_down_position=1
-    )
-
-    figure = instance.plot(
-        show_structure=False,
-        show_fibers=True,
-        show_shifted_cores=False
-    )
-
-    figure.show()
-
-    # -

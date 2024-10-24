@@ -16,15 +16,3 @@ class FusedProfile_01x01(BaseFused):
         self._clad_structure = self.fiber_list[0]
 
         self.randomize_core_position(random_factor=self.core_position_scrambling)
-
-
-if __name__ == '__main__':
-    instance = FusedProfile_01x01(
-        fiber_radius=62.5e-6,
-        index=1,
-        core_position_scrambling=0,
-    )
-
-    figure = instance.plot()
-
-    figure.show()
