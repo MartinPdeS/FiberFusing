@@ -3,9 +3,7 @@
 
 from typing import List, Optional, Tuple, Union
 import numpy
-from dataclasses import field
 from scipy.ndimage import gaussian_filter
-from pydantic.dataclasses import dataclass
 import FiberFusing
 import matplotlib.pyplot as plt
 from FiberFusing.coordinate_system import CoordinateSystem
@@ -13,9 +11,9 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.colors as colors
 from MPSPlots.styles import mps
 from FiberFusing.helper import _plot_helper
+from FiberFusing.background import BackGround
 
 
-@dataclass(config=dict(extra='forbid', kw_only=True))
 class Geometry:
     """
     Represents the refractive index (RI) geometric profile including background and fiber structures.
@@ -42,19 +40,41 @@ class Geometry:
         Factor multiplying the boundary value to keep padding between mesh and boundary. Default is 1.3.
     """
 
-    background: object
-    additional_structure_list: Optional[List[object]] = field(default_factory=list)
-    fiber_list: Optional[List[object]] = field(default_factory=list)
-    x_bounds: Optional[Union[Tuple[float, float], str]] = 'centering'
-    y_bounds: Optional[Union[Tuple[float, float], str]] = 'centering'
-    resolution: Optional[int] = 100
-    index_scrambling: Optional[float] = 0.0
-    gaussian_filter: Optional[int] = None
-    boundary_pad_factor: Optional[float] = 1.3
+    def __init__(
+            self,
+            additional_structure_list: Optional[List[object]],
+            background: Optional[BackGround] = None,
+            fiber_list: Optional[List[object]] = [],
+            x_bounds: Optional[Tuple[float, float] | str] = 'centering',
+            y_bounds: Optional[Tuple[float, float] | str] = 'centering',
+            resolution: Optional[int] = 100,
+            index_scrambling: Optional[float] = 0.0,
+            gaussian_filter: Optional[int] = None,
+            boundary_pad_factor: Optional[float] = 1.3):
 
-    initialized: bool = False
+        self.resolution = resolution
+        self.boundary_pad_factor = boundary_pad_factor
+        self.index_scrambling = index_scrambling
+        self.gaussian_filter = gaussian_filter
 
-    def generate_coordinate_system(self) -> None:
+        self.background = background if background else BackGround(index=1)
+
+        self.additional_structure_list = additional_structure_list
+        self.fiber_list = fiber_list
+
+        min_x, min_y, max_x, max_y = self.get_boundaries()
+
+        self.coordinate_system = CoordinateSystem(
+            min_x=min_x, max_x=max_x, min_y=min_y, max_y=max_y, nx=self.resolution, ny=self.resolution
+        )
+        self.coordinate_system.center(factor=self.boundary_pad_factor)
+
+        self.x_bounds = x_bounds
+        self.y_bounds = y_bounds
+
+        self.mesh = self.generate_mesh()
+
+    def update_coordinate_system(self) -> None:
         """
         Generate the coordinate system for the mesh construction.
 
@@ -63,18 +83,13 @@ class Geometry:
         ValueError
             If boundaries cannot be determined from the structures.
         """
-        try:
-            min_x, min_y, max_x, max_y = self.get_boundaries()
-        except ValueError as e:
-            raise ValueError(f"Failed to generate coordinate system: {str(e)}")
+
+        min_x, min_y, max_x, max_y = self.get_boundaries()
 
         self.coordinate_system = CoordinateSystem(
             min_x=min_x, max_x=max_x, min_y=min_y, max_y=max_y, nx=self.resolution, ny=self.resolution
         )
         self.coordinate_system.center(factor=self.boundary_pad_factor)
-
-        self.interpret_y_boundary()
-        self.interpret_x_boundary()
 
     def add_fiber(self, *fibers: object) -> None:
         """
@@ -87,7 +102,7 @@ class Geometry:
         """
         self.fiber_list.extend(fibers)
 
-    def add_structure(self, *structures: object) -> None:
+    def add_structure(self, *structures: object, update_coordinates: bool = True) -> None:
         """
         Add custom structures to the geometry.
 
@@ -97,6 +112,11 @@ class Geometry:
             Custom structures to be added.
         """
         self.additional_structure_list.extend(structures)
+
+        if update_coordinates:
+            self.update_coordinate_system()
+
+        self.mesh = self.generate_mesh()
 
     @property
     def structure_list(self) -> List[object]:
@@ -110,7 +130,12 @@ class Geometry:
         """
         return [self.background, *self.additional_structure_list, *self.fiber_list]
 
-    def interpret_x_boundary(self) -> None:
+    @property
+    def x_bounds(self) -> Tuple[float, float]:
+        return self._x_bounds
+
+    @x_bounds.setter
+    def x_bounds(self, value: Union[str, Tuple[float, float]]) -> None:
         """
         Interpret the x_bounds parameter and apply the appropriate boundary setting to the coordinate system.
 
@@ -119,10 +144,11 @@ class Geometry:
         ValueError
             If x_bounds is invalid.
         """
-        if isinstance(self.x_bounds, (list, tuple)):
-            self.coordinate_system.x_min, self.coordinate_system.x_max = self.x_bounds
+        if isinstance(value, (list, tuple)):
+            self.coordinate_system.x_min, self.coordinate_system.x_max = value
+
         else:
-            match self.x_bounds:
+            match value:
                 case 'right':
                     self.coordinate_system.set_right()
                 case 'left':
@@ -130,9 +156,16 @@ class Geometry:
                 case 'centering':
                     self.coordinate_system.x_centering()
                 case _:
-                    raise ValueError(f"Invalid x_bounds input: {self.x_bounds}. Valid inputs are a list of bounds or one of ['right', 'left', 'centering'].")
+                    raise ValueError(f"Invalid x_bounds input: {value}. Valid inputs are a list of bounds or one of ['right', 'left', 'centering'].")
 
-    def interpret_y_boundary(self) -> None:
+        self.mesh = self.generate_mesh()
+
+    @property
+    def y_bounds(self) -> Tuple[float, float]:
+        return self._y_bounds
+
+    @y_bounds.setter
+    def y_bounds(self, value: Union[str, Tuple[float, float]]) -> None:
         """
         Interpret the y_bounds parameter and apply the appropriate boundary setting to the coordinate system.
 
@@ -141,10 +174,11 @@ class Geometry:
         ValueError
             If y_bounds is invalid.
         """
-        if isinstance(self.y_bounds, (list, tuple)):
-            self.coordinate_system.y_min, self.coordinate_system.y_max = self.y_bounds
+        if isinstance(value, (list, tuple)):
+            self.coordinate_system.y_min, self.coordinate_system.y_max = value
+
         else:
-            match self.y_bounds:
+            match value:
                 case 'top':
                     self.coordinate_system.set_top()
                 case 'bottom':
@@ -152,7 +186,9 @@ class Geometry:
                 case 'centering':
                     self.coordinate_system.y_centering()
                 case _:
-                    raise ValueError(f"Invalid y_bounds input: {self.y_bounds}. Valid inputs are a list of bounds or one of ['top', 'bottom', 'centering'].")
+                    raise ValueError(f"Invalid y_bounds input: {value}. Valid inputs are a list of bounds or one of ['top', 'bottom', 'centering'].")
+
+        self.mesh = self.generate_mesh()
 
     def get_boundaries(self) -> Tuple[float, float, float, float]:
         """
@@ -223,14 +259,7 @@ class Geometry:
         for structure in self.structure_list:
             structure.rotate(angle=angle)
 
-    def generate_coordinate_mesh(self) -> None:
-        """
-        Generate a coordinate system and then create a mesh based on this system.
-        """
-        if self.initialized is False:
-            self.generate_coordinate_system()
-            self.mesh = self.generate_mesh()
-            self.initialized = True
+        self.mesh = self.generate_mesh()
 
     def randomize_fiber_structures_index(self, random_factor: float) -> None:
         """
@@ -245,6 +274,8 @@ class Geometry:
             for structure in fiber.inner_structure:
                 adjustment = structure.index * self.index_scrambling * numpy.random.rand() * random_factor
                 structure.index += adjustment
+
+        self.mesh = self.generate_mesh()
 
     def rasterize_polygons(self) -> numpy.ndarray:
         """
@@ -324,10 +355,18 @@ class Geometry:
     @_plot_helper
     def plot_patch(self, ax: plt.Axes = None, show: bool = True) -> None:
         """
-        Renders the patch representation of the geometry onto a given matplotlib axis.
+        Render the patch representation of the geometry onto a given matplotlib axis.
 
-        Args:
-            ax (plt.Axes): The matplotlib axis to which the patch representation will be appended.
+        Parameters
+        ----------
+        ax : plt.Axes, optional
+            The matplotlib axis on which the patch representation will be plotted. If not provided, a new axis is created.
+        show : bool, optional
+            Whether to display the plot immediately. Default is True.
+
+        Returns
+        -------
+        None
         """
         for structure in self.additional_structure_list:
             structure.plot(ax=ax, show=False)
@@ -339,19 +378,29 @@ class Geometry:
         ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)
 
     @_plot_helper
-    def plot_raster(self, ax: plt.Axes = None, show: bool = True) -> None:
+    def plot_raster(self, ax: plt.Axes = None, gamma: float = 5) -> None:
         """
-        Renders the rasterized representation of the geometry onto a given matplotlib axis.
+        Render the rasterized representation of the geometry onto a given matplotlib axis.
 
-        Args:
-            ax (plt.Axes): The matplotlib axis to which the rasterized representation will be appended.
+        Parameters
+        ----------
+        ax : plt.Axes, optional
+            The matplotlib axis on which the rasterized representation will be plotted. If not provided, a new axis is created.
+        show : bool, optional
+            Whether to display the plot immediately. Default is True.
+        gamma : float, optional
+            The gamma correction value for the color normalization. Default is 5.
+
+        Returns
+        -------
+        None
         """
         image = ax.pcolormesh(
             self.coordinate_system.x_vector,
             self.coordinate_system.y_vector,
             self.mesh,
             cmap='Blues',
-            norm=colors.PowerNorm(gamma=5)
+            norm=colors.PowerNorm(gamma=gamma)
         )
 
         divider = make_axes_locatable(ax)
@@ -360,27 +409,32 @@ class Geometry:
 
         ax.set(title='Fiber structure', xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
         ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)
-        ax.grid(True)
 
-    def plot(self, show_patch: bool = True, show_mesh: bool = True, show: bool = True) -> plt.Figure:
+    def plot(self, show_patch: bool = True, show_mesh: bool = True, show: bool = True, gamma: float = 5) -> plt.Figure:
         """
-        Plot the different representations [patch, mesh] of the geometry.
+        Plot the different representations (patch and mesh) of the geometry.
 
-        :param      show_patch:     The show patch
-        :type       show_patch:     bool
-        :param      show_mesh:      The show mesh
-        :type       show_mesh:      bool
+        Parameters
+        ----------
+        show_patch : bool, optional
+            Whether to display the patch representation of the geometry. Default is True.
+        show_mesh : bool, optional
+            Whether to display the mesh (rasterized) representation of the geometry. Default is True.
+        show : bool, optional
+            Whether to immediately show the plot. Default is True.
+        gamma : float, optional
+            The gamma correction value for the color normalization used in the mesh plot. Default is 5.
 
-        :returns:   The figure encompassing all the axis
-        :rtype:     plt.Figure
+        Returns
+        -------
+        plt.Figure
+            The matplotlib figure encompassing all the axes used in the plot.
         """
-        self.generate_coordinate_mesh()
-
         n_ax = bool(show_patch) + bool(show_mesh)
         unit_size = numpy.array([1, n_ax])
 
         with plt.style.context(mps):
-            _, axes = plt.subplots(
+            figure, axes = plt.subplots(
                 *unit_size,
                 figsize=5 * numpy.flip(unit_size),
                 sharex=True,
@@ -392,11 +446,13 @@ class Geometry:
 
         if show_patch:
             ax = next(axes_iter)
-            self.plot_patch(axes[0], show=False)
+            self.plot_patch(ax, show=False)
 
         if show_mesh:
             ax = next(axes_iter)
-            self.plot_raster(ax, show=False)
+            self.plot_raster(ax, show=False, gamma=gamma)
 
         if show:
             plt.show()
+
+        return figure

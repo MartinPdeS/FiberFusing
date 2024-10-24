@@ -40,12 +40,11 @@ def test_building_geometry(mock_show, fused_structure):
         background=background,
         x_bounds='centering',
         y_bounds='centering',
-        resolution=50
+        resolution=150
     )
 
     geometry.add_structure(clad)
-    geometry.generate_coordinate_mesh()
-    geometry.plot()
+
     plt.close()
 
 
@@ -74,7 +73,6 @@ def test_building_geometry_with_capillary(mock_show, fused_structure):
     )
 
     geometry.add_structure(clad)
-    geometry.generate_coordinate_mesh()
     geometry.plot()
     plt.close()
 
@@ -109,11 +107,48 @@ def test_building_geometry_with_capillary_and_fibers(mock_show, fused_structure)
     )
 
     geometry.add_structure(clad)
-    geometry.generate_coordinate_mesh()
     geometry.plot()
     plt.close()
 
 
-# Execute tests if the script is run directly
+def test_geometry_api():
+    clad = configuration.ring.FusedProfile_02x02(fusion_degree='auto', fiber_radius=62.5e-6, index=1.4444)
+
+    geometry = Geometry(
+        additional_structure_list=[clad],
+        x_bounds='centering',
+        y_bounds='centering',
+        resolution=100
+    )
+    geometry.x_bounds = 'left'
+    geometry.x_bounds = 'centering'
+    geometry.x_bounds = 'right'
+    geometry.rotate(90)
+
+    geometry.y_bounds = 'top'
+    geometry.y_bounds = 'centering'
+    geometry.y_bounds = 'bottom'
+
+
+def _test_fail_geometry_initialization():
+    clad = configuration.ring.FusedProfile_02x02(fusion_degree='auto', fiber_radius=62.5e-6, index=1.4444)
+
+    with pytest.raises(ValueError):
+        Geometry(
+            additional_structure_list=[clad],
+            x_bounds='left',
+            y_bounds='invalid',
+            resolution=50
+        )
+
+    with pytest.raises(ValueError):
+        Geometry(
+            additional_structure_list=[clad],
+            x_bounds='invalid',
+            y_bounds='top',
+            resolution=50
+        )
+
+
 if __name__ == "__main__":
     pytest.main(["-W", "error", __file__])

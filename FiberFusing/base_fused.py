@@ -6,7 +6,6 @@ from typing import Union, Optional, List, Dict, Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 import logging
-from dataclasses import dataclass
 import shapely.geometry as geo
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.buffer import Circle
@@ -32,7 +31,7 @@ class NameSpace:
             setattr(self, key, value)
 
 
-@dataclass
+# @dataclass
 class BaseFused(OverlayStructureBaseClass):
     """
     Base class for managing the fusion of optical fiber structures, allowing customization of fiber properties
@@ -57,18 +56,25 @@ class BaseFused(OverlayStructureBaseClass):
         Scaling factor to adjust the overall size of the assembly. Default is 1.
     """
 
-    fiber_radius: float
-    index: float
-    tolerance_factor: Optional[float] = 1e-2
-    fusion_degree: Optional[Union[float, str]] = 'auto'
-    core_position_scrambling: Optional[float] = 0
-    scale_down_position: Optional[float] = 1
-
-    def __post_init__(self):
+    def __init__(
+            self,
+            fiber_radius: float,
+            index: float,
+            tolerance_factor: Optional[float] = 1e-2,
+            fusion_degree: Optional[Union[float, str]] = 'auto',
+            core_position_scrambling: Optional[float] = 0,
+            scale_down_position: Optional[float] = 1):
         """
         Initialize the fiber and core lists and other structures immediately after the dataclass fields
         have been populated.
         """
+        self.fiber_radius = fiber_radius
+        self.index = index
+        self.tolerance_factor = tolerance_factor
+        self.fusion_degree = fusion_degree
+        self.core_position_scrambling = core_position_scrambling
+        self.scale_down_position = scale_down_position
+
         self.fiber_list = []
         self.core_list = []
         self._clad_structure = None
@@ -76,57 +82,30 @@ class BaseFused(OverlayStructureBaseClass):
         self.removed_section_list = []
         self.added_section_list = []
 
-        self.compute_parametrized_fusion_degree()
+        self.initialize_structure()
 
-    def compute_parametrized_fusion_degree(self) -> None:
-        """
-        Calculate and set the fusion degree adjusted to the specific requirements of the structure's geometry.
+    @property
+    def fusion_degree(self) -> float:
+        return self._fusion_degree
 
-        If 'auto' is provided for fusion_degree, a default value is set based on the geometry's constraints.
+    @fusion_degree.setter
+    def fusion_degree(self, value: float | str) -> None:
+        if isinstance(value, str) and value.lower() == 'auto':
+            if self.fusion_range is not None:
+                value = 0.8
+                self._fusion_degree = value
+                self.parametrized_fusion_degree = self.fusion_range[0] * (1 - value) + value * self.fusion_range[-1]
+            else:
+                self._fusion_degree = self.parametrized_fusion_degree = None
 
-        Returns
-        -------
-        None
-        """
-        if isinstance(self.fusion_degree, str) and self.fusion_degree.lower() == 'auto':
-            self.fusion_degree = 0.8 if self.fusion_range is not None else None
+        elif np.isscalar(value):
+            print(value)
+            assert 0 <= value <= 1, f"Fusion degree [{value}] must be within the range [0, 1]."
+            self._fusion_degree = value
+            self.parametrized_fusion_degree = self.fusion_range[0] * (1 - value) + value * self.fusion_range[-1]
 
-        self.assert_fusion_degree()
-
-        if self.fusion_degree is not None:
-            self.parametrized_fusion_degree = (
-                self.fusion_range[0] * (1 - self.fusion_degree) +
-                self.fusion_degree * self.fusion_range[-1]
-            )
         else:
-            self.parametrized_fusion_degree = None
-
-    def assert_fusion_degree(self) -> None:
-        """
-        Validate the fusion degree to ensure it lies within acceptable bounds.
-
-        Raises
-        ------
-        ValueError
-            If the fusion degree is not a scalar when required, or is out of the acceptable bounds [0, 1].
-        TypeError
-            If the fusion degree is required but None is provided.
-        """
-        if self.fusion_range is None:
-            if self.fusion_degree is not None:
-                raise ValueError(
-                    f"This instance of {self.__class__.__name__} does not accept 'fusion_degree' as an argument."
-                )
-        else:
-            if not np.isscalar(self.fusion_degree):
-                raise TypeError(
-                    f"Fusion degree [{self.fusion_degree}] must be a scalar value."
-                )
-
-            if not 0 <= self.fusion_degree <= 1:
-                raise ValueError(
-                    f"Fusion degree [{self.fusion_degree}] must be within the range [0, 1]."
-                )
+            f"Input for fusion_degree [{value}] is invalid."
 
     @property
     def refractive_index_list(self) -> List[float]:
@@ -495,7 +474,7 @@ class BaseFused(OverlayStructureBaseClass):
         """
         return self.clad_structure.get_rasterized_mesh(coordinate_system=coordinate_system)
 
-    def rotate(self, *args, **kwargs) -> "BaseFused":
+    def rotate(self, angle: float) -> "BaseFused":
         """
         Rotate the entire structure, including fiber cores.
 
@@ -505,9 +484,18 @@ class BaseFused(OverlayStructureBaseClass):
             The updated BaseFused instance.
         """
         for fiber in self.fiber_list:
-            fiber.core.rotate(*args, **kwargs, in_place=True)
+            fiber.rotate(angle, in_place=True)
+            fiber.core.rotate(angle, in_place=True)
+            fiber.shifted_core.rotate(angle, in_place=True)
+            fiber.center.rotate(angle, in_place=True)
 
-        self._clad_structure = self.clad_structure.rotate(*args, **kwargs)
+        self._clad_structure = self.clad_structure.rotate(angle, in_place=True)
+
+        for element in self.removed_section_list:
+            element.rotate(angle, in_place=True)
+
+        for element in self.added_section_list:
+            element.rotate(angle, in_place=True)
 
         return self
 
@@ -546,6 +534,14 @@ class BaseFused(OverlayStructureBaseClass):
 
         return self
 
+    @property
+    def removed_section(self) -> object:
+        return union_geometries(*self.removed_section_list)
+
+    @property
+    def added_section(self) -> object:
+        return union_geometries(*self.added_section_list)
+
     @_plot_helper
     def plot(
             self,
@@ -577,12 +573,10 @@ class BaseFused(OverlayStructureBaseClass):
             self.clad_structure.plot(ax, show=False)
 
         if show_added:
-            added_section = union_geometries(*self.added_section_list)
-            added_section.plot(ax=ax, facecolor='green', show=False)
+            self.added_section.plot(ax=ax, facecolor='green', show=False)
 
         if show_removed:
-            removed_section = union_geometries(*self.removed_section_list)
-            removed_section.plot(ax=ax, facecolor='red', show=False)
+            self.removed_section.plot(ax=ax, facecolor='red', show=False)
 
         if show_cores:
             for idx, fiber in enumerate(self.fiber_list):

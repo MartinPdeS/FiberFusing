@@ -8,10 +8,7 @@ class FusedProfile_03x03(BaseFused):
     fusion_range = [0.1, .35]
     number_of_fibers = 3
 
-    def __post_init__(self):
-
-        super().__post_init__()
-
+    def initialize_structure(self):
         self.add_structure(
             structure_type='line',
             number_of_fibers=3,

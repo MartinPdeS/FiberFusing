@@ -1,40 +1,8 @@
-import numpy as np
 from collections.abc import Iterable
 from itertools import combinations
 import FiberFusing as ff
 from shapely.ops import unary_union, nearest_points
 import shapely.geometry as geo
-from matplotlib.path import Path
-from matplotlib.patches import PathPatch
-from matplotlib.collections import PatchCollection
-
-
-def get_silica_index(wavelength: float) -> float:
-    """
-    Calculate the refractive index of silica using the Sellmeier equation.
-
-    Parameters
-    ----------
-    wavelength : float
-        The wavelength in meters.
-
-    Returns
-    -------
-    float
-        The refractive index of silica at the given wavelength.
-    """
-    wavelength_um = wavelength * 1e6  # Convert to micrometers
-
-    A_numerator, A_denominator = 0.6961663, 0.0684043
-    B_numerator, B_denominator = 0.4079426, 0.1162414
-    C_numerator, C_denominator = 0.8974794, 9.896161
-
-    index = (
-        (A_numerator * wavelength_um**2) / (wavelength_um**2 - A_denominator**2) +
-        (B_numerator * wavelength_um**2) / (wavelength_um**2 - B_denominator**2) +
-        (C_numerator * wavelength_um**2) / (wavelength_um**2 - C_denominator**2) + 1
-    )
-    return np.sqrt(index)
 
 
 def nearest_points_exterior(object0, object1) -> ff.Point:

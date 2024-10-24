@@ -8,10 +8,7 @@ class FusedProfile_19x19(BaseFused):
     fusion_range = None
     number_of_fibers = 19
 
-    def __post_init__(self):
-
-        super().__post_init__()
-
+    def initialize_structure(self):
         self.add_structure(
             structure_type='ring',
             number_of_fibers=6,

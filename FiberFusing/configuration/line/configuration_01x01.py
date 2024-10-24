@@ -8,9 +8,7 @@ class FusedProfile_01x01(BaseFused):
     fusion_range = None
     number_of_fibers = 1
 
-    def __post_init__(self):
-        super().__post_init__()
-
+    def initialize_structure(self):
         self.add_center_fiber(fiber_radius=self.fiber_radius)
 
         self._clad_structure = self.fiber_list[0]

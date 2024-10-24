@@ -3,33 +3,33 @@
 
 import copy
 import numpy as np
-from typing import Iterable, Tuple
+from typing import Iterable, Tuple, Callable
 from shapely import affinity
 import shapely.geometry as geo
 from FiberFusing.coordinate_system import CoordinateSystem
 from shapely.ops import split
 import FiberFusing as ff
-from shapely import overlaps
 
 
 class Alteration:
-    def in_place_copy(func):
+    def in_place_copy(function: Callable) -> Callable:
         """
         Decorator to manage in-place operations.
 
         Parameters
         ----------
-        func : callable
+        function : Callable
             The function to wrap.
 
         Returns
         -------
-        callable
+        Callable
             Wrapped function that optionally modifies the object in-place.
         """
         def wrapper(self, *args, in_place=False, **kwargs):
             instance = self if in_place else self.copy()
-            return func(self, instance, *args, **kwargs)
+            return function(self, instance, *args, **kwargs)
+
         return wrapper
 
     def copy(self) -> 'Alteration':

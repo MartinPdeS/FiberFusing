@@ -29,10 +29,11 @@ def test_building_geometry(mock_show, boundaries):
     x_boundary, y_boundary = boundaries
 
     # Create a configuration instance and background
-    clad = configuration.ring.FusedProfile_01x01(
+    clad = configuration.line.FusedProfile_05x05(
         fiber_radius=62.5e-6,
         index=1.4444
     )
+
     background = BackGround(index=1)
 
     # Create a geometry instance with the given parameters
@@ -46,7 +47,6 @@ def test_building_geometry(mock_show, boundaries):
 
     # Add the structure and generate the mesh
     geometry.add_structure(clad)
-    geometry.generate_coordinate_mesh()
 
     # Plot the geometry (mocked)
     geometry.plot()

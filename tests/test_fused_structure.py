@@ -38,5 +38,10 @@ def test_building_clad_structure(mock_show, fused_structure):
     plt.close()
 
 
+def test_fail_fused_initialization():
+    with pytest.raises(AssertionError):
+        configuration.ring.FusedProfile_02x02(fusion_degree=1.2, fiber_radius=1, index=1)
+
+
 if __name__ == "__main__":
     pytest.main(["-W error", __file__])

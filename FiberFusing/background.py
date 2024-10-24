@@ -8,7 +8,6 @@ import numpy as np
 
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.helper import OverlayStructureBaseClass
-from FiberFusing import Circle
 
 
 class NameSpace:
@@ -50,6 +49,8 @@ class BackGround(OverlayStructureBaseClass):
         """
         Initializes the background structure by creating a circular polygon.
         """
+        from FiberFusing import Circle
+
         polygon = Circle(position=self.position, radius=self.radius, index=self.index)
         self.structure_list = [NameSpace(index=self.index, polygon=polygon, name='background')]
 
@@ -86,3 +87,6 @@ class BackGround(OverlayStructureBaseClass):
             mesh=mesh,
             coordinate_system=coordinate_system
         )
+
+    def rotate(self, *args, **kwargs) -> None:
+        pass
