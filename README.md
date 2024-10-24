@@ -7,10 +7,10 @@
 | FiberFusing/background.py                              |       23 |        1 |        0 |        0 |     96% |        66 |
 | FiberFusing/base\_fused.py                             |      157 |       34 |       48 |       12 |     73% |91->94, 117, 122, 127, 141, 153, 179, 211, 223, 246, 258, 270, 326, 357->360, 373, 445, 456, 475-480, 496, 507-512, 523-528, 544-547, 576->579, 579->583, 583->587, 587->591, 592-593 |
 | FiberFusing/buffer.py                                  |       50 |       16 |        8 |        1 |     60% |50, 95-117, 147-161 |
-| FiberFusing/components/base\_class.py                  |      107 |        8 |        2 |        1 |     92% |54, 66, 189, 201, 319-321, 427 |
+| FiberFusing/components/base\_class.py                  |      108 |        9 |        4 |        2 |     90% |54, 66, 189, 201, 237, 319-321, 401->403, 428 |
 | FiberFusing/components/linestring.py                   |       69 |        6 |        6 |        2 |     89% |26, 32, 44, 59, 78-79 |
 | FiberFusing/components/point.py                        |       42 |        5 |        2 |        1 |     86% |27, 45-46, 67, 73 |
-| FiberFusing/components/polygon.py                      |      130 |       27 |       48 |       11 |     70% |43, 55, 64, 157-158, 178-179, 209-212, 222, 231, 256-263, 276-281, 295-296, 322-323, 325, 343-344 |
+| FiberFusing/components/polygon.py                      |       76 |        7 |       26 |        5 |     84% |74, 83, 106-107, 111, 180-181 |
 | FiberFusing/components/utils.py                        |       23 |        1 |       12 |        2 |     91% |51->46, 57 |
 | FiberFusing/configuration/line/configuration\_01x01.py |       13 |        7 |        2 |        1 |     47% |12-18, 22-30 |
 | FiberFusing/configuration/line/configuration\_02x02.py |       12 |        3 |        2 |        1 |     71% |     26-35 |
@@ -31,16 +31,16 @@
 | FiberFusing/connection\_optimization.py                |       75 |        2 |       14 |        2 |     96% |69->71, 203-204 |
 | FiberFusing/coordinate\_system.py                      |      109 |        4 |       18 |        0 |     97% |44, 48, 52, 56 |
 | FiberFusing/fiber/catalogue.py                         |       40 |        9 |       10 |        2 |     74% |42, 73-77, 93-94, 154-155 |
-| FiberFusing/fiber/generic\_fiber.py                    |      108 |       51 |       30 |        0 |     46% |67-73, 92-97, 108-109, 132-135, 158-161, 173-175, 223-227, 254-271, 306-332, 350-351, 442 |
+| FiberFusing/fiber/generic\_fiber.py                    |      108 |       51 |       30 |        0 |     46% |67-73, 92-97, 108-109, 132-135, 158-161, 173-175, 223-227, 254-271, 306-332, 350-351, 436 |
 | FiberFusing/fiber/loader.py                            |       40 |        3 |       12 |        3 |     88% |55->58, 92, 110-111 |
 | FiberFusing/fiber/structure\_collection.py             |       53 |       13 |       14 |        3 |     70% |28, 38, 55, 67-78, 116, 122, 159 |
 | FiberFusing/fiber\_structure.py                        |       73 |        1 |        6 |        0 |     99% |        50 |
 | FiberFusing/geometry.py                                |      147 |       28 |       48 |        9 |     77% |68-69, 88, 111, 132-133, 154-155, 172, 189, 201, 212, 223-224, 244-247, 270, 291-298, 315, 320, 393->397, 397->401, 401->exit |
 | FiberFusing/helper.py                                  |       30 |        1 |       10 |        1 |     95% |        47 |
 | FiberFusing/optical\_structure.py                      |       29 |        6 |        0 |        0 |     79% |64, 82-84, 95-96 |
-| FiberFusing/plottings.py                               |       14 |        0 |        0 |        0 |    100% |           |
+| FiberFusing/plottings.py                               |       21 |        1 |        8 |        1 |     93% |        40 |
 | FiberFusing/utils.py                                   |       58 |       21 |        4 |        1 |     65% |100, 121-122, 139-140, 157-160, 182-188, 209-218 |
-|                                              **TOTAL** | **1687** |  **315** |  **340** |   **70** | **77%** |           |
+|                                              **TOTAL** | **1641** |  **297** |  **328** |   **66** | **79%** |           |
 
 
 ## Setup coverage badge
