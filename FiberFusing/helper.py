@@ -23,6 +23,8 @@ def _plot_helper(function):
         if show:
             plt.show()
 
+        return ax
+
     return wrapper
 
 

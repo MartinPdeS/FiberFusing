@@ -9,6 +9,7 @@ import shapely.geometry as geo
 from FiberFusing.coordinate_system import CoordinateSystem
 from shapely.ops import split
 import FiberFusing as ff
+from shapely import overlaps
 
 
 class Alteration:
@@ -320,7 +321,7 @@ class BaseArea(Alteration):
         output._shapely_object = self._shapely_object.union(other._shapely_object)
         return output
 
-    def __sub__(self, other: 'BaseArea') -> 'BaseArea':
+    def __sub__(self, other: 'BaseArea', tolerance: float = 1e-9) -> 'BaseArea':
         """
         Subtract one geometry from another.
 
@@ -335,7 +336,14 @@ class BaseArea(Alteration):
             The difference of the two geometries.
         """
         output = self.copy()
-        output._shapely_object = self._shapely_object.difference(other._shapely_object)
+
+        buffered_self = self._shapely_object.buffer(tolerance)
+
+        if not buffered_self.intersects(other._shapely_object):
+            return self
+
+        output._shapely_object = buffered_self.difference(other._shapely_object)
+
         return output
 
     def __and__(self, other: 'BaseArea') -> 'BaseArea':

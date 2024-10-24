@@ -8,14 +8,19 @@ import matplotlib.pyplot as plt
 
 
 fused_structures = [
-    configuration.ring.FusedProfile_02x02,
-    configuration.ring.FusedProfile_03x03,
-    configuration.ring.FusedProfile_04x04,
-    configuration.ring.FusedProfile_05x05,
     configuration.line.FusedProfile_02x02,
     configuration.line.FusedProfile_03x03,
     configuration.line.FusedProfile_04x04,
     configuration.line.FusedProfile_05x05,
+    configuration.ring.FusedProfile_02x02,
+    configuration.ring.FusedProfile_03x03,
+    configuration.ring.FusedProfile_04x04,
+    configuration.ring.FusedProfile_05x05,
+    configuration.ring.FusedProfile_06x06,
+    configuration.ring.FusedProfile_07x07,
+    configuration.ring.FusedProfile_10x10,
+    configuration.ring.FusedProfile_12x12,
+    configuration.ring.FusedProfile_19x19,
 ]
 
 
