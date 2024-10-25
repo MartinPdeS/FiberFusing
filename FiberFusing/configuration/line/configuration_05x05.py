@@ -5,7 +5,7 @@ from FiberFusing.base_fused import BaseFused
 
 
 class FusedProfile_05x05(BaseFused):
-    fusion_range = [0, .35]
+    fusion_range = [0.1, .35]
     number_of_fibers = 5
 
     def initialize_structure(self):
@@ -16,5 +16,3 @@ class FusedProfile_05x05(BaseFused):
             fiber_radius=self.fiber_radius,
             compute_fusing=True
         )
-
-        self.randomize_core_position(random_factor=self.core_position_scrambling)

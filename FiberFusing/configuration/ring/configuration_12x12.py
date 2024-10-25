@@ -28,7 +28,3 @@ class FusedProfile_12x12(BaseFused):
             compute_fusing=False,
             angle_shift=20,
         )
-
-        self.randomize_core_position(random_factor=self.core_position_scrambling)
-
-        self.scale_position(factor=self.scale_down_position)

@@ -6,7 +6,6 @@ from typing import Union, Optional, List, Dict, Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 import logging
-import shapely.geometry as geo
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.buffer import Circle
 from FiberFusing.fiber_structure import FiberLine, FiberRing
@@ -31,7 +30,6 @@ class NameSpace:
             setattr(self, key, value)
 
 
-# @dataclass
 class BaseFused(OverlayStructureBaseClass):
     """
     Base class for managing the fusion of optical fiber structures, allowing customization of fiber properties
@@ -50,8 +48,6 @@ class BaseFused(OverlayStructureBaseClass):
     fusion_degree : Union[float, str], optional
         Specifies the degree of fusion, ranging from 0 (no fusion) to 1 (full fusion), or 'auto' to automatically
         determine based on geometry. Default is 'auto'.
-    core_position_scrambling : float, optional
-        Introduces randomness to core positions to simulate practical imperfections. Default is 0.
     scale_down_position : float, optional
         Scaling factor to adjust the overall size of the assembly. Default is 1.
     """
@@ -62,7 +58,6 @@ class BaseFused(OverlayStructureBaseClass):
             index: float,
             tolerance_factor: Optional[float] = 1e-2,
             fusion_degree: Optional[Union[float, str]] = 'auto',
-            core_position_scrambling: Optional[float] = 0,
             scale_down_position: Optional[float] = 1):
         """
         Initialize the fiber and core lists and other structures immediately after the dataclass fields
@@ -71,10 +66,13 @@ class BaseFused(OverlayStructureBaseClass):
         self.fiber_radius = fiber_radius
         self.index = index
         self.tolerance_factor = tolerance_factor
-        self.fusion_degree = fusion_degree
-        self.core_position_scrambling = core_position_scrambling
-        self.scale_down_position = scale_down_position
 
+        self.scale_down_position = scale_down_position
+        self.fusion_degree = fusion_degree
+
+        self._compute_structure()
+
+    def _compute_structure(self) -> None:
         self.fiber_list = []
         self.core_list = []
         self._clad_structure = None
@@ -83,6 +81,31 @@ class BaseFused(OverlayStructureBaseClass):
         self.added_section_list = []
 
         self.initialize_structure()
+
+    def randomize_core_position(self, random_factor: float = 0) -> "BaseFused":
+        """
+        Randomize the position of fiber cores to simulate real-world imperfections.
+
+        Parameters
+        ----------
+        random_factor : float, optional
+            Factor determining the randomness in position. Default is 0.
+
+        Returns
+        -------
+        BaseFused
+            The updated BaseFused instance.
+        """
+        if random_factor == 0:
+            return self
+
+        logging.info("Randomizing core positions.")
+        for fiber in self.fiber_list:
+            fiber.shifted_core = fiber.core
+            random_shift = np.random.rand(2) * random_factor
+            fiber.shifted_core.translate(random_shift, in_place=True)
+
+        return self
 
     @property
     def fusion_degree(self) -> float:
@@ -99,7 +122,6 @@ class BaseFused(OverlayStructureBaseClass):
                 self._fusion_degree = self.parametrized_fusion_degree = None
 
         elif np.isscalar(value):
-            print(value)
             assert 0 <= value <= 1, f"Fusion degree [{value}] must be within the range [0, 1]."
             self._fusion_degree = value
             self.parametrized_fusion_degree = self.fusion_range[0] * (1 - value) + value * self.fusion_range[-1]
@@ -107,29 +129,7 @@ class BaseFused(OverlayStructureBaseClass):
         else:
             f"Input for fusion_degree [{value}] is invalid."
 
-    @property
-    def refractive_index_list(self) -> List[float]:
-        """
-        Get a list containing the refractive index of the fiber cladding.
-
-        Returns
-        -------
-        List[float]
-            A list with the cladding refractive index.
-        """
-        return [self.index]
-
-    @property
-    def is_multi(self) -> bool:
-        """
-        Check if the clad structure is a MultiPolygon.
-
-        Returns
-        -------
-        bool
-            True if the clad structure is a MultiPolygon, otherwise False.
-        """
-        return isinstance(self.clad_structure._shapely_object, geo.MultiPolygon)
+        self._compute_structure()
 
     @property
     def clad_structure(self):
@@ -178,29 +178,6 @@ class BaseFused(OverlayStructureBaseClass):
             structure_list=structure_list, mesh=mesh, coordinate_system=coordinate_system
         )
 
-    def get_shapely_object(self):
-        """
-        Get the Shapely object representing the clad structure.
-
-        Returns
-        -------
-        shapely.geometry.BaseGeometry
-            The Shapely object of the clad structure.
-        """
-        return self.clad_structure._shapely_object
-
-    @property
-    def bounds(self) -> Tuple[float, float, float, float]:
-        """
-        Get the boundaries of the clad structure.
-
-        Returns
-        -------
-        tuple
-            The bounding box of the clad structure.
-        """
-        return self.clad_structure.bounds
-
     def get_structure_max_min_boundaries(self) -> Tuple[float, float, float, float]:
         """
         Get the maximum and minimum boundaries of the clad structure.
@@ -211,42 +188,6 @@ class BaseFused(OverlayStructureBaseClass):
             The bounding box of the clad structure.
         """
         return self.clad_structure.bounds
-
-    @property
-    def center(self) -> Tuple[float, float]:
-        """
-        Get the center of the clad structure.
-
-        Returns
-        -------
-        tuple
-            The center coordinates of the clad structure.
-        """
-        return self.clad_structure.center
-
-    @property
-    def fiber(self) -> List[Circle]:
-        """
-        Get a list of all fibers in the structure.
-
-        Returns
-        -------
-        list
-            A list of all fiber objects in the structure.
-        """
-        return self.fiber_list
-
-    @property
-    def cores(self) -> List[Tuple[float, float]]:
-        """
-        Get a list of core positions.
-
-        Returns
-        -------
-        list
-            A list of coordinates representing core positions.
-        """
-        return [fiber.core for fiber in self.fiber_list]
 
     def add_single_fiber(self, fiber_radius: float, position: Tuple[float, float] = (0, 0)) -> "BaseFused":
         """
@@ -434,30 +375,6 @@ class BaseFused(OverlayStructureBaseClass):
         """
         return [fiber.core for fiber in self.fiber_list]
 
-    def randomize_core_position(self, random_factor: float = 0) -> "BaseFused":
-        """
-        Randomize the position of fiber cores to simulate real-world imperfections.
-
-        Parameters
-        ----------
-        random_factor : float, optional
-            Factor determining the randomness in position. Default is 0.
-
-        Returns
-        -------
-        BaseFused
-            The updated BaseFused instance.
-        """
-        if random_factor == 0:
-            return self
-
-        logging.info("Randomizing core positions.")
-        for fiber in self.fiber_list:
-            random_shift = np.random.rand(2) * random_factor
-            fiber.core.translate(random_shift, in_place=True)
-
-        return self
-
     def get_rasterized_mesh(self, coordinate_system: CoordinateSystem) -> np.ndarray:
         """
         Generate a rasterized mesh of the structure.
@@ -489,7 +406,7 @@ class BaseFused(OverlayStructureBaseClass):
             fiber.shifted_core.rotate(angle, in_place=True)
             fiber.center.rotate(angle, in_place=True)
 
-        self._clad_structure = self.clad_structure.rotate(angle, in_place=True)
+        self.clad_structure.rotate(angle, in_place=True)
 
         for element in self.removed_section_list:
             element.rotate(angle, in_place=True)
@@ -499,9 +416,9 @@ class BaseFused(OverlayStructureBaseClass):
 
         return self
 
-    def shift(self, *args, **kwargs) -> "BaseFused":
+    def translate(self, shift: Tuple[float, float]) -> "BaseFused":
         """
-        Shift the entire structure, including fiber cores.
+        Translate the entire structure, including fiber cores.
 
         Returns
         -------
@@ -509,9 +426,18 @@ class BaseFused(OverlayStructureBaseClass):
             The updated BaseFused instance.
         """
         for fiber in self.fiber_list:
-            fiber.core.shift(*args, **kwargs, in_place=True)
+            fiber.translate(shift, in_place=True)
+            fiber.core.translate(shift, in_place=True)
+            fiber.shifted_core.translate(shift, in_place=True)
+            fiber.center.translate(shift, in_place=True)
 
-        self._clad_structure = self.clad_structure.shift(*args, **kwargs)
+        self.clad_structure.translate(shift, in_place=True)
+
+        for element in self.removed_section_list:
+            element.translate(shift, in_place=True)
+
+        for element in self.added_section_list:
+            element.translate(shift, in_place=True)
 
         return self
 

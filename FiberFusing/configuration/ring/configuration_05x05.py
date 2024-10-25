@@ -16,5 +16,3 @@ class FusedProfile_05x05(BaseFused):
             fiber_radius=self.fiber_radius,
             compute_fusing=True
         )
-
-        self.randomize_core_position(random_factor=self.core_position_scrambling)

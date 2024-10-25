@@ -12,5 +12,3 @@ class FusedProfile_01x01(BaseFused):
         self.add_center_fiber(fiber_radius=self.fiber_radius)
 
         self._clad_structure = self.fiber_list[0]
-
-        self.randomize_core_position(random_factor=self.core_position_scrambling)

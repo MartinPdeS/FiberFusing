@@ -38,7 +38,17 @@ def test_building_clad_structure(mock_show, fused_structure):
     plt.close()
 
 
-def test_fail_fused_initialization():
+def test_configuration_api():
+    structure = configuration.line.FusedProfile_02x02(fusion_degree='auto', fiber_radius=100e-6, index=1)
+
+    structure.fusion_degree = 0.3
+
+    structure.randomize_core_position(random_factor=4e-6)
+
+    structure.translate(shift=(-5e6, +20e-6))
+
+
+def test_fail_configuration_initialization():
     with pytest.raises(AssertionError):
         configuration.ring.FusedProfile_02x02(fusion_degree=1.2, fiber_radius=1, index=1)
 
