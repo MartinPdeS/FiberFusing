@@ -364,6 +364,10 @@ class BaseFused(OverlayStructureBaseClass):
         """
         self.fiber_list.extend(fibers)
 
+    @property
+    def cores(self) -> List:
+        return [fiber.shifted_core for fiber in self.fiber_list]
+
     def get_core_positions(self) -> List[Tuple[float, float]]:
         """
         Get a list of core positions for all fibers in the structure.
