@@ -108,7 +108,7 @@ binder_branch = f"v{major}.{minor}.x"
 
 html_theme_options = dict()
 
-html_theme_options['logo'] = dict(text='FlowCyPy', image="_static/thumbnail.png")
+html_theme_options['logo'] = dict(text='FiberFusing', image="_static/thumbnail.png")
 html_theme_options["show_nav_level"] = 0
 
 html_theme_options.update({
@@ -145,7 +145,7 @@ html_theme_options.update({
 current_version = os.getenv("tag", "latest")
 
 html_theme_options["switcher"] = dict(
-    json_url="https://raw.githubusercontent.com/MartinPdeS/FlowCyPy/documentation_page/version_switcher.json",
+    json_url="https://raw.githubusercontent.com/MartinPdeS/FiberFusing/documentation_page/version_switcher.json",
     version_match=current_version,
 )
 
