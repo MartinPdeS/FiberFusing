@@ -1,0 +1,1183 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Index &#8212; FiberFusing  documentation</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.10/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=d2d258e8" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/default.css?v=265c6c44" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
+
+    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.0';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/FlowCyPy/documentation_page/version_switcher.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v1.5.0.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner = true;
+        </script>
+    <link rel="icon" href="_static/thumbnail.png"/>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="1.5.0.1" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class=" navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/thumbnail.png" class="logo__image only-light" alt=""/>
+    <img src="_static/thumbnail.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">FlowCyPy</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class=" navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="theory.html">
+    Theoretical background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="code.html">
+    Source Code
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="gallery/index.html">
+    Coding examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/FiberFusing" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/fiberfusing/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/fiberfusing" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="theory.html">
+    Theoretical background
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="code.html">
+    Source Code
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="gallery/index.html">
+    Coding examples
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="references.html">
+    References
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/MartinPdeS/FiberFusing" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-github fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">GitHub</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://pypi.org/project/fiberfusing/" title="PyPI" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-solid fa-box fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">PyPI</span></a>
+        </li>
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://anaconda.org/MartinPdeS/fiberfusing" title="Anaconda" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-python fa-lg" aria-hidden="true"></i>
+            <span class="sr-only">Anaconda</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#X"><strong>X</strong></a>
+ | <a href="#Y"><strong>Y</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.add_background_to_mesh">add_background_to_mesh() (Geometry method)</a>
+</li>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.add_center_fiber">add_center_fiber() (BaseFused method)</a>
+</li>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.add_center_structure">add_center_structure() (BaseFused method)</a>
+</li>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.add_custom_fiber">add_custom_fiber() (BaseFused method)</a>
+</li>
+      <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.add_fiber">add_fiber() (Geometry method)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.add_padding">add_padding() (CoordinateSystem method)</a>
+</li>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.add_single_fiber">add_single_fiber() (BaseFused method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.add_structure">add_structure() (BaseFused method)</a>
+
+      <ul>
+        <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.add_structure">(Geometry method)</a>
+</li>
+      </ul></li>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.added_section">added_section (BaseFused property)</a>
+</li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.area">area (Circle property)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.area">(EmptyPolygon property)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.area">(Polygon property)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.area">(Square property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused">BaseFused (class in FiberFusing.base_fused)</a>
+</li>
+      <li><a href="code/components.html#FiberFusing.components.linestring.LineString.boundary">boundary (LineString property)</a>
+</li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.bounds">bounds (Circle property)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.bounds">(EmptyPolygon property)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.bounds">(Polygon property)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.bounds">(Square property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.center">center (Circle property)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.center">(EmptyPolygon property)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.linestring.LineString.center">(LineString property)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.center">(Polygon property)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.center">(Square property)</a>
+</li>
+      </ul></li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.center">center() (CoordinateSystem method)</a>
+</li>
+      <li><a href="code/components.html#FiberFusing.components.linestring.LineString.centering">centering() (LineString method)</a>
+</li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle">Circle (class in FiberFusing.buffer)</a>
+</li>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.clad_structure">clad_structure (BaseFused property)</a>
+</li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.contains_points">contains_points() (Circle method)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.contains_points">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.contains_points">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.contains_points">(Square method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.convex_hull">convex_hull (Circle property)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.convex_hull">(EmptyPolygon property)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.convex_hull">(Polygon property)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.convex_hull">(Square property)</a>
+</li>
+      </ul></li>
+      <li><a href="code/components.html#FiberFusing.components.linestring.LineString.coordinates">coordinates (LineString attribute)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem">CoordinateSystem (class in FiberFusing.coordinate_system)</a>
+</li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.copy">copy() (Circle method)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.copy">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.linestring.LineString.copy">(LineString method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.point.Point.copy">(Point method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.copy">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.copy">(Square method)</a>
+</li>
+      </ul></li>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.cores">cores (BaseFused property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/components.html#FiberFusing.components.point.Point.distance">distance() (Point method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.dx">dx (CoordinateSystem property)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.dy">dy (CoordinateSystem property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon">EmptyPolygon (class in FiberFusing.components.polygon)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.ensure_odd">ensure_odd() (CoordinateSystem method)</a>
+</li>
+      <li><a href="code/components.html#FiberFusing.components.linestring.LineString.extend">extend() (LineString method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.exterior">exterior (Circle property)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.exterior">(EmptyPolygon property)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.exterior">(Polygon property)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.exterior">(Square property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.fusion_degree">fusion_degree (BaseFused property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.generate_mesh">generate_mesh() (Geometry method)</a>
+</li>
+      <li><a href="code/geometry.html#FiberFusing.geometry.Geometry">Geometry (class in FiberFusing.geometry)</a>
+</li>
+      <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.get_boundaries">get_boundaries() (Geometry method)</a>
+</li>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.get_core_positions">get_core_positions() (BaseFused method)</a>
+</li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.get_hole">get_hole() (Circle method)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.get_hole">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.get_hole">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.get_hole">(Square method)</a>
+</li>
+      </ul></li>
+      <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.get_index_range">get_index_range() (Geometry method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/components.html#FiberFusing.components.linestring.LineString.get_perpendicular">get_perpendicular() (LineString method)</a>
+</li>
+      <li><a href="code/components.html#FiberFusing.components.linestring.LineString.get_position_parametrization">get_position_parametrization() (LineString method)</a>
+</li>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.get_rasterized_mesh">get_rasterized_mesh() (BaseFused method)</a>
+
+      <ul>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Circle.get_rasterized_mesh">(Circle method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.get_rasterized_mesh">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.get_rasterized_mesh">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.get_rasterized_mesh">(Square method)</a>
+</li>
+      </ul></li>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.get_structure_max_min_boundaries">get_structure_max_min_boundaries() (BaseFused method)</a>
+</li>
+      <li><a href="code/components.html#FiberFusing.components.linestring.LineString.get_vector">get_vector() (LineString method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.in_place_copy">in_place_copy() (Circle method)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.in_place_copy">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.linestring.LineString.in_place_copy">(LineString method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.point.Point.in_place_copy">(Point method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.in_place_copy">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.in_place_copy">(Square method)</a>
+</li>
+      </ul></li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.index">index (Circle attribute)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.linestring.LineString.index">(LineString attribute)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.point.Point.index">(Point attribute)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.index">(Square attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="code/components.html#FiberFusing.components.linestring.LineString.instance">instance (LineString attribute)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.point.Point.instance">(Point attribute)</a>
+</li>
+      </ul></li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.interiors">interiors (Circle property)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.interiors">(EmptyPolygon property)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.interiors">(Polygon property)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.interiors">(Square property)</a>
+</li>
+      </ul></li>
+      <li><a href="code/components.html#FiberFusing.components.linestring.LineString.intersect">intersect() (LineString method)</a>
+</li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.intersection">intersection() (Circle method)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.intersection">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.linestring.LineString.intersection">(LineString method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.point.Point.intersection">(Point method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.intersection">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.intersection">(Square method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.is_empty">is_empty (Circle property)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.is_empty">(EmptyPolygon property)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.linestring.LineString.is_empty">(LineString property)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.point.Point.is_empty">(Point property)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.is_empty">(Polygon property)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.is_empty">(Square property)</a>
+</li>
+      </ul></li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.is_iterable">is_iterable (Circle property)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.is_iterable">(EmptyPolygon property)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.is_iterable">(Polygon property)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.is_iterable">(Square property)</a>
+</li>
+      </ul></li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.is_multi">is_multi (Circle property)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.is_multi">(EmptyPolygon property)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.is_multi">(Polygon property)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.is_multi">(Square property)</a>
+</li>
+      </ul></li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.is_pure_polygon">is_pure_polygon (Circle property)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.is_pure_polygon">(EmptyPolygon property)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.is_pure_polygon">(Polygon property)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.is_pure_polygon">(Square property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.keep_largest_polygon">keep_largest_polygon() (Circle method)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.keep_largest_polygon">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.keep_largest_polygon">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.keep_largest_polygon">(Square method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/components.html#FiberFusing.components.linestring.LineString.length">length (LineString property)</a>
+
+      <ul>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.length">(Square attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/components.html#FiberFusing.components.linestring.LineString">LineString (class in FiberFusing.components.linestring)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/components.html#FiberFusing.components.linestring.LineString.make_length">make_length() (LineString method)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.max_x">max_x (CoordinateSystem attribute)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.max_y">max_y (CoordinateSystem attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/components.html#FiberFusing.components.linestring.LineString.mid_point">mid_point (LineString property)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.min_x">min_x (CoordinateSystem attribute)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.min_y">min_y (CoordinateSystem attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.nx">nx (CoordinateSystem attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.ny">ny (CoordinateSystem attribute)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.overlay_structures_on_mesh">overlay_structures_on_mesh() (BaseFused method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.plot">plot() (BaseFused method)</a>
+
+      <ul>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Circle.plot">(Circle method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.plot">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.plot">(Geometry method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.point.Point.plot">(Point method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.plot">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.plot">(Square method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.plot_patch">plot_patch() (Geometry method)</a>
+</li>
+      <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.plot_raster">plot_raster() (Geometry method)</a>
+</li>
+      <li><a href="code/components.html#FiberFusing.components.point.Point">Point (class in FiberFusing.components.point)</a>
+</li>
+      <li><a href="code/components.html#FiberFusing.components.polygon.Polygon">Polygon (class in FiberFusing.components.polygon)</a>
+</li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.position">position (Circle attribute)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.point.Point.position">(Point attribute)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.position">(Square attribute)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.radius">radius (Circle attribute)</a>
+</li>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.randomize_core_position">randomize_core_position() (BaseFused method)</a>
+</li>
+      <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.randomize_fiber_structures_index">randomize_fiber_structures_index() (Geometry method)</a>
+</li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.rasterize">rasterize() (Circle method)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.rasterize">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.rasterize">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.rasterize">(Square method)</a>
+</li>
+      </ul></li>
+      <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.rasterize_polygons">rasterize_polygons() (Geometry method)</a>
+</li>
+      <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.refractive_index_maximum">refractive_index_maximum (Geometry property)</a>
+</li>
+      <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.refractive_index_minimum">refractive_index_minimum (Geometry property)</a>
+</li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.remove_non_polygon_elements">remove_non_polygon_elements() (Circle method)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.remove_non_polygon_elements">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.remove_non_polygon_elements">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.remove_non_polygon_elements">(Square method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.removed_section">removed_section (BaseFused property)</a>
+</li>
+      <li><a href="code/components.html#FiberFusing.components.linestring.LineString.render_on_axis">render_on_axis() (LineString method)</a>
+</li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.resolution">resolution (Circle attribute)</a>
+</li>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.rotate">rotate() (BaseFused method)</a>
+
+      <ul>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Circle.rotate">(Circle method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.rotate">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.rotate">(Geometry method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.linestring.LineString.rotate">(LineString method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.point.Point.rotate">(Point method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.rotate">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.rotate">(Square method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.scale">scale() (Circle method)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.scale">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.linestring.LineString.scale">(LineString method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.point.Point.scale">(Point method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.scale">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.scale">(Square method)</a>
+</li>
+      </ul></li>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.scale_position">scale_position() (BaseFused method)</a>
+
+      <ul>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Circle.scale_position">(Circle method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.scale_position">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.scale_position">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.scale_position">(Square method)</a>
+</li>
+      </ul></li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.set_bottom">set_bottom() (CoordinateSystem method)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.set_left">set_left() (CoordinateSystem method)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.set_right">set_right() (CoordinateSystem method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.set_top">set_top() (CoordinateSystem method)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.shape">shape (CoordinateSystem property)</a>
+</li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.shift_position">shift_position() (Circle method)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.shift_position">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.point.Point.shift_position">(Point method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.shift_position">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.shift_position">(Square method)</a>
+</li>
+      </ul></li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.split_with_line">split_with_line() (Circle method)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.split_with_line">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.split_with_line">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.split_with_line">(Square method)</a>
+</li>
+      </ul></li>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Square">Square (class in FiberFusing.buffer)</a>
+</li>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.structure_dictionary">structure_dictionary (BaseFused property)</a>
+</li>
+      <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.structure_list">structure_list (Geometry property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.to_unstructured_coordinate">to_unstructured_coordinate() (CoordinateSystem method)</a>
+</li>
+      <li><a href="code/overlay_structure.html#FiberFusing.base_fused.BaseFused.translate">translate() (BaseFused method)</a>
+
+      <ul>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Circle.translate">(Circle method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.translate">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.linestring.LineString.translate">(LineString method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.point.Point.translate">(Point method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.translate">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.translate">(Square method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/buffer.html#FiberFusing.buffer.Circle.union">union() (Circle method)</a>
+
+      <ul>
+        <li><a href="code/components.html#FiberFusing.components.polygon.EmptyPolygon.union">(EmptyPolygon method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.linestring.LineString.union">(LineString method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.point.Point.union">(Point method)</a>
+</li>
+        <li><a href="code/components.html#FiberFusing.components.polygon.Polygon.union">(Polygon method)</a>
+</li>
+        <li><a href="code/buffer.html#FiberFusing.buffer.Square.union">(Square method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.update">update() (CoordinateSystem method)</a>
+</li>
+      <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.update_coordinate_system">update_coordinate_system() (Geometry method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="X">X</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/components.html#FiberFusing.components.point.Point.x">x (Point property)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.x_bounds">x_bounds (CoordinateSystem property)</a>
+
+      <ul>
+        <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.x_bounds">(Geometry property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.x_centering">x_centering() (CoordinateSystem method)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.x_mesh">x_mesh (CoordinateSystem property)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.x_vector">x_vector (CoordinateSystem property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Y">Y</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/components.html#FiberFusing.components.point.Point.y">y (Point property)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.y_bounds">y_bounds (CoordinateSystem property)</a>
+
+      <ul>
+        <li><a href="code/geometry.html#FiberFusing.geometry.Geometry.y_bounds">(Geometry property)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.y_centering">y_centering() (CoordinateSystem method)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.y_mesh">y_mesh (CoordinateSystem property)</a>
+</li>
+      <li><a href="code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.y_vector">y_vector (CoordinateSystem property)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+
+
+                </article>
+              
+              
+              
+              
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2024, Martin Poinsinet de Sivry-Houle.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 7.4.7.
+    <br/>
+  </p>
+</div>
+      
+        <div class="footer-item">
+<p class="theme-version">
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
