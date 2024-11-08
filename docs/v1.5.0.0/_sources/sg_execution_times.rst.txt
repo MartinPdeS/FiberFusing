@@ -1,0 +1,100 @@
+
+:orphan:
+
+.. _sphx_glr_sg_execution_times:
+
+
+Computation times
+=================
+**02:32.900** total execution time for 22 files **from all galleries**:
+
+.. container::
+
+  .. raw:: html
+
+    <style scoped>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" class="init">
+    $(document).ready( function () {
+        $('table.sg-datatable').DataTable({order: [[1, 'desc']]});
+    } );
+    </script>
+
+  .. list-table::
+   :header-rows: 1
+   :class: table table-striped sg-datatable
+
+   * - Example
+     - Time
+     - Mem (MB)
+   * - :ref:`sphx_glr_gallery_geometry_plot_ring_3.py` (``../examples/geometry/plot_ring_3.py``)
+     - 00:19.744
+     - 0.0
+   * - :ref:`sphx_glr_gallery_geometry_plot_ring_5.py` (``../examples/geometry/plot_ring_5.py``)
+     - 00:19.713
+     - 0.0
+   * - :ref:`sphx_glr_gallery_geometry_plot_ring_7.py` (``../examples/geometry/plot_ring_7.py``)
+     - 00:18.950
+     - 0.0
+   * - :ref:`sphx_glr_gallery_geometry_plot_line_5.py` (``../examples/geometry/plot_line_5.py``)
+     - 00:13.039
+     - 0.0
+   * - :ref:`sphx_glr_gallery_geometry_plot_ring_4.py` (``../examples/geometry/plot_ring_4.py``)
+     - 00:12.529
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_ring_7.py` (``../examples/clad/plot_ring_7.py``)
+     - 00:12.481
+     - 0.0
+   * - :ref:`sphx_glr_gallery_geometry_plot_line_4.py` (``../examples/geometry/plot_line_4.py``)
+     - 00:10.520
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_ring_4.py` (``../examples/clad/plot_ring_4.py``)
+     - 00:08.104
+     - 0.0
+   * - :ref:`sphx_glr_gallery_geometry_plot_ring_2.py` (``../examples/geometry/plot_ring_2.py``)
+     - 00:06.850
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_line_5.py` (``../examples/clad/plot_line_5.py``)
+     - 00:06.631
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_line_4.py` (``../examples/clad/plot_line_4.py``)
+     - 00:05.497
+     - 0.0
+   * - :ref:`sphx_glr_gallery_geometry_plot_line_3.py` (``../examples/geometry/plot_line_3.py``)
+     - 00:04.482
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_line_3.py` (``../examples/clad/plot_line_3.py``)
+     - 00:03.634
+     - 0.0
+   * - :ref:`sphx_glr_gallery_geometry_plot_single.py` (``../examples/geometry/plot_single.py``)
+     - 00:03.294
+     - 0.0
+   * - :ref:`sphx_glr_gallery_geometry_plot_ring_10.py` (``../examples/geometry/plot_ring_10.py``)
+     - 00:03.243
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_ring_2.py` (``../examples/clad/plot_ring_2.py``)
+     - 00:01.655
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_ring_19.py` (``../examples/clad/plot_ring_19.py``)
+     - 00:01.453
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_ring_12.py` (``../examples/clad/plot_ring_12.py``)
+     - 00:00.736
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_single.py` (``../examples/clad/plot_single.py``)
+     - 00:00.344
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_fusion_degree.py` (``../examples/clad/fusion_degree.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_radomize_core.py` (``../examples/clad/radomize_core.py``)
+     - 00:00.000
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_structure_shift.py` (``../examples/clad/structure_shift.py``)
+     - 00:00.000
+     - 0.0
