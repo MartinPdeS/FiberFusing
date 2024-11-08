@@ -17,13 +17,11 @@ channels:
 
 requirements:
   host:
-    - python >=3.8
+    - python {{ PY_VER }}*
     - setuptools >=40.8.0
     - wheel
     - setuptools-scm >=8.0
     - pip
-    - martinpdes::mpsplots
-    - martinpdes::pyoptik
   run:
     - pyyaml ~= 6.0
     - martinpdes::mpsplots
@@ -35,12 +33,12 @@ requirements:
 
 
 about:
-  home: https://github.com/MartinPdeS/PyFinitDiff
+  home: https://github.com/MartinPdeS/FiberFusing
   license: MIT
   summary: "A package fiber fusing configuration simulating the transverse fusion of fiber optics."
   description: FiberFusing is a library that simulate the fusing of fiber optics through scanning flame. It's compuation is based on "The shape of the taper" from Birks.
-  dev_url: https://github.com/MartinPdeS/PyFinitDiff
-  doc_url: https://pyfinitdiff.readthedocs.io
+  dev_url: https://github.com/MartinPdeS/FiberFusing
+  doc_url: https://fiberfusing.readthedocs.io
   license_file: LICENSE
   keywords:
     - fiber optics
@@ -51,13 +49,11 @@ test:
   imports:
     - FiberFusing
   requires:
+    - python {{PY_VER}}*
     - pytest >=0.6
     - pytest-cov >=2.0
-    - pytest-json-report ~=1.5
-    - mypy >=0.910
-    - flake8 >=3.9
-    - tox >=3.24
-    - coverage ~=7.6
+    - pytest-json-report ~=1.5.0
+    - coverage ~=7.6.1
   commands:
     - python -m pytest
   source_files:

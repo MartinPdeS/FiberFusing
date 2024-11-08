@@ -2,27 +2,20 @@
 # -*- coding: utf-8 -*-
 
 import sys
-from sphinx_gallery.sorting import FileNameSortKey
+import os
 from MPSPlots.styles import use_mpsplots_style
-
 import FiberFusing
-from FiberFusing.directories import project_path, doc_css_path, examples_path
+from pathlib import Path
+from FiberFusing.directories import doc_css_path, examples_path
 
-
-sys.path.insert(0, project_path)
-sys.path.insert(0, project_path.joinpath('FiberFusing'))
+sys.path.append(str(Path(".").resolve()))
 
 
 def setup(app):
     app.add_css_file(str(doc_css_path))
 
 
-autodoc_mock_imports = [
-    'matplotlib',
-    'scipy'
-    'numpydoc',
-    'MPSPlots',
-]
+autodoc_mock_imports = []
 
 
 project = 'FiberFusing'
@@ -46,6 +39,9 @@ extensions = [
 # Napoleon settings for docstrings
 napoleon_google_docstring = False
 napoleon_numpy_docstring = True
+
+html_logo = "_static/thumbnail.png"
+html_favicon = "_static/thumbnail.png"
 
 
 def reset_mpl(gallery_conf, fname):
@@ -74,7 +70,6 @@ sphinx_gallery_conf = {
     'reset_modules': reset_mpl,
     'line_numbers': False,
     'remove_config_comments': True,
-    'within_subsection_order': FileNameSortKey,
     'capture_repr': ('_repr_html_', '__repr__'),
     'nested_sections': True,
 }
@@ -111,13 +106,12 @@ binder_branch = "main"
 major, minor = version[:2]
 binder_branch = f"v{major}.{minor}.x"
 
-html_theme_options = {
-    # Navigation bar
-    "logo": {
-        "alt_text": "FiberFusing's logo",
-        "text": "FiberFusing",
-        "link": "https://fiberfusing.readthedocs.io/en/latest/",
-    },
+html_theme_options = dict()
+
+html_theme_options['logo'] = dict(text='FlowCyPy', image="_static/thumbnail.png")
+html_theme_options["show_nav_level"] = 0
+
+html_theme_options.update({
     "icon_links": [
         {
             "name": "GitHub",
@@ -143,14 +137,21 @@ html_theme_options = {
     "footer_start": ["copyright"],
     "footer_end": ["sphinx-version", "theme-version"],
     # Other
-    "pygment_light_style": "default",
-    "pygment_dark_style": "github-dark",
+    "pygments_light_style": "default",
+    "pygments_dark_style": "github-dark",
 }
+)
+
+current_version = os.getenv("tag", "latest")
+
+html_theme_options["switcher"] = dict(
+    json_url="https://raw.githubusercontent.com/MartinPdeS/FlowCyPy/documentation_page/version_switcher.json",
+    version_match=current_version,
+)
 
 htmlhelp_basename = 'FiberFusingdoc'
 
 latex_elements = {}
-
 
 latex_documents = [
     (master_doc, 'FiberFusing.tex', 'FiberFusing Documentation',
