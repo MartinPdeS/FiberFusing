@@ -135,7 +135,7 @@ html_theme_options.update({
     "show_version_warning_banner": True,
     # Footer
     "footer_start": ["copyright"],
-    "footer_end": ["sphinx-version", "theme-version" ],
+    "footer_end": ["sphinx-version", "theme-version"],
     # Other
     "pygments_light_style": "default",
     "pygments_dark_style": "github-dark",
