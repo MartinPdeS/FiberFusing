@@ -3,11 +3,6 @@
 Utilities Module
 ----------------
 
-.. autofunction:: FiberFusing.utils.get_silica_index
-    :noindex:
-
-    The `get_silica_index` function calculates the refractive index of silica based on the wavelength, using established empirical formulas. It is a core utility for determining optical properties within the simulation.
-
 .. autofunction:: FiberFusing.utils.union_geometries
     :noindex:
 

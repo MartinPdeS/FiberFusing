@@ -1,6 +1,7 @@
 .. _examples_gallery:
 
-Examples
-========
+Coding examples
+===============
 
-A gallery of examples and that showcase how FiberFusing can be used. Some examples demonstrate the use of the API in general and some demonstrate specific applications in tutorial form.
+Explore our gallery of examples demonstrating the usage of FiberFusing. These examples range from general API usage to specific applications, presented in a tutorial format to guide users through practical implementations.
+
