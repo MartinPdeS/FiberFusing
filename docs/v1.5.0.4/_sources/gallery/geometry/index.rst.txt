@@ -1,4 +1,6 @@
-:orphan:
+
+
+.. _sphx_glr_gallery_geometry:
 
 .. _geometry_index:
 
@@ -32,74 +34,6 @@ Geometry Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="10x10 Ring - Geometry Visualization">
-
-.. only:: html
-
-  .. image:: /gallery/geometry/images/thumb/sphx_glr_plot_ring_10_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_geometry_plot_ring_10.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">10x10 Ring - Geometry Visualization</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="1x1 Geometry Visualization">
-
-.. only:: html
-
-  .. image:: /gallery/geometry/images/thumb/sphx_glr_plot_single_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_geometry_plot_single.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">1x1 Geometry Visualization</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="4x4 Ring - Geometry Visualization">
-
-.. only:: html
-
-  .. image:: /gallery/geometry/images/thumb/sphx_glr_plot_ring_4_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_geometry_plot_ring_4.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">4x4 Ring - Geometry Visualization</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="2x2 Ring - Geometry Visualization">
-
-.. only:: html
-
-  .. image:: /gallery/geometry/images/thumb/sphx_glr_plot_ring_2_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_geometry_plot_ring_2.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">2x2 Ring - Geometry Visualization</div>
-    </div>
-
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="4x4 Line - Geometry Visualization">
 
 .. only:: html
@@ -112,23 +46,6 @@ Geometry Examples
 .. raw:: html
 
       <div class="sphx-glr-thumbnail-title">4x4 Line - Geometry Visualization</div>
-    </div>
-
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="7x7 Ring - Geometry Visualization">
-
-.. only:: html
-
-  .. image:: /gallery/geometry/images/thumb/sphx_glr_plot_ring_7_thumb.png
-    :alt:
-
-  :ref:`sphx_glr_gallery_geometry_plot_ring_7.py`
-
-.. raw:: html
-
-      <div class="sphx-glr-thumbnail-title">7x7 Ring - Geometry Visualization</div>
     </div>
 
 
@@ -151,18 +68,35 @@ Geometry Examples
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="5x5 Ring - Geometry Visualization">
+    <div class="sphx-glr-thumbcontainer" tooltip="10x10 Ring - Geometry Visualization">
 
 .. only:: html
 
-  .. image:: /gallery/geometry/images/thumb/sphx_glr_plot_ring_5_thumb.png
+  .. image:: /gallery/geometry/images/thumb/sphx_glr_plot_ring_10_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_geometry_plot_ring_5.py`
+  :ref:`sphx_glr_gallery_geometry_plot_ring_10.py`
 
 .. raw:: html
 
-      <div class="sphx-glr-thumbnail-title">5x5 Ring - Geometry Visualization</div>
+      <div class="sphx-glr-thumbnail-title">10x10 Ring - Geometry Visualization</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="2x2 Ring - Geometry Visualization">
+
+.. only:: html
+
+  .. image:: /gallery/geometry/images/thumb/sphx_glr_plot_ring_2_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_geometry_plot_ring_2.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">2x2 Ring - Geometry Visualization</div>
     </div>
 
 
@@ -183,6 +117,74 @@ Geometry Examples
     </div>
 
 
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="4x4 Ring - Geometry Visualization">
+
+.. only:: html
+
+  .. image:: /gallery/geometry/images/thumb/sphx_glr_plot_ring_4_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_geometry_plot_ring_4.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">4x4 Ring - Geometry Visualization</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="5x5 Ring - Geometry Visualization">
+
+.. only:: html
+
+  .. image:: /gallery/geometry/images/thumb/sphx_glr_plot_ring_5_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_geometry_plot_ring_5.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">5x5 Ring - Geometry Visualization</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="7x7 Ring - Geometry Visualization">
+
+.. only:: html
+
+  .. image:: /gallery/geometry/images/thumb/sphx_glr_plot_ring_7_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_geometry_plot_ring_7.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">7x7 Ring - Geometry Visualization</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="1x1 Geometry Visualization">
+
+.. only:: html
+
+  .. image:: /gallery/geometry/images/thumb/sphx_glr_plot_single_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_geometry_plot_single.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">1x1 Geometry Visualization</div>
+    </div>
+
+
 .. thumbnail-parent-div-close
 
 .. raw:: html
@@ -194,20 +196,13 @@ Geometry Examples
    :hidden:
 
    /gallery/geometry/plot_line_3
-   /gallery/geometry/plot_ring_10
-   /gallery/geometry/plot_single
-   /gallery/geometry/plot_ring_4
-   /gallery/geometry/plot_ring_2
    /gallery/geometry/plot_line_4
-   /gallery/geometry/plot_ring_7
    /gallery/geometry/plot_line_5
-   /gallery/geometry/plot_ring_5
+   /gallery/geometry/plot_ring_10
+   /gallery/geometry/plot_ring_2
    /gallery/geometry/plot_ring_3
+   /gallery/geometry/plot_ring_4
+   /gallery/geometry/plot_ring_5
+   /gallery/geometry/plot_ring_7
+   /gallery/geometry/plot_single
 
-
-
-.. only:: html
-
- .. rst-class:: sphx-glr-signature
-
-    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_

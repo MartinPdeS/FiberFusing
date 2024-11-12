@@ -14,5 +14,4 @@ This section provides an overview of the primary classes used in the `FiberFusin
    code/coordinate_system.rst
    code/buffer.rst
    code/components.rst
-   code/overlay_structure.rst
    code/utils.rst

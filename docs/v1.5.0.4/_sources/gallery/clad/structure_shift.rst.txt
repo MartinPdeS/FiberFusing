@@ -18,10 +18,10 @@
 .. _sphx_glr_gallery_clad_structure_shift.py:
 
 
-Effect of fusion degree
-=======================
+Effect of translation
+=====================
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-27
+.. GENERATED FROM PYTHON SOURCE LINES 7-20
 
 .. code-block:: Python
 
@@ -38,13 +38,75 @@ Effect of fusion degree
         index=material.compute_refractive_index(wavelength),
     )
 
-    for shift in [(0, 0), (20e-6, 0)]:
-        structure.translate(shift)
-
-        structure.plot()
 
 
-    # -
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+    /opt/hostedtoolcache/Python/3.11.10/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 15.5 µm to 15.5 µm which is outside the allowable range of 209.99999999999997 nm to 6.7 µm µm. [Material: fused_silica]
+      warnings.warn(
+
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 21-25
+
+.. code-block:: Python
+
+    shift = (0, 0)
+    structure.translate(shift)
+    structure.plot()
+
+
+
+
+.. image-sg:: /gallery/clad/images/sphx_glr_structure_shift_001.png
+   :alt: Fiber structure
+   :srcset: /gallery/clad/images/sphx_glr_structure_shift_001.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    <Axes: title={'center': 'Fiber structure'}, xlabel='x-distance [m]', ylabel='y-distance [m]'>
+
+
+
+.. GENERATED FROM PYTHON SOURCE LINES 26-29
+
+.. code-block:: Python
+
+    shift = (20e-6, 0)
+    structure.translate(shift)
+    structure.plot()
+
+
+
+.. image-sg:: /gallery/clad/images/sphx_glr_structure_shift_002.png
+   :alt: Fiber structure
+   :srcset: /gallery/clad/images/sphx_glr_structure_shift_002.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    <Axes: title={'center': 'Fiber structure'}, xlabel='x-distance [m]', ylabel='y-distance [m]'>
+
+
+
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** (0 minutes 2.342 seconds)
 
 
 .. _sphx_glr_download_gallery_clad_structure_shift.py:

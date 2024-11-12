@@ -1,6 +1,6 @@
 """
-Effect of fusion degree
-=======================
+Effect of translation
+=====================
 """
 
 # %%
@@ -17,10 +17,12 @@ structure = FusedProfile(
     index=material.compute_refractive_index(wavelength),
 )
 
-for shift in [(0, 0), (20e-6, 0)]:
-    structure.translate(shift)
+# %%
+shift = (0, 0)
+structure.translate(shift)
+structure.plot()
 
-    structure.plot()
-
-
-# -
+# %%
+shift = (20e-6, 0)
+structure.translate(shift)
+structure.plot()

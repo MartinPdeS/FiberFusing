@@ -17,11 +17,17 @@ structure = FusedProfile(
     index=material.compute_refractive_index(wavelength),
 )
 
+# %%
+factor = 0
+structure.randomize_core_position(random_factor=factor)
+structure.plot(show_centers=True, show_cores=True)
 
-for factor in [0, 10e-6]:
-    structure.randomize_core_position(random_factor=factor)
+# %%
+factor = 10e-6
+structure.randomize_core_position(random_factor=factor)
+structure.plot(show_centers=True, show_cores=True)
 
-    structure.plot(show_centers=True, show_cores=True)
-
-
-# -
+# %%
+factor = 10e-6
+structure.randomize_core_position(random_factor=factor)
+structure.plot(show_centers=True, show_cores=True)
