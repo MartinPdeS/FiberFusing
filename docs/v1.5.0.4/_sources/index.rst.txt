@@ -1,6 +1,3 @@
-FiberFusing's documentation
-===========================
-
 **Date**: |today|, **Version**: |version|
 
 
