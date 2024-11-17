@@ -100,7 +100,7 @@ Define the operational parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 8.628 seconds)
+   **Total running time of the script:** (0 minutes 8.534 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_line_5.py:
