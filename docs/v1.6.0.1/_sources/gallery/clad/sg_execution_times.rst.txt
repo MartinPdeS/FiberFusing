@@ -1,0 +1,70 @@
+
+:orphan:
+
+.. _sphx_glr_gallery_clad_sg_execution_times:
+
+
+Computation times
+=================
+**00:55.368** total execution time for 12 files **from gallery/clad**:
+
+.. container::
+
+  .. raw:: html
+
+    <style scoped>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" class="init">
+    $(document).ready( function () {
+        $('table.sg-datatable').DataTable({order: [[1, 'desc']]});
+    } );
+    </script>
+
+  .. list-table::
+   :header-rows: 1
+   :class: table table-striped sg-datatable
+
+   * - Example
+     - Time
+     - Mem (MB)
+   * - :ref:`sphx_glr_gallery_clad_plot_ring_7.py` (``plot_ring_7.py``)
+     - 00:12.479
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_fusion_degree.py` (``fusion_degree.py``)
+     - 00:09.783
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_ring_4.py` (``plot_ring_4.py``)
+     - 00:08.110
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_line_5.py` (``plot_line_5.py``)
+     - 00:06.799
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_line_4.py` (``plot_line_4.py``)
+     - 00:05.466
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_line_3.py` (``plot_line_3.py``)
+     - 00:03.604
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_radomize_core.py` (``radomize_core.py``)
+     - 00:02.849
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_structure_shift.py` (``structure_shift.py``)
+     - 00:02.379
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_ring_2.py` (``plot_ring_2.py``)
+     - 00:01.652
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_ring_19.py` (``plot_ring_19.py``)
+     - 00:01.153
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_ring_12.py` (``plot_ring_12.py``)
+     - 00:00.793
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_single.py` (``plot_single.py``)
+     - 00:00.301
+     - 0.0
