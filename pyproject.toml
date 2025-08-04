@@ -28,11 +28,11 @@ keywords = [
 ]
 
 dependencies = [
-    "pyyaml ~= 6.0",
-    "pydantic >=2.9",
-    "scipy ~=1.11",
-    "numpy >=1.26",
-    "shapely ~=2.0",
+    "pyyaml",
+    "pydantic",
+    "scipy",
+    "numpy",
+    "shapely >=2.0",
     "MPSPlots",
     "PyOptik"
 ]

@@ -23,13 +23,13 @@ requirements:
     - setuptools-scm >=8.0
     - pip
   run:
-    - pyyaml ~= 6.0
+    - pyyaml
     - martinpdes::mpsplots
     - martinpdes::pyoptik
-    - scipy ~=1.14
-    - pydantic ~=2.9
-    - numpy ~=1.26
-    - tabulate ~=0.9
+    - scipy
+    - pydantic
+    - numpy
+    - tabulate
 
 
 about:

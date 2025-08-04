@@ -1,11 +1,10 @@
 # Simple workflow for deploying static content to GitHub Pages
-name: Deploy documentation to github page
+name: Documentation
 
 on:
   push:
     branches: [ "master" ]
-    tags:
-      - '*'
+    tags: '*'
   pull_request:
     branches: [ "master" ]
 
@@ -22,3 +21,4 @@ jobs:
     with:
       python-version: "3.11"
       package-name: "FiberFusing"
+      apt-package: xvfb jq
