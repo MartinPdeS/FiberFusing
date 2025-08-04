@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:56.242** total execution time for 12 files **from gallery/clad**:
+**00:42.494** total execution time for 12 files **from gallery/clad**:
 
 .. container::
 
@@ -33,38 +33,38 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_clad_plot_ring_7.py` (``plot_ring_7.py``)
-     - 00:12.647
+     - 00:09.263
      - 0.0
    * - :ref:`sphx_glr_gallery_clad_fusion_degree.py` (``fusion_degree.py``)
-     - 00:10.027
+     - 00:07.658
      - 0.0
    * - :ref:`sphx_glr_gallery_clad_plot_ring_4.py` (``plot_ring_4.py``)
-     - 00:08.233
+     - 00:06.169
      - 0.0
    * - :ref:`sphx_glr_gallery_clad_plot_line_5.py` (``plot_line_5.py``)
-     - 00:06.840
+     - 00:05.164
      - 0.0
    * - :ref:`sphx_glr_gallery_clad_plot_line_4.py` (``plot_line_4.py``)
-     - 00:05.524
+     - 00:04.177
      - 0.0
    * - :ref:`sphx_glr_gallery_clad_plot_line_3.py` (``plot_line_3.py``)
-     - 00:03.635
+     - 00:02.688
      - 0.0
    * - :ref:`sphx_glr_gallery_clad_radomize_core.py` (``radomize_core.py``)
-     - 00:02.904
+     - 00:02.276
      - 0.0
    * - :ref:`sphx_glr_gallery_clad_structure_shift.py` (``structure_shift.py``)
-     - 00:02.419
+     - 00:01.827
      - 0.0
    * - :ref:`sphx_glr_gallery_clad_plot_ring_2.py` (``plot_ring_2.py``)
-     - 00:01.667
+     - 00:01.272
      - 0.0
    * - :ref:`sphx_glr_gallery_clad_plot_ring_19.py` (``plot_ring_19.py``)
-     - 00:01.227
+     - 00:01.094
      - 0.0
    * - :ref:`sphx_glr_gallery_clad_plot_ring_12.py` (``plot_ring_12.py``)
-     - 00:00.812
+     - 00:00.665
      - 0.0
    * - :ref:`sphx_glr_gallery_clad_plot_single.py` (``plot_single.py``)
-     - 00:00.306
+     - 00:00.239
      - 0.0
