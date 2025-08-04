@@ -10,7 +10,7 @@
 | FiberFusing/components/base\_class.py                  |      111 |       10 |        6 |        3 |     89% |55, 67, 190, 202, 238, 320-322, 343, 409->411, 436 |
 | FiberFusing/components/linestring.py                   |       69 |        6 |        6 |        2 |     89% |26, 32, 44, 59, 78-79 |
 | FiberFusing/components/point.py                        |       42 |        5 |        2 |        1 |     86% |27, 45-46, 67, 73 |
-| FiberFusing/components/polygon.py                      |       76 |        4 |       26 |        3 |     91% |83, 111, 180-181 |
+| FiberFusing/components/polygon.py                      |       76 |        7 |       26 |        5 |     84% |74, 83, 106-107, 111, 180-181 |
 | FiberFusing/components/utils.py                        |       23 |        1 |       12 |        2 |     91% |51->46, 57 |
 | FiberFusing/configuration/line/configuration\_01x01.py |        7 |        2 |        0 |        0 |     71% |     12-14 |
 | FiberFusing/configuration/line/configuration\_02x02.py |        6 |        0 |        0 |        0 |    100% |           |
@@ -40,7 +40,7 @@
 | FiberFusing/optical\_structure.py                      |       29 |        6 |        0 |        0 |     79% |64, 82-84, 95-96 |
 | FiberFusing/plottings.py                               |       21 |        1 |        8 |        1 |     93% |        40 |
 | FiberFusing/utils.py                                   |       28 |        5 |        4 |        1 |     81% |68, 89-90, 107-108 |
-|                                              **TOTAL** | **1533** |  **157** |  **302** |   **49** | **87%** |           |
+|                                              **TOTAL** | **1533** |  **160** |  **302** |   **51** | **87%** |           |
 
 
 ## Setup coverage badge
