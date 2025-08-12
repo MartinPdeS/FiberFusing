@@ -99,8 +99,10 @@ class BaseClass:
         factor : float
             The scaling factor to adjust the positions.
         """
+
         for fiber in self.fiber_list:
             fiber.scale_position(factor=factor)
+
 
     def shift_position(self, shift: list) -> None:
         """
@@ -196,15 +198,33 @@ class FiberRing(ConnectionOptimization, BaseClass):
         :param      distance_from_center:  The distance from center
         :type       distance_from_center:  float
         """
+        '''
+        This is the old function that wasn't working with 03x03 or 06x06, if there is an issue you can put it back
 
         factor = numpy.sqrt(2 / (1 - numpy.cos(numpy.deg2rad(self.delta_angle))))
 
-        distance_from_center = factor * self.fiber_radius
+                distance_from_center = factor * self.fiber_radius
 
-        first_core = ff.Point(position=[0, distance_from_center])
+                first_core = ff.Point(position=[0, distance_from_center])
+
+                core_position = [
+                    first_core.rotate(angle=angle, origin=[0, 0]) for angle in self.angle_list
+                ]
+
+                return core_position
+        '''
+        #Dividing the circle into three region
+        angle_radian = numpy.pi * 2 / self.number_of_fibers
+
+            # Desired spacing between fiber centers = 2 * fiber_radius (touching cores)
+        distance_from_center = (2 * self.fiber_radius) / (2 * numpy.sin(angle_radian / 2))
 
         core_position = [
-            first_core.rotate(angle=angle, origin=[0, 0]) for angle in self.angle_list
+            ff.Point([
+                distance_from_center * numpy.cos(numpy.deg2rad(angle)),
+                distance_from_center * numpy.sin(numpy.deg2rad(angle))
+            ])
+            for angle in self.angle_list
         ]
 
         return core_position
