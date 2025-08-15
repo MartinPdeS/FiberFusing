@@ -27,7 +27,7 @@ This script demonstrates how to create and visualize a 7x7 ring geometry using t
 .. code-block:: Python
 
 
-    from FiberFusing import Geometry, BackGround
+    from FiberFusing import Geometry, BoundaryMode, BackGround
     from FiberFusing.fiber.catalogue import load_fiber
     from FiberFusing.configuration.ring import FusedProfile_07x07
     from PyOptik import MaterialBank
@@ -69,8 +69,8 @@ Define the operational parameters
     geometry = Geometry(
         background=air_background,
         additional_structure_list=[cladding],
-        x_bounds='centering',
-        y_bounds='centering',
+        x_bounds=BoundaryMode.CENTERING,
+        y_bounds=BoundaryMode.CENTERING,
         resolution=250
     )
 
@@ -100,7 +100,7 @@ Define the operational parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 17.415 seconds)
+   **Total running time of the script:** (0 minutes 17.383 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_ring_7.py:

@@ -456,10 +456,23 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">shapely.ops</span><span class="w"> </span><span class="kn">import</span> <span class="n">unary_union</span><span class="p">,</span> <span class="n">nearest_points</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">shapely.geometry</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">geo</span>
 
+<span class="k">class</span><span class="w"> </span><span class="nc">NameSpace</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A flexible class that allows the dynamic addition of attributes via keyword arguments.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes an instance with attributes specified by the keyword arguments.</span>
+
+<span class="sd">        :param kwargs: Arbitrary keyword arguments to set as attributes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
 <div class="viewcode-block" id="nearest_points_exterior">
 <a class="viewcode-back" href="../../code/utils.html#FiberFusing.utils.nearest_points_exterior">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">nearest_points_exterior</span><span class="p">(</span><span class="n">object0</span><span class="p">,</span> <span class="n">object1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ff</span><span class="o">.</span><span class="n">Point</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">nearest_points_exterior</span><span class="p">(</span><span class="n">object0</span><span class="p">,</span> <span class="n">object1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ff.geometries.Point&#39;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Find the nearest points between the exteriors of two geometric objects.</span>
 
@@ -485,7 +498,7 @@
 
 <div class="viewcode-block" id="union_geometries">
 <a class="viewcode-back" href="../../code/utils.html#FiberFusing.utils.union_geometries">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">union_geometries</span><span class="p">(</span><span class="o">*</span><span class="n">objects</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ff</span><span class="o">.</span><span class="n">Polygon</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">union_geometries</span><span class="p">(</span><span class="o">*</span><span class="n">objects</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ff.geometries.Polygon&#39;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the union of multiple geometric objects.</span>
 
@@ -510,7 +523,7 @@
 
 <div class="viewcode-block" id="intersection_geometries">
 <a class="viewcode-back" href="../../code/utils.html#FiberFusing.utils.intersection_geometries">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">intersection_geometries</span><span class="p">(</span><span class="o">*</span><span class="n">objects</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ff</span><span class="o">.</span><span class="n">Polygon</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">intersection_geometries</span><span class="p">(</span><span class="o">*</span><span class="n">objects</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s1">&#39;ff.geometries.Polygon&#39;</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Compute the intersection of multiple geometric objects.</span>
 

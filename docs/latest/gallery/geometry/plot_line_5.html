@@ -504,7 +504,7 @@ to download the full example code.</p>
 <section class="sphx-glr-example-title" id="x5-line-geometry-visualization">
 <span id="sphx-glr-gallery-geometry-plot-line-5-py"></span><h1>5x5 Line - Geometry Visualization<a class="headerlink" href="#x5-line-geometry-visualization" title="Link to this heading">#</a></h1>
 <p>This script demonstrates how to create and visualize a 5x5 line geometry using the FiberFusing library.</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Geometry</span><span class="p">,</span> <span class="n">BackGround</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Geometry</span><span class="p">,</span> <span class="n">BoundaryMode</span><span class="p">,</span> <span class="n">BackGround</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.fiber.catalogue</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_fiber</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.configuration.line</span><span class="w"> </span><span class="kn">import</span> <span class="n">FusedProfile_05x05</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyOptik</span><span class="w"> </span><span class="kn">import</span> <span class="n">MaterialBank</span>
@@ -533,8 +533,8 @@ to download the full example code.</p>
 <span class="n">geometry</span> <span class="o">=</span> <span class="n">Geometry</span><span class="p">(</span>
     <span class="n">background</span><span class="o">=</span><span class="n">air_background</span><span class="p">,</span>
     <span class="n">additional_structure_list</span><span class="o">=</span><span class="p">[</span><span class="n">cladding</span><span class="p">],</span>
-    <span class="n">x_bounds</span><span class="o">=</span><span class="s1">&#39;centering&#39;</span><span class="p">,</span>
-    <span class="n">y_bounds</span><span class="o">=</span><span class="s1">&#39;centering&#39;</span><span class="p">,</span>
+    <span class="n">x_bounds</span><span class="o">=</span><span class="n">BoundaryMode</span><span class="o">.</span><span class="n">CENTERING</span><span class="p">,</span>
+    <span class="n">y_bounds</span><span class="o">=</span><span class="n">BoundaryMode</span><span class="o">.</span><span class="n">CENTERING</span><span class="p">,</span>
     <span class="n">resolution</span><span class="o">=</span><span class="mi">250</span>
 <span class="p">)</span>
 
@@ -548,7 +548,7 @@ to download the full example code.</p>
 <img src="../../_images/sphx_glr_plot_line_5_001.png" srcset="../../_images/sphx_glr_plot_line_5_001.png" alt="Fiber structure, Fiber structure" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1000x500 with 3 Axes&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 7.096 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 7.046 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-geometry-plot-line-5-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/9a5f66ad36e03783c31b303946a254a1/plot_line_5.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_line_5.ipynb</span></code></a></p>
