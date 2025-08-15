@@ -5,7 +5,7 @@ from typing import Tuple, List, Dict, Union
 from FiberFusing.fiber.generic_fiber import GenericFiber
 from FiberFusing import micro
 from FiberFusing.fiber.loader import load_fiber_as_dict
-from FiberFusing.components.point import Point
+from FiberFusing.geometries.point import Point
 from PyOptik import MaterialBank
 
 

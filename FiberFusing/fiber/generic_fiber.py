@@ -397,8 +397,8 @@ class GenericFiber(BaseClass):
         """
         boundaries = self.get_structures_boundaries()
 
-        min_x, min_y, max_x, max_y = boundaries.T
-        return min_x.min(), min_y.min(), max_x.max(), max_y.max()
+        x_min, y_min, x_max, y_max = boundaries.T
+        return x_min.min(), y_min.min(), x_max.max(), y_max.max()
 
     @property
     def boundaries(self):

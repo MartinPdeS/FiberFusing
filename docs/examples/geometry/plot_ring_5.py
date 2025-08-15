@@ -4,7 +4,7 @@
 This script demonstrates how to create and visualize a 5x5 ring geometry using the FiberFusing library.
 """
 
-from FiberFusing import Geometry, BackGround
+from FiberFusing import Geometry, BoundaryMode, BackGround
 from FiberFusing.fiber.catalogue import load_fiber
 from FiberFusing.configuration.ring import FusedProfile_05x05
 from PyOptik import MaterialBank
@@ -33,8 +33,8 @@ fibers = [
 geometry = Geometry(
     background=air_background,
     additional_structure_list=[cladding],
-    x_bounds='centering',
-    y_bounds='centering',
+    x_bounds=BoundaryMode.CENTERING,
+    y_bounds=BoundaryMode.CENTERING,
     resolution=250
 )
 

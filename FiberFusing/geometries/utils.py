@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from typing import Iterable, Union, List
-from FiberFusing.components.point import Point
-from FiberFusing.components.polygon import Polygon
+from FiberFusing.geometries.point import Point
+from FiberFusing.geometries.polygon import Polygon
 import shapely.geometry as geo
 from shapely.ops import unary_union
 

@@ -8,7 +8,7 @@ from dataclasses import field
 from pydantic import ConfigDict
 from shapely.affinity import scale
 import shapely.geometry as geo
-from FiberFusing.components.base_class import Alteration
+from FiberFusing.geometries.base_class import Alteration
 import FiberFusing as ff
 
 
@@ -44,7 +44,7 @@ class LineString(Alteration):
         return self._shapely_object.centroid
 
     @property
-    def mid_point(self) -> ff.Point:
+    def mid_point(self) -> 'ff.Point':
         """ Returns the midpoint of the line string as a Shapely Point object. """
         P0, P1 = self.boundary
         return ff.Point(position=[(P0.x + P1.x) / 2, (P0.y + P1.y) / 2])
@@ -66,7 +66,7 @@ class LineString(Alteration):
         new_coords = ff.Point(position=(mid.x - dy, mid.y + dx)), ff.Point(position=(mid.x + dy, mid.y - dx))
         return LineString(coordinates=new_coords)
 
-    def get_position_parametrization(self, t: float) -> ff.Point:
+    def get_position_parametrization(self, t: float) -> 'ff.Point':
         """ Returns the point at parameter t along the line. 0 <= t <= 1. """
         p0, p1 = self.boundary
         x = p0.x * (1 - t) + p1.x * t

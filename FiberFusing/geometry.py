@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from typing import List, Optional, Tuple, Union
+from enum import Enum
 import numpy
 from scipy.ndimage import gaussian_filter
 import FiberFusing
@@ -12,6 +13,16 @@ import matplotlib.colors as colors
 from MPSPlots.styles import mps
 from FiberFusing.helper import _plot_helper
 from FiberFusing.background import BackGround
+
+
+class BoundaryMode(Enum):
+    """Boundary positioning modes."""
+    AUTO = "auto"
+    LEFT = "left"
+    RIGHT = "right"
+    TOP = "top"
+    BOTTOM = "bottom"
+    CENTERING = "centering"
 
 
 class Geometry:
@@ -62,10 +73,10 @@ class Geometry:
         self.additional_structure_list = additional_structure_list
         self.fiber_list = fiber_list
 
-        min_x, min_y, max_x, max_y = self.get_boundaries()
+        x_min, y_min, x_max, y_max = self.get_boundaries()
 
         self.coordinate_system = CoordinateSystem(
-            min_x=min_x, max_x=max_x, min_y=min_y, max_y=max_y, nx=self.resolution, ny=self.resolution
+            x_min=x_min, x_max=x_max, y_min=y_min, y_max=y_max, nx=self.resolution, ny=self.resolution
         )
         self.coordinate_system.center(factor=self.boundary_pad_factor)
 
@@ -84,10 +95,10 @@ class Geometry:
             If boundaries cannot be determined from the structures.
         """
 
-        min_x, min_y, max_x, max_y = self.get_boundaries()
+        x_min, y_min, x_max, y_max = self.get_boundaries()
 
         self.coordinate_system = CoordinateSystem(
-            min_x=min_x, max_x=max_x, min_y=min_y, max_y=max_y, nx=self.resolution, ny=self.resolution
+            x_min=x_min, x_max=x_max, y_min=y_min, y_max=y_max, nx=self.resolution, ny=self.resolution
         )
         self.coordinate_system.center(factor=self.boundary_pad_factor)
 
@@ -135,7 +146,7 @@ class Geometry:
         return self._x_bounds
 
     @x_bounds.setter
-    def x_bounds(self, value: Union[str, Tuple[float, float]]) -> None:
+    def x_bounds(self, value: Union[str, Tuple[float, float], BoundaryMode]) -> None:
         """
         Interpret the x_bounds parameter and apply the appropriate boundary setting to the coordinate system.
 
@@ -146,19 +157,26 @@ class Geometry:
         """
         if isinstance(value, (list, tuple)):
             self.coordinate_system.x_min, self.coordinate_system.x_max = value
-
+        elif isinstance(value, BoundaryMode):
+            self._apply_x_boundary_mode(value)
         else:
-            match value:
-                case 'right':
-                    self.coordinate_system.set_right()
-                case 'left':
-                    self.coordinate_system.set_left()
-                case 'centering':
-                    self.coordinate_system.x_centering()
-                case _:
-                    raise ValueError(f"Invalid x_bounds input: {value}. Valid inputs are a list of bounds or one of ['right', 'left', 'centering'].")
+            raise ValueError(f"Invalid x_bounds type: {type(value)}. Must be tuple, string, or BoundaryMode.")
 
         self.mesh = self.generate_mesh()
+
+    def _apply_x_boundary_mode(self, mode: BoundaryMode) -> None:
+        """Apply x boundary mode to coordinate system."""
+        match mode:
+            case BoundaryMode.RIGHT:
+                self.coordinate_system.set_right()
+            case BoundaryMode.LEFT:
+                self.coordinate_system.set_left()
+            case BoundaryMode.CENTERING:
+                self.coordinate_system.x_centering()
+            case BoundaryMode.AUTO:
+                pass  # Keep current bounds
+            case _:
+                raise ValueError(f"BoundaryMode {mode} not supported for x_bounds")
 
     @property
     def y_bounds(self) -> Tuple[float, float]:
@@ -175,20 +193,27 @@ class Geometry:
             If y_bounds is invalid.
         """
         if isinstance(value, (list, tuple)):
-            self.coordinate_system.y_min, self.coordinate_system.y_max = value
-
+            self.coordinate_system.x_min, self.coordinate_system.x_max = value
+        elif isinstance(value, BoundaryMode):
+            self._apply_y_boundary_mode(value)
         else:
-            match value:
-                case 'top':
-                    self.coordinate_system.set_top()
-                case 'bottom':
-                    self.coordinate_system.set_bottom()
-                case 'centering':
-                    self.coordinate_system.y_centering()
-                case _:
-                    raise ValueError(f"Invalid y_bounds input: {value}. Valid inputs are a list of bounds or one of ['top', 'bottom', 'centering'].")
+            raise ValueError(f"Invalid y_bounds type: {type(value)}. Must be tuple, string, or BoundaryMode.")
 
         self.mesh = self.generate_mesh()
+
+    def _apply_y_boundary_mode(self, mode: BoundaryMode) -> None:
+        """Apply x boundary mode to coordinate system."""
+        match mode:
+            case BoundaryMode.TOP:
+                self.coordinate_system.set_top()
+            case BoundaryMode.BOTTOM:
+                self.coordinate_system.set_bottom()
+            case BoundaryMode.CENTERING:
+                self.coordinate_system.y_centering()
+            case BoundaryMode.AUTO:
+                pass  # Keep current bounds
+            case _:
+                raise ValueError(f"BoundaryMode {mode} not supported for x_bounds")
 
     def get_boundaries(self) -> Tuple[float, float, float, float]:
         """
@@ -197,7 +222,7 @@ class Geometry:
         Returns
         -------
         Tuple[float, float, float, float]
-            The boundaries as (min_x, min_y, max_x, max_y).
+            The boundaries as (x_min, y_min, x_max, y_max).
 
         Raises
         ------
@@ -207,10 +232,10 @@ class Geometry:
         if not self.additional_structure_list and not self.fiber_list:
             raise ValueError('No internal structures provided for computation of the mesh.')
 
-        min_x, min_y, max_x, max_y = zip(
+        x_min, y_min, x_max, y_max = zip(
             *(obj.get_structure_max_min_boundaries() for obj in self.additional_structure_list + self.fiber_list)
         )
-        return (numpy.min(min_x), numpy.min(min_y), numpy.max(max_x), numpy.max(max_y))
+        return (numpy.min(x_min), numpy.min(y_min), numpy.max(x_max), numpy.max(y_max))
 
     @property
     def refractive_index_maximum(self) -> float:

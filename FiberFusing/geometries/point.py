@@ -6,7 +6,7 @@ from typing import Optional, Tuple
 import numpy
 from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
-from FiberFusing.components.base_class import Alteration
+from FiberFusing.geometries.base_class import Alteration
 import shapely.geometry as geo
 import matplotlib.pyplot as plt
 import FiberFusing as ff
@@ -42,14 +42,14 @@ class Point(Alteration):
         """
         Shifts the point by a given offset and returns a new Point instance.
         """
-        point_shift = ff.components.utils.interpret_to_point(shift)
+        point_shift = ff.geometries.utils.interpret_to_point(shift)
         return self.__add__(point_shift)
 
     def __add__(self, other) -> 'Point':
         """
         Adds the coordinates of another point to this one and returns a new Point instance.
         """
-        other = ff.components.utils.interpret_to_point(other)
+        other = ff.geometries.utils.interpret_to_point(other)
 
         return Point(position=(self.x + other.x, self.y + other.y))
 
@@ -57,7 +57,7 @@ class Point(Alteration):
         """
         Subtracts the coordinates of another point from this one and returns a new Point instance.
         """
-        other = ff.components.utils.interpret_to_point(other)
+        other = ff.geometries.utils.interpret_to_point(other)
         return Point(position=(self.x - other.x, self.y - other.y))
 
     def __neg__(self) -> 'Point':
@@ -80,11 +80,11 @@ class Point(Alteration):
 
     @_plot_helper
     def plot(
-            self,
-            ax: plt.Axes = None,
-            marker: str = 'x',
-            size: int = 20,
-            label: str = None) -> None:
+        self,
+        ax: plt.Axes = None,
+        marker: str = 'x',
+        size: int = 20,
+        label: str = None) -> None:
         """
         Renders this point on the given axis, optionally with text.
         """

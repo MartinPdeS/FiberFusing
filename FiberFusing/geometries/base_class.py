@@ -127,7 +127,7 @@ class Alteration:
         Alteration
             The scaled geometry.
         """
-        origin_point = ff.components.utils.interpret_to_point(origin)
+        origin_point = ff.geometries.utils.interpret_to_point(origin)
         output._shapely_object = affinity.scale(self._shapely_object, xfact=factor, yfact=factor, origin=origin_point._shapely_object)
         return output
 
@@ -148,7 +148,7 @@ class Alteration:
         Alteration
             The translated geometry.
         """
-        shift_point = ff.components.utils.interpret_to_point(shift)
+        shift_point = ff.geometries.utils.interpret_to_point(shift)
         output._shapely_object = affinity.translate(self._shapely_object, shift_point.x, shift_point.y)
         return output
 
@@ -171,7 +171,7 @@ class Alteration:
         Alteration
             The rotated geometry.
         """
-        origin_point = ff.components.utils.interpret_to_point(origin)
+        origin_point = ff.geometries.utils.interpret_to_point(origin)
         output._shapely_object = affinity.rotate(self._shapely_object, angle=angle, origin=origin_point._shapely_object)
         return output
 

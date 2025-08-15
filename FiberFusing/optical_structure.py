@@ -1,8 +1,6 @@
 from .geometry import Geometry  # noqa: F401
-from .components.point import Point  # noqa: F401
-from .components.linestring import LineString  # noqa: F401
-from .components.polygon import Polygon, EmptyPolygon  # noqa: F401
-from .buffer import Circle, Square  # noqa: F401
+from .geometries import Point, LineString, Polygon, EmptyPolygon  # noqa: F401
+from .shapes import Circle, Square, Ellipse  # noqa: F401
 from .background import BackGround  # noqa: F401
 from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict

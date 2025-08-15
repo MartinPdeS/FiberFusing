@@ -7,27 +7,13 @@ import matplotlib.pyplot as plt
 import numpy as np
 import logging
 from FiberFusing.coordinate_system import CoordinateSystem
-from FiberFusing.buffer import Circle
-from FiberFusing.fiber_structure import FiberLine, FiberRing
-from FiberFusing.utils import union_geometries
+from FiberFusing.shapes.circle import Circle
+from FiberFusing.fiber.fiber_structure import FiberLine, FiberRing
+from FiberFusing.utils import union_geometries, NameSpace
 from FiberFusing.helper import _plot_helper, OverlayStructureBaseClass
 
+
 logging.basicConfig(level=logging.INFO)
-
-
-class NameSpace:
-    """
-    A flexible class that allows the dynamic addition of attributes via keyword arguments.
-    """
-
-    def __init__(self, **kwargs):
-        """
-        Initializes an instance with attributes specified by the keyword arguments.
-
-        :param kwargs: Arbitrary keyword arguments to set as attributes.
-        """
-        for key, value in kwargs.items():
-            setattr(self, key, value)
 
 
 class BaseFused(OverlayStructureBaseClass):

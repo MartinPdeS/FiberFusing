@@ -1,9 +1,9 @@
 import numpy
 from dataclasses import dataclass
-from FiberFusing.buffer import Circle
+from FiberFusing.shapes.circle import Circle
 from FiberFusing import utils
 import FiberFusing as ff
-from FiberFusing.connection_optimization import ConnectionOptimization
+from FiberFusing.connection.connection_optimization import ConnectionOptimization
 
 
 class BaseClass:

@@ -8,22 +8,7 @@ import numpy as np
 
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.helper import OverlayStructureBaseClass
-
-
-class NameSpace:
-    """
-    A flexible class that allows dynamic addition of attributes via keyword arguments.
-    """
-    def __init__(self, **kwargs):
-        """
-        Initializes an instance with attributes specified by keyword arguments.
-
-        Parameters
-        ----------
-        **kwargs : dict
-            Arbitrary keyword arguments to set as attributes.
-        """
-        self.__dict__.update(kwargs)
+from FiberFusing.utils import NameSpace
 
 
 @dataclass(config=ConfigDict(extra='forbid', kw_only=True))

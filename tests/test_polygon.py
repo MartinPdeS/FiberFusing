@@ -2,7 +2,7 @@ import pytest
 import numpy as np
 import shapely.geometry as geo
 from FiberFusing.coordinate_system import CoordinateSystem
-from FiberFusing.components.polygon import Polygon
+from FiberFusing.geometries.polygon import Polygon
 from unittest.mock import patch
 
 @pytest.fixture
@@ -78,7 +78,7 @@ def test_contains_points(sample_polygon):
 
 def test_rasterize(sample_polygon):
     coordinate_system = CoordinateSystem(
-        nx=10, ny=10, min_x=-1, max_x=1, min_y=-1, max_y=1
+        nx=10, ny=10, x_min=-1, x_max=1, y_min=-1, y_max=1
     )
 
     result = sample_polygon.rasterize(coordinate_system)

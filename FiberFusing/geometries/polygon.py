@@ -7,7 +7,7 @@ from matplotlib.path import Path
 import shapely.geometry as geo
 import matplotlib.pyplot as plt
 from FiberFusing.coordinate_system import CoordinateSystem
-from FiberFusing.components.base_class import BaseArea
+from FiberFusing.geometries.base_class import BaseArea
 from FiberFusing.plottings import plot_polygon
 from pydantic import ConfigDict
 from FiberFusing.helper import _plot_helper
@@ -76,7 +76,7 @@ class Polygon(BaseArea):
         output = self.copy()
 
         if isinstance(output.interiors, Iterable):
-            from FiberFusing.components.utils import get_polygon_union
+            from FiberFusing.geometries.utils import get_polygon_union
             polygons = [geo.Polygon(c) for c in output.interiors]
             output = get_polygon_union(*polygons)
         else:

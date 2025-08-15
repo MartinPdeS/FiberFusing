@@ -84,14 +84,14 @@ def test_add_air(generic_fiber):
 
 def test_shift_coordinates(generic_fiber):
     """Test the shift_coordinates method."""
-    coordinate_system = CoordinateSystem(nx=10, ny=10, min_x=-1, max_x=1, min_y=-1, max_y=1)
+    coordinate_system = CoordinateSystem(nx=10, ny=10, x_min=-1, x_max=1, y_min=-1, y_max=1)
     shifted_coords = generic_fiber.shift_coordinates(coordinate_system, 5.0, 10.0)
     assert shifted_coords.shape == (100, 2)
 
 
 def test_get_shifted_distance_mesh(generic_fiber):
     """Test the get_shifted_distance_mesh method."""
-    coordinate_system = CoordinateSystem(nx=10, ny=10, min_x=-1, max_x=1, min_y=-1, max_y=1)
+    coordinate_system = CoordinateSystem(nx=10, ny=10, x_min=-1, x_max=1, y_min=-1, y_max=1)
     distance_mesh = generic_fiber.get_shifted_distance_mesh(coordinate_system, 1.0, 1.0)
     assert distance_mesh.shape == (10, 10)
 

@@ -1,9 +1,9 @@
-from typing import Tuple
 import logging
 from scipy.optimize import minimize_scalar
 from itertools import combinations
-from FiberFusing.connection import Connection
-from FiberFusing.buffer import Polygon
+from FiberFusing.connection.connection import Connection
+from FiberFusing.connection.utils import TopologyType
+from FiberFusing.shapes.circle import Polygon
 from FiberFusing import utils
 
 
@@ -70,7 +70,7 @@ class ConnectionOptimization:
             self._removed_section = self.get_removed_section()
         return self._removed_section
 
-    def iterate_over_connected_fibers(self) -> Tuple:
+    def iterate_over_connected_fibers(self):
         """
         Generator that iterates over all connected fibers in the structure.
 
@@ -95,7 +95,7 @@ class ConnectionOptimization:
         self.virtual_shift = virtual_shift
         topology = self.get_overall_topology()
         for connection in self.connected_fibers:
-            connection.set_shift_and_topology(shift=virtual_shift, topology=topology)
+            connection.configure_connection(shift=virtual_shift, topology=topology)
 
     def get_added_section(self) -> Polygon:
         """
@@ -154,7 +154,7 @@ class ConnectionOptimization:
         limit = [conn.limit_added_area for conn in self.connected_fibers]
         overall_limit = utils.union_geometries(*limit) - utils.union_geometries(*self.fiber_list)
         total_removed_area = self.get_removed_area()
-        return 'convex' if total_removed_area > overall_limit.area else 'concave'
+        return TopologyType.CONVEX if total_removed_area > overall_limit.area else TopologyType.CONCAVE
 
     def optimize_core_positions(self) -> None:
         """
@@ -162,7 +162,7 @@ class ConnectionOptimization:
         """
         logging.info("Computing the optimal core positions")
         for connection in self.connected_fibers:
-            connection.optimize_core_position()
+            connection.optimize_core_positions()
 
     def get_cost_value(self, virtual_shift: float) -> float:
         """

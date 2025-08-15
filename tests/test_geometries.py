@@ -4,7 +4,7 @@
 import pytest
 from unittest.mock import patch
 import matplotlib.pyplot as plt
-from FiberFusing import Geometry, configuration, BackGround
+from FiberFusing import Geometry, BoundaryMode, configuration, BackGround
 from FiberFusing.fiber import catalogue
 
 # Define different fused structures from configurations
@@ -38,8 +38,8 @@ def test_building_geometry(mock_show, fused_structure):
     geometry = Geometry(
         additional_structure_list=[clad],
         background=background,
-        x_bounds='centering',
-        y_bounds='centering',
+        x_bounds=BoundaryMode.CENTERING,
+        y_bounds=BoundaryMode.CENTERING,
         resolution=150
     )
 
@@ -67,8 +67,8 @@ def test_building_geometry_with_capillary(mock_show, fused_structure):
     geometry = Geometry(
         additional_structure_list=[capillary_tube, clad],
         background=background,
-        x_bounds='centering',
-        y_bounds='centering',
+        x_bounds=BoundaryMode.CENTERING,
+        y_bounds=BoundaryMode.CENTERING,
         resolution=50
     )
 
@@ -101,8 +101,8 @@ def test_building_geometry_with_capillary_and_fibers(mock_show, fused_structure)
         additional_structure_list=[capillary_tube, clad],
         background=background,
         fiber_list=fiber_list,
-        x_bounds='left',
-        y_bounds='centering',
+        x_bounds=BoundaryMode.LEFT,
+        y_bounds=BoundaryMode.CENTERING,
         resolution=50
     )
 
@@ -116,18 +116,18 @@ def test_geometry_api():
 
     geometry = Geometry(
         additional_structure_list=[clad],
-        x_bounds='centering',
-        y_bounds='centering',
+        x_bounds=BoundaryMode.CENTERING,
+        y_bounds=BoundaryMode.CENTERING,
         resolution=100
     )
-    geometry.x_bounds = 'left'
-    geometry.x_bounds = 'centering'
-    geometry.x_bounds = 'right'
+    geometry.x_bounds = BoundaryMode.LEFT
+    geometry.x_bounds = BoundaryMode.CENTERING
+    geometry.x_bounds = BoundaryMode.RIGHT
     geometry.rotate(90)
 
-    geometry.y_bounds = 'top'
-    geometry.y_bounds = 'centering'
-    geometry.y_bounds = 'bottom'
+    geometry.y_bounds = BoundaryMode.TOP
+    geometry.y_bounds = BoundaryMode.CENTERING
+    geometry.y_bounds = BoundaryMode.BOTTOM
 
 
 def _test_fail_geometry_initialization():

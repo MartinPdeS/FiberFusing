@@ -4,8 +4,21 @@ import FiberFusing as ff
 from shapely.ops import unary_union, nearest_points
 import shapely.geometry as geo
 
+class NameSpace:
+    """
+    A flexible class that allows the dynamic addition of attributes via keyword arguments.
+    """
 
-def nearest_points_exterior(object0, object1) -> ff.Point:
+    def __init__(self, **kwargs):
+        """
+        Initializes an instance with attributes specified by the keyword arguments.
+
+        :param kwargs: Arbitrary keyword arguments to set as attributes.
+        """
+        for key, value in kwargs.items():
+            setattr(self, key, value)
+
+def nearest_points_exterior(object0, object1) -> 'ff.geometries.Point':
     """
     Find the nearest points between the exteriors of two geometric objects.
 
@@ -28,7 +41,7 @@ def nearest_points_exterior(object0, object1) -> ff.Point:
     return ff.Point(position=(nearest_point.x, nearest_point.y))
 
 
-def union_geometries(*objects) -> ff.Polygon:
+def union_geometries(*objects) -> 'ff.geometries.Polygon':
     """
     Compute the union of multiple geometric objects.
 
@@ -50,7 +63,7 @@ def union_geometries(*objects) -> ff.Polygon:
     return ff.Polygon(instance=union_result)
 
 
-def intersection_geometries(*objects) -> ff.Polygon:
+def intersection_geometries(*objects) -> 'ff.geometries.Polygon':
     """
     Compute the intersection of multiple geometric objects.
 
