@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**01:35.181** total execution time for 10 files **from gallery/geometry**:
+**01:35.091** total execution time for 10 files **from gallery/geometry**:
 
 .. container::
 
@@ -33,32 +33,32 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_geometry_plot_ring_7.py` (``plot_ring_7.py``)
-     - 00:17.383
+     - 00:17.364
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_ring_5.py` (``plot_ring_5.py``)
-     - 00:15.883
+     - 00:15.880
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_ring_3.py` (``plot_ring_3.py``)
-     - 00:12.939
+     - 00:12.905
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_ring_4.py` (``plot_ring_4.py``)
-     - 00:12.330
+     - 00:12.332
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_single.py` (``plot_single.py``)
-     - 00:08.098
+     - 00:08.100
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_ring_2.py` (``plot_ring_2.py``)
-     - 00:07.095
+     - 00:07.081
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_line_5.py` (``plot_line_5.py``)
-     - 00:07.046
+     - 00:07.049
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_line_4.py` (``plot_line_4.py``)
-     - 00:06.061
+     - 00:06.038
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_ring_10.py` (``plot_ring_10.py``)
      - 00:04.658
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_line_3.py` (``plot_line_3.py``)
-     - 00:03.686
+     - 00:03.684
      - 0.0
