@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Coverage for FiberFusing/connection_optimization.py: 96%</title>
+    <title>Coverage for FiberFusing/connection/connection_optimization.py: 96%</title>
     <link rel="icon" sizes="32x32" href="favicon_32_cb_58284776.png">
     <link rel="stylesheet" href="style_cb_6b508a39.css" type="text/css">
     <script src="coverage_html_cb_6fb7b396.js" defer></script>
@@ -11,7 +11,7 @@
 <header>
     <div class="content">
         <h1>
-            <span class="text">Coverage for </span><b>FiberFusing/connection_optimization.py</b>:
+            <span class="text">Coverage for </span><b>FiberFusing/connection/connection_optimization.py</b>:
             <span class="pc_cov">96%</span>
         </h1>
         <aside id="help_panel_wrapper">
@@ -62,12 +62,12 @@
             <button type="button" class="par run show_par button_toggle_par" value="par" data-shortcut="p" title="Toggle lines partially run">2<span class="text"> partial</span></button>
         </h2>
         <p class="text">
-            <a id="prevFileLink" class="nav" href="z_732005255e093286_connection_py.html">&#xab; prev</a> &nbsp; &nbsp;
+            <a id="prevFileLink" class="nav" href="z_d9efb79e7d7bdf0b_connection_py.html">&#xab; prev</a> &nbsp; &nbsp;
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
-            <a id="nextFileLink" class="nav" href="z_732005255e093286_coordinate_system_py.html">&#xbb; next</a>
+            <a id="nextFileLink" class="nav" href="z_d9efb79e7d7bdf0b_utils_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.10.0">coverage.py v7.10.0</a>,
-            created at 2025-08-04 18:23 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.10.3">coverage.py v7.10.3</a>,
+            created at 2025-08-15 22:14 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -82,12 +82,12 @@
     </div>
 </header>
 <main id="source">
-    <p class="run"><span class="n"><a id="t1" href="#t1">1</a></span><span class="t"><span class="key">from</span> <span class="nam">typing</span> <span class="key">import</span> <span class="nam">Tuple</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t2" href="#t2">2</a></span><span class="t"><span class="key">import</span> <span class="nam">logging</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t3" href="#t3">3</a></span><span class="t"><span class="key">from</span> <span class="nam">scipy</span><span class="op">.</span><span class="nam">optimize</span> <span class="key">import</span> <span class="nam">minimize_scalar</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t4" href="#t4">4</a></span><span class="t"><span class="key">from</span> <span class="nam">itertools</span> <span class="key">import</span> <span class="nam">combinations</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t5" href="#t5">5</a></span><span class="t"><span class="key">from</span> <span class="nam">FiberFusing</span><span class="op">.</span><span class="nam">connection</span> <span class="key">import</span> <span class="nam">Connection</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t6" href="#t6">6</a></span><span class="t"><span class="key">from</span> <span class="nam">FiberFusing</span><span class="op">.</span><span class="nam">buffer</span> <span class="key">import</span> <span class="nam">Polygon</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t1" href="#t1">1</a></span><span class="t"><span class="key">import</span> <span class="nam">logging</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t2" href="#t2">2</a></span><span class="t"><span class="key">from</span> <span class="nam">scipy</span><span class="op">.</span><span class="nam">optimize</span> <span class="key">import</span> <span class="nam">minimize_scalar</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t3" href="#t3">3</a></span><span class="t"><span class="key">from</span> <span class="nam">itertools</span> <span class="key">import</span> <span class="nam">combinations</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t4" href="#t4">4</a></span><span class="t"><span class="key">from</span> <span class="nam">FiberFusing</span><span class="op">.</span><span class="nam">connection</span><span class="op">.</span><span class="nam">connection</span> <span class="key">import</span> <span class="nam">Connection</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t5" href="#t5">5</a></span><span class="t"><span class="key">from</span> <span class="nam">FiberFusing</span><span class="op">.</span><span class="nam">connection</span><span class="op">.</span><span class="nam">utils</span> <span class="key">import</span> <span class="nam">TopologyType</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t6" href="#t6">6</a></span><span class="t"><span class="key">from</span> <span class="nam">FiberFusing</span><span class="op">.</span><span class="nam">shapes</span><span class="op">.</span><span class="nam">circle</span> <span class="key">import</span> <span class="nam">Polygon</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t7" href="#t7">7</a></span><span class="t"><span class="key">from</span> <span class="nam">FiberFusing</span> <span class="key">import</span> <span class="nam">utils</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t8" href="#t8">8</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -154,7 +154,7 @@
     <p class="run"><span class="n"><a id="t70" href="#t70">70</a></span><span class="t">            <span class="nam">self</span><span class="op">.</span><span class="nam">_removed_section</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">get_removed_section</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t71" href="#t71">71</a></span><span class="t">        <span class="key">return</span> <span class="nam">self</span><span class="op">.</span><span class="nam">_removed_section</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t72" href="#t72">72</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t73" href="#t73">73</a></span><span class="t">    <span class="key">def</span> <span class="nam">iterate_over_connected_fibers</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span> <span class="op">-></span> <span class="nam">Tuple</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t73" href="#t73">73</a></span><span class="t">    <span class="key">def</span> <span class="nam">iterate_over_connected_fibers</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t74" href="#t74">74</a></span><span class="t">        <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t75" href="#t75">75</a></span><span class="t"><span class="str">        Generator that iterates over all connected fibers in the structure.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t76" href="#t76">76</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -179,7 +179,7 @@
     <p class="run"><span class="n"><a id="t95" href="#t95">95</a></span><span class="t">        <span class="nam">self</span><span class="op">.</span><span class="nam">virtual_shift</span> <span class="op">=</span> <span class="nam">virtual_shift</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t96" href="#t96">96</a></span><span class="t">        <span class="nam">topology</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">get_overall_topology</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t97" href="#t97">97</a></span><span class="t">        <span class="key">for</span> <span class="nam">connection</span> <span class="key">in</span> <span class="nam">self</span><span class="op">.</span><span class="nam">connected_fibers</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t98" href="#t98">98</a></span><span class="t">            <span class="nam">connection</span><span class="op">.</span><span class="nam">set_shift_and_topology</span><span class="op">(</span><span class="nam">shift</span><span class="op">=</span><span class="nam">virtual_shift</span><span class="op">,</span> <span class="nam">topology</span><span class="op">=</span><span class="nam">topology</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t98" href="#t98">98</a></span><span class="t">            <span class="nam">connection</span><span class="op">.</span><span class="nam">configure_connection</span><span class="op">(</span><span class="nam">shift</span><span class="op">=</span><span class="nam">virtual_shift</span><span class="op">,</span> <span class="nam">topology</span><span class="op">=</span><span class="nam">topology</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t99" href="#t99">99</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t100" href="#t100">100</a></span><span class="t">    <span class="key">def</span> <span class="nam">get_added_section</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span> <span class="op">-></span> <span class="nam">Polygon</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t101" href="#t101">101</a></span><span class="t">        <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
@@ -238,7 +238,7 @@
     <p class="run"><span class="n"><a id="t154" href="#t154">154</a></span><span class="t">        <span class="nam">limit</span> <span class="op">=</span> <span class="op">[</span><span class="nam">conn</span><span class="op">.</span><span class="nam">limit_added_area</span> <span class="key">for</span> <span class="nam">conn</span> <span class="key">in</span> <span class="nam">self</span><span class="op">.</span><span class="nam">connected_fibers</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t155" href="#t155">155</a></span><span class="t">        <span class="nam">overall_limit</span> <span class="op">=</span> <span class="nam">utils</span><span class="op">.</span><span class="nam">union_geometries</span><span class="op">(</span><span class="op">*</span><span class="nam">limit</span><span class="op">)</span> <span class="op">-</span> <span class="nam">utils</span><span class="op">.</span><span class="nam">union_geometries</span><span class="op">(</span><span class="op">*</span><span class="nam">self</span><span class="op">.</span><span class="nam">fiber_list</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t156" href="#t156">156</a></span><span class="t">        <span class="nam">total_removed_area</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">get_removed_area</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t157" href="#t157">157</a></span><span class="t">        <span class="key">return</span> <span class="str">'convex'</span> <span class="key">if</span> <span class="nam">total_removed_area</span> <span class="op">></span> <span class="nam">overall_limit</span><span class="op">.</span><span class="nam">area</span> <span class="key">else</span> <span class="str">'concave'</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t157" href="#t157">157</a></span><span class="t">        <span class="key">return</span> <span class="nam">TopologyType</span><span class="op">.</span><span class="nam">CONVEX</span> <span class="key">if</span> <span class="nam">total_removed_area</span> <span class="op">></span> <span class="nam">overall_limit</span><span class="op">.</span><span class="nam">area</span> <span class="key">else</span> <span class="nam">TopologyType</span><span class="op">.</span><span class="nam">CONCAVE</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t158" href="#t158">158</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t159" href="#t159">159</a></span><span class="t">    <span class="key">def</span> <span class="nam">optimize_core_positions</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span> <span class="op">-></span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t160" href="#t160">160</a></span><span class="t">        <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
@@ -246,7 +246,7 @@
     <p class="pln"><span class="n"><a id="t162" href="#t162">162</a></span><span class="t"><span class="str">        """</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t163" href="#t163">163</a></span><span class="t">        <span class="nam">logging</span><span class="op">.</span><span class="nam">info</span><span class="op">(</span><span class="str">"Computing the optimal core positions"</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t164" href="#t164">164</a></span><span class="t">        <span class="key">for</span> <span class="nam">connection</span> <span class="key">in</span> <span class="nam">self</span><span class="op">.</span><span class="nam">connected_fibers</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t165" href="#t165">165</a></span><span class="t">            <span class="nam">connection</span><span class="op">.</span><span class="nam">optimize_core_position</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t165" href="#t165">165</a></span><span class="t">            <span class="nam">connection</span><span class="op">.</span><span class="nam">optimize_core_positions</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t166" href="#t166">166</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t167" href="#t167">167</a></span><span class="t">    <span class="key">def</span> <span class="nam">get_cost_value</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">virtual_shift</span><span class="op">:</span> <span class="nam">float</span><span class="op">)</span> <span class="op">-></span> <span class="nam">float</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t168" href="#t168">168</a></span><span class="t">        <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
@@ -332,12 +332,12 @@
 <footer>
     <div class="content">
         <p>
-            <a class="nav" href="z_732005255e093286_connection_py.html">&#xab; prev</a> &nbsp; &nbsp;
+            <a class="nav" href="z_d9efb79e7d7bdf0b_connection_py.html">&#xab; prev</a> &nbsp; &nbsp;
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
-            <a class="nav" href="z_732005255e093286_coordinate_system_py.html">&#xbb; next</a>
+            <a class="nav" href="z_d9efb79e7d7bdf0b_utils_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.10.0">coverage.py v7.10.0</a>,
-            created at 2025-08-04 18:23 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.10.3">coverage.py v7.10.3</a>,
+            created at 2025-08-15 22:14 +0000
         </p>
     </div>
 </footer>
