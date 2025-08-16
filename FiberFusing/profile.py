@@ -11,12 +11,15 @@ from FiberFusing.shapes.circle import Circle
 from FiberFusing.fiber.fiber_structure import FiberLine, FiberRing
 from FiberFusing.utils import union_geometries, NameSpace
 from FiberFusing.helper import _plot_helper, OverlayStructureBaseClass
-
+from enum import Enum
 
 logging.basicConfig(level=logging.INFO)
 
+class StructureType(Enum):
+    CIRCULAR = "circular"
+    LINEAR = "linear"
 
-class BaseFused(OverlayStructureBaseClass):
+class Profile(OverlayStructureBaseClass):
     """
     Base class for managing the fusion of optical fiber structures, allowing customization of fiber properties
     and spatial configuration. This class facilitates the dynamic assembly of fiber optics structures and automates
@@ -24,41 +27,25 @@ class BaseFused(OverlayStructureBaseClass):
 
     Parameters
     ----------
-    fiber_radius : float
-        Radius of individual fibers in the structure.
-    index : float
-        Refractive index of the fibers' cladding.
     tolerance_factor : float, optional
         A tolerance value used in optimization algorithms to balance the area difference between added and removed
         sections during the fusion process. Default is 1e-2.
-    fusion_degree : Union[float, str], optional
-        Specifies the degree of fusion, ranging from 0 (no fusion) to 1 (full fusion), or 'auto' to automatically
-        determine based on geometry. Default is 'auto'.
     scale_down_position : float, optional
         Scaling factor to adjust the overall size of the assembly. Default is 1.
     """
 
-    def __init__(
-            self,
-            fiber_radius: float,
-            index: float,
-            tolerance_factor: Optional[float] = 1e-2,
-            fusion_degree: Optional[Union[float, str]] = 'auto',
-            scale_down_position: Optional[float] = 1):
+    def __init__(self, tolerance_factor: Optional[float] = 1e-2, scale_down_position: Optional[float] = 1):
         """
         Initialize the fiber and core lists and other structures immediately after the dataclass fields
         have been populated.
         """
-        self.fiber_radius = fiber_radius
-        self.index = index
         self.tolerance_factor = tolerance_factor
 
         self.scale_down_position = scale_down_position
-        self.fusion_degree = fusion_degree
 
-        self._compute_structure()
+        self._initialize_parameters()
 
-    def _compute_structure(self) -> None:
+    def _initialize_parameters(self) -> None:
         self.fiber_list = []
         self.core_list = []
         self._clad_structure = None
@@ -66,9 +53,7 @@ class BaseFused(OverlayStructureBaseClass):
         self.removed_section_list = []
         self.added_section_list = []
 
-        self.initialize_structure()
-
-    def randomize_core_position(self, random_factor: float = 0) -> "BaseFused":
+    def randomize_core_position(self, random_factor: float = 0) -> "Profile":
         """
         Randomize the position of fiber cores to simulate real-world imperfections.
 
@@ -79,8 +64,8 @@ class BaseFused(OverlayStructureBaseClass):
 
         Returns
         -------
-        BaseFused
-            The updated BaseFused instance.
+        Profile
+            The updated Profile instance.
         """
         if random_factor == 0:
             return self
@@ -115,7 +100,7 @@ class BaseFused(OverlayStructureBaseClass):
         else:
             f"Input for fusion_degree [{value}] is invalid."
 
-        self._compute_structure()
+        self._initialize_parameters()
 
     @property
     def clad_structure(self):
@@ -175,7 +160,7 @@ class BaseFused(OverlayStructureBaseClass):
         """
         return self.clad_structure.bounds
 
-    def add_single_fiber(self, fiber_radius: float, position: Tuple[float, float] = (0, 0)) -> "BaseFused":
+    def add_single_fiber(self, fiber_radius: float, position: Tuple[float, float] = (0, 0)) -> "Profile":
         """
         Add a single fiber to the structure at the specified position.
 
@@ -188,8 +173,8 @@ class BaseFused(OverlayStructureBaseClass):
 
         Returns
         -------
-        BaseFused
-            The updated BaseFused instance.
+        Profile
+            The updated Profile instance.
         """
         fiber = Circle(radius=fiber_radius, position=position)
         fiber.shifted_core = fiber.center
@@ -199,7 +184,7 @@ class BaseFused(OverlayStructureBaseClass):
 
         return self
 
-    def add_center_fiber(self, fiber_radius: float) -> "BaseFused":
+    def add_center_fiber(self, fiber_radius: float) -> "Profile":
         """
         Add a single fiber at the center of the structure.
 
@@ -210,12 +195,12 @@ class BaseFused(OverlayStructureBaseClass):
 
         Returns
         -------
-        BaseFused
-            The updated BaseFused instance.
+        Profile
+            The updated Profile instance.
         """
         return self.add_single_fiber(fiber_radius=fiber_radius, position=(0, 0))
 
-    def add_center_structure(self, fiber_radius: float) -> "BaseFused":
+    def add_center_structure(self, fiber_radius: float) -> "Profile":
         """
         Add a single structure of a given radius at the center of the structure.
 
@@ -226,8 +211,8 @@ class BaseFused(OverlayStructureBaseClass):
 
         Returns
         -------
-        BaseFused
-            The updated BaseFused instance.
+        Profile
+            The updated Profile instance.
         """
         return self.add_single_fiber(fiber_radius=fiber_radius, position=(0, 0))
 
@@ -238,7 +223,7 @@ class BaseFused(OverlayStructureBaseClass):
         scale_position: float = 1.0,
         position_shift: List[float] = [0, 0],
         compute_fusing: bool = False
-    ) -> "BaseFused":
+    ) -> "Profile":
         """
         Internal method to add a fiber structure to the instance.
 
@@ -257,8 +242,8 @@ class BaseFused(OverlayStructureBaseClass):
 
         Returns
         -------
-        BaseFused
-            The updated BaseFused instance.
+        Profile
+            The updated Profile instance.
         """
         if compute_fusing:
             structure.set_fusion_degree(fusion_degree=fusion_degree)
@@ -290,7 +275,7 @@ class BaseFused(OverlayStructureBaseClass):
         position_shift: List[float] = [0, 0],
         compute_fusing: bool = False,
         angle_shift: float = 0.0
-    ) -> "BaseFused":
+    ) -> "Profile":
         """
         Add a predefined structure of fibers, such as a ring or line, with customizable properties and spatial configuration.
 
@@ -315,21 +300,23 @@ class BaseFused(OverlayStructureBaseClass):
 
         Returns
         -------
-        BaseFused
-            The updated BaseFused instance.
+        Profile
+            The updated Profile instance.
         """
 
-        if structure_type.lower() == 'ring':
+        if structure_type == StructureType.CIRCULAR:
             structure = FiberRing(
                 number_of_fibers=number_of_fibers,
                 fiber_radius=fiber_radius,
                 angle_shift=angle_shift
             )
-        else:
+        elif structure_type == StructureType.LINEAR:
             structure = FiberLine(
                 number_of_fibers=number_of_fibers,
                 fiber_radius=fiber_radius,
             )
+        else:
+            raise ValueError(f"Unsupported structure type: {structure_type}. Use 'circular' or 'linear'.")
 
         return self._add_structure_to_instance_(
             structure=structure,
@@ -381,14 +368,14 @@ class BaseFused(OverlayStructureBaseClass):
         """
         return self.clad_structure.get_rasterized_mesh(coordinate_system=coordinate_system)
 
-    def rotate(self, angle: float) -> "BaseFused":
+    def rotate(self, angle: float) -> "Profile":
         """
         Rotate the entire structure, including fiber cores.
 
         Returns
         -------
-        BaseFused
-            The updated BaseFused instance.
+        Profile
+            The updated Profile instance.
         """
         for fiber in self.fiber_list:
             fiber.rotate(angle, in_place=True)
@@ -406,14 +393,14 @@ class BaseFused(OverlayStructureBaseClass):
 
         return self
 
-    def translate(self, shift: Tuple[float, float]) -> "BaseFused":
+    def translate(self, shift: Tuple[float, float]) -> "Profile":
         """
         Translate the entire structure, including fiber cores.
 
         Returns
         -------
-        BaseFused
-            The updated BaseFused instance.
+        Profile
+            The updated Profile instance.
         """
         for fiber in self.fiber_list:
             fiber.translate(shift, in_place=True)
@@ -431,7 +418,7 @@ class BaseFused(OverlayStructureBaseClass):
 
         return self
 
-    def scale_position(self, factor: float) -> "BaseFused":
+    def scale_position(self, factor: float) -> "Profile":
         """
         Scale the positions of fibers in the structure.
 
@@ -442,8 +429,8 @@ class BaseFused(OverlayStructureBaseClass):
 
         Returns
         -------
-        BaseFused
-            The updated BaseFused instance.
+        Profile
+            The updated Profile instance.
         """
         for fiber in self.fiber_list:
             fiber.scale_position(factor=factor)

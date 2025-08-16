@@ -4,21 +4,7 @@
 import pytest
 from unittest.mock import patch
 import matplotlib.pyplot as plt
-
-from FiberFusing import configuration
 from FiberFusing.fiber import catalogue
-
-
-fused_structures = [
-    configuration.ring.FusedProfile_02x02,
-    configuration.ring.FusedProfile_03x03,
-    configuration.ring.FusedProfile_04x04,
-    configuration.ring.FusedProfile_05x05,
-    configuration.line.FusedProfile_02x02,
-    configuration.line.FusedProfile_03x03,
-    configuration.line.FusedProfile_04x04,
-    configuration.line.FusedProfile_05x05,
-]
 
 
 @patch("matplotlib.pyplot.show")

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import numpy as np
-from typing import Tuple, Optional, Union
+from typing import Tuple, Optional
 from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict, field_validator
 from dataclasses import field

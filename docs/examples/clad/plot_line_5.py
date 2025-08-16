@@ -3,20 +3,19 @@
 ===============
 """
 
-# %%
-from FiberFusing.configuration.line import FusedProfile_05x05 as FusedProfile
-from PyOptik import MaterialBank
+from FiberFusing.profile import Profile, StructureType
 
-material = MaterialBank.fused_silica
+profile = Profile()
 
-wavelength = 15.5e-6
-
-clad = FusedProfile(
-    fiber_radius=62.5e-6,
+profile.add_structure(
+    structure_type=StructureType.LINEAR,
+    number_of_fibers=5,
     fusion_degree=0.3,
-    index=material.compute_refractive_index(wavelength),
+    fiber_radius=62.5e-6,
+    compute_fusing=True
 )
 
-clad.plot()
+profile.plot(show_cores=True, show_centers=True)
+
 
 # -

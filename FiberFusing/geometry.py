@@ -13,7 +13,8 @@ import matplotlib.colors as colors
 from MPSPlots.styles import mps
 from FiberFusing.helper import _plot_helper
 from FiberFusing.background import BackGround
-
+from pydantic import field_validator, ConfigDict
+from pydantic.dataclasses import dataclass
 
 class BoundaryMode(Enum):
     """Boundary positioning modes."""
@@ -25,7 +26,8 @@ class BoundaryMode(Enum):
     CENTERING = "centering"
 
 
-class Geometry:
+@dataclass(config=ConfigDict(extra='forbid', kw_only=True, arbitrary_types_allowed=True))
+class Geometry():
     """
     Represents the refractive index (RI) geometric profile including background and fiber structures.
 
@@ -37,9 +39,9 @@ class Geometry:
         List of geometric objects representing additional structures. Default is an empty list.
     fiber_list : List[object], optional
         List of fiber structures. Default is an empty list.
-    x_bounds : Union[Tuple[float, float], str], optional
+    x_bounds : Union[Tuple[float, float], BoundaryMode], optional
         X boundaries for rendering the structure. Can be a tuple of bounds or one of ['auto', 'left', 'right', 'centering']. Default is 'centering'.
-    y_bounds : Union[Tuple[float, float], str], optional
+    y_bounds : Union[Tuple[float, float], BoundaryMode], optional
         Y boundaries for rendering the structure. Can be a tuple of bounds or one of ['auto', 'top', 'bottom', 'centering']. Default is 'centering'.
     resolution : int, optional
         Number of points in x and y directions for evaluating the rendering. Default is 100.
@@ -51,38 +53,69 @@ class Geometry:
         Factor multiplying the boundary value to keep padding between mesh and boundary. Default is 1.3.
     """
 
-    def __init__(
-            self,
-            additional_structure_list: Optional[List[object]],
-            background: Optional[BackGround] = None,
-            fiber_list: Optional[List[object]] = [],
-            x_bounds: Optional[Tuple[float, float] | str] = 'centering',
-            y_bounds: Optional[Tuple[float, float] | str] = 'centering',
-            resolution: Optional[int] = 100,
-            index_scrambling: Optional[float] = 0.0,
-            gaussian_filter: Optional[int] = None,
-            boundary_pad_factor: Optional[float] = 1.3):
+    # Optional fields with defaults
+    background: Optional[BackGround] = None
+    fiber_list: List[object] = None
+    additional_structure_list: List[object] = None
+    x_bounds: Union[Tuple[float, float], BoundaryMode] = BoundaryMode.CENTERING
+    y_bounds: Union[Tuple[float, float], BoundaryMode] = BoundaryMode.CENTERING
+    resolution: int = 100
+    index_scrambling: float = 0.0
+    gaussian_filter: Optional[int] = None
+    boundary_pad_factor: float = 1.3
 
-        self.resolution = resolution
-        self.boundary_pad_factor = boundary_pad_factor
-        self.index_scrambling = index_scrambling
-        self.gaussian_filter = gaussian_filter
+    # Internal computed fields
+    coordinate_system: Optional[CoordinateSystem] = None
+    mesh: Optional[numpy.ndarray] = None
 
-        self.background = background if background else BackGround(index=1)
+    def __post_init__(self) -> None:
+        """Initialize geometry after model validation."""
+        if self.background is None:
+            self.background = BackGround(index=1.0)
+        if self.fiber_list is None:
+            self.fiber_list = []
+        if self.additional_structure_list is None:
+            self.additional_structure_list = []
 
-        self.additional_structure_list = additional_structure_list
-        self.fiber_list = fiber_list
+        self.initialize_geometry()
 
+    @field_validator('resolution')
+    @classmethod
+    def validate_resolution(cls, v: int) -> int:
+        """Validate resolution is positive."""
+        if v <= 0:
+            raise ValueError('Resolution must be positive')
+        return v
+
+    @field_validator('boundary_pad_factor')
+    @classmethod
+    def validate_boundary_pad_factor(cls, v: float) -> float:
+        """Validate boundary pad factor is positive."""
+        if v <= 0:
+            raise ValueError('Boundary pad factor must be positive')
+        return v
+
+    @field_validator('index_scrambling')
+    @classmethod
+    def validate_index_scrambling(cls, v: float) -> float:
+        """Validate index scrambling is non-negative."""
+        if v < 0:
+            raise ValueError('Index scrambling must be non-negative')
+        return v
+
+    def initialize_geometry(self):
+        """
+        Initialize the geometry by generating the coordinate system and mesh.
+        This method calculates the boundaries based on the defined structures and sets up the coordinate system.
+        """
         x_min, y_min, x_max, y_max = self.get_boundaries()
 
         self.coordinate_system = CoordinateSystem(
             x_min=x_min, x_max=x_max, y_min=y_min, y_max=y_max, nx=self.resolution, ny=self.resolution
         )
+
         self.coordinate_system.center(factor=self.boundary_pad_factor)
-
-        self.x_bounds = x_bounds
-        self.y_bounds = y_bounds
-
+        self.apply_boundary_settings()
         self.mesh = self.generate_mesh()
 
     def update_coordinate_system(self) -> None:
@@ -94,13 +127,13 @@ class Geometry:
         ValueError
             If boundaries cannot be determined from the structures.
         """
-
         x_min, y_min, x_max, y_max = self.get_boundaries()
 
         self.coordinate_system = CoordinateSystem(
             x_min=x_min, x_max=x_max, y_min=y_min, y_max=y_max, nx=self.resolution, ny=self.resolution
         )
         self.coordinate_system.center(factor=self.boundary_pad_factor)
+        self.apply_boundary_settings()
 
     def add_fiber(self, *fibers: object) -> None:
         """
@@ -142,27 +175,67 @@ class Geometry:
         return [self.background, *self.additional_structure_list, *self.fiber_list]
 
     @property
-    def x_bounds(self) -> Tuple[float, float]:
-        return self._x_bounds
-
-    @x_bounds.setter
-    def x_bounds(self, value: Union[str, Tuple[float, float], BoundaryMode]) -> None:
+    def refractive_index_maximum(self) -> float:
         """
-        Interpret the x_bounds parameter and apply the appropriate boundary setting to the coordinate system.
+        Calculate the maximum refractive index across all structures.
 
-        Raises
-        ------
-        ValueError
-            If x_bounds is invalid.
+        Returns
+        -------
+        float
+            Maximum refractive index.
         """
-        if isinstance(value, (list, tuple)):
-            self.coordinate_system.x_min, self.coordinate_system.x_max = value
-        elif isinstance(value, BoundaryMode):
-            self._apply_x_boundary_mode(value)
-        else:
-            raise ValueError(f"Invalid x_bounds type: {type(value)}. Must be tuple, string, or BoundaryMode.")
+        return max(index for obj in self.structure_list for index in obj.refractive_index_list)
 
-        self.mesh = self.generate_mesh()
+    @property
+    def refractive_index_minimum(self) -> float:
+        """
+        Calculate the minimum refractive index across all non-background structures.
+
+        Returns
+        -------
+        float
+            Minimum refractive index.
+        """
+        return min(index for obj in self.structure_list if not isinstance(obj, FiberFusing.background.BackGround) for index in obj.refractive_index_list)
+
+    @field_validator('x_bounds')
+    @classmethod
+    def validate_x_bounds(cls, v: Union[BoundaryMode, Tuple[float, float]]) -> Union[BoundaryMode, Tuple[float, float]]:
+        """Validate x_bounds parameter."""
+        if isinstance(v, (list, tuple)):
+            if len(v) != 2:
+                raise ValueError("x_bounds tuple must have exactly 2 elements")
+            if v[0] >= v[1]:
+                raise ValueError("x_bounds min must be less than max")
+        elif not isinstance(v, BoundaryMode):
+            raise ValueError("x_bounds must be a tuple or BoundaryMode")
+        return v
+
+    @field_validator('y_bounds')
+    @classmethod
+    def validate_y_bounds(cls, v: Union[BoundaryMode, Tuple[float, float]]) -> Union[BoundaryMode, Tuple[float, float]]:
+        """Validate y_bounds parameter."""
+        if isinstance(v, (list, tuple)):
+            if len(v) != 2:
+                raise ValueError("y_bounds tuple must have exactly 2 elements")
+            if v[0] >= v[1]:
+                raise ValueError("y_bounds min must be less than max")
+        elif not isinstance(v, BoundaryMode):
+            raise ValueError("y_bounds must be a tuple or BoundaryMode")
+        return v
+
+    def apply_boundary_settings(self) -> None:
+        """Apply boundary settings to coordinate system."""
+        if hasattr(self, 'coordinate_system') and self.coordinate_system is not None:
+            if isinstance(self.x_bounds, (list, tuple)):
+                self.coordinate_system.x_min, self.coordinate_system.x_max = self.x_bounds
+            elif isinstance(self.x_bounds, BoundaryMode):
+                self._apply_x_boundary_mode(self.x_bounds)
+
+            if isinstance(self.y_bounds, (list, tuple)):
+                self.coordinate_system.y_min, self.coordinate_system.y_max = self.y_bounds
+            elif isinstance(self.y_bounds, BoundaryMode):
+                self._apply_y_boundary_mode(self.y_bounds)
 
     def _apply_x_boundary_mode(self, mode: BoundaryMode) -> None:
         """Apply x boundary mode to coordinate system."""
@@ -178,31 +251,8 @@ class Geometry:
             case _:
                 raise ValueError(f"BoundaryMode {mode} not supported for x_bounds")
 
-    @property
-    def y_bounds(self) -> Tuple[float, float]:
-        return self._y_bounds
-
-    @y_bounds.setter
-    def y_bounds(self, value: Union[str, Tuple[float, float]]) -> None:
-        """
-        Interpret the y_bounds parameter and apply the appropriate boundary setting to the coordinate system.
-
-        Raises
-        ------
-        ValueError
-            If y_bounds is invalid.
-        """
-        if isinstance(value, (list, tuple)):
-            self.coordinate_system.x_min, self.coordinate_system.x_max = value
-        elif isinstance(value, BoundaryMode):
-            self._apply_y_boundary_mode(value)
-        else:
-            raise ValueError(f"Invalid y_bounds type: {type(value)}. Must be tuple, string, or BoundaryMode.")
-
-        self.mesh = self.generate_mesh()
-
     def _apply_y_boundary_mode(self, mode: BoundaryMode) -> None:
-        """Apply x boundary mode to coordinate system."""
+        """Apply y boundary mode to coordinate system."""
         match mode:
             case BoundaryMode.TOP:
                 self.coordinate_system.set_top()
@@ -213,7 +263,7 @@ class Geometry:
             case BoundaryMode.AUTO:
                 pass  # Keep current bounds
             case _:
-                raise ValueError(f"BoundaryMode {mode} not supported for x_bounds")
+                raise ValueError(f"BoundaryMode {mode} not supported for y_bounds")
 
     def get_boundaries(self) -> Tuple[float, float, float, float]:
         """
