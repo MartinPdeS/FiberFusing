@@ -3,14 +3,13 @@
 ===============
 """
 
-# %%
-from FiberFusing.configuration.ring import FusedProfile_01x01 as FusedProfile
+from FiberFusing.profile import Profile, StructureType
 
-clad = FusedProfile(
-    fiber_radius=62.5e-6,
-    index=1.4444,
-)
+profile = Profile()
 
-clad.plot()
+profile.add_center_fiber(fiber_radius=62.5e-6)
+
+profile.plot(show_cores=True, show_centers=True)
+
 
 # -

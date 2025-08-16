@@ -58,7 +58,7 @@
     <link rel="icon" href="../../_static/thumbnail.png"/>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Effect of core randomization" href="radomize_core.html" />
+    <link rel="next" title="Effect of core randomization" href="randomize_core.html" />
     <link rel="prev" title="7x7 Ring - Clad" href="plot_ring_7.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -416,7 +416,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_ring_4.html">4x4 Ring - Clad</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_ring_7.html">7x7 Ring - Clad</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">1x1 Ring - Clad</a></li>
-<li class="toctree-l2"><a class="reference internal" href="radomize_core.html">Effect of core randomization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randomize_core.html">Effect of core randomization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="structure_shift.html">Effect of translation</a></li>
 </ul>
 </details></li>
@@ -509,19 +509,19 @@ to download the full example code.</p>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.configuration.ring</span><span class="w"> </span><span class="kn">import</span> <span class="n">FusedProfile_01x01</span> <span class="k">as</span> <span class="n">FusedProfile</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.profile</span><span class="w"> </span><span class="kn">import</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">StructureType</span>
 
-<span class="n">clad</span> <span class="o">=</span> <span class="n">FusedProfile</span><span class="p">(</span>
-    <span class="n">fiber_radius</span><span class="o">=</span><span class="mf">62.5e-6</span><span class="p">,</span>
-    <span class="n">index</span><span class="o">=</span><span class="mf">1.4444</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">Profile</span><span class="p">()</span>
 
-<span class="n">clad</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">profile</span><span class="o">.</span><span class="n">add_center_fiber</span><span class="p">(</span><span class="n">fiber_radius</span><span class="o">=</span><span class="mf">62.5e-6</span><span class="p">)</span>
+
+<span class="n">profile</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show_cores</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_centers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
 
 <span class="c1"># -</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.236 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.262 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-clad-plot-single-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/f78b62ba27ebf92c8fd9bbd9f9485e4e/plot_single.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_single.ipynb</span></code></a></p>

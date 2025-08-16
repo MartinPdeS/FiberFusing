@@ -21,7 +21,7 @@
 12x12 Ring - Clad
 =================
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-22
+.. GENERATED FROM PYTHON SOURCE LINES 7-34
 
 
 
@@ -35,8 +35,6 @@
 
  .. code-block:: none
 
-    /opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 15.5 µm to 15.5 µm which is outside the allowable range of 209.99999999999997 nm to 6.7 µm µm. [Material: fused_silica]
-      warnings.warn(
 
     <Axes: title={'center': 'Fiber structure'}, xlabel='x-distance [m]', ylabel='y-distance [m]'>
 
@@ -48,26 +46,38 @@
 
 .. code-block:: Python
 
-    from FiberFusing.configuration.ring import FusedProfile_12x12 as FusedProfile
-    from PyOptik import MaterialBank
+    from FiberFusing.profile import Profile, StructureType
 
-    material = MaterialBank.fused_silica
+    profile = Profile()
 
-    wavelength = 15.5e-6
-
-    clad = FusedProfile(
+    profile.add_structure(
+        structure_type=StructureType.CIRCULAR,
+        number_of_fibers=3,
+        fusion_degree=0.3,
         fiber_radius=62.5e-6,
-        index=material.compute_refractive_index(wavelength),
+        scale_position=1.0,
+        angle_shift=0,
+        compute_fusing=True
     )
 
-    clad.plot()
+    profile.add_structure(
+        structure_type=StructureType.CIRCULAR,
+        number_of_fibers=9,
+        fusion_degree=0.1,
+        fiber_radius=62.5e-6,
+        scale_position=1.0,
+        compute_fusing=True,
+        angle_shift=20,
+    )
+
+    profile.plot(show_cores=True, show_centers=False)
 
     # -
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.659 seconds)
+   **Total running time of the script:** (0 minutes 8.110 seconds)
 
 
 .. _sphx_glr_download_gallery_clad_plot_ring_12.py:

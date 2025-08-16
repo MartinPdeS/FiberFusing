@@ -6,7 +6,7 @@ This script demonstrates how to create and visualize a 4x4 ring geometry using t
 
 from FiberFusing import Geometry, BoundaryMode, BackGround
 from FiberFusing.fiber.catalogue import load_fiber
-from FiberFusing.configuration.ring import FusedProfile_04x04
+from FiberFusing.profile import Profile, StructureType
 from PyOptik import MaterialBank
 
 # %%
@@ -16,23 +16,30 @@ wavelength = 1.55e-6  # Wavelength in meters (1.55 micrometers)
 # Set up the background medium (air)
 air_background = BackGround(index=1.0)
 
-# Create the cladding structure based on the fused fiber profile
-cladding = FusedProfile_04x04(
-    fiber_radius=62.5e-6,  # Radius of the fibers in the cladding (in meters)
-    fusion_degree=0.3,  # Degree of fusion in the structure
-    index=MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
+# Create the profile structure based on the fused fiber profile
+profile = Profile()
+
+profile.add_structure(
+    structure_type=StructureType.CIRCULAR,
+    number_of_fibers=4,
+    fusion_degree=0.4,
+    fiber_radius=62.5e-6,
+    compute_fusing=True
 )
 
-# Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure
+profile.index = MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
+
+
+# Load fibers (e.g., SMF-28) positioned at the cores of the profile structure
 fibers = [
     load_fiber('SMF28', wavelength=wavelength, position=core_position)
-    for core_position in cladding.cores
+    for core_position in profile.cores
 ]
 
-# Set up the geometry with the defined background, cladding structure, and resolution
+# Set up the geometry with the defined background, profile structure, and resolution
 geometry = Geometry(
     background=air_background,
-    additional_structure_list=[cladding],
+    additional_structure_list=[profile],
     x_bounds=BoundaryMode.CENTERING,
     y_bounds=BoundaryMode.CENTERING,
     resolution=250

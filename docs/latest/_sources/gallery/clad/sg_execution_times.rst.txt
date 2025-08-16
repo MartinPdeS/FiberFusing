@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:42.340** total execution time for 12 files **from gallery/clad**:
+**00:40.225** total execution time for 12 files **from gallery/clad**:
 
 .. container::
 
@@ -32,39 +32,39 @@ Computation times
    * - Example
      - Time
      - Mem (MB)
-   * - :ref:`sphx_glr_gallery_clad_plot_ring_7.py` (``plot_ring_7.py``)
-     - 00:09.232
-     - 0.0
    * - :ref:`sphx_glr_gallery_clad_fusion_degree.py` (``fusion_degree.py``)
-     - 00:07.670
-     - 0.0
-   * - :ref:`sphx_glr_gallery_clad_plot_ring_4.py` (``plot_ring_4.py``)
-     - 00:06.131
-     - 0.0
-   * - :ref:`sphx_glr_gallery_clad_plot_line_5.py` (``plot_line_5.py``)
-     - 00:05.189
-     - 0.0
-   * - :ref:`sphx_glr_gallery_clad_plot_line_4.py` (``plot_line_4.py``)
-     - 00:04.187
-     - 0.0
-   * - :ref:`sphx_glr_gallery_clad_plot_line_3.py` (``plot_line_3.py``)
-     - 00:02.664
-     - 0.0
-   * - :ref:`sphx_glr_gallery_clad_radomize_core.py` (``radomize_core.py``)
-     - 00:02.215
-     - 0.0
-   * - :ref:`sphx_glr_gallery_clad_structure_shift.py` (``structure_shift.py``)
-     - 00:01.821
-     - 0.0
-   * - :ref:`sphx_glr_gallery_clad_plot_ring_2.py` (``plot_ring_2.py``)
-     - 00:01.281
-     - 0.0
-   * - :ref:`sphx_glr_gallery_clad_plot_ring_19.py` (``plot_ring_19.py``)
-     - 00:01.054
+     - 00:11.573
      - 0.0
    * - :ref:`sphx_glr_gallery_clad_plot_ring_12.py` (``plot_ring_12.py``)
-     - 00:00.659
+     - 00:08.110
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_ring_7.py` (``plot_ring_7.py``)
+     - 00:05.030
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_ring_4.py` (``plot_ring_4.py``)
+     - 00:02.986
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_line_5.py` (``plot_line_5.py``)
+     - 00:02.729
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_structure_shift.py` (``structure_shift.py``)
+     - 00:02.409
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_line_4.py` (``plot_line_4.py``)
+     - 00:02.102
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_line_3.py` (``plot_line_3.py``)
+     - 00:01.634
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_randomize_core.py` (``randomize_core.py``)
+     - 00:01.575
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_ring_19.py` (``plot_ring_19.py``)
+     - 00:01.031
+     - 0.0
+   * - :ref:`sphx_glr_gallery_clad_plot_ring_2.py` (``plot_ring_2.py``)
+     - 00:00.784
      - 0.0
    * - :ref:`sphx_glr_gallery_clad_plot_single.py` (``plot_single.py``)
-     - 00:00.236
+     - 00:00.262
      - 0.0

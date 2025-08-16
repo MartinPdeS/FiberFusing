@@ -22,15 +22,14 @@
 =================================
 This script demonstrates how to create and visualize a 3x3 line geometry using the FiberFusing library.
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-12
+.. GENERATED FROM PYTHON SOURCE LINES 6-13
 
 .. code-block:: Python
 
 
     from FiberFusing import Geometry, BoundaryMode, BackGround
     from FiberFusing.fiber.catalogue import load_fiber
-    from FiberFusing.configuration.line import FusedProfile_03x03
-    from PyOptik import MaterialBank
+    from FiberFusing.profile import Profile, StructureType
 
 
 
@@ -39,28 +38,13 @@ This script demonstrates how to create and visualize a 3x3 line geometry using t
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 13-14
-
-Define the operational parameters
-
-.. GENERATED FROM PYTHON SOURCE LINES 14-16
-
-.. code-block:: Python
-
-    wavelength = 1.55e-6  # Wavelength in meters (1.55 micrometers)
 
 
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 17-18
+.. GENERATED FROM PYTHON SOURCE LINES 14-15
 
 Set up the background medium (air)
 
-.. GENERATED FROM PYTHON SOURCE LINES 18-20
+.. GENERATED FROM PYTHON SOURCE LINES 15-17
 
 .. code-block:: Python
 
@@ -73,20 +57,25 @@ Set up the background medium (air)
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 21-22
+.. GENERATED FROM PYTHON SOURCE LINES 18-19
 
 Create the cladding structure based on the fused fiber profile
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-28
+.. GENERATED FROM PYTHON SOURCE LINES 19-31
 
 .. code-block:: Python
 
-    cladding = FusedProfile_03x03(
-        fiber_radius=62.5e-6,  # Radius of the fibers in the cladding (in meters)
-        fusion_degree=0.3,  # Degree of fusion in the structure
-        index=MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
+    profile = Profile()
+
+    profile.add_structure(
+        structure_type=StructureType.LINEAR,
+        number_of_fibers=3,
+        fusion_degree=0.3,
+        fiber_radius=62.5e-6,
+        compute_fusing=True
     )
 
+    profile.index = 1.4444
 
 
 
@@ -94,17 +83,18 @@ Create the cladding structure based on the fused fiber profile
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 29-30
+
+.. GENERATED FROM PYTHON SOURCE LINES 32-33
 
 Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure
 
-.. GENERATED FROM PYTHON SOURCE LINES 30-35
+.. GENERATED FROM PYTHON SOURCE LINES 33-38
 
 .. code-block:: Python
 
     fibers = [
-        load_fiber('SMF28', wavelength=wavelength, position=core_position)
-        for core_position in cladding.cores
+        load_fiber('SMF28', wavelength=1.5e-6, position=core_position)
+        for core_position in profile.cores
     ]
 
 
@@ -114,17 +104,17 @@ Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 36-37
+.. GENERATED FROM PYTHON SOURCE LINES 39-40
 
 Set up the geometry with the defined background, cladding structure, and resolution
 
-.. GENERATED FROM PYTHON SOURCE LINES 37-45
+.. GENERATED FROM PYTHON SOURCE LINES 40-48
 
 .. code-block:: Python
 
     geometry = Geometry(
         background=air_background,
-        additional_structure_list=[cladding],
+        additional_structure_list=[profile],
         x_bounds=BoundaryMode.CENTERING,
         y_bounds=BoundaryMode.CENTERING,
         resolution=250
@@ -137,11 +127,11 @@ Set up the geometry with the defined background, cladding structure, and resolut
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 46-47
+.. GENERATED FROM PYTHON SOURCE LINES 49-50
 
 Add the fibers to the geometry
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-49
+.. GENERATED FROM PYTHON SOURCE LINES 50-52
 
 .. code-block:: Python
 
@@ -154,11 +144,11 @@ Add the fibers to the geometry
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-51
+.. GENERATED FROM PYTHON SOURCE LINES 53-54
 
 Plot the resulting geometry
 
-.. GENERATED FROM PYTHON SOURCE LINES 51-52
+.. GENERATED FROM PYTHON SOURCE LINES 54-55
 
 .. code-block:: Python
 
@@ -184,7 +174,7 @@ Plot the resulting geometry
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.684 seconds)
+   **Total running time of the script:** (0 minutes 2.220 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_line_3.py:

@@ -29,7 +29,7 @@ This script demonstrates how to create and visualize a 5x5 ring geometry using t
 
     from FiberFusing import Geometry, BoundaryMode, BackGround
     from FiberFusing.fiber.catalogue import load_fiber
-    from FiberFusing.configuration.ring import FusedProfile_05x05
+    from FiberFusing.profile import Profile, StructureType
     from PyOptik import MaterialBank
 
 
@@ -43,7 +43,7 @@ This script demonstrates how to create and visualize a 5x5 ring geometry using t
 
 Define the operational parameters
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-46
+.. GENERATED FROM PYTHON SOURCE LINES 14-53
 
 .. code-block:: Python
 
@@ -52,23 +52,30 @@ Define the operational parameters
     # Set up the background medium (air)
     air_background = BackGround(index=1.0)
 
-    # Create the cladding structure based on the fused fiber profile
-    cladding = FusedProfile_05x05(
-        fiber_radius=62.5e-6,  # Radius of the fibers in the cladding (in meters)
-        fusion_degree=0.1,  # Degree of fusion in the structure
-        index=MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
+    # Create the profile structure based on the fused fiber profile
+    profile = Profile()
+
+    profile.add_structure(
+        structure_type=StructureType.CIRCULAR,
+        number_of_fibers=5,
+        fusion_degree=0.4,
+        fiber_radius=62.5e-6,
+        compute_fusing=True
     )
 
-    # Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure
+    profile.index = MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
+
+
+    # Load fibers (e.g., SMF-28) positioned at the cores of the profile structure
     fibers = [
         load_fiber('SMF28', wavelength=wavelength, position=core_position)
-        for core_position in cladding.cores
+        for core_position in profile.cores
     ]
 
-    # Set up the geometry with the defined background, cladding structure, and resolution
+    # Set up the geometry with the defined background, profile structure, and resolution
     geometry = Geometry(
         background=air_background,
-        additional_structure_list=[cladding],
+        additional_structure_list=[profile],
         x_bounds=BoundaryMode.CENTERING,
         y_bounds=BoundaryMode.CENTERING,
         resolution=250
@@ -100,7 +107,7 @@ Define the operational parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 15.880 seconds)
+   **Total running time of the script:** (0 minutes 4.225 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_ring_5.py:

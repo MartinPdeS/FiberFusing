@@ -3,26 +3,27 @@ Effect of translation
 =====================
 """
 
-# %%
-from FiberFusing.configuration.line import FusedProfile_02x02 as FusedProfile
-from PyOptik import MaterialBank
+from FiberFusing.profile import Profile, StructureType
 
-material = MaterialBank.fused_silica
+profile = Profile()
 
-wavelength = 15.5e-6
-
-structure = FusedProfile(
+profile.add_structure(
+    structure_type=StructureType.LINEAR,
+    number_of_fibers=3,
+    fusion_degree=0.3,
     fiber_radius=62.5e-6,
-    fusion_degree=0.1,
-    index=material.compute_refractive_index(wavelength),
+    compute_fusing=True
 )
+
+profile.plot(show_cores=True, show_centers=True)
+
 
 # %%
 shift = (0, 0)
-structure.translate(shift)
-structure.plot()
+profile = profile.translate(shift)
+profile.plot()
 
 # %%
 shift = (20e-6, 0)
-structure.translate(shift)
-structure.plot()
+profile = profile.translate(shift)
+profile.plot()

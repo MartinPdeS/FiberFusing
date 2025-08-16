@@ -21,44 +21,25 @@
 Effect of translation
 =====================
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-20
+.. GENERATED FROM PYTHON SOURCE LINES 5-21
 
 .. code-block:: Python
 
-    from FiberFusing.configuration.line import FusedProfile_02x02 as FusedProfile
-    from PyOptik import MaterialBank
 
-    material = MaterialBank.fused_silica
+    from FiberFusing.profile import Profile, StructureType
 
-    wavelength = 15.5e-6
+    profile = Profile()
 
-    structure = FusedProfile(
+    profile.add_structure(
+        structure_type=StructureType.LINEAR,
+        number_of_fibers=3,
+        fusion_degree=0.3,
         fiber_radius=62.5e-6,
-        fusion_degree=0.1,
-        index=material.compute_refractive_index(wavelength),
+        compute_fusing=True
     )
 
+    profile.plot(show_cores=True, show_centers=True)
 
-
-
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    /opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 15.5 µm to 15.5 µm which is outside the allowable range of 209.99999999999997 nm to 6.7 µm µm. [Material: fused_silica]
-      warnings.warn(
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 21-25
-
-.. code-block:: Python
-
-    shift = (0, 0)
-    structure.translate(shift)
-    structure.plot()
 
 
 
@@ -78,13 +59,14 @@ Effect of translation
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 26-29
+.. GENERATED FROM PYTHON SOURCE LINES 22-26
 
 .. code-block:: Python
 
-    shift = (20e-6, 0)
-    structure.translate(shift)
-    structure.plot()
+    shift = (0, 0)
+    profile = profile.translate(shift)
+    profile.plot()
+
 
 
 
@@ -103,10 +85,35 @@ Effect of translation
 
 
 
+.. GENERATED FROM PYTHON SOURCE LINES 27-30
+
+.. code-block:: Python
+
+    shift = (20e-6, 0)
+    profile = profile.translate(shift)
+    profile.plot()
+
+
+
+.. image-sg:: /gallery/clad/images/sphx_glr_structure_shift_003.png
+   :alt: Fiber structure
+   :srcset: /gallery/clad/images/sphx_glr_structure_shift_003.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    <Axes: title={'center': 'Fiber structure'}, xlabel='x-distance [m]', ylabel='y-distance [m]'>
+
+
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.821 seconds)
+   **Total running time of the script:** (0 minutes 2.409 seconds)
 
 
 .. _sphx_glr_download_gallery_clad_structure_shift.py:

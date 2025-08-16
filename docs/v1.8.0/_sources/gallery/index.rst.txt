@@ -210,10 +210,10 @@ Clad Examples
 
 .. only:: html
 
-  .. image:: /gallery/clad/images/thumb/sphx_glr_radomize_core_thumb.png
+  .. image:: /gallery/clad/images/thumb/sphx_glr_randomize_core_thumb.png
     :alt:
 
-  :ref:`sphx_glr_gallery_clad_radomize_core.py`
+  :ref:`sphx_glr_gallery_clad_randomize_core.py`
 
 .. raw:: html
 

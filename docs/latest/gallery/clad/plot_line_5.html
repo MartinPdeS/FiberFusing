@@ -416,7 +416,7 @@
 <li class="toctree-l2"><a class="reference internal" href="plot_ring_4.html">4x4 Ring - Clad</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_ring_7.html">7x7 Ring - Clad</a></li>
 <li class="toctree-l2"><a class="reference internal" href="plot_single.html">1x1 Ring - Clad</a></li>
-<li class="toctree-l2"><a class="reference internal" href="radomize_core.html">Effect of core randomization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="randomize_core.html">Effect of core randomization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="structure_shift.html">Effect of translation</a></li>
 </ul>
 </details></li>
@@ -503,34 +503,31 @@ to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="x5-line-clad">
 <span id="sphx-glr-gallery-clad-plot-line-5-py"></span><h1>5x5 Line - Clad<a class="headerlink" href="#x5-line-clad" title="Link to this heading">#</a></h1>
-<img src="../../_images/sphx_glr_plot_line_5_001.png" srcset="../../_images/sphx_glr_plot_line_5_001.png" alt="Fiber structure" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/opt/hostedtoolcache/Python/3.11.13/x64/lib/python3.11/site-packages/PyOptik/material/base_class.py:60: UserWarning: Wavelength range goes from 15.5 µm to 15.5 µm which is outside the allowable range of 209.99999999999997 nm to 6.7 µm µm. [Material: fused_silica]
-  warnings.warn(
-
-&lt;Axes: title={&#39;center&#39;: &#39;Fiber structure&#39;}, xlabel=&#39;x-distance [m]&#39;, ylabel=&#39;y-distance [m]&#39;&gt;
+<img src="../../_images/sphx_glr_plot_line_5_001.png" srcset="../../_images/sphx_glr_plot_line_5_001.png" alt="Fiber structure" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Axes: title={&#39;center&#39;: &#39;Fiber structure&#39;}, xlabel=&#39;x-distance [m]&#39;, ylabel=&#39;y-distance [m]&#39;&gt;
 </pre></div>
 </div>
 <div class="line-block">
 <div class="line"><br /></div>
 </div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.configuration.line</span><span class="w"> </span><span class="kn">import</span> <span class="n">FusedProfile_05x05</span> <span class="k">as</span> <span class="n">FusedProfile</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">PyOptik</span><span class="w"> </span><span class="kn">import</span> <span class="n">MaterialBank</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.profile</span><span class="w"> </span><span class="kn">import</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">StructureType</span>
 
-<span class="n">material</span> <span class="o">=</span> <span class="n">MaterialBank</span><span class="o">.</span><span class="n">fused_silica</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">Profile</span><span class="p">()</span>
 
-<span class="n">wavelength</span> <span class="o">=</span> <span class="mf">15.5e-6</span>
-
-<span class="n">clad</span> <span class="o">=</span> <span class="n">FusedProfile</span><span class="p">(</span>
-    <span class="n">fiber_radius</span><span class="o">=</span><span class="mf">62.5e-6</span><span class="p">,</span>
+<span class="n">profile</span><span class="o">.</span><span class="n">add_structure</span><span class="p">(</span>
+    <span class="n">structure_type</span><span class="o">=</span><span class="n">StructureType</span><span class="o">.</span><span class="n">LINEAR</span><span class="p">,</span>
+    <span class="n">number_of_fibers</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
     <span class="n">fusion_degree</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
-    <span class="n">index</span><span class="o">=</span><span class="n">material</span><span class="o">.</span><span class="n">compute_refractive_index</span><span class="p">(</span><span class="n">wavelength</span><span class="p">),</span>
+    <span class="n">fiber_radius</span><span class="o">=</span><span class="mf">62.5e-6</span><span class="p">,</span>
+    <span class="n">compute_fusing</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 
-<span class="n">clad</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
+<span class="n">profile</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show_cores</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_centers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
 
 <span class="c1"># -</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 5.189 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.729 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-clad-plot-line-5-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/8500d36a0e6926136deff5df20ccd52d/plot_line_5.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_line_5.ipynb</span></code></a></p>

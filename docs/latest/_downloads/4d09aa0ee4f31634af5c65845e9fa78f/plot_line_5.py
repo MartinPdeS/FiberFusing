@@ -6,7 +6,7 @@ This script demonstrates how to create and visualize a 5x5 line geometry using t
 
 from FiberFusing import Geometry, BoundaryMode, BackGround
 from FiberFusing.fiber.catalogue import load_fiber
-from FiberFusing.configuration.line import FusedProfile_05x05
+from FiberFusing.profile import Profile, StructureType
 from PyOptik import MaterialBank
 
 # %%
@@ -17,22 +17,29 @@ wavelength = 1.55e-6  # Wavelength in meters (1.55 micrometers)
 air_background = BackGround(index=1.0)
 
 # Create the cladding structure based on the fused fiber profile
-cladding = FusedProfile_05x05(
-    fiber_radius=62.5e-6,  # Radius of the fibers in the cladding (in meters)
-    fusion_degree='auto',  # Automatically determine the fusion degree
-    index=MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
+profile = Profile()
+
+profile.add_structure(
+    structure_type=StructureType.CIRCULAR,
+    number_of_fibers=5,
+    fusion_degree=0.4,
+    fiber_radius=62.5e-6,
+    compute_fusing=True
 )
+
+profile.index = MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
+
 
 # Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure
 fibers = [
     load_fiber('SMF28', wavelength=wavelength, position=core_position)
-    for core_position in cladding.cores
+    for core_position in profile.cores
 ]
 
 # Set up the geometry with the defined background, cladding structure, and resolution
 geometry = Geometry(
     background=air_background,
-    additional_structure_list=[cladding],
+    additional_structure_list=[profile],
     x_bounds=BoundaryMode.CENTERING,
     y_bounds=BoundaryMode.CENTERING,
     resolution=250

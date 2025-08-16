@@ -21,7 +21,7 @@
 1x1 Ring - Clad
 ===============
 
-.. GENERATED FROM PYTHON SOURCE LINES 7-17
+.. GENERATED FROM PYTHON SOURCE LINES 5-16
 
 
 
@@ -46,21 +46,22 @@
 
 .. code-block:: Python
 
-    from FiberFusing.configuration.ring import FusedProfile_01x01 as FusedProfile
 
-    clad = FusedProfile(
-        fiber_radius=62.5e-6,
-        index=1.4444,
-    )
+    from FiberFusing.profile import Profile, StructureType
 
-    clad.plot()
+    profile = Profile()
+
+    profile.add_center_fiber(fiber_radius=62.5e-6)
+
+    profile.plot(show_cores=True, show_centers=True)
+
 
     # -
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.236 seconds)
+   **Total running time of the script:** (0 minutes 0.262 seconds)
 
 
 .. _sphx_glr_download_gallery_clad_plot_single.py:

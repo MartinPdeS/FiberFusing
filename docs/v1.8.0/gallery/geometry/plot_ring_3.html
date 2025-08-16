@@ -416,7 +416,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../clad/plot_ring_4.html">4x4 Ring - Clad</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../clad/plot_ring_7.html">7x7 Ring - Clad</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../clad/plot_single.html">1x1 Ring - Clad</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../clad/radomize_core.html">Effect of core randomization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../clad/randomize_core.html">Effect of core randomization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../clad/structure_shift.html">Effect of translation</a></li>
 </ul>
 </details></li>
@@ -506,7 +506,7 @@ to download the full example code.</p>
 <p>This script demonstrates how to create and visualize a 3x3 ring geometry using the FiberFusing library.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Geometry</span><span class="p">,</span> <span class="n">BoundaryMode</span><span class="p">,</span> <span class="n">BackGround</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.fiber.catalogue</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_fiber</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.configuration.ring</span><span class="w"> </span><span class="kn">import</span> <span class="n">FusedProfile_03x03</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.profile</span><span class="w"> </span><span class="kn">import</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">StructureType</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyOptik</span><span class="w"> </span><span class="kn">import</span> <span class="n">MaterialBank</span>
 </pre></div>
 </div>
@@ -516,23 +516,30 @@ to download the full example code.</p>
 <span class="c1"># Set up the background medium (air)</span>
 <span class="n">air_background</span> <span class="o">=</span> <span class="n">BackGround</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 
-<span class="c1"># Create the cladding structure based on the fused fiber profile</span>
-<span class="n">cladding</span> <span class="o">=</span> <span class="n">FusedProfile_03x03</span><span class="p">(</span>
-    <span class="n">fiber_radius</span><span class="o">=</span><span class="mf">62.5e-6</span><span class="p">,</span>  <span class="c1"># Radius of the fibers in the cladding (in meters)</span>
-    <span class="n">fusion_degree</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>  <span class="c1"># Degree of fusion in the structure</span>
-    <span class="n">index</span><span class="o">=</span><span class="n">MaterialBank</span><span class="o">.</span><span class="n">fused_silica</span><span class="o">.</span><span class="n">compute_refractive_index</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)</span>  <span class="c1"># Refractive index of silica at the specified wavelength</span>
+<span class="c1"># Create the profile structure based on the fused fiber profile</span>
+<span class="n">profile</span> <span class="o">=</span> <span class="n">Profile</span><span class="p">()</span>
+
+<span class="n">profile</span><span class="o">.</span><span class="n">add_structure</span><span class="p">(</span>
+    <span class="n">structure_type</span><span class="o">=</span><span class="n">StructureType</span><span class="o">.</span><span class="n">CIRCULAR</span><span class="p">,</span>
+    <span class="n">number_of_fibers</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">fusion_degree</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+    <span class="n">fiber_radius</span><span class="o">=</span><span class="mf">62.5e-6</span><span class="p">,</span>
+    <span class="n">compute_fusing</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 
-<span class="c1"># Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure</span>
+<span class="n">profile</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">MaterialBank</span><span class="o">.</span><span class="n">fused_silica</span><span class="o">.</span><span class="n">compute_refractive_index</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)</span>  <span class="c1"># Refractive index of silica at the specified wavelength</span>
+
+
+<span class="c1"># Load fibers (e.g., SMF-28) positioned at the cores of the profile structure</span>
 <span class="n">fibers</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">load_fiber</span><span class="p">(</span><span class="s1">&#39;SMF28&#39;</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">core_position</span><span class="p">)</span>
-    <span class="k">for</span> <span class="n">core_position</span> <span class="ow">in</span> <span class="n">cladding</span><span class="o">.</span><span class="n">cores</span>
+    <span class="k">for</span> <span class="n">core_position</span> <span class="ow">in</span> <span class="n">profile</span><span class="o">.</span><span class="n">cores</span>
 <span class="p">]</span>
 
-<span class="c1"># Set up the geometry with the defined background, cladding structure, and resolution</span>
+<span class="c1"># Set up the geometry with the defined background, profile structure, and resolution</span>
 <span class="n">geometry</span> <span class="o">=</span> <span class="n">Geometry</span><span class="p">(</span>
     <span class="n">background</span><span class="o">=</span><span class="n">air_background</span><span class="p">,</span>
-    <span class="n">additional_structure_list</span><span class="o">=</span><span class="p">[</span><span class="n">cladding</span><span class="p">],</span>
+    <span class="n">additional_structure_list</span><span class="o">=</span><span class="p">[</span><span class="n">profile</span><span class="p">],</span>
     <span class="n">x_bounds</span><span class="o">=</span><span class="n">BoundaryMode</span><span class="o">.</span><span class="n">CENTERING</span><span class="p">,</span>
     <span class="n">y_bounds</span><span class="o">=</span><span class="n">BoundaryMode</span><span class="o">.</span><span class="n">CENTERING</span><span class="p">,</span>
     <span class="n">resolution</span><span class="o">=</span><span class="mi">350</span>
@@ -548,7 +555,7 @@ to download the full example code.</p>
 <img src="../../_images/sphx_glr_plot_ring_3_001.png" srcset="../../_images/sphx_glr_plot_ring_3_001.png" alt="Fiber structure, Fiber structure" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1000x500 with 3 Axes&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 12.905 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 3.101 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-geometry-plot-ring-3-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/91ca56fc20e9949f47eba6d7f83f4946/plot_ring_3.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_ring_3.ipynb</span></code></a></p>
