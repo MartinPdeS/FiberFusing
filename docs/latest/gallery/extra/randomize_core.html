@@ -59,7 +59,7 @@
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Effect of translation" href="structure_shift.html" />
-    <link rel="prev" title="Geometry Examples" href="index.html" />
+    <link rel="prev" title="Loading and plotting a single fiber structure" href="loading_fiber.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="1.8.0" />
@@ -405,7 +405,10 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Geometry Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Extra Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="custom_graded_index_fiber.html">Loading and plotting a graded-index fiber structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="custom_step_index_fiber.html">Loading and plotting a step-index fiber structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="loading_fiber.html">Loading and plotting a single fiber structure</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">Effect of core randomization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="structure_shift.html">Effect of translation</a></li>
 </ul>
@@ -467,7 +470,7 @@
     <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Coding examples</a></li>
     
     
-    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Geometry Examples</a></li>
+    <li class="breadcrumb-item"><a href="index.html" class="nav-link">Extra Examples</a></li>
     
     <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Effect of core randomization</span></li>
   </ul>
@@ -506,52 +509,52 @@ to download the full example code.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2025-08-17 10:06:33,207 INFO Created connection between fibers at Point(position=(-5.1516504294495424e-05, 4.558190329562452e-21), instance=None, index=None) and Point(position=(5.151650429449557e-05, -7.67017328574664e-21), instance=None, index=None)
-2025-08-17 10:06:33,207 INFO Computing the optimal structure geometry
-2025-08-17 10:06:33,225 INFO Configured connection: shift=0.039, topology=concave
-2025-08-17 10:06:33,243 INFO Configured connection: shift=0.064, topology=concave
-2025-08-17 10:06:33,261 INFO Configured connection: shift=0.024, topology=concave
-2025-08-17 10:06:33,278 INFO Configured connection: shift=0.015, topology=concave
-2025-08-17 10:06:33,295 INFO Configured connection: shift=0.009, topology=concave
-2025-08-17 10:06:33,311 INFO Configured connection: shift=0.006, topology=concave
-2025-08-17 10:06:33,325 INFO Configured connection: shift=0.004, topology=concave
-2025-08-17 10:06:33,339 INFO Configured connection: shift=0.002, topology=concave
-2025-08-17 10:06:33,353 INFO Configured connection: shift=0.001, topology=concave
-2025-08-17 10:06:33,367 INFO Configured connection: shift=0.001, topology=concave
-2025-08-17 10:06:33,380 INFO Configured connection: shift=0.001, topology=concave
-2025-08-17 10:06:33,392 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,404 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,417 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,430 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,442 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,456 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,469 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,481 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,494 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,506 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,519 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,531 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,544 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,557 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,569 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,582 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,594 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,607 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,619 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,635 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,648 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,660 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,673 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,685 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,697 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,709 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,722 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,734 INFO Configured connection: shift=0.000, topology=concave
-2025-08-17 10:06:33,738 INFO Computing the optimal core positions
-2025-08-17 10:06:33,738 INFO Starting core position optimization...
-2025-08-17 10:06:33,799 INFO Optimization successful: cost=9.11e-17
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>INFO:root:Created connection between fibers at Point(position=(-5.1516504294495424e-05, 4.558190329562452e-21), instance=None, index=None) and Point(position=(5.151650429449557e-05, -7.67017328574664e-21), instance=None, index=None)
+INFO:root:Computing the optimal structure geometry
+INFO:root:Configured connection: shift=0.039, topology=concave
+INFO:root:Configured connection: shift=0.064, topology=concave
+INFO:root:Configured connection: shift=0.024, topology=concave
+INFO:root:Configured connection: shift=0.015, topology=concave
+INFO:root:Configured connection: shift=0.009, topology=concave
+INFO:root:Configured connection: shift=0.006, topology=concave
+INFO:root:Configured connection: shift=0.004, topology=concave
+INFO:root:Configured connection: shift=0.002, topology=concave
+INFO:root:Configured connection: shift=0.001, topology=concave
+INFO:root:Configured connection: shift=0.001, topology=concave
+INFO:root:Configured connection: shift=0.001, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Configured connection: shift=0.000, topology=concave
+INFO:root:Computing the optimal core positions
+INFO:root:Starting core position optimization...
+INFO:root:Optimization successful: cost=9.11e-17
 
-&lt;FiberFusing.profile.Profile object at 0x7fa89986d850&gt;
+&lt;FiberFusing.profile.Profile object at 0x7f1df44d7910&gt;
 </pre></div>
 </div>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">factor</span> <span class="o">=</span> <span class="mi">0</span>
@@ -567,7 +570,7 @@ to download the full example code.</p>
 <span class="n">profile</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show_centers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_cores</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_randomize_core_002.png" srcset="../../_images/sphx_glr_randomize_core_002.png" alt="Fiber structure" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2025-08-17 10:06:34,198 INFO Randomizing core positions.
+<img src="../../_images/sphx_glr_randomize_core_002.png" srcset="../../_images/sphx_glr_randomize_core_002.png" alt="Fiber structure" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>INFO:root:Randomizing core positions.
 
 &lt;Axes: title={&#39;center&#39;: &#39;Fiber structure&#39;}, xlabel=&#39;x-distance [m]&#39;, ylabel=&#39;y-distance [m]&#39;&gt;
 </pre></div>
@@ -577,12 +580,12 @@ to download the full example code.</p>
 <span class="n">profile</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show_centers</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_cores</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<img src="../../_images/sphx_glr_randomize_core_003.png" srcset="../../_images/sphx_glr_randomize_core_003.png" alt="Fiber structure" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>2025-08-17 10:06:34,603 INFO Randomizing core positions.
+<img src="../../_images/sphx_glr_randomize_core_003.png" srcset="../../_images/sphx_glr_randomize_core_003.png" alt="Fiber structure" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>INFO:root:Randomizing core positions.
 
 &lt;Axes: title={&#39;center&#39;: &#39;Fiber structure&#39;}, xlabel=&#39;x-distance [m]&#39;, ylabel=&#39;y-distance [m]&#39;&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.085 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 1.771 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-extra-randomize-core-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/2caf2f6b4802ea3ac22ee89d52669140/randomize_core.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">randomize_core.ipynb</span></code></a></p>

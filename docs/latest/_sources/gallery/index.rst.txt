@@ -23,8 +23,8 @@ Explore our gallery of examples demonstrating the usage of FiberFusing. These ex
     </div>
 
 
-Geometry Examples
-=================
+Extra Examples
+==============
 
 
 
@@ -33,6 +33,57 @@ Geometry Examples
     <div class="sphx-glr-thumbnails">
 
 .. thumbnail-parent-div-open
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Loading and plotting a graded-index fiber structure">
+
+.. only:: html
+
+  .. image:: /gallery/extra/images/thumb/sphx_glr_custom_graded_index_fiber_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_extra_custom_graded_index_fiber.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Loading and plotting a graded-index fiber structure</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Loading and plotting a step-index fiber structure">
+
+.. only:: html
+
+  .. image:: /gallery/extra/images/thumb/sphx_glr_custom_step_index_fiber_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_extra_custom_step_index_fiber.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Loading and plotting a step-index fiber structure</div>
+    </div>
+
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Loading and plotting a single fiber structure">
+
+.. only:: html
+
+  .. image:: /gallery/extra/images/thumb/sphx_glr_loading_fiber_thumb.png
+    :alt:
+
+  :ref:`sphx_glr_gallery_extra_loading_fiber.py`
+
+.. raw:: html
+
+      <div class="sphx-glr-thumbnail-title">Loading and plotting a single fiber structure</div>
+    </div>
+
 
 .. raw:: html
 

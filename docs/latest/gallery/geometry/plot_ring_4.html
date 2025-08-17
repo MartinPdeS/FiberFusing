@@ -405,7 +405,10 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../extra/index.html">Geometry Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../extra/index.html">Extra Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../extra/custom_graded_index_fiber.html">Loading and plotting a graded-index fiber structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extra/custom_step_index_fiber.html">Loading and plotting a step-index fiber structure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extra/loading_fiber.html">Loading and plotting a single fiber structure</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extra/randomize_core.html">Effect of core randomization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../extra/structure_shift.html">Effect of translation</a></li>
 </ul>
@@ -495,7 +498,7 @@ to download the full example code.</p>
 <span id="sphx-glr-gallery-geometry-plot-ring-4-py"></span><h1>4x4 Ring - Geometry Visualization<a class="headerlink" href="#x4-ring-geometry-visualization" title="Link to this heading">#</a></h1>
 <p>This script demonstrates how to create and visualize a 4x4 ring geometry using the FiberFusing library.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Geometry</span><span class="p">,</span> <span class="n">BoundaryMode</span><span class="p">,</span> <span class="n">BackGround</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.fiber.catalogue</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_fiber</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.fiber</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_fiber</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.profile</span><span class="w"> </span><span class="kn">import</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">StructureType</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyOptik</span><span class="w"> </span><span class="kn">import</span> <span class="n">MaterialBank</span>
 </pre></div>
@@ -504,7 +507,7 @@ to download the full example code.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">wavelength</span> <span class="o">=</span> <span class="mf">1.55e-6</span>  <span class="c1"># Wavelength in meters (1.55 micrometers)</span>
 
 <span class="c1"># Set up the background medium (air)</span>
-<span class="n">air_background</span> <span class="o">=</span> <span class="n">BackGround</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="n">air_background</span> <span class="o">=</span> <span class="n">BackGround</span><span class="p">(</span><span class="n">refractive_index</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 
 <span class="c1"># Create the profile structure based on the fused fiber profile</span>
 <span class="n">profile</span> <span class="o">=</span> <span class="n">Profile</span><span class="p">()</span>
@@ -517,14 +520,14 @@ to download the full example code.</p>
     <span class="n">compute_fusing</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
 
-<span class="n">profile</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">MaterialBank</span><span class="o">.</span><span class="n">fused_silica</span><span class="o">.</span><span class="n">compute_refractive_index</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)</span>  <span class="c1"># Refractive index of silica at the specified wavelength</span>
+<span class="n">profile</span><span class="o">.</span><span class="n">refractive_index</span> <span class="o">=</span> <span class="n">MaterialBank</span><span class="o">.</span><span class="n">fused_silica</span><span class="o">.</span><span class="n">compute_refractive_index</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)</span>  <span class="c1"># Refractive index of silica at the specified wavelength</span>
 <span class="n">profile</span><span class="o">.</span><span class="n">rotate</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span>  <span class="c1"># Rotate the profile for better visualization</span>
 
 <span class="n">profile</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">show_cores</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_centers</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Load fibers (e.g., SMF-28) positioned at the cores of the profile structure</span>
 <span class="n">fibers</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">load_fiber</span><span class="p">(</span><span class="s1">&#39;SMF28&#39;</span><span class="p">,</span> <span class="n">wavelength</span><span class="o">=</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">core_position</span><span class="p">)</span>
+    <span class="n">load_fiber</span><span class="p">(</span><span class="s1">&#39;SMF28&#39;</span><span class="p">,</span> <span class="n">clad_refractive_index</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">refractive_index</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">core_position</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">core_position</span> <span class="ow">in</span> <span class="n">profile</span><span class="o">.</span><span class="n">cores</span>
 <span class="p">]</span>
 
@@ -552,7 +555,7 @@ to download the full example code.</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1000x500 with 3 Axes&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.116 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 4.446 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-geometry-plot-ring-4-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/37c2d19e34c5d56157c58baca6e0ac31/plot_ring_4.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_ring_4.ipynb</span></code></a></p>

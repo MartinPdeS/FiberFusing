@@ -58,7 +58,7 @@
     <link rel="icon" href="../_static/thumbnail.png"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Buffer Module" href="buffer.html" />
+    <link rel="next" title="Shape Module" href="shapes.html" />
     <link rel="prev" title="Geometry Module" href="geometry.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -407,8 +407,8 @@
   <div class="bd-toc-item navbar-nav"><ul class="list-caption"><li class="toctree-l0 has-children"><details open><summary><p aria-level="2" class="caption" role="heading"><span class="caption-text">Classes and Modules</span></p><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="geometry.html">Geometry Module</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Coordinate System Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="buffer.html">Buffer Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="components.html">Components Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shapes.html">Shape Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="components.html">Geometries Module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities Module</a></li>
 </ul></details></li></ul></div>
 </nav></div>
@@ -492,127 +492,6 @@ and grid manipulations commonly needed in optical fiber modeling.</p>
 </ul>
 </dd>
 </dl>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.shape">
-<span class="sig-name descname"><span class="pre">shape</span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.shape" title="Link to this definition">#</a></dt>
-<dd><p>Grid shape as (ny, nx) following NumPy convention.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple of int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.x_bounds">
-<span class="sig-name descname"><span class="pre">x_bounds</span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.x_bounds" title="Link to this definition">#</a></dt>
-<dd><p>X-axis boundaries as (x_min, x_max).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple of float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.y_bounds">
-<span class="sig-name descname"><span class="pre">y_bounds</span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.y_bounds" title="Link to this definition">#</a></dt>
-<dd><p>Y-axis boundaries as (y_min, y_max).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple of float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.dx">
-<span class="sig-name descname"><span class="pre">dx</span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.dx" title="Link to this definition">#</a></dt>
-<dd><p>Grid spacing along x-axis.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.dy">
-<span class="sig-name descname"><span class="pre">dy</span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.dy" title="Link to this definition">#</a></dt>
-<dd><p>Grid spacing along y-axis.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.x_vector">
-<span class="sig-name descname"><span class="pre">x_vector</span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.x_vector" title="Link to this definition">#</a></dt>
-<dd><p>1D array of x-coordinates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.y_vector">
-<span class="sig-name descname"><span class="pre">y_vector</span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.y_vector" title="Link to this definition">#</a></dt>
-<dd><p>1D array of y-coordinates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.x_mesh">
-<span class="sig-name descname"><span class="pre">x_mesh</span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.x_mesh" title="Link to this definition">#</a></dt>
-<dd><p>2D meshgrid of x-coordinates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.y_mesh">
-<span class="sig-name descname"><span class="pre">y_mesh</span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.y_mesh" title="Link to this definition">#</a></dt>
-<dd><p>2D meshgrid of y-coordinates.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.area">
-<span class="sig-name descname"><span class="pre">area</span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.area" title="Link to this definition">#</a></dt>
-<dd><p>Total area of the computational domain.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.aspect_ratio">
-<span class="sig-name descname"><span class="pre">aspect_ratio</span></span><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.aspect_ratio" title="Link to this definition">#</a></dt>
-<dd><p>Aspect ratio of the domain (width/height).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-</dl>
-</dd></dl>
-
 <p class="rubric">Examples</p>
 <p>Create a square coordinate system centered at origin:</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">coords</span> <span class="o">=</span> <span class="n">CoordinateSystem</span><span class="p">(</span>
@@ -749,8 +628,8 @@ and grid manipulations commonly needed in optical fiber modeling.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id0">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id0" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.shape">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">shape</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.shape" title="Link to this definition">#</a></dt>
 <dd><p>Grid shape following NumPy convention (rows, columns).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -763,8 +642,8 @@ and grid manipulations commonly needed in optical fiber modeling.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id1">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x_bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id1" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.x_bounds">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x_bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.x_bounds" title="Link to this definition">#</a></dt>
 <dd><p>X-axis boundaries.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -777,8 +656,8 @@ and grid manipulations commonly needed in optical fiber modeling.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id2">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y_bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#id2" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.y_bounds">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y_bounds</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.y_bounds" title="Link to this definition">#</a></dt>
 <dd><p>Y-axis boundaries.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -791,8 +670,8 @@ and grid manipulations commonly needed in optical fiber modeling.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id3">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dx</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#id3" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.dx">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dx</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.dx" title="Link to this definition">#</a></dt>
 <dd><p>Grid spacing along x-axis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -805,8 +684,8 @@ and grid manipulations commonly needed in optical fiber modeling.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id4">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#id4" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.dy">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dy</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.dy" title="Link to this definition">#</a></dt>
 <dd><p>Grid spacing along y-axis.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -819,8 +698,8 @@ and grid manipulations commonly needed in optical fiber modeling.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id5">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">area</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#id5" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.area">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">area</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.area" title="Link to this definition">#</a></dt>
 <dd><p>Total area of the computational domain.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -833,8 +712,8 @@ and grid manipulations commonly needed in optical fiber modeling.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id6">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aspect_ratio</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#id6" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.aspect_ratio">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">aspect_ratio</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.aspect_ratio" title="Link to this definition">#</a></dt>
 <dd><p>Aspect ratio of the domain (width/height).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -847,8 +726,8 @@ and grid manipulations commonly needed in optical fiber modeling.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id7">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x_vector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#id7" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.x_vector">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x_vector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.x_vector" title="Link to this definition">#</a></dt>
 <dd><p>1D array of x-coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -861,8 +740,8 @@ and grid manipulations commonly needed in optical fiber modeling.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id8">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y_vector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#id8" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.y_vector">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y_vector</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.y_vector" title="Link to this definition">#</a></dt>
 <dd><p>1D array of y-coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -875,8 +754,8 @@ and grid manipulations commonly needed in optical fiber modeling.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id9">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x_mesh</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#id9" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.x_mesh">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">x_mesh</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.x_mesh" title="Link to this definition">#</a></dt>
 <dd><p>2D meshgrid of x-coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -889,8 +768,8 @@ and grid manipulations commonly needed in optical fiber modeling.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="id10">
-<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y_mesh</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#id10" title="Link to this definition">#</a></dt>
+<dt class="sig sig-object py" id="FiberFusing.coordinate_system.CoordinateSystem.y_mesh">
+<em class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">y_mesh</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#FiberFusing.coordinate_system.CoordinateSystem.y_mesh" title="Link to this definition">#</a></dt>
 <dd><p>2D meshgrid of y-coordinates.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -1330,17 +1209,6 @@ around origin using the maximum absolute boundary. Default is True.</p>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem</span></code></a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.shape"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.shape</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.x_bounds"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.x_bounds</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.y_bounds"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.y_bounds</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.dx"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.dx</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.dy"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.dy</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.x_vector"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.x_vector</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.y_vector"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.y_vector</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.x_mesh"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.x_mesh</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.y_mesh"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.y_mesh</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.area"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.area</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.aspect_ratio"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.aspect_ratio</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.nx"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.nx</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.ny"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.ny</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.x_min"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.x_min</span></code></a></li>
@@ -1353,17 +1221,17 @@ around origin using the maximum absolute boundary. Default is True.</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.validate_y_bounds"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.validate_y_bounds()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.from_bounds_and_resolution"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.from_bounds_and_resolution()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.square_domain"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.square_domain()</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id0"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.shape</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.x_bounds</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.y_bounds</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.dx</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.dy</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id5"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.area</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id6"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.aspect_ratio</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id7"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.x_vector</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id8"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.y_vector</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id9"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.x_mesh</span></code></a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id10"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.y_mesh</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.shape"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.shape</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.x_bounds"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.x_bounds</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.y_bounds"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.y_bounds</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.dx"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.dx</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.dy"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.dy</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.area"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.area</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.aspect_ratio"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.aspect_ratio</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.x_vector"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.x_vector</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.y_vector"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.y_vector</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.x_mesh"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.x_mesh</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.y_mesh"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.y_mesh</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.get_coordinates_flattened"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.get_coordinates_flattened()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.find_nearest_indices"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.find_nearest_indices()</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#FiberFusing.coordinate_system.CoordinateSystem.get_value_at_indices"><code class="docutils literal notranslate"><span class="pre">CoordinateSystem.get_value_at_indices()</span></code></a></li>
