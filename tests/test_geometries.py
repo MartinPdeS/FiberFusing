@@ -5,7 +5,7 @@ import pytest
 from unittest.mock import patch
 import matplotlib.pyplot as plt
 from FiberFusing import Geometry, DomainAlignment, BackGround
-from FiberFusing.fiber import load_fiber, GenericFiber
+from FiberFusing.fiber import FiberLoader, GenericFiber
 from FiberFusing.profile import Profile, StructureType
 
 
@@ -136,9 +136,11 @@ def test_building_geometry_with_capillary_and_fibers(mock_show, fusion_degree, n
         radius=125 * 1e-6
     )
 
+    fiber_loader = FiberLoader()
+
     fiber_list = [
-        load_fiber(fiber_name='DCF1300S_20', clad_refractive_index=1.4480),
-        load_fiber(fiber_name='SMF28', clad_refractive_index=1.4480),
+        fiber_loader.load_fiber(fiber_name='DCF1300S_20', clad_refractive_index=1.4480),
+        fiber_loader.load_fiber(fiber_name='SMF28', clad_refractive_index=1.4480),
     ]
     geometry = Geometry(
         x_bounds=DomainAlignment.LEFT,

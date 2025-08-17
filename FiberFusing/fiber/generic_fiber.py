@@ -8,6 +8,7 @@ from copy import deepcopy
 import matplotlib.pyplot as plt
 
 from FiberFusing import Circle, CircleOpticalStructure
+from FiberFusing.geometries.point import Point
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.plottings import plot_polygon
 from FiberFusing.helper import _plot_helper
@@ -34,6 +35,10 @@ class GenericFiber():
     """
 
     def __init__(self, position: Optional[Tuple[float, float]] = (0, 0)):
+
+        if isinstance(position, Point):
+            position = (position.x, position.y)
+
         self.position = position
         self.structure_list = []
         self.add_air()

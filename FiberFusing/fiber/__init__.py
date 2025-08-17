@@ -1,2 +1,2 @@
-from .loader import load_fiber
+from .loader import FiberLoader
 from .generic_fiber import GenericFiber

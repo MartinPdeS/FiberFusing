@@ -4,13 +4,15 @@
 import pytest
 from unittest.mock import patch
 import matplotlib.pyplot as plt
-from FiberFusing.fiber import load_fiber, GenericFiber
+from FiberFusing.fiber import FiberLoader, GenericFiber
 
 
 @patch("matplotlib.pyplot.show")
 def test_load_fiber(mock_show):
     """Test loading a standard fiber from the catalogue."""
-    fiber = load_fiber(fiber_name='SMF28', clad_refractive_index=1.4444)
+
+    fiber_loader = FiberLoader()
+    fiber = fiber_loader.load_fiber(fiber_name='SMF28', clad_refractive_index=1.4444)
     assert fiber is not None, "Fiber should be loaded successfully."
 
     fiber.plot()
