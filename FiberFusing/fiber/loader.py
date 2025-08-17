@@ -1,10 +1,69 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from typing import Tuple, List, Dict
 import yaml
 import numpy as np
 from pathlib import Path
-from PyOptik import MaterialBank
+from FiberFusing.fiber.generic_fiber import GenericFiber
+from FiberFusing.geometries.point import Point
+
+
+def load_fiber(fiber_name: str, clad_refractive_index: float, position: Tuple[float, float] = (0, 0), remove_cladding: bool = False) -> GenericFiber:
+    """
+    Load a fiber configuration and construct a GenericFiber object based on specified parameters.
+
+    Parameters
+    ----------
+    fiber_name : str
+        The name of the fiber to load.
+    position : Tuple[float, float], optional
+        The spatial position of the fiber, defaulting to (0, 0).
+    remove_cladding : bool, optional
+        Whether to exclude the cladding layer from the fiber configuration. Defaults to True.
+
+    Returns
+    -------
+    GenericFiber
+        A configured GenericFiber object with the specified properties.
+    """
+    if isinstance(position, Point):
+        position = (position.x, position.y)
+
+    fiber = GenericFiber(position=position)
+    fiber_dict = load_fiber_as_dict(fiber_name=fiber_name, clad_refractive_index=clad_refractive_index)
+
+    for structure in fiber_dict['layers'].values():
+        if remove_cladding and 'cladding' in structure['name'].lower():
+            continue
+        fiber.create_and_add_new_structure(**structure)
+
+    return fiber
+
+
+def make_fiber(wavelength: float, structure_list: List[Dict], position: Tuple[float, float] = (0, 0)) -> GenericFiber:
+    """
+    Construct a GenericFiber object based on a list of structural configurations.
+
+    Parameters
+    ----------
+    wavelength : float
+        The wavelength at which the fiber's material properties are considered.
+    structure_list : List[Dict]
+        A list of dictionaries, each containing the parameters for a fiber structure.
+    position : Tuple[float, float], optional
+        The spatial position of the fiber. Defaults to (0, 0).
+
+    Returns
+    -------
+    GenericFiber
+        The newly created GenericFiber object populated with specified structures.
+    """
+    fiber = GenericFiber(wavelength=wavelength, position=position)
+    for structure in structure_list:
+        fiber.create_and_add_new_structure(**structure)
+
+    return fiber
 
 
 def get_fiber_file_path(fiber_name: str) -> Path:
@@ -34,7 +93,7 @@ def load_yaml_configuration(file_path: Path) -> dict:
         return yaml.safe_load(file)
 
 
-def process_layers(layers: dict, wavelength: float = None) -> dict:
+def process_layers(layers: dict, clad_refractive_index: float = None) -> dict:
     """
     Processes the layers in the configuration, calculating indices as necessary.
 
@@ -48,14 +107,14 @@ def process_layers(layers: dict, wavelength: float = None) -> dict:
     processed_layers = {}
     outer_layer = None
     for idx, layer in layers.items():
-        layer_index = layer.get('index')
-        if 'material' in layer and wavelength:
-            layer_index = getattr(MaterialBank, layer['material']).compute_refractive_index(wavelength)
+        layer_index = layer.get('refractive_index')
+        if 'material' in layer and clad_refractive_index is not None:
+            layer_index = clad_refractive_index
 
         elif 'NA' in layer and outer_layer:
-            layer_index = np.sqrt(layer['NA']**2 + outer_layer['index']**2)
+            layer_index = np.sqrt(layer['NA']**2 + outer_layer['refractive_index']**2)
 
-        processed_layers[idx] = {**layer, 'index': layer_index}
+        processed_layers[idx] = {**layer, 'refractive_index': layer_index}
         outer_layer = processed_layers[idx]
 
     return processed_layers
@@ -93,7 +152,7 @@ def reorder_layers_if_needed(layers: dict, order: str) -> dict:
     return layers
 
 
-def load_fiber_as_dict(fiber_name: str, wavelength: float = None, order: str = 'in-to-out') -> dict:
+def load_fiber_as_dict(fiber_name: str, clad_refractive_index: float = None, order: str = 'in-to-out') -> dict:
     """
     Main function to load and process fiber configuration.
 
@@ -111,7 +170,7 @@ def load_fiber_as_dict(fiber_name: str, wavelength: float = None, order: str = '
         raise FileNotFoundError(f'Fiber file {fiber_name}.yaml not found. Available fibers: \n{available}')
 
     config = load_yaml_configuration(file_path)
-    processed_layers = process_layers(config['layers'], wavelength)
+    processed_layers = process_layers(config['layers'], clad_refractive_index)
     processed_layers = cleanup_layers(processed_layers)
     processed_layers = reorder_layers_if_needed(processed_layers, order)
 

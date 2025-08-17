@@ -18,7 +18,7 @@ class CircleOpticalStructure:
     ----------
     name : str
         Name of the structure.
-    index : float
+    refractive_index : float
         Refractive index of the structure.
     radius : float
         Radius of the circle representing the structure.
@@ -31,9 +31,11 @@ class CircleOpticalStructure:
     """
 
     name: str
-    index: float
     radius: float
     position: Tuple[float, float]
+    refractive_index: float = None
+    refractive_index_in: float = None
+    refractive_index_out: float = None
     is_graded: Optional[bool] = False
     delta_n: Optional[float] = None
 
@@ -43,7 +45,7 @@ class CircleOpticalStructure:
         """
         self.polygon = Circle(position=self.position, radius=self.radius)
 
-    def compute_index_from_NA(self, NA: float, exterior_index: float) -> float:
+    def compute_refractive_index_from_NA(self, NA: float, exterior_index: float) -> float:
         """
         Compute the refractive index from the numerical aperture (NA).
 
@@ -77,7 +79,7 @@ class CircleOpticalStructure:
         float
             Computed V-number.
         """
-        delta_index = np.sqrt(self.index**2 - exterior_index**2)
+        delta_index = np.sqrt(self.refractive_index**2 - exterior_index**2)
         V_number = (2 * np.pi / wavelength) * delta_index * self.radius
         return V_number
 

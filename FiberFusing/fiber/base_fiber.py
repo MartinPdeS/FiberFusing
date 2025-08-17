@@ -11,7 +11,7 @@ from copy import deepcopy
 pp = pprint.PrettyPrinter(indent=4, sort_dicts=False, compact=True, width=1)
 
 
-class BaseClass:
+class BaseFiber:
     """
     A collection of optical structures representing the full structure of an optical fiber.
 
@@ -77,52 +77,85 @@ class BaseClass:
 
         return fiber_copy
 
-    def create_and_add_new_structure(self, index: float = None, NA: float = None, **kwargs) -> None:
+    def create_and_add_new_structure(self, refractive_index: float = None, NA: float = None, **kwargs) -> None:
         """
         Adds a new circular structure to the collection.
 
-        Args:
-            index (float, optional): The refractive index of the structure. Defaults to None.
-            NA (float, optional): The numerical aperture of the structure. Defaults to None.
-            **kwargs: Additional keyword arguments for the structure.
+        Parameters
+        ----------
+        refractive_index : float, optional
+            The refractive index of the new structure. If provided, NA should be None.
+        NA : float, optional
+            The numerical aperture of the new structure. If provided, refractive_index should be None.
 
-        Returns:
-            None
+        Raises
+        ------
+        ValueError
+            If both refractive_index and NA are provided or if neither is provided.
         """
-        index = self._interpret_index_or_NA_to_index(index=index, NA=NA)
+        refractive_index = self._interpret_index_or_NA_to_index(refractive_index=refractive_index, NA=NA)
+
         new_structure = CircleOpticalStructure(
             **kwargs,
-            index=index,
+            refractive_index=refractive_index,
             position=self.position
         )
         setattr(self, new_structure.name, new_structure)
         self.structure_list.append(new_structure)
 
-    def _interpret_index_or_NA_to_index(self, index: float, NA: float) -> float:
+    def create_and_add_new_graded_index_structure(self, refractive_index_in: float, refractive_index_out: float, **kwargs) -> None:
+        """
+        Adds a new graded index structure to the collection.
+
+        Parameters
+        ----------
+        refractive_index : float, optional
+            The refractive index of the new structure. If provided, NA should be None.
+        NA : float, optional
+            The numerical aperture of the new structure. If provided, refractive_index should be None.
+
+        Raises
+        ------
+        ValueError
+            If both refractive_index and NA are provided or if neither is provided.
+        """
+        new_structure = CircleOpticalStructure(
+            **kwargs,
+            refractive_index_in=refractive_index_in,
+            refractive_index_out=refractive_index_out,
+            position=self.position
+        )
+        setattr(self, new_structure.name, new_structure)
+        self.structure_list.append(new_structure)
+
+
+    def _interpret_index_or_NA_to_index(self, refractive_index: float, NA: float) -> float:
         """
         Interprets and converts NA or index to a refractive index.
 
-        Args:
-            index (float, optional): The refractive index. Defaults to None.
-            NA (float, optional): The numerical aperture. Defaults to None.
+        Parameters
+        ----------
+        refractive_index : float, optional
+            The refractive index of the structure. If provided, NA should be None.
+        NA : float, optional
+            The numerical aperture of the structure. If provided, refractive_index should be None.
 
-        Returns:
-            float: The interpreted refractive index.
-
-        Raises:
-            ValueError: If NA is provided but no previous layer is defined.
+        Returns
+        -------
+        float
+            The refractive index of the structure.
         """
-        if (index is not None) == (NA is not None):
-            raise ValueError('Only one of NA or index can be defined')
+        if (refractive_index is not None) == (NA is not None):
+            raise ValueError('Only one of NA or refractive_index can be defined')
 
-        if index is not None:
-            return index
+        if refractive_index is not None:
+            return refractive_index
 
         if len(self.structure_list) == 0:
             raise ValueError('Cannot initialize layer from NA if no previous layer is defined')
 
         return self.compute_index_from_NA(
-            exterior_index=self.structure_list[-1].index,
+            exterior_index=self.structure_list[-1].refractive_index,
             NA=NA
         )
 
@@ -130,12 +163,17 @@ class BaseClass:
         """
         Computes refractive index from NA and exterior index.
 
-        Args:
-            exterior_index (float): The refractive index of the exterior layer.
-            NA (float): The numerical aperture.
+        Parameters
+        ----------
+        exterior_index : float
+            The refractive index of the exterior medium.
+        NA : float
+            The numerical aperture of the structure.
 
-        Returns:
-            float: The computed refractive index.
+        Returns
+        -------
+        float
+            The computed refractive index.
         """
         return numpy.sqrt(NA**2 + exterior_index**2)
 
@@ -143,29 +181,35 @@ class BaseClass:
         """
         Overlays the structures on a mesh grid based on the coordinate system.
 
-        Args:
-            structure_list (list): The list of structures to overlay.
-            mesh (numpy.ndarray): The mesh grid.
-            coordinate_system (CoordinateSystem): The coordinate system to use.
+        Parameters
+        ----------
+        structure_list : list
+            A list of structures to overlay on the mesh.
+        mesh : numpy.ndarray
+            The mesh grid on which the structures will be overlayed.
+        coordinate_system : CoordinateSystem
+            The coordinate system used for overlaying the structures.
 
-        Returns:
-            numpy.ndarray: The raster mesh of the structures.
+        Returns
+        -------
+        numpy.ndarray
+            A numpy ndarray with the structures overlayed onto the original mesh.
         """
         for structure in structure_list:
             raster = structure.polygon.get_rasterized_mesh(coordinate_system=coordinate_system)
             mesh[numpy.where(raster != 0)] = 0
 
             if structure.is_graded:
-                index = self.get_graded_index_mesh(
+                refractive_index = self.get_graded_index_mesh(
                     coordinate_system=coordinate_system,
                     polygon=structure.polygon,
-                    min_index=structure.index,
-                    max_index=structure.index + structure.delta_n
+                    min_index=structure.refractive_index_in,
+                    max_index=structure.refractive_index_out
                 )
             else:
-                index = structure.index
+                refractive_index = structure.refractive_index
 
-            mesh += raster * index
+            mesh += raster * refractive_index
 
         return mesh
 

@@ -23,7 +23,7 @@ class Ellipse(Polygon):
         The radius along the major axis.
     resolution : Optional[int], optional
         The resolution of the ellipse's edge. Higher values yield smoother edges. Default is 128.
-    index : Optional[float], optional
+    refractive_index : Optional[float], optional
         The refractive index of the ellipse. Default is None.
     ratio : Optional[float], optional
         The ratio between the minor and major axes. Default is 1 (circular shape).
@@ -31,7 +31,7 @@ class Ellipse(Polygon):
     position: tuple
     radius: float
     resolution: Optional[int] = 128
-    index: Optional[float] = None
+    refractive_index: Optional[float] = None
     ratio: Optional[float] = 1  # Default ratio of 1 makes this a circle
 
     def __post_init__(self):

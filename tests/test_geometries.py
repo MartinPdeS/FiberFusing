@@ -5,7 +5,7 @@ import pytest
 from unittest.mock import patch
 import matplotlib.pyplot as plt
 from FiberFusing import Geometry, BoundaryMode, BackGround
-from FiberFusing.fiber import catalogue
+from FiberFusing.fiber import load_fiber, GenericFiber
 from FiberFusing.profile import Profile, StructureType
 
 
@@ -34,10 +34,10 @@ def test_building_geometry(mock_show, fusion_degree, number_of_fibers, structure
         compute_fusing=True
     )
 
-    profile.index = 1.4444
+    profile.refractive_index = 1.4444
 
 
-    background = BackGround(index=1)
+    background = BackGround(refractive_index=1)
     geometry = Geometry(
         x_bounds=BoundaryMode.CENTERING,
         y_bounds=BoundaryMode.CENTERING,
@@ -75,11 +75,17 @@ def test_building_geometry_with_capillary(mock_show, fusion_degree, number_of_fi
         compute_fusing=True
     )
 
-    profile.index=1.4444
+    profile.refractive_index=1.4444
 
-    background = BackGround(index=1)
+    background = BackGround(refractive_index=1)
 
-    capillary_tube = catalogue.CapillaryTube(wavelength=1550e-9, radius=125e-6)
+    capillary_tube = GenericFiber()
+
+    capillary_tube.create_and_add_new_structure(
+        name='cladding',
+        refractive_index=1.4440,
+        radius=125 * 1e-6
+    )
 
     geometry = Geometry(
         x_bounds=BoundaryMode.CENTERING,
@@ -118,13 +124,21 @@ def test_building_geometry_with_capillary_and_fibers(mock_show, fusion_degree, n
         compute_fusing=True
     )
 
-    profile.index=1.4444
+    profile.refractive_index = 1.4444
 
-    background = BackGround(index=1)
-    capillary_tube = catalogue.CapillaryTube(wavelength=1550e-9, radius=125e-6)
+    background = BackGround(refractive_index=1)
+
+    capillary_tube = GenericFiber()
+
+    capillary_tube.create_and_add_new_structure(
+        name='cladding',
+        refractive_index=1.4440,
+        radius=125 * 1e-6
+    )
+
     fiber_list = [
-        catalogue.load_fiber(fiber_name='DCF1300S_20', wavelength=1550e-9),
-        catalogue.load_fiber(fiber_name='SMF28', wavelength=1550e-9),
+        load_fiber(fiber_name='DCF1300S_20', clad_refractive_index=1.4480),
+        load_fiber(fiber_name='SMF28', clad_refractive_index=1.4480),
     ]
     geometry = Geometry(
         x_bounds=BoundaryMode.LEFT,
@@ -150,7 +164,7 @@ def test_geometry_api():
         compute_fusing=True
     )
 
-    profile.index=1.4444
+    profile.refractive_index = 1.4444
 
     geometry = Geometry(
         x_bounds=BoundaryMode.CENTERING,

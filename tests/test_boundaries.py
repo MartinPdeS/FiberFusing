@@ -41,9 +41,9 @@ def test_building_geometry(mock_show, boundaries):
         compute_fusing=True
     )
 
-    profile.index = 1.4444
+    profile.refractive_index = 1.4444
 
-    background = BackGround(index=1)
+    background = BackGround(refractive_index=1)
 
     # Create a geometry instance with the given parameters
     geometry = Geometry(

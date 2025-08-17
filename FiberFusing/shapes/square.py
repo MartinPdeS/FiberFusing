@@ -20,12 +20,12 @@ class Square(Polygon):
         The center position of the square.
     length : float
         The length of the square's sides.
-    index : Optional[float], optional
+    refractive_index : Optional[float], optional
         The refractive index of the square. Default is None.
     """
     position: tuple
     length: float
-    index: Optional[float] = None
+    refractive_index: Optional[float] = None
 
     def __post_init__(self):
         """

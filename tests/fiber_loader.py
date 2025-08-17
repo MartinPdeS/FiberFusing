@@ -1,6 +1,6 @@
 import pytest
 from FiberFusing.fiber.generic_fiber import GenericFiber
-from FiberFusing.fiber.catalogue import load_fiber, make_fiber
+from FiberFusing.fiber import load_fiber, make_fiber
 
 
 @pytest.fixture

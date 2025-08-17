@@ -7,12 +7,11 @@ from FiberFusing.fiber.generic_fiber import GenericFiber
 @pytest.fixture
 def generic_fiber():
     """Fixture for a GenericFiber instance with default values."""
-    return GenericFiber(wavelength=1.55e-6)
+    return GenericFiber()
 
 
 def test_initialization(generic_fiber):
     """Test the initialization of GenericFiber."""
-    assert generic_fiber.wavelength == 1.55e-6
     assert generic_fiber.position == (0, 0)
     assert len(generic_fiber.structure_list) > 0  # air structure should be added
 
@@ -28,23 +27,9 @@ def test_set_position(generic_fiber):
 
 def test_set_position_invalid():
     """Test set_position with invalid input."""
-    fiber = GenericFiber(wavelength=1.55e-6)
+    fiber = GenericFiber()
     with pytest.raises(ValueError):
         fiber.set_position((10.0,))  # Invalid tuple length
-
-
-def test_update_wavelength(generic_fiber):
-    """Test the update_wavelength method."""
-    new_wavelength = 1.3e-6
-    generic_fiber.wavelength = new_wavelength
-    assert generic_fiber.wavelength == new_wavelength
-
-
-def test_update_wavelength_invalid():
-    """Test update_wavelength with invalid input."""
-    fiber = GenericFiber(wavelength=1.55e-6)
-    with pytest.raises(ValueError):
-        fiber.wavelength = -1.0e-6
 
 
 def test_NA_to_core_index(generic_fiber):

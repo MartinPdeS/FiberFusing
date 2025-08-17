@@ -6,7 +6,7 @@ import FiberFusing as ff
 from FiberFusing.connection.connection_optimization import ConnectionOptimization
 
 
-class BaseClass:
+class FiberStructureBaseClass:
     """
     Base class for managing and visualizing fused and unfused fiber structures.
 
@@ -130,7 +130,7 @@ class BaseClass:
 
 
 @dataclass
-class FiberLine(ConnectionOptimization, BaseClass):
+class FiberLine(ConnectionOptimization, FiberStructureBaseClass):
     number_of_fibers: int
     """ Number of fiber in the ring """
     fiber_radius: float
@@ -172,7 +172,7 @@ class FiberLine(ConnectionOptimization, BaseClass):
 
 
 @dataclass
-class FiberRing(ConnectionOptimization, BaseClass):
+class FiberRing(ConnectionOptimization, FiberStructureBaseClass):
     number_of_fibers: int
     """ Number of fiber in the ring """
     fiber_radius: float

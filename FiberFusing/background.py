@@ -18,15 +18,15 @@ class BackGround(OverlayStructureBaseClass):
 
     Attributes
     ----------
-    index : float
-        Refractive index of the background.
+    refractive_index : float
+        Refractive refractive_index of the background.
     radius : float, optional
         Radius of the circular structure, by default 1000.
     position : Optional[Tuple[float, float]], optional
         A tuple (x, y) specifying the position of the circle's center, by default (0, 0).
     """
 
-    index: float
+    refractive_index: float
     radius: float = 1000
     position: Optional[Tuple[float, float]] = (0, 0)
 
@@ -36,8 +36,8 @@ class BackGround(OverlayStructureBaseClass):
         """
         from FiberFusing import Circle
 
-        polygon = Circle(position=self.position, radius=self.radius, index=self.index)
-        self.structure_list = [NameSpace(index=self.index, polygon=polygon, name='background')]
+        polygon = Circle(position=self.position, radius=self.radius, refractive_index=self.refractive_index)
+        self.structure_list = [NameSpace(refractive_index=self.refractive_index, polygon=polygon, name='background')]
 
     @property
     def refractive_index_list(self) -> list:
@@ -49,7 +49,7 @@ class BackGround(OverlayStructureBaseClass):
         list
             A list containing the refractive index of the background.
         """
-        return [self.index]
+        return [self.refractive_index]
 
     def overlay_structures_on_mesh(self, mesh: np.ndarray, coordinate_system: CoordinateSystem) -> np.ndarray:
         """

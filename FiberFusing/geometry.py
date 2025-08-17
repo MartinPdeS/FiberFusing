@@ -129,30 +129,6 @@ class Geometry():
         self.coordinate_system.center(factor=self.boundary_pad_factor)
         self.apply_boundary_settings()
 
-    @property
-    def refractive_index_maximum(self) -> float:
-        """
-        Calculate the maximum refractive index across all structures.
-
-        Returns
-        -------
-        float
-            Maximum refractive index.
-        """
-        return max(index for obj in self.structure_list for index in obj.refractive_index_list)
-
-    @property
-    def refractive_index_minimum(self) -> float:
-        """
-        Calculate the minimum refractive index across all non-background structures.
-
-        Returns
-        -------
-        float
-            Minimum refractive index.
-        """
-        return min(index for obj in self.structure_list if not isinstance(obj, FiberFusing.background.BackGround) for index in obj.refractive_index_list)
-
     @field_validator('x_bounds')
     @classmethod
     def validate_x_bounds(cls, v: Union[BoundaryMode, Tuple[float, float]]) -> Union[BoundaryMode, Tuple[float, float]]:
@@ -250,7 +226,7 @@ class Geometry():
         float
             Maximum refractive index.
         """
-        return max(index for obj in self.structure_list for index in obj.refractive_index_list)
+        return max(refractive_index for obj in self.structure_list for refractive_index in obj.refractive_index_list)
 
     @property
     def refractive_index_minimum(self) -> float:
@@ -262,7 +238,7 @@ class Geometry():
         float
             Minimum refractive index.
         """
-        return min(index for obj in self.structure_list if not isinstance(obj, FiberFusing.background.BackGround) for index in obj.refractive_index_list)
+        return min(refractive_index for obj in self.structure_list if not isinstance(obj, FiberFusing.background.BackGround) for refractive_index in obj.refractive_index_list)
 
     def get_index_range(self) -> List[float]:
         """
@@ -273,7 +249,7 @@ class Geometry():
         List[float]
             List of refractive indices.
         """
-        return [float(obj.index) for obj in self.structure_list]
+        return [float(obj.refractive_index) for obj in self.structure_list]
 
     def rotate(self, angle: float) -> None:
         """
@@ -300,8 +276,8 @@ class Geometry():
         """
         for fiber in self.fiber_list:
             for structure in fiber.inner_structure:
-                adjustment = structure.index * self.index_scrambling * numpy.random.rand() * random_factor
-                structure.index += adjustment
+                adjustment = structure.refractive_index * self.refractive_index_scrambling * numpy.random.rand() * random_factor
+                structure.refractive_index += adjustment
 
         self.mesh = self.generate_mesh()
 

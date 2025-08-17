@@ -124,9 +124,9 @@ class Profile(OverlayStructureBaseClass):
         Returns
         -------
         dict
-            A dictionary with the structure's name, index, and polygon.
+            A dictionary with the structure's name, refractive_index, and polygon.
         """
-        return {'name': {'index': self.index, 'polygon': self.clad_structure}}
+        return {'name': {'refractive_index': self.refractive_index, 'polygon': self.clad_structure}}
 
     def overlay_structures_on_mesh(self, mesh: np.ndarray, coordinate_system: CoordinateSystem) -> np.ndarray:
         """
@@ -144,7 +144,7 @@ class Profile(OverlayStructureBaseClass):
         np.ndarray
             The mesh with fiber structures overlaid.
         """
-        structure_list = [NameSpace(index=self.index, polygon=self.clad_structure)]
+        structure_list = [NameSpace(refractive_index=self.refractive_index, polygon=self.clad_structure)]
         return self._overlay_structure_on_mesh_(
             structure_list=structure_list, mesh=mesh, coordinate_system=coordinate_system
         )

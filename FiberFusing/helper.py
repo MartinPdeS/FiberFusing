@@ -43,16 +43,16 @@ class OverlayStructureBaseClass:
             polygon = structure.polygon
             raster = polygon.get_rasterized_mesh(coordinate_system=coordinate_system)
             mesh[numpy.where(raster != 0)] = 0
-            index = structure.index
+            refractive_index = structure.refractive_index
 
             if hasattr(structure, 'graded_index_factor'):
-                index += self.get_graded_index_mesh(
+                refractive_index += self.get_graded_index_mesh(
                     coordinate_system=coordinate_system,
                     polygon=polygon,
                     delta_n=structure.graded_index_factor
                 )
 
-            raster *= index
+            raster *= refractive_index
 
             mesh += raster
 

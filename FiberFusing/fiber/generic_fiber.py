@@ -5,17 +5,16 @@ from typing import Tuple, Optional
 import numpy
 from FiberFusing import Circle
 from FiberFusing.coordinate_system import CoordinateSystem
-from FiberFusing.fiber.structure_collection import BaseClass
+from FiberFusing.fiber.base_fiber import BaseFiber
 import pprint
 import matplotlib.pyplot as plt
 from FiberFusing.plottings import plot_polygon
 from FiberFusing.helper import _plot_helper
-from PyOptik import MaterialBank
 
 pp = pprint.PrettyPrinter(indent=4, sort_dicts=False, compact=True, width=1)
 
 
-class GenericFiber(BaseClass):
+class GenericFiber(BaseFiber):
     """
     Represents a generic fiber with wavelength and position attributes.
 
@@ -25,10 +24,14 @@ class GenericFiber(BaseClass):
         The wavelength at which to evaluate the computation.
     position : Optional[Tuple[float, float]]
         The position of the fiber. Defaults to (0, 0).
+
+    References
+    ----------
+    For gradient core fibers, see:
+    .. [1] Nature, "Fiber with gradient core index", https://www.nature.com/articles/s41598-018-27072-2
     """
 
-    def __init__(self, wavelength: float, position: Optional[Tuple[float, float]] = (0, 0)):
-        self._wavelength = wavelength
+    def __init__(self, position: Optional[Tuple[float, float]] = (0, 0)):
         self.position = position
         self.structure_list = []
         self.add_air()
@@ -56,22 +59,8 @@ class GenericFiber(BaseClass):
                 structure.polygon = Circle(
                     position=structure.position,
                     radius=structure.radius,
-                    index=structure.index
+                    refractive_index=structure.refractive_index
                 )
-
-    @property
-    def wavelength(self):
-        return self._wavelength
-
-    @wavelength.setter
-    def wavelength(self, value: float):
-        if value <= 0:
-            raise ValueError("Wavelength must be a positive value.")
-
-        self._wavelength = value
-
-        for structure in self.structure_list:
-            structure.refractive_index = MaterialBank.fused_silica.compute_refractive_index(value)
 
     def update_position(self, new_value: Tuple[float, float]) -> None:
         """
@@ -160,24 +149,7 @@ class GenericFiber(BaseClass):
         radius : float, optional
             The radius of the air structure. Defaults to 1e3.
         """
-        self.create_and_add_new_structure(name='air', index=1.0, radius=radius)
-
-    def add_silica_pure_cladding(self, radius: float = 62.5e-6, name: str = 'outer_clad') -> None:
-        """
-        Add a pure silica cladding to the fiber.
-
-        Parameters
-        ----------
-        radius : float, optional
-            The radius of the cladding. Defaults to 62.5e-6.
-        name : str, optional
-            The name of the cladding. Defaults to 'outer_clad'.
-        """
-        self.create_and_add_new_structure(
-            name=name,
-            index=MaterialBank.fused_silica.compute_refractive_index(self.wavelength),
-            radius=radius
-        )
+        self.create_and_add_new_structure(name='air', refractive_index=1.0, radius=radius)
 
     def shift_coordinates(self, coordinate_system: CoordinateSystem, x_shift: float, y_shift: float) -> numpy.ndarray:
         """
@@ -308,7 +280,7 @@ class GenericFiber(BaseClass):
 
         return graded_index_mesh
 
-    def overlay_structures(self, coordinate_system: CoordinateSystem, structures_type: str = 'inner_structure') -> numpy.ndarray:
+    def get_raster_mesh(self, coordinate_system: CoordinateSystem, structures_type: str = 'inner_structure') -> numpy.ndarray:
         """
         Overlay the structures on a mesh.
 
@@ -356,7 +328,7 @@ class GenericFiber(BaseClass):
         )
 
     @_plot_helper
-    def plot(self, ax: plt.Axes = None, show_center: bool = False, show_core: bool = True) -> None:
+    def plot(self, ax: plt.Axes = None) -> None:
         """
         Plot the fiber geometry representation including patch and raster-mesh.
 
@@ -411,3 +383,29 @@ class GenericFiber(BaseClass):
             The max and min x and y boundaries.
         """
         return self.get_structure_max_min_boundaries()
+
+    @_plot_helper
+    def plot_raster(self, coordinate_system, ax: plt.Axes = None) -> None:
+        """
+        Render the rasterized representation of the geometry onto a given matplotlib axis.
+
+        Parameters
+        ----------
+        ax : plt.Axes, optional
+            The matplotlib axis on which the rasterized representation will be plotted. If not provided, a new axis is created.
+        show : bool, optional
+            Whether to display the plot immediately. Default is True.
+
+        Returns
+        -------
+        None
+        """
+        ax.pcolormesh(
+            self.coordinate_system.x_vector,
+            self.coordinate_system.y_vector,
+            self.mesh,
+            cmap='Blues',
+        )
+
+        ax.set(title='Fiber structure', xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
+        ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)

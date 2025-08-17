@@ -21,13 +21,13 @@ class Circle(Polygon):
         The radius of the circle.
     resolution : Optional[int], optional
         The resolution of the circle's edge. Higher values yield smoother circles. Default is 128.
-    index : Optional[float], optional
+    refractive_index : Optional[float], optional
         The refractive index of the circle. Default is None.
     """
     position: Tuple[float, float]
     radius: float
     resolution: Optional[int] = 128
-    index: Optional[float] = None
+    refractive_index: Optional[float] = None
 
     def __post_init__(self):
         """
