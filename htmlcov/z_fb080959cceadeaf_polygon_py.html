@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_fb080959cceadeaf_utils_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.10.3">coverage.py v7.10.3</a>,
-            created at 2025-08-17 19:43 +0000
+            created at 2025-08-17 19:58 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -255,7 +255,7 @@
     <p class="pln"><span class="n"><a id="t171" href="#t171">171</a></span><span class="t"><span class="str">        np.ndarray</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t172" href="#t172">172</a></span><span class="t"><span class="str">            A 2D array where 1 indicates the presence of the polygon and 0 indicates its absence.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t173" href="#t173">173</a></span><span class="t"><span class="str">        """</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t174" href="#t174">174</a></span><span class="t">        <span class="nam">unstructured_coordinates</span> <span class="op">=</span> <span class="nam">coordinate_system</span><span class="op">.</span><span class="nam">to_unstructured_coordinate</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t174" href="#t174">174</a></span><span class="t">        <span class="nam">unstructured_coordinates</span> <span class="op">=</span> <span class="nam">coordinate_system</span><span class="op">.</span><span class="nam">get_coordinates_flattened</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t175" href="#t175">175</a></span><span class="t">        <span class="nam">exterior_mask</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">contains_points</span><span class="op">(</span><span class="nam">unstructured_coordinates</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t176" href="#t176">176</a></span><span class="t">        <span class="nam">hole</span> <span class="op">=</span> <span class="nam">self</span><span class="op">.</span><span class="nam">get_hole</span><span class="op">(</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t177" href="#t177">177</a></span><span class="t">        <span class="nam">hole_mask</span> <span class="op">=</span> <span class="nam">np</span><span class="op">.</span><span class="nam">zeros</span><span class="op">(</span><span class="nam">exterior_mask</span><span class="op">.</span><span class="nam">shape</span><span class="op">,</span> <span class="nam">dtype</span><span class="op">=</span><span class="nam">bool</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
@@ -319,7 +319,7 @@
             <a class="nav" href="z_fb080959cceadeaf_utils_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.10.3">coverage.py v7.10.3</a>,
-            created at 2025-08-17 19:43 +0000
+            created at 2025-08-17 19:58 +0000
         </p>
     </div>
 </footer>
