@@ -527,8 +527,6 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate that grid points are reasonable.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Grid points must be &gt;= 2, got </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="mi">10000</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Grid points should be &lt;= 10000 for performance, got </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">value</span></div>
 
 
@@ -1243,110 +1241,6 @@
 <span class="s2">Endpoint: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">&quot;&quot;&quot;</span></div>
 
 
-    <span class="c1"># ==========================================</span>
-    <span class="c1"># BACKWARD COMPATIBILITY METHODS (MUTABLE)</span>
-    <span class="c1"># ==========================================</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_unstructured_coordinate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get unstructured coordinate representation (backward compatibility).</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        ndarray</span>
-<span class="sd">            Array of coordinate pairs with shape (nx*ny, 2).</span>
-
-<span class="sd">        Notes</span>
-<span class="sd">        -----</span>
-<span class="sd">        This method is provided for backward compatibility.</span>
-<span class="sd">        New code should use get_coordinates_flattened().</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_coordinates_flattened</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">ensure_odd</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Ensure the specified grid attribute (nx or ny) is odd (mutable).</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        attribute : str</span>
-<span class="sd">            The attribute to update (&#39;nx&#39; or &#39;ny&#39;).</span>
-
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        ValueError</span>
-<span class="sd">            If the attribute is not &#39;nx&#39; or &#39;ny&#39;.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">attribute</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;nx&#39;</span><span class="p">,</span> <span class="s1">&#39;ny&#39;</span><span class="p">]:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Attribute must be &#39;nx&#39; or &#39;ny&#39;.&quot;</span><span class="p">)</span>
-
-        <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">value</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">value</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_clear_cache</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">x_centering</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zero_included</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Center the x-axis coordinate system around zero (mutable).</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        zero_included : bool, optional</span>
-<span class="sd">            If True, adjusts grid points to include zero. Default is False.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">abs_boundary</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_min</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_max</span><span class="p">))</span>
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;x_min&#39;</span><span class="p">,</span> <span class="o">-</span><span class="n">abs_boundary</span><span class="p">)</span>
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;x_max&#39;</span><span class="p">,</span> <span class="n">abs_boundary</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">zero_included</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ensure_odd</span><span class="p">(</span><span class="s1">&#39;nx&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_clear_cache</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">y_centering</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zero_included</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Center the y-axis coordinate system around zero (mutable).</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        zero_included : bool, optional</span>
-<span class="sd">            If True, adjusts grid points to include zero. Default is False.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">abs_boundary</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_min</span><span class="p">),</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_max</span><span class="p">))</span>
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;y_min&#39;</span><span class="p">,</span> <span class="o">-</span><span class="n">abs_boundary</span><span class="p">)</span>
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;y_max&#39;</span><span class="p">,</span> <span class="n">abs_boundary</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">zero_included</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ensure_odd</span><span class="p">(</span><span class="s1">&#39;ny&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_clear_cache</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">center</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factor</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">zero_included</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Center the coordinate system by scaling the boundaries (mutable).</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        factor : float, optional</span>
-<span class="sd">            Scaling factor for the boundaries. Must be greater than 0. Default is 1.0.</span>
-<span class="sd">        zero_included : bool, optional</span>
-<span class="sd">            If True, adjust grid points to include zero. Default is False.</span>
-
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        ValueError</span>
-<span class="sd">            If the scaling factor is not positive.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">factor</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The scaling factor must be greater than 0.&quot;</span><span class="p">)</span>
-
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;x_min&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_min</span> <span class="o">*</span> <span class="n">factor</span><span class="p">)</span>
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;x_max&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_max</span> <span class="o">*</span> <span class="n">factor</span><span class="p">)</span>
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;y_min&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_min</span> <span class="o">*</span> <span class="n">factor</span><span class="p">)</span>
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;y_max&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_max</span> <span class="o">*</span> <span class="n">factor</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">zero_included</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ensure_odd</span><span class="p">(</span><span class="s1">&#39;nx&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ensure_odd</span><span class="p">(</span><span class="s1">&#39;ny&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_clear_cache</span><span class="p">()</span>
 
 <div class="viewcode-block" id="CoordinateSystem.add_padding">
 <a class="viewcode-back" href="../../code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.add_padding">[docs]</a>
@@ -1380,59 +1274,6 @@
 
         <span class="k">return</span> <span class="bp">self</span></div>
 
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Update the coordinate system attributes and recompute parameters (mutable).</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        **kwargs : dict</span>
-<span class="sd">            Attribute-value pairs to update in the coordinate system.</span>
-
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        ValueError</span>
-<span class="sd">            If an invalid attribute is passed.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">valid_attributes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;nx&#39;</span><span class="p">,</span> <span class="s1">&#39;ny&#39;</span><span class="p">,</span> <span class="s1">&#39;x_min&#39;</span><span class="p">,</span> <span class="s1">&#39;x_max&#39;</span><span class="p">,</span> <span class="s1">&#39;y_min&#39;</span><span class="p">,</span> <span class="s1">&#39;y_max&#39;</span><span class="p">}</span>
-        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-            <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_attributes</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Invalid attribute &#39;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2">&#39;. Valid attributes are: </span><span class="si">{</span><span class="n">valid_attributes</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-            <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_clear_cache</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_left</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the coordinate system boundaries to align the grid to the left.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;x_max&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;nx&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_clear_cache</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_right</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the coordinate system boundaries to align the grid to the right.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;x_min&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;nx&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nx</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_clear_cache</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_top</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the coordinate system boundaries to align the grid to the top.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;y_min&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;ny&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_clear_cache</span><span class="p">()</span>
-
-    <span class="k">def</span><span class="w"> </span><span class="nf">set_bottom</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Set the coordinate system boundaries to align the grid to the bottom.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;y_max&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-        <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;ny&#39;</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ny</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_clear_cache</span><span class="p">()</span>
 
     <span class="c1"># ==========================================</span>
     <span class="c1"># IMMUTABLE METHODS (NEW INTERFACE)</span>
@@ -1638,24 +1479,6 @@
         <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">value</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">value</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="CoordinateSystem.to_unstructured_coordinate">
-<a class="viewcode-back" href="../../code/coordinate_system.html#FiberFusing.coordinate_system.CoordinateSystem.to_unstructured_coordinate">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">to_unstructured_coordinate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get an unstructured coordinate representation of the grid.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        numpy.ndarray</span>
-<span class="sd">            An unstructured array of coordinates.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">coordinates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">([</span><span class="bp">self</span><span class="o">.</span><span class="n">x_vector</span><span class="o">.</span><span class="n">size</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_vector</span><span class="o">.</span><span class="n">size</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
-        <span class="n">coordinates</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_mesh</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-        <span class="n">coordinates</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_mesh</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
-
-        <span class="k">return</span> <span class="n">coordinates</span></div>
 </div>
 
 </pre></div>
