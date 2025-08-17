@@ -12,6 +12,6 @@ This section provides an overview of the primary classes used in the `FiberFusin
 
    code/geometry.rst
    code/coordinate_system.rst
-   code/buffer.rst
+   code/shapes.rst
    code/components.rst
    code/utils.rst

@@ -1,4 +1,4 @@
-.. _geometry_index:
+.. _extra_index:
 
-Geometry Examples
-=================
+Extra Examples
+==============

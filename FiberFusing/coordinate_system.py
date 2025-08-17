@@ -34,31 +34,6 @@ class CoordinateSystem:
     endpoint : bool, optional
         Whether to include the boundary points in the grid. Default is True.
 
-    Attributes
-    ----------
-    shape : tuple of int
-        Grid shape as (ny, nx) following NumPy convention.
-    x_bounds : tuple of float
-        X-axis boundaries as (x_min, x_max).
-    y_bounds : tuple of float
-        Y-axis boundaries as (y_min, y_max).
-    dx : float
-        Grid spacing along x-axis.
-    dy : float
-        Grid spacing along y-axis.
-    x_vector : ndarray
-        1D array of x-coordinates.
-    y_vector : ndarray
-        1D array of y-coordinates.
-    x_mesh : ndarray
-        2D meshgrid of x-coordinates.
-    y_mesh : ndarray
-        2D meshgrid of y-coordinates.
-    area : float
-        Total area of the computational domain.
-    aspect_ratio : float
-        Aspect ratio of the domain (width/height).
-
     Examples
     --------
     Create a square coordinate system centered at origin:

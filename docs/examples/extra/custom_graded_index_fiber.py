@@ -1,6 +1,6 @@
 """
-Loading and plotting a single fiber structure
-=============================================
+Loading and plotting a graded-index fiber structure
+===================================================
 """
 
 from FiberFusing.fiber import GenericFiber
