@@ -8,7 +8,7 @@ import numpy as np
 import logging
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.shapes.circle import Circle
-from FiberFusing.fiber.fiber_structure import FiberLine, FiberRing
+from FiberFusing.structures import FiberLine, FiberRing
 from FiberFusing.utils import union_geometries, NameSpace
 from FiberFusing.helper import _plot_helper, OverlayStructureBaseClass
 from enum import Enum
