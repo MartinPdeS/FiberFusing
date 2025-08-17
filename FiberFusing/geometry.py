@@ -97,7 +97,7 @@ class Geometry():
             raise ValueError('Index scrambling must be non-negative')
         return v
 
-    def initialize_geometry(self):
+    def initialize(self):
         """
         Initialize the geometry by generating the coordinate system and mesh.
         This method calculates the boundaries based on the defined structures and sets up the coordinate system.

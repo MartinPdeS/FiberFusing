@@ -45,7 +45,7 @@ def test_building_geometry(mock_show, fusion_degree, number_of_fibers, structure
     )
 
     geometry.add_structure(background, profile)
-    geometry.initialize_geometry()
+    geometry.initialize()
 
     plt.close('all')
 
@@ -88,7 +88,7 @@ def test_building_geometry_with_capillary(mock_show, fusion_degree, number_of_fi
     )
 
     geometry.add_structure(background, capillary_tube, profile)
-    geometry.initialize_geometry()
+    geometry.initialize()
     geometry.plot()
     plt.close('all')
 
@@ -134,7 +134,7 @@ def test_building_geometry_with_capillary_and_fibers(mock_show, fusion_degree, n
 
     geometry.add_structure(background, profile, capillary_tube, *fiber_list)
 
-    geometry.initialize_geometry()
+    geometry.initialize()
     geometry.plot()
     plt.close('all')
 
@@ -159,7 +159,7 @@ def test_geometry_api():
     )
 
     geometry.add_structure(profile)
-    geometry.initialize_geometry()
+    geometry.initialize()
 
     geometry.x_bounds = BoundaryMode.LEFT
     geometry.x_bounds = BoundaryMode.CENTERING

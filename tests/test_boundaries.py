@@ -55,7 +55,7 @@ def test_building_geometry(mock_show, boundaries):
     # Add the structure and generate the mesh
     geometry.add_structure(profile, background)
 
-    geometry.initialize_geometry()
+    geometry.initialize()
 
     # Plot the geometry (mocked)
     geometry.plot()
