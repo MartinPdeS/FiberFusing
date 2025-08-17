@@ -45,7 +45,7 @@ geometry = Geometry(
 # Add the fibers to the geometry
 geometry.add_structure(air_background, profile, *fibers)
 
-geometry.initialize_geometry()
+geometry.initialize()
 
 # Plot the resulting geometry
 geometry.plot()

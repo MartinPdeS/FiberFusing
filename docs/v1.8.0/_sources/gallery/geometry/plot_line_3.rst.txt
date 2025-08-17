@@ -135,7 +135,7 @@ Add the fibers to the geometry
 
     geometry.add_structure(air_background, profile, *fibers)
 
-    geometry.initialize_geometry()
+    geometry.initialize()
 
 
 
@@ -174,7 +174,7 @@ Plot the resulting geometry
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.137 seconds)
+   **Total running time of the script:** (0 minutes 2.125 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_line_3.py:
