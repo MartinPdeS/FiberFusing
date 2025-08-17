@@ -467,7 +467,7 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">ConfigDict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
-<span class="k">class</span><span class="w"> </span><span class="nc">BoundaryMode</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">DomainAlignment</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Boundary positioning modes.&quot;&quot;&quot;</span>
     <span class="n">AUTO</span> <span class="o">=</span> <span class="s2">&quot;auto&quot;</span>
     <span class="n">LEFT</span> <span class="o">=</span> <span class="s2">&quot;left&quot;</span>
@@ -486,9 +486,9 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    x_bounds : Union[Tuple[float, float], BoundaryMode], optional</span>
+<span class="sd">    x_bounds : Union[Tuple[float, float], DomainAlignment], optional</span>
 <span class="sd">        X boundaries for rendering the structure. Can be a tuple of bounds or one of [&#39;auto&#39;, &#39;left&#39;, &#39;right&#39;, &#39;centering&#39;]. Default is &#39;centering&#39;.</span>
-<span class="sd">    y_bounds : Union[Tuple[float, float], BoundaryMode], optional</span>
+<span class="sd">    y_bounds : Union[Tuple[float, float], DomainAlignment], optional</span>
 <span class="sd">        Y boundaries for rendering the structure. Can be a tuple of bounds or one of [&#39;auto&#39;, &#39;top&#39;, &#39;bottom&#39;, &#39;centering&#39;]. Default is &#39;centering&#39;.</span>
 <span class="sd">    resolution : int, optional</span>
 <span class="sd">        Number of points in x and y directions for evaluating the rendering. Default is 100.</span>
@@ -501,8 +501,8 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Optional fields with defaults</span>
-    <span class="n">x_bounds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">BoundaryMode</span><span class="p">]</span> <span class="o">=</span> <span class="n">BoundaryMode</span><span class="o">.</span><span class="n">CENTERING</span>
-    <span class="n">y_bounds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">BoundaryMode</span><span class="p">]</span> <span class="o">=</span> <span class="n">BoundaryMode</span><span class="o">.</span><span class="n">CENTERING</span>
+    <span class="n">x_bounds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">DomainAlignment</span><span class="p">]</span> <span class="o">=</span> <span class="n">DomainAlignment</span><span class="o">.</span><span class="n">CENTERING</span>
+    <span class="n">y_bounds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">DomainAlignment</span><span class="p">]</span> <span class="o">=</span> <span class="n">DomainAlignment</span><span class="o">.</span><span class="n">CENTERING</span>
     <span class="n">resolution</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span>
     <span class="n">index_scrambling</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
     <span class="n">gaussian_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
@@ -605,15 +605,15 @@
 <a class="viewcode-back" href="../../code/geometry.html#FiberFusing.geometry.Geometry.validate_x_bounds">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s1">&#39;x_bounds&#39;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">validate_x_bounds</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BoundaryMode</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">BoundaryMode</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_x_bounds</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DomainAlignment</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">DomainAlignment</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate x_bounds parameter.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;x_bounds tuple must have exactly 2 elements&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;x_bounds min must be less than max&quot;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">BoundaryMode</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;x_bounds must be a tuple or BoundaryMode&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">DomainAlignment</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;x_bounds must be a tuple or DomainAlignment&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span></div>
 
 
@@ -621,15 +621,15 @@
 <a class="viewcode-back" href="../../code/geometry.html#FiberFusing.geometry.Geometry.validate_y_bounds">[docs]</a>
     <span class="nd">@field_validator</span><span class="p">(</span><span class="s1">&#39;y_bounds&#39;</span><span class="p">)</span>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">validate_y_bounds</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">BoundaryMode</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">BoundaryMode</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_y_bounds</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">v</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">DomainAlignment</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]])</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="n">DomainAlignment</span><span class="p">,</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Validate y_bounds parameter.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
             <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;y_bounds tuple must have exactly 2 elements&quot;</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">v</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;y_bounds min must be less than max&quot;</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">BoundaryMode</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;y_bounds must be a tuple or BoundaryMode&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">DomainAlignment</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;y_bounds must be a tuple or DomainAlignment&quot;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">v</span></div>
 
 
@@ -640,42 +640,42 @@
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;coordinate_system&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_bounds</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="o">.</span><span class="n">x_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="o">.</span><span class="n">x_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x_bounds</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_bounds</span><span class="p">,</span> <span class="n">BoundaryMode</span><span class="p">):</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_bounds</span><span class="p">,</span> <span class="n">DomainAlignment</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_apply_x_boundary_mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_bounds</span><span class="p">)</span>
 
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="o">.</span><span class="n">y_min</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="o">.</span><span class="n">y_max</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_bounds</span>
-            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">,</span> <span class="n">BoundaryMode</span><span class="p">):</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">,</span> <span class="n">DomainAlignment</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_apply_y_boundary_mode</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">y_bounds</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_apply_x_boundary_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n">BoundaryMode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_apply_x_boundary_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n">DomainAlignment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply x boundary mode to coordinate system.&quot;&quot;&quot;</span>
         <span class="k">match</span> <span class="n">mode</span><span class="p">:</span>
-            <span class="k">case</span> <span class="n">BoundaryMode</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">DomainAlignment</span><span class="o">.</span><span class="n">RIGHT</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="o">.</span><span class="n">set_right</span><span class="p">()</span>
-            <span class="k">case</span> <span class="n">BoundaryMode</span><span class="o">.</span><span class="n">LEFT</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">DomainAlignment</span><span class="o">.</span><span class="n">LEFT</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="o">.</span><span class="n">set_left</span><span class="p">()</span>
-            <span class="k">case</span> <span class="n">BoundaryMode</span><span class="o">.</span><span class="n">CENTERING</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">DomainAlignment</span><span class="o">.</span><span class="n">CENTERING</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="o">.</span><span class="n">x_centering</span><span class="p">()</span>
-            <span class="k">case</span> <span class="n">BoundaryMode</span><span class="o">.</span><span class="n">AUTO</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">DomainAlignment</span><span class="o">.</span><span class="n">AUTO</span><span class="p">:</span>
                 <span class="k">pass</span>  <span class="c1"># Keep current bounds</span>
             <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BoundaryMode </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2"> not supported for x_bounds&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DomainAlignment </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2"> not supported for x_bounds&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_apply_y_boundary_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n">BoundaryMode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_apply_y_boundary_mode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="n">DomainAlignment</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Apply y boundary mode to coordinate system.&quot;&quot;&quot;</span>
         <span class="k">match</span> <span class="n">mode</span><span class="p">:</span>
-            <span class="k">case</span> <span class="n">BoundaryMode</span><span class="o">.</span><span class="n">TOP</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">DomainAlignment</span><span class="o">.</span><span class="n">TOP</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="o">.</span><span class="n">set_top</span><span class="p">()</span>
-            <span class="k">case</span> <span class="n">BoundaryMode</span><span class="o">.</span><span class="n">BOTTOM</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">DomainAlignment</span><span class="o">.</span><span class="n">BOTTOM</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="o">.</span><span class="n">set_bottom</span><span class="p">()</span>
-            <span class="k">case</span> <span class="n">BoundaryMode</span><span class="o">.</span><span class="n">CENTERING</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">DomainAlignment</span><span class="o">.</span><span class="n">CENTERING</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="o">.</span><span class="n">y_centering</span><span class="p">()</span>
-            <span class="k">case</span> <span class="n">BoundaryMode</span><span class="o">.</span><span class="n">AUTO</span><span class="p">:</span>
+            <span class="k">case</span> <span class="n">DomainAlignment</span><span class="o">.</span><span class="n">AUTO</span><span class="p">:</span>
                 <span class="k">pass</span>  <span class="c1"># Keep current bounds</span>
             <span class="k">case</span><span class="w"> </span><span class="k">_</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;BoundaryMode </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2"> not supported for y_bounds&quot;</span><span class="p">)</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;DomainAlignment </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2"> not supported for y_bounds&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Geometry.get_boundaries">
 <a class="viewcode-back" href="../../code/geometry.html#FiberFusing.geometry.Geometry.get_boundaries">[docs]</a>

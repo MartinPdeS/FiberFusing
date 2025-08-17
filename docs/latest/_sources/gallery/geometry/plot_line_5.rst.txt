@@ -27,7 +27,7 @@ This script demonstrates how to create and visualize a 5x5 line geometry using t
 .. code-block:: Python
 
 
-    from FiberFusing import Geometry, BoundaryMode, BackGround
+    from FiberFusing import Geometry, DomainAlignment, BackGround
     from FiberFusing.fiber import load_fiber
     from FiberFusing.profile import Profile, StructureType
     from PyOptik import MaterialBank
@@ -74,8 +74,8 @@ Define the operational parameters
 
     # Set up the geometry with the defined background, cladding structure, and resolution
     geometry = Geometry(
-        x_bounds=BoundaryMode.CENTERING,
-        y_bounds=BoundaryMode.CENTERING,
+        x_bounds=DomainAlignment.CENTERING,
+        y_bounds=DomainAlignment.CENTERING,
         resolution=250
     )
 
@@ -107,7 +107,7 @@ Define the operational parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.460 seconds)
+   **Total running time of the script:** (0 minutes 3.462 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_line_5.py:
