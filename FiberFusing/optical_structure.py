@@ -37,7 +37,6 @@ class CircleOpticalStructure:
     refractive_index_in: float = None
     refractive_index_out: float = None
     is_graded: Optional[bool] = False
-    delta_n: Optional[float] = None
 
     def __post_init__(self) -> None:
         """

@@ -7,11 +7,6 @@ This script demonstrates how to create and visualize a 3x3 ring geometry using t
 from FiberFusing import Geometry, DomainAlignment, BackGround
 from FiberFusing.fiber import FiberLoader
 from FiberFusing.profile import Profile, StructureType
-from PyOptik import MaterialBank
-
-# %%
-# Define the operational parameters
-wavelength = 1.55e-6  # Wavelength in meters (1.55 micrometers)
 
 # Set up the background medium (air)
 air_background = BackGround(refractive_index=1.0)
@@ -27,7 +22,7 @@ profile.add_structure(
     compute_fusing=True
 )
 
-profile.refractive_index = MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
+profile.refractive_index = 1.4444  # Refractive index of silica at the specified wavelength
 
 
 # Load fibers (e.g., SMF-28) positioned at the cores of the profile structure

@@ -26,11 +26,61 @@ FiberFusing
      -
 
 
-FiberFusing is a Python package designed for simulating the fiber fusing process. With this tool, users can define an initial fiber configuration and simulate the fusion process as a function of the fusion degree parameter. The package currently supports seven predefined structures:
+FiberFusing is a Python package designed for simulating the fiber fusing process. With this tool, users can define an initial fiber configuration and simulate the fusion process as a function of the fusion degree parameter.
 
-1x1, 2x2, 3x3, 4x4, 6x6, 7x7, and 19x19 configurations.
 
 As follows, an example of 3x3 fused fiber.
+
+.. code-block:: python
+
+
+   from FiberFusing import Geometry, DomainAlignment, BackGround
+   from FiberFusing.fiber import FiberLoader
+   from FiberFusing.profile import Profile, StructureType
+
+   air_background = BackGround(refractive_index=1.0)
+
+   profile = Profile()
+
+   profile.add_structure(
+      structure_type=StructureType.CIRCULAR,
+      number_of_fibers=3,
+      fusion_degree=0.4,
+      fiber_radius=62.5e-6,
+      compute_fusing=True
+   )
+
+   profile.refractive_index = 1.4444
+
+
+   fiber_loader = FiberLoader()
+   fibers = [
+      fiber_loader.load_fiber('SMF28', clad_refractive_index=profile.refractive_index, position=core_position)
+      for core_position in profile.cores
+   ]
+
+   # Set up the geometry with the defined background, profile structure, and resolution
+   geometry = Geometry(
+      x_bounds=DomainAlignment.CENTERING,
+      y_bounds=DomainAlignment.CENTERING,
+      resolution=350
+   )
+
+   # Add the fibers to the geometry
+   geometry.add_structure(air_background, profile, *fibers)
+
+   geometry.initialize()
+
+   # Plot the resulting geometry
+   geometry.plot(show_patch=True)
+
+
+
+
+
+
+
+
 |example_3x3|
 
 
@@ -38,7 +88,7 @@ As follows, an example of 3x3 fused fiber.
 
 Documentation
 **************
-For the most up-to-date documentation, visit the official `FiberFusing Docs <https://fiberfusing.readthedocs.io/en/latest/>`_ or click the badge below:
+For the most up-to-date documentation, visit the official `FiberFusing Docs <https://martinpdes.github.io/FiberFusing/latest/>`_ or click the badge below:
 
 |docs|
 

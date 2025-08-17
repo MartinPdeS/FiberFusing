@@ -34,7 +34,6 @@ dependencies = [
     "numpy",
     "shapely >=2.0",
     "MPSPlots",
-    "PyOptik"
 ]
 
 [project.urls]

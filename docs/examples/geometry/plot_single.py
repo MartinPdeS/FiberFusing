@@ -7,11 +7,7 @@ This script demonstrates how to create and visualize a 1x1 geometry using the Fi
 from FiberFusing import Geometry, DomainAlignment, BackGround
 from FiberFusing.fiber import FiberLoader
 from FiberFusing.profile import Profile
-from PyOptik import MaterialBank
 
-# %%
-# Define the operational parameters
-wavelength = 1.55e-6  # Wavelength in meters (1.55 micrometers)
 
 # Set up the background medium (air)
 air_background = BackGround(refractive_index=1.0)
@@ -23,7 +19,7 @@ profile.add_center_fiber(
     fiber_radius=62.5e-6
 )
 
-profile.refractive_index = MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
+profile.refractive_index = 1.4444  # Refractive index of silica at the specified wavelength
 
 
 # Load the fiber (e.g., SMF-28) positioned at the core of the profile structure
