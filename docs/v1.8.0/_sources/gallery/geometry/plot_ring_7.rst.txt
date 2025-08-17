@@ -22,7 +22,28 @@
 =================================
 This script demonstrates how to create and visualize a 7x7 ring geometry using the FiberFusing library.
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-12
+.. GENERATED FROM PYTHON SOURCE LINES 6-50
+
+
+
+.. image-sg:: /gallery/geometry/images/sphx_glr_plot_ring_7_001.png
+   :alt: Fiber structure, Fiber structure
+   :srcset: /gallery/geometry/images/sphx_glr_plot_ring_7_001.png
+   :class: sphx-glr-single-img
+
+
+.. rst-class:: sphx-glr-script-out
+
+ .. code-block:: none
+
+
+    <Figure size 1000x500 with 3 Axes>
+
+
+
+
+
+|
 
 .. code-block:: Python
 
@@ -30,24 +51,7 @@ This script demonstrates how to create and visualize a 7x7 ring geometry using t
     from FiberFusing import Geometry, DomainAlignment, BackGround
     from FiberFusing.fiber import FiberLoader
     from FiberFusing.profile import Profile, StructureType
-    from PyOptik import MaterialBank
 
-
-
-
-
-
-
-
-.. GENERATED FROM PYTHON SOURCE LINES 13-14
-
-Define the operational parameters
-
-.. GENERATED FROM PYTHON SOURCE LINES 14-54
-
-.. code-block:: Python
-
-    wavelength = 1.55e-6  # Wavelength in meters (1.55 micrometers)
 
     # Set up the background medium (air)
     air_background = BackGround(refractive_index=1.0)
@@ -63,7 +67,7 @@ Define the operational parameters
         compute_fusing=True
     )
 
-    profile.refractive_index = MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
+    profile.refractive_index = 1.4444  # Refractive index of silica at the specified wavelength
 
 
     # Load fibers (e.g., SMF-28) positioned at the cores of the profile structure
@@ -89,26 +93,9 @@ Define the operational parameters
     geometry.plot()
 
 
-
-.. image-sg:: /gallery/geometry/images/sphx_glr_plot_ring_7_001.png
-   :alt: Fiber structure, Fiber structure
-   :srcset: /gallery/geometry/images/sphx_glr_plot_ring_7_001.png
-   :class: sphx-glr-single-img
-
-
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-
-    <Figure size 1000x500 with 3 Axes>
-
-
-
-
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 6.538 seconds)
+   **Total running time of the script:** (0 minutes 6.596 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_ring_7.py:
