@@ -1,4 +1,4 @@
-from .geometry import Geometry, BoundaryMode  # noqa: F401
+from .geometry import Geometry, DomainAlignment  # noqa: F401
 from .geometries.point import Point  # noqa: F401
 from .geometries.linestring import LineString  # noqa: F401
 from .geometries.polygon import Polygon, EmptyPolygon  # noqa: F401

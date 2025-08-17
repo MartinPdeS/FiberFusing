@@ -5,13 +5,13 @@ import pytest
 from unittest.mock import patch
 from itertools import product
 import matplotlib.pyplot as plt
-from FiberFusing import Geometry, BoundaryMode, BackGround
+from FiberFusing import Geometry, DomainAlignment, BackGround
 from FiberFusing.profile import Profile, StructureType
 
 
 # Parameter sets for testing
-x_boundaries = [BoundaryMode.LEFT, BoundaryMode.RIGHT, BoundaryMode.CENTERING, [-1, 1]]
-y_boundaries = [BoundaryMode.TOP, BoundaryMode.BOTTOM, BoundaryMode.CENTERING, [-1, 1]]
+x_boundaries = [DomainAlignment.LEFT, DomainAlignment.RIGHT, DomainAlignment.CENTERING, [-1, 1]]
+y_boundaries = [DomainAlignment.TOP, DomainAlignment.BOTTOM, DomainAlignment.CENTERING, [-1, 1]]
 boundary_combinations = list(product(x_boundaries, y_boundaries))
 
 

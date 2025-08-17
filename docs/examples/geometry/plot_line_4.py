@@ -4,7 +4,7 @@
 This script demonstrates how to create and visualize a 4x4 line geometry using the FiberFusing library.
 """
 
-from FiberFusing import Geometry, BoundaryMode, BackGround
+from FiberFusing import Geometry, DomainAlignment, BackGround
 from FiberFusing.fiber import load_fiber
 from FiberFusing.profile import Profile, StructureType
 from PyOptik import MaterialBank
@@ -37,8 +37,8 @@ fibers = [
 
 # Set up the geometry with the defined background, cladding structure, and resolution
 geometry = Geometry(
-    x_bounds=BoundaryMode.CENTERING,
-    y_bounds=BoundaryMode.CENTERING,
+    x_bounds=DomainAlignment.CENTERING,
+    y_bounds=DomainAlignment.CENTERING,
     resolution=250
 )
 

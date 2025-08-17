@@ -4,7 +4,7 @@
 import pytest
 from unittest.mock import patch
 import matplotlib.pyplot as plt
-from FiberFusing import Geometry, BoundaryMode, BackGround
+from FiberFusing import Geometry, DomainAlignment, BackGround
 from FiberFusing.fiber import load_fiber, GenericFiber
 from FiberFusing.profile import Profile, StructureType
 
@@ -39,8 +39,8 @@ def test_building_geometry(mock_show, fusion_degree, number_of_fibers, structure
 
     background = BackGround(refractive_index=1)
     geometry = Geometry(
-        x_bounds=BoundaryMode.CENTERING,
-        y_bounds=BoundaryMode.CENTERING,
+        x_bounds=DomainAlignment.CENTERING,
+        y_bounds=DomainAlignment.CENTERING,
         resolution=150
     )
 
@@ -88,8 +88,8 @@ def test_building_geometry_with_capillary(mock_show, fusion_degree, number_of_fi
     )
 
     geometry = Geometry(
-        x_bounds=BoundaryMode.CENTERING,
-        y_bounds=BoundaryMode.CENTERING,
+        x_bounds=DomainAlignment.CENTERING,
+        y_bounds=DomainAlignment.CENTERING,
         resolution=50
     )
 
@@ -141,8 +141,8 @@ def test_building_geometry_with_capillary_and_fibers(mock_show, fusion_degree, n
         load_fiber(fiber_name='SMF28', clad_refractive_index=1.4480),
     ]
     geometry = Geometry(
-        x_bounds=BoundaryMode.LEFT,
-        y_bounds=BoundaryMode.CENTERING,
+        x_bounds=DomainAlignment.LEFT,
+        y_bounds=DomainAlignment.CENTERING,
         resolution=50
     )
 
@@ -167,22 +167,22 @@ def test_geometry_api():
     profile.refractive_index = 1.4444
 
     geometry = Geometry(
-        x_bounds=BoundaryMode.CENTERING,
-        y_bounds=BoundaryMode.CENTERING,
+        x_bounds=DomainAlignment.CENTERING,
+        y_bounds=DomainAlignment.CENTERING,
         resolution=100
     )
 
     geometry.add_structure(profile)
     geometry.initialize()
 
-    geometry.x_bounds = BoundaryMode.LEFT
-    geometry.x_bounds = BoundaryMode.CENTERING
-    geometry.x_bounds = BoundaryMode.RIGHT
+    geometry.x_bounds = DomainAlignment.LEFT
+    geometry.x_bounds = DomainAlignment.CENTERING
+    geometry.x_bounds = DomainAlignment.RIGHT
     geometry.rotate(90)
 
-    geometry.y_bounds = BoundaryMode.TOP
-    geometry.y_bounds = BoundaryMode.CENTERING
-    geometry.y_bounds = BoundaryMode.BOTTOM
+    geometry.y_bounds = DomainAlignment.TOP
+    geometry.y_bounds = DomainAlignment.CENTERING
+    geometry.y_bounds = DomainAlignment.BOTTOM
 
 
 if __name__ == "__main__":

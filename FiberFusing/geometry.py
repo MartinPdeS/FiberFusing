@@ -15,7 +15,7 @@ from FiberFusing.helper import _plot_helper
 from pydantic import field_validator, ConfigDict
 from pydantic.dataclasses import dataclass
 
-class BoundaryMode(Enum):
+class DomainAlignment(Enum):
     """Boundary positioning modes."""
     AUTO = "auto"
     LEFT = "left"
@@ -32,9 +32,9 @@ class Geometry():
 
     Parameters
     ----------
-    x_bounds : Union[Tuple[float, float], BoundaryMode], optional
+    x_bounds : Union[Tuple[float, float], DomainAlignment], optional
         X boundaries for rendering the structure. Can be a tuple of bounds or one of ['auto', 'left', 'right', 'centering']. Default is 'centering'.
-    y_bounds : Union[Tuple[float, float], BoundaryMode], optional
+    y_bounds : Union[Tuple[float, float], DomainAlignment], optional
         Y boundaries for rendering the structure. Can be a tuple of bounds or one of ['auto', 'top', 'bottom', 'centering']. Default is 'centering'.
     resolution : int, optional
         Number of points in x and y directions for evaluating the rendering. Default is 100.
@@ -47,8 +47,8 @@ class Geometry():
     """
 
     # Optional fields with defaults
-    x_bounds: Union[Tuple[float, float], BoundaryMode] = BoundaryMode.CENTERING
-    y_bounds: Union[Tuple[float, float], BoundaryMode] = BoundaryMode.CENTERING
+    x_bounds: Union[Tuple[float, float], DomainAlignment] = DomainAlignment.CENTERING
+    y_bounds: Union[Tuple[float, float], DomainAlignment] = DomainAlignment.CENTERING
     resolution: int = 100
     index_scrambling: float = 0.0
     gaussian_filter: Optional[int] = None
@@ -131,28 +131,28 @@ class Geometry():
 
     @field_validator('x_bounds')
     @classmethod
-    def validate_x_bounds(cls, v: Union[BoundaryMode, Tuple[float, float]]) -> Union[BoundaryMode, Tuple[float, float]]:
+    def validate_x_bounds(cls, v: Union[DomainAlignment, Tuple[float, float]]) -> Union[DomainAlignment, Tuple[float, float]]:
         """Validate x_bounds parameter."""
         if isinstance(v, (list, tuple)):
             if len(v) != 2:
                 raise ValueError("x_bounds tuple must have exactly 2 elements")
             if v[0] >= v[1]:
                 raise ValueError("x_bounds min must be less than max")
-        elif not isinstance(v, BoundaryMode):
-            raise ValueError("x_bounds must be a tuple or BoundaryMode")
+        elif not isinstance(v, DomainAlignment):
+            raise ValueError("x_bounds must be a tuple or DomainAlignment")
         return v
 
     @field_validator('y_bounds')
     @classmethod
-    def validate_y_bounds(cls, v: Union[BoundaryMode, Tuple[float, float]]) -> Union[BoundaryMode, Tuple[float, float]]:
+    def validate_y_bounds(cls, v: Union[DomainAlignment, Tuple[float, float]]) -> Union[DomainAlignment, Tuple[float, float]]:
         """Validate y_bounds parameter."""
         if isinstance(v, (list, tuple)):
             if len(v) != 2:
                 raise ValueError("y_bounds tuple must have exactly 2 elements")
             if v[0] >= v[1]:
                 raise ValueError("y_bounds min must be less than max")
-        elif not isinstance(v, BoundaryMode):
-            raise ValueError("y_bounds must be a tuple or BoundaryMode")
+        elif not isinstance(v, DomainAlignment):
+            raise ValueError("y_bounds must be a tuple or DomainAlignment")
         return v
 
     def apply_boundary_settings(self) -> None:
@@ -160,41 +160,41 @@ class Geometry():
         if hasattr(self, 'coordinate_system') and self.coordinate_system is not None:
             if isinstance(self.x_bounds, (list, tuple)):
                 self.coordinate_system.x_min, self.coordinate_system.x_max = self.x_bounds
-            elif isinstance(self.x_bounds, BoundaryMode):
+            elif isinstance(self.x_bounds, DomainAlignment):
                 self._apply_x_boundary_mode(self.x_bounds)
 
             if isinstance(self.y_bounds, (list, tuple)):
                 self.coordinate_system.y_min, self.coordinate_system.y_max = self.y_bounds
-            elif isinstance(self.y_bounds, BoundaryMode):
+            elif isinstance(self.y_bounds, DomainAlignment):
                 self._apply_y_boundary_mode(self.y_bounds)
 
-    def _apply_x_boundary_mode(self, mode: BoundaryMode) -> None:
+    def _apply_x_boundary_mode(self, mode: DomainAlignment) -> None:
         """Apply x boundary mode to coordinate system."""
         match mode:
-            case BoundaryMode.RIGHT:
+            case DomainAlignment.RIGHT:
                 self.coordinate_system.set_right()
-            case BoundaryMode.LEFT:
+            case DomainAlignment.LEFT:
                 self.coordinate_system.set_left()
-            case BoundaryMode.CENTERING:
+            case DomainAlignment.CENTERING:
                 self.coordinate_system.x_centering()
-            case BoundaryMode.AUTO:
+            case DomainAlignment.AUTO:
                 pass  # Keep current bounds
             case _:
-                raise ValueError(f"BoundaryMode {mode} not supported for x_bounds")
+                raise ValueError(f"DomainAlignment {mode} not supported for x_bounds")
 
-    def _apply_y_boundary_mode(self, mode: BoundaryMode) -> None:
+    def _apply_y_boundary_mode(self, mode: DomainAlignment) -> None:
         """Apply y boundary mode to coordinate system."""
         match mode:
-            case BoundaryMode.TOP:
+            case DomainAlignment.TOP:
                 self.coordinate_system.set_top()
-            case BoundaryMode.BOTTOM:
+            case DomainAlignment.BOTTOM:
                 self.coordinate_system.set_bottom()
-            case BoundaryMode.CENTERING:
+            case DomainAlignment.CENTERING:
                 self.coordinate_system.y_centering()
-            case BoundaryMode.AUTO:
+            case DomainAlignment.AUTO:
                 pass  # Keep current bounds
             case _:
-                raise ValueError(f"BoundaryMode {mode} not supported for y_bounds")
+                raise ValueError(f"DomainAlignment {mode} not supported for y_bounds")
 
     def get_boundaries(self) -> Tuple[float, float, float, float]:
         """
