@@ -47,52 +47,52 @@ Effect of core randomization
 
  .. code-block:: none
 
-    2025-08-17 03:38:22,454 INFO Created connection between fibers at Point(position=(-5.1516504294495424e-05, 4.558190329562452e-21), instance=None, index=None) and Point(position=(5.151650429449557e-05, -7.67017328574664e-21), instance=None, index=None)
-    2025-08-17 03:38:22,454 INFO Computing the optimal structure geometry
-    2025-08-17 03:38:22,472 INFO Configured connection: shift=0.039, topology=concave
-    2025-08-17 03:38:22,490 INFO Configured connection: shift=0.064, topology=concave
-    2025-08-17 03:38:22,507 INFO Configured connection: shift=0.024, topology=concave
-    2025-08-17 03:38:22,524 INFO Configured connection: shift=0.015, topology=concave
-    2025-08-17 03:38:22,540 INFO Configured connection: shift=0.009, topology=concave
-    2025-08-17 03:38:22,555 INFO Configured connection: shift=0.006, topology=concave
-    2025-08-17 03:38:22,569 INFO Configured connection: shift=0.004, topology=concave
-    2025-08-17 03:38:22,582 INFO Configured connection: shift=0.002, topology=concave
-    2025-08-17 03:38:22,596 INFO Configured connection: shift=0.001, topology=concave
-    2025-08-17 03:38:22,609 INFO Configured connection: shift=0.001, topology=concave
-    2025-08-17 03:38:22,621 INFO Configured connection: shift=0.001, topology=concave
-    2025-08-17 03:38:22,633 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,646 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,658 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,670 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,683 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,695 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,707 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,720 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,732 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,744 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,756 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,769 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,781 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,793 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,805 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,818 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,830 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,842 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,855 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,867 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,879 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,892 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,904 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,916 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,929 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,941 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,953 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,965 INFO Configured connection: shift=0.000, topology=concave
-    2025-08-17 03:38:22,969 INFO Computing the optimal core positions
-    2025-08-17 03:38:22,969 INFO Starting core position optimization...
-    2025-08-17 03:38:23,029 INFO Optimization successful: cost=9.11e-17
+    2025-08-17 10:06:33,207 INFO Created connection between fibers at Point(position=(-5.1516504294495424e-05, 4.558190329562452e-21), instance=None, index=None) and Point(position=(5.151650429449557e-05, -7.67017328574664e-21), instance=None, index=None)
+    2025-08-17 10:06:33,207 INFO Computing the optimal structure geometry
+    2025-08-17 10:06:33,225 INFO Configured connection: shift=0.039, topology=concave
+    2025-08-17 10:06:33,243 INFO Configured connection: shift=0.064, topology=concave
+    2025-08-17 10:06:33,261 INFO Configured connection: shift=0.024, topology=concave
+    2025-08-17 10:06:33,278 INFO Configured connection: shift=0.015, topology=concave
+    2025-08-17 10:06:33,295 INFO Configured connection: shift=0.009, topology=concave
+    2025-08-17 10:06:33,311 INFO Configured connection: shift=0.006, topology=concave
+    2025-08-17 10:06:33,325 INFO Configured connection: shift=0.004, topology=concave
+    2025-08-17 10:06:33,339 INFO Configured connection: shift=0.002, topology=concave
+    2025-08-17 10:06:33,353 INFO Configured connection: shift=0.001, topology=concave
+    2025-08-17 10:06:33,367 INFO Configured connection: shift=0.001, topology=concave
+    2025-08-17 10:06:33,380 INFO Configured connection: shift=0.001, topology=concave
+    2025-08-17 10:06:33,392 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,404 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,417 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,430 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,442 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,456 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,469 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,481 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,494 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,506 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,519 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,531 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,544 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,557 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,569 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,582 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,594 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,607 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,619 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,635 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,648 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,660 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,673 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,685 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,697 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,709 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,722 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,734 INFO Configured connection: shift=0.000, topology=concave
+    2025-08-17 10:06:33,738 INFO Computing the optimal core positions
+    2025-08-17 10:06:33,738 INFO Starting core position optimization...
+    2025-08-17 10:06:33,799 INFO Optimization successful: cost=9.11e-17
 
-    <FiberFusing.profile.Profile object at 0x7f9c454f6a10>
+    <FiberFusing.profile.Profile object at 0x7fa89986d850>
 
 
 
@@ -143,7 +143,7 @@ Effect of core randomization
 
  .. code-block:: none
 
-    2025-08-17 03:38:23,423 INFO Randomizing core positions.
+    2025-08-17 10:06:34,198 INFO Randomizing core positions.
 
     <Axes: title={'center': 'Fiber structure'}, xlabel='x-distance [m]', ylabel='y-distance [m]'>
 
@@ -169,7 +169,7 @@ Effect of core randomization
 
  .. code-block:: none
 
-    2025-08-17 03:38:23,816 INFO Randomizing core positions.
+    2025-08-17 10:06:34,603 INFO Randomizing core positions.
 
     <Axes: title={'center': 'Fiber structure'}, xlabel='x-distance [m]', ylabel='y-distance [m]'>
 
@@ -178,7 +178,7 @@ Effect of core randomization
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.030 seconds)
+   **Total running time of the script:** (0 minutes 2.085 seconds)
 
 
 .. _sphx_glr_download_gallery_extra_randomize_core.py:
