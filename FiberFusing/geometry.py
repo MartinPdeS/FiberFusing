@@ -326,29 +326,6 @@ class Geometry():
 
         return mesh
 
-    def add_background_to_mesh(self, mesh: numpy.ndarray) -> None:
-        """
-        Add the rasterized background to the provided mesh.
-
-        Parameters
-        ----------
-        mesh : numpy.ndarray
-            The mesh to which the background is added. Must match the shape of the coordinate system.
-
-        Raises
-        ------
-        ValueError
-            If the mesh dimensions do not match the coordinate system.
-        """
-        if mesh.shape != self.coordinate_system.shape:
-            raise ValueError("The provided mesh dimensions do not match the coordinate system shape.")
-
-        raster = self.background.get_rasterized_mesh(coordinate_system=self.coordinate_system)
-        mask = raster != 0
-        mesh[mask] = 0
-        raster *= self.background.index
-        mesh += raster
-
     def generate_mesh(self) -> numpy.ndarray:
         """
         Generate the full mesh for the geometry using the defined coordinate system.
