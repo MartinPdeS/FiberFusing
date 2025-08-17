@@ -4,7 +4,7 @@
 
 | Name                                               |    Stmts |     Miss |   Branch |   BrPart |   Cover |   Missing |
 |--------------------------------------------------- | -------: | -------: | -------: | -------: | ------: | --------: |
-| FiberFusing/background.py                          |       23 |        1 |        0 |        0 |     96% |        52 |
+| FiberFusing/background.py                          |       23 |        2 |        0 |        0 |     91% |    52, 77 |
 | FiberFusing/connection/connection.py               |      179 |       20 |       28 |        7 |     83% |76, 92, 96-98, 102-107, 169, 226, 238, 287, 319-322, 386->exit, 390, 444, 457 |
 | FiberFusing/connection/connection\_optimization.py |       75 |        2 |       14 |        2 |     96% |69->71, 203-204 |
 | FiberFusing/connection/utils.py                    |        8 |        0 |        0 |        0 |    100% |           |
@@ -19,7 +19,7 @@
 | FiberFusing/geometries/point.py                    |       42 |        5 |        2 |        1 |     86% |27, 45-46, 67, 73 |
 | FiberFusing/geometries/polygon.py                  |       76 |        7 |       26 |        5 |     84% |74, 83, 106-107, 111, 180-181 |
 | FiberFusing/geometries/utils.py                    |       23 |        1 |       12 |        2 |     91% |51->46, 57 |
-| FiberFusing/geometry.py                            |      222 |       44 |       86 |       21 |     74% |78, 87, 94-96, 102-104, 147, 160->163, 187, 199, 207, 209, 211, 220, 222, 224, 229->exit, 232->235, 237->exit, 249-252, 263-266, 283, 300, 312, 323, 348-353, 376, 397-404, 421, 426, 522->526, 526->530, 530->533 |
+| FiberFusing/geometry.py                            |      200 |       45 |       74 |       18 |     72% |81, 88-90, 96-98, 124-130, 142, 154, 162, 164, 166, 175, 177, 179, 184->exit, 187->190, 192->exit, 204-207, 218-221, 236, 253, 265, 276, 301-306, 343-350, 367, 372, 467->471, 471->475, 475->478 |
 | FiberFusing/helper.py                              |       31 |        1 |       10 |        1 |     95% |        49 |
 | FiberFusing/optical\_structure.py                  |       27 |        6 |        0 |        0 |     78% |62, 80-82, 93-94 |
 | FiberFusing/plottings.py                           |       21 |        1 |        8 |        1 |     93% |        40 |
@@ -28,8 +28,8 @@
 | FiberFusing/shapes/circle.py                       |       18 |        1 |        2 |        1 |     90% |        45 |
 | FiberFusing/shapes/ellipse.py                      |       23 |        9 |        4 |        0 |     52% |     46-68 |
 | FiberFusing/shapes/square.py                       |       18 |        6 |        2 |        0 |     60% |     39-53 |
-| FiberFusing/utils.py                               |       32 |        6 |        6 |        2 |     79% |59, 81, 102-103, 120-121 |
-|                                          **TOTAL** | **1779** |  **285** |  **412** |   **79** | **80%** |           |
+| FiberFusing/utils.py                               |       32 |        6 |        6 |        2 |     79% |57, 79, 100-101, 118-120 |
+|                                          **TOTAL** | **1757** |  **287** |  **400** |   **76** | **79%** |           |
 
 
 ## Setup coverage badge
