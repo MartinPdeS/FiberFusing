@@ -18,15 +18,15 @@ profile.add_structure(
 
 # %%
 factor = 0
-profile.randomize_core_position(random_factor=factor)
+profile.randomize_core_positions(random_factor=factor)
 profile.plot(show_centers=True, show_cores=True)
 
 # %%
 factor = 10e-6
-profile.randomize_core_position(random_factor=factor)
+profile.randomize_core_positions(random_factor=factor)
 profile.plot(show_centers=True, show_cores=True)
 
 # %%
 factor = 10e-6
-profile.randomize_core_position(random_factor=factor)
+profile.randomize_core_positions(random_factor=factor)
 profile.plot(show_centers=True, show_cores=True)
