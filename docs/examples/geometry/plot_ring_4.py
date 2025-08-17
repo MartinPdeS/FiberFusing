@@ -30,6 +30,8 @@ profile.add_structure(
 profile.index = MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
 profile.rotate(45)  # Rotate the profile for better visualization
 
+profile.plot(show_cores=True, show_centers=True)
+
 # Load fibers (e.g., SMF-28) positioned at the cores of the profile structure
 fibers = [
     load_fiber('SMF28', wavelength=wavelength, position=core_position)

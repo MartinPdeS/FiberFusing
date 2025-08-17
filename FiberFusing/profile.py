@@ -53,7 +53,7 @@ class Profile(OverlayStructureBaseClass):
         self.removed_section_list = []
         self.added_section_list = []
 
-    def randomize_core_position(self, random_factor: float = 0) -> "Profile":
+    def randomize_core_positions(self, random_factor: float = 0) -> "Profile":
         """
         Randomize the position of fiber cores to simulate real-world imperfections.
 
@@ -304,19 +304,20 @@ class Profile(OverlayStructureBaseClass):
             The updated Profile instance.
         """
 
-        if structure_type == StructureType.CIRCULAR:
-            structure = FiberRing(
-                number_of_fibers=number_of_fibers,
-                fiber_radius=fiber_radius,
+        match structure_type:
+            case StructureType.CIRCULAR:
+                structure = FiberRing(
+                    number_of_fibers=number_of_fibers,
+                    fiber_radius=fiber_radius,
                 angle_shift=angle_shift
             )
-        elif structure_type == StructureType.LINEAR:
-            structure = FiberLine(
-                number_of_fibers=number_of_fibers,
-                fiber_radius=fiber_radius,
-            )
-        else:
-            raise ValueError(f"Unsupported structure type: {structure_type}. Use 'circular' or 'linear'.")
+            case StructureType.LINEAR:
+                structure = FiberLine(
+                    number_of_fibers=number_of_fibers,
+                    fiber_radius=fiber_radius
+                )
+            case _:
+                raise ValueError(f"Unsupported structure type: {structure_type}. Use 'circular' or 'linear'.")
 
         return self._add_structure_to_instance_(
             structure=structure,

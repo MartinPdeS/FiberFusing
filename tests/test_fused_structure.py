@@ -26,8 +26,80 @@ def test_building_structure(mock_show, number_of_fibers, fusion_degree, structur
     mock_show.assert_called_once()  # Verify that show was called exactly once
     plt.close()
 
-    profile.randomize_core_position(random_factor=4e-6)
 
+def test_randomize_core_position():
+    """Test the randomization of core positions in a profile structure.
+    """
+    profile = Profile()
+
+    profile.add_structure(
+        structure_type=StructureType.CIRCULAR,
+        number_of_fibers=5,
+        fusion_degree=0.4,
+        fiber_radius=62.5e-6,
+        compute_fusing=True
+    )
+
+    profile.randomize_core_positions(random_factor=4e-6)
+
+    assert len(profile.fiber_list) == 5
+    for fiber in profile.fiber_list:
+        assert fiber.shifted_core is not None
+        assert fiber.center != fiber.core
+
+def test_rotate_profile():
+    """Test the rotation of a profile structure.
+    """
+    profile = Profile()
+
+    profile.add_structure(
+        structure_type=StructureType.CIRCULAR,
+        number_of_fibers=5,
+        fusion_degree=0.4,
+        fiber_radius=62.5e-6,
+        compute_fusing=True
+    )
+
+    initial_fiber_list = profile.fiber_list.copy()
+    profile = profile.rotate(90)
+
+    assert len(profile.fiber_list) == len(initial_fiber_list)
+
+def test_translate_profile():
+    """Test the translation of a profile structure.
+    """
+    profile = Profile()
+
+    profile.add_structure(
+        structure_type=StructureType.CIRCULAR,
+        number_of_fibers=5,
+        fusion_degree=0.4,
+        fiber_radius=62.5e-6,
+        compute_fusing=True
+    )
+
+    initial_fiber_list = profile.fiber_list.copy()
+    profile = profile.translate(shift=(1e-6, 2e-6))
+
+    assert len(profile.fiber_list) == len(initial_fiber_list)
+
+def test_scale_profile():
+    """Test the scaling of a profile structure.
+    """
+    profile = Profile()
+
+    profile.add_structure(
+        structure_type=StructureType.CIRCULAR,
+        number_of_fibers=5,
+        fusion_degree=0.4,
+        fiber_radius=62.5e-6,
+        compute_fusing=True
+    )
+
+    initial_fiber_list = profile.fiber_list.copy()
+    profile = profile.scale_position(2.0)
+
+    assert len(profile.fiber_list) == len(initial_fiber_list)
 
 if __name__ == "__main__":
     pytest.main(["-W error", __file__])
