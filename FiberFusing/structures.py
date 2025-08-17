@@ -131,12 +131,25 @@ class FiberStructureBaseClass:
 
 @dataclass
 class FiberLine(ConnectionOptimization, FiberStructureBaseClass):
+    """
+    Represents a linear arrangement of optical fibers.
+    This class computes the positions of the fiber cores based on the number of fibers,
+    their radius, and an optional rotation angle.
+
+    Attributes
+    ----------
+    number_of_fibers : int
+        The number of fibers in the line.
+    fiber_radius : float
+        The radius of each fiber in the line.
+    rotation_angle : float, optional
+        The rotation angle applied to the fiber positions, default is 0.
+    tolerance_factor : float, optional
+        A factor used to determine the tolerance for fiber positioning, default is 1e-10
+    """
     number_of_fibers: int
-    """ Number of fiber in the ring """
     fiber_radius: float
-    """ Radius of the radius of the rings, same for every ringe here """
     rotation_angle: float = 0
-    """ Shift angle for the ring configuration """
     tolerance_factor: float = 1e-10
 
     def __post_init__(self):
@@ -146,10 +159,12 @@ class FiberLine(ConnectionOptimization, FiberStructureBaseClass):
 
     def compute_unfused_positions(self) -> list:
         """
-        Computing the core center with a a certain distance from the origin  (0, 0).
+        Compute the core center positions for a linear configuration.
 
-        :param      distance_from_center:  The distance from center
-        :type       distance_from_center:  float
+        Returns
+        -------
+        list of Point
+            List of core positions for the fibers in the line.
         """
 
         core_positions = numpy.arange(self.number_of_fibers).astype(float)
@@ -173,15 +188,31 @@ class FiberLine(ConnectionOptimization, FiberStructureBaseClass):
 
 @dataclass
 class FiberRing(ConnectionOptimization, FiberStructureBaseClass):
+    """
+    Represents a ring of optical fibers arranged in a circular pattern.
+    This class computes the positions of the fiber cores based on the number of fibers,
+    their radius, and an optional angle shift.
+
+    Attributes
+    ----------
+    number_of_fibers : int
+        The number of fibers in the ring.
+    fiber_radius : float
+        The radius of each fiber in the ring.
+    angle_shift : float, optional
+        The angle shift applied to the fiber positions, default is 0.
+    tolerance_factor : float, optional
+        A factor used to determine the tolerance for fiber positioning, default is 1e-10
+    """
     number_of_fibers: int
-    """ Number of fiber in the ring """
     fiber_radius: float
-    """ Radius of the radius of the rings, same for every ringe here """
     angle_shift: float = 0
-    """ Shift angle for the ring configuration """
     tolerance_factor: float = 1e-10
 
     def __post_init__(self):
+        """
+        Initialize the fiber ring by computing the angle list and core positions.
+        """
         self.angle_list = numpy.linspace(0, 360, self.number_of_fibers, endpoint=False)
         self.angle_list += self.angle_shift
         self.delta_angle = (self.angle_list[1] - self.angle_list[0])
@@ -191,12 +222,15 @@ class FiberRing(ConnectionOptimization, FiberStructureBaseClass):
 
     def compute_unfused_positions(self, distance_from_center="not-fused") -> list:
         """
-        Computing the core center with a a certain distance from the origin  (0, 0).
+        Compute the core center positions for a ring configuration.
+        The positions are calculated based on the number of fibers, their radius, and the angle shift.
 
-        :param      distance_from_center:  The distance from center
-        :type       distance_from_center:  float
+        Parameters
+        ----------
+        distance_from_center : str or float, optional
+            If "not-fused", the distance is calculated based on the fiber radius and angle.
+            If a float, it specifies the distance from the center to the first core.
         """
-
         factor = numpy.sqrt(2 / (1 - numpy.cos(numpy.deg2rad(self.delta_angle))))
 
         distance_from_center = factor * self.fiber_radius

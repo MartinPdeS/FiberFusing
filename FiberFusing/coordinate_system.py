@@ -71,8 +71,6 @@ class CoordinateSystem:
         """Validate that grid points are reasonable."""
         if value < 2:
             raise ValueError(f"Grid points must be >= 2, got {value}")
-        if value > 10000:
-            raise ValueError(f"Grid points should be <= 10000 for performance, got {value}")
         return value
 
     @field_validator('x_max')
@@ -738,110 +736,6 @@ Aspect Ratio: {self.aspect_ratio:.3f}
 Uniform: {self.is_uniform()}
 Endpoint: {self.endpoint}"""
 
-    # ==========================================
-    # BACKWARD COMPATIBILITY METHODS (MUTABLE)
-    # ==========================================
-
-    def to_unstructured_coordinate(self) -> np.ndarray:
-        """
-        Get unstructured coordinate representation (backward compatibility).
-
-        Returns
-        -------
-        ndarray
-            Array of coordinate pairs with shape (nx*ny, 2).
-
-        Notes
-        -----
-        This method is provided for backward compatibility.
-        New code should use get_coordinates_flattened().
-        """
-        return self.get_coordinates_flattened()
-
-    def ensure_odd(self, attribute: str) -> None:
-        """
-        Ensure the specified grid attribute (nx or ny) is odd (mutable).
-
-        Parameters
-        ----------
-        attribute : str
-            The attribute to update ('nx' or 'ny').
-
-        Raises
-        ------
-        ValueError
-            If the attribute is not 'nx' or 'ny'.
-        """
-        if attribute not in ['nx', 'ny']:
-            raise ValueError("Attribute must be 'nx' or 'ny'.")
-
-        value = getattr(self, attribute)
-        if value % 2 == 0:
-            object.__setattr__(self, attribute, value + 1)
-        self._clear_cache()
-
-    def x_centering(self, zero_included: bool = False) -> None:
-        """
-        Center the x-axis coordinate system around zero (mutable).
-
-        Parameters
-        ----------
-        zero_included : bool, optional
-            If True, adjusts grid points to include zero. Default is False.
-        """
-        abs_boundary = max(abs(self.x_min), abs(self.x_max))
-        object.__setattr__(self, 'x_min', -abs_boundary)
-        object.__setattr__(self, 'x_max', abs_boundary)
-
-        if zero_included:
-            self.ensure_odd('nx')
-        self._clear_cache()
-
-    def y_centering(self, zero_included: bool = False) -> None:
-        """
-        Center the y-axis coordinate system around zero (mutable).
-
-        Parameters
-        ----------
-        zero_included : bool, optional
-            If True, adjusts grid points to include zero. Default is False.
-        """
-        abs_boundary = max(abs(self.y_min), abs(self.y_max))
-        object.__setattr__(self, 'y_min', -abs_boundary)
-        object.__setattr__(self, 'y_max', abs_boundary)
-
-        if zero_included:
-            self.ensure_odd('ny')
-        self._clear_cache()
-
-    def center(self, factor: float = 1.0, zero_included: bool = False) -> None:
-        """
-        Center the coordinate system by scaling the boundaries (mutable).
-
-        Parameters
-        ----------
-        factor : float, optional
-            Scaling factor for the boundaries. Must be greater than 0. Default is 1.0.
-        zero_included : bool, optional
-            If True, adjust grid points to include zero. Default is False.
-
-        Raises
-        ------
-        ValueError
-            If the scaling factor is not positive.
-        """
-        if factor <= 0:
-            raise ValueError("The scaling factor must be greater than 0.")
-
-        object.__setattr__(self, 'x_min', self.x_min * factor)
-        object.__setattr__(self, 'x_max', self.x_max * factor)
-        object.__setattr__(self, 'y_min', self.y_min * factor)
-        object.__setattr__(self, 'y_max', self.y_max * factor)
-
-        if zero_included:
-            self.ensure_odd('nx')
-            self.ensure_odd('ny')
-        self._clear_cache()
 
     def add_padding(self, padding_factor: float) -> None:
         """
@@ -872,59 +766,6 @@ Endpoint: {self.endpoint}"""
         self.y_max = y_center + y_half_size
 
         return self
-
-    def update(self, **kwargs) -> None:
-        """
-        Update the coordinate system attributes and recompute parameters (mutable).
-
-        Parameters
-        ----------
-        **kwargs : dict
-            Attribute-value pairs to update in the coordinate system.
-
-        Raises
-        ------
-        ValueError
-            If an invalid attribute is passed.
-        """
-        valid_attributes = {'nx', 'ny', 'x_min', 'x_max', 'y_min', 'y_max'}
-        for key, value in kwargs.items():
-            if key not in valid_attributes:
-                raise ValueError(f"Invalid attribute '{key}'. Valid attributes are: {valid_attributes}")
-            object.__setattr__(self, key, value)
-        self._clear_cache()
-
-    def set_left(self) -> None:
-        """
-        Set the coordinate system boundaries to align the grid to the left.
-        """
-        object.__setattr__(self, 'x_max', 0)
-        object.__setattr__(self, 'nx', int(self.nx / 2) + 1)
-        self._clear_cache()
-
-    def set_right(self) -> None:
-        """
-        Set the coordinate system boundaries to align the grid to the right.
-        """
-        object.__setattr__(self, 'x_min', 0)
-        object.__setattr__(self, 'nx', int(self.nx / 2) + 1)
-        self._clear_cache()
-
-    def set_top(self) -> None:
-        """
-        Set the coordinate system boundaries to align the grid to the top.
-        """
-        object.__setattr__(self, 'y_min', 0)
-        object.__setattr__(self, 'ny', int(self.ny / 2) + 1)
-        self._clear_cache()
-
-    def set_bottom(self) -> None:
-        """
-        Set the coordinate system boundaries to align the grid to the bottom.
-        """
-        object.__setattr__(self, 'y_max', 0)
-        object.__setattr__(self, 'ny', int(self.ny / 2) + 1)
-        self._clear_cache()
 
     # ==========================================
     # IMMUTABLE METHODS (NEW INTERFACE)
@@ -1101,18 +942,3 @@ Endpoint: {self.endpoint}"""
         value = getattr(self, attribute)
         if value % 2 == 0:
             setattr(self, attribute, value + 1)
-
-    def to_unstructured_coordinate(self) -> np.ndarray:
-        """
-        Get an unstructured coordinate representation of the grid.
-
-        Returns
-        -------
-        numpy.ndarray
-            An unstructured array of coordinates.
-        """
-        coordinates = np.zeros([self.x_vector.size * self.y_vector.size, 2])
-        coordinates[:, 0] = self.x_mesh.ravel()
-        coordinates[:, 1] = self.y_mesh.ravel()
-
-        return coordinates

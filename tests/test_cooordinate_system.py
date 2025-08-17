@@ -213,7 +213,7 @@ def test_coordinate_flattening(basic_square_system):
     coords_new = basic_square_system.get_coordinates_flattened()
 
     # Test backward compatibility method
-    coords_old = basic_square_system.to_unstructured_coordinate()
+    coords_old = basic_square_system.get_coordinates_flattened()
 
     # Verify they're the same
     assert np.allclose(coords_new, coords_old)

@@ -367,7 +367,7 @@ class GenericFiber():
         numpy.ndarray
             The shifted coordinates.
         """
-        shifted_coordinate = coordinate_system.to_unstructured_coordinate()
+        shifted_coordinate = coordinate_system.get_coordinates_flattened()
         shifted_coordinate[:, 0] -= x_shift
         shifted_coordinate[:, 1] -= y_shift
 

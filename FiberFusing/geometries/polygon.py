@@ -171,7 +171,7 @@ class Polygon(BaseArea):
         np.ndarray
             A 2D array where 1 indicates the presence of the polygon and 0 indicates its absence.
         """
-        unstructured_coordinates = coordinate_system.to_unstructured_coordinate()
+        unstructured_coordinates = coordinate_system.get_coordinates_flattened()
         exterior_mask = self.contains_points(unstructured_coordinates)
         hole = self.get_hole()
         hole_mask = np.zeros(exterior_mask.shape, dtype=bool)
