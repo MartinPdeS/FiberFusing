@@ -5,7 +5,7 @@ This script demonstrates how to create and visualize a 3x3 line geometry using t
 """
 
 from FiberFusing import Geometry, DomainAlignment, BackGround
-from FiberFusing.fiber import load_fiber
+from FiberFusing.fiber import FiberLoader
 from FiberFusing.profile import Profile, StructureType
 
 
@@ -30,8 +30,9 @@ profile.refractive_index = 1.4444
 
 # %%
 # Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure
+fiber_loader = FiberLoader()
 fibers = [
-    load_fiber('SMF28', clad_refractive_index=profile.refractive_index, position=core_position)
+    fiber_loader.load_fiber('SMF28', clad_refractive_index=profile.refractive_index, position=core_position)
     for core_position in profile.cores
 ]
 

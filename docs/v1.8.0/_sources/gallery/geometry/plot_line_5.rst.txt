@@ -28,7 +28,7 @@ This script demonstrates how to create and visualize a 5x5 line geometry using t
 
 
     from FiberFusing import Geometry, DomainAlignment, BackGround
-    from FiberFusing.fiber import load_fiber
+    from FiberFusing.fiber import FiberLoader
     from FiberFusing.profile import Profile, StructureType
     from PyOptik import MaterialBank
 
@@ -43,7 +43,7 @@ This script demonstrates how to create and visualize a 5x5 line geometry using t
 
 Define the operational parameters
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-53
+.. GENERATED FROM PYTHON SOURCE LINES 14-54
 
 .. code-block:: Python
 
@@ -67,8 +67,9 @@ Define the operational parameters
 
 
     # Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure
+    fiber_loader = FiberLoader()
     fibers = [
-        load_fiber('SMF28', clad_refractive_index=profile.refractive_index, position=core_position)
+        fiber_loader.load_fiber('SMF28', clad_refractive_index=profile.refractive_index, position=core_position)
         for core_position in profile.cores
     ]
 
@@ -107,7 +108,7 @@ Define the operational parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.462 seconds)
+   **Total running time of the script:** (0 minutes 3.474 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_line_5.py:

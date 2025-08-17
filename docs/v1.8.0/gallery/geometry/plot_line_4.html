@@ -498,7 +498,7 @@ to download the full example code.</p>
 <span id="sphx-glr-gallery-geometry-plot-line-4-py"></span><h1>4x4 Line - Geometry Visualization<a class="headerlink" href="#x4-line-geometry-visualization" title="Link to this heading">#</a></h1>
 <p>This script demonstrates how to create and visualize a 4x4 line geometry using the FiberFusing library.</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Geometry</span><span class="p">,</span> <span class="n">DomainAlignment</span><span class="p">,</span> <span class="n">BackGround</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.fiber</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_fiber</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.fiber</span><span class="w"> </span><span class="kn">import</span> <span class="n">FiberLoader</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.profile</span><span class="w"> </span><span class="kn">import</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">StructureType</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">PyOptik</span><span class="w"> </span><span class="kn">import</span> <span class="n">MaterialBank</span>
 </pre></div>
@@ -515,7 +515,7 @@ to download the full example code.</p>
 <span class="n">profile</span><span class="o">.</span><span class="n">add_structure</span><span class="p">(</span>
     <span class="n">structure_type</span><span class="o">=</span><span class="n">StructureType</span><span class="o">.</span><span class="n">LINEAR</span><span class="p">,</span>
     <span class="n">number_of_fibers</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
-    <span class="n">fusion_degree</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span>
+    <span class="n">fusion_degree</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span>
     <span class="n">fiber_radius</span><span class="o">=</span><span class="mf">62.5e-6</span><span class="p">,</span>
     <span class="n">compute_fusing</span><span class="o">=</span><span class="kc">True</span>
 <span class="p">)</span>
@@ -523,8 +523,9 @@ to download the full example code.</p>
 <span class="n">profile</span><span class="o">.</span><span class="n">refractive_index</span> <span class="o">=</span> <span class="n">MaterialBank</span><span class="o">.</span><span class="n">fused_silica</span><span class="o">.</span><span class="n">compute_refractive_index</span><span class="p">(</span><span class="n">wavelength</span><span class="p">)</span>  <span class="c1"># Refractive index of silica at the specified wavelength</span>
 
 <span class="c1"># Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure</span>
+<span class="n">fiber_loader</span> <span class="o">=</span> <span class="n">FiberLoader</span><span class="p">()</span>
 <span class="n">fibers</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="n">load_fiber</span><span class="p">(</span><span class="s1">&#39;SMF28&#39;</span><span class="p">,</span> <span class="n">clad_refractive_index</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">refractive_index</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">core_position</span><span class="p">)</span>
+    <span class="n">fiber_loader</span><span class="o">.</span><span class="n">load_fiber</span><span class="p">(</span><span class="s1">&#39;SMF28&#39;</span><span class="p">,</span> <span class="n">clad_refractive_index</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">refractive_index</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">core_position</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">core_position</span> <span class="ow">in</span> <span class="n">profile</span><span class="o">.</span><span class="n">cores</span>
 <span class="p">]</span>
 
@@ -547,7 +548,7 @@ to download the full example code.</p>
 <img src="../../_images/sphx_glr_plot_line_4_001.png" srcset="../../_images/sphx_glr_plot_line_4_001.png" alt="Fiber structure, Fiber structure" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1000x500 with 3 Axes&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 3.112 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 3.254 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-geometry-plot-line-4-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/8d33ec7d808207947e7529a8b14d2539/plot_line_4.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_line_4.ipynb</span></code></a></p>

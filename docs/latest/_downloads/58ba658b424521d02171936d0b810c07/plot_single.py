@@ -5,7 +5,7 @@ This script demonstrates how to create and visualize a 1x1 geometry using the Fi
 """
 
 from FiberFusing import Geometry, DomainAlignment, BackGround
-from FiberFusing.fiber import load_fiber
+from FiberFusing.fiber import FiberLoader
 from FiberFusing.profile import Profile
 from PyOptik import MaterialBank
 
@@ -27,8 +27,9 @@ profile.refractive_index = MaterialBank.fused_silica.compute_refractive_index(wa
 
 
 # Load the fiber (e.g., SMF-28) positioned at the core of the profile structure
+fiber_loader = FiberLoader()
 fibers = [
-    load_fiber('SMF28', clad_refractive_index=profile.refractive_index, position=core_position)
+    fiber_loader.load_fiber('SMF28', clad_refractive_index=profile.refractive_index, position=core_position)
     for core_position in profile.cores
 ]
 

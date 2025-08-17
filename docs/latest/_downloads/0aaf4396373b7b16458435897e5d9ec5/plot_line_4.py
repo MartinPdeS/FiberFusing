@@ -5,7 +5,7 @@ This script demonstrates how to create and visualize a 4x4 line geometry using t
 """
 
 from FiberFusing import Geometry, DomainAlignment, BackGround
-from FiberFusing.fiber import load_fiber
+from FiberFusing.fiber import FiberLoader
 from FiberFusing.profile import Profile, StructureType
 from PyOptik import MaterialBank
 
@@ -22,7 +22,7 @@ profile = Profile()
 profile.add_structure(
     structure_type=StructureType.LINEAR,
     number_of_fibers=4,
-    fusion_degree=0.4,
+    fusion_degree=0.3,
     fiber_radius=62.5e-6,
     compute_fusing=True
 )
@@ -30,8 +30,9 @@ profile.add_structure(
 profile.refractive_index = MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
 
 # Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure
+fiber_loader = FiberLoader()
 fibers = [
-    load_fiber('SMF28', clad_refractive_index=profile.refractive_index, position=core_position)
+    fiber_loader.load_fiber('SMF28', clad_refractive_index=profile.refractive_index, position=core_position)
     for core_position in profile.cores
 ]
 

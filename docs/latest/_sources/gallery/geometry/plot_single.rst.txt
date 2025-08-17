@@ -28,7 +28,7 @@ This script demonstrates how to create and visualize a 1x1 geometry using the Fi
 
 
     from FiberFusing import Geometry, DomainAlignment, BackGround
-    from FiberFusing.fiber import load_fiber
+    from FiberFusing.fiber import FiberLoader
     from FiberFusing.profile import Profile
     from PyOptik import MaterialBank
 
@@ -43,7 +43,7 @@ This script demonstrates how to create and visualize a 1x1 geometry using the Fi
 
 Define the operational parameters
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-49
+.. GENERATED FROM PYTHON SOURCE LINES 14-50
 
 .. code-block:: Python
 
@@ -63,8 +63,9 @@ Define the operational parameters
 
 
     # Load the fiber (e.g., SMF-28) positioned at the core of the profile structure
+    fiber_loader = FiberLoader()
     fibers = [
-        load_fiber('SMF28', clad_refractive_index=profile.refractive_index, position=core_position)
+        fiber_loader.load_fiber('SMF28', clad_refractive_index=profile.refractive_index, position=core_position)
         for core_position in profile.cores
     ]
 
@@ -103,7 +104,7 @@ Define the operational parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.762 seconds)
+   **Total running time of the script:** (0 minutes 0.758 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_single.py:

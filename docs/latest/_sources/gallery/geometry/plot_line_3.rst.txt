@@ -28,7 +28,7 @@ This script demonstrates how to create and visualize a 3x3 line geometry using t
 
 
     from FiberFusing import Geometry, DomainAlignment, BackGround
-    from FiberFusing.fiber import load_fiber
+    from FiberFusing.fiber import FiberLoader
     from FiberFusing.profile import Profile, StructureType
 
 
@@ -88,12 +88,13 @@ Create the cladding structure based on the fused fiber profile
 
 Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure
 
-.. GENERATED FROM PYTHON SOURCE LINES 33-38
+.. GENERATED FROM PYTHON SOURCE LINES 33-39
 
 .. code-block:: Python
 
+    fiber_loader = FiberLoader()
     fibers = [
-        load_fiber('SMF28', clad_refractive_index=profile.refractive_index, position=core_position)
+        fiber_loader.load_fiber('SMF28', clad_refractive_index=profile.refractive_index, position=core_position)
         for core_position in profile.cores
     ]
 
@@ -104,11 +105,11 @@ Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 39-40
+.. GENERATED FROM PYTHON SOURCE LINES 40-41
 
 Set up the geometry with the defined background, cladding structure, and resolution
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-46
+.. GENERATED FROM PYTHON SOURCE LINES 41-47
 
 .. code-block:: Python
 
@@ -125,11 +126,11 @@ Set up the geometry with the defined background, cladding structure, and resolut
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 47-48
+.. GENERATED FROM PYTHON SOURCE LINES 48-49
 
 Add the fibers to the geometry
 
-.. GENERATED FROM PYTHON SOURCE LINES 48-52
+.. GENERATED FROM PYTHON SOURCE LINES 49-53
 
 .. code-block:: Python
 
@@ -144,11 +145,11 @@ Add the fibers to the geometry
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 53-54
+.. GENERATED FROM PYTHON SOURCE LINES 54-55
 
 Plot the resulting geometry
 
-.. GENERATED FROM PYTHON SOURCE LINES 54-55
+.. GENERATED FROM PYTHON SOURCE LINES 55-56
 
 .. code-block:: Python
 
@@ -174,7 +175,7 @@ Plot the resulting geometry
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.298 seconds)
+   **Total running time of the script:** (0 minutes 2.301 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_line_3.py:

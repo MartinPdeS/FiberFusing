@@ -496,9 +496,11 @@ to download the full example code.</p>
 </div>
 <section class="sphx-glr-example-title" id="loading-and-plotting-a-single-fiber-structure">
 <span id="sphx-glr-gallery-extra-loading-fiber-py"></span><h1>Loading and plotting a single fiber structure<a class="headerlink" href="#loading-and-plotting-a-single-fiber-structure" title="Link to this heading">#</a></h1>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.fiber</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_fiber</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.fiber</span><span class="w"> </span><span class="kn">import</span> <span class="n">FiberLoader</span>
 
-<span class="n">fiber</span> <span class="o">=</span> <span class="n">load_fiber</span><span class="p">(</span><span class="s1">&#39;SMF28&#39;</span><span class="p">,</span> <span class="n">clad_refractive_index</span><span class="o">=</span><span class="mf">1.444</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="n">fiber_loader</span> <span class="o">=</span> <span class="n">FiberLoader</span><span class="p">()</span>
+
+<span class="n">fiber</span> <span class="o">=</span> <span class="n">fiber_loader</span><span class="o">.</span><span class="n">load_fiber</span><span class="p">(</span><span class="s1">&#39;SMF28&#39;</span><span class="p">,</span> <span class="n">clad_refractive_index</span><span class="o">=</span><span class="mf">1.444</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 
 <span class="n">fiber</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
@@ -506,7 +508,7 @@ to download the full example code.</p>
 <img src="../../_images/sphx_glr_loading_fiber_001.png" srcset="../../_images/sphx_glr_loading_fiber_001.png" alt="Fiber structure" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Axes: title={&#39;center&#39;: &#39;Fiber structure&#39;}, xlabel=&#39;x-distance [m]&#39;, ylabel=&#39;y-distance [m]&#39;&gt;
 </pre></div>
 </div>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fiber</span> <span class="o">=</span> <span class="n">load_fiber</span><span class="p">(</span><span class="s1">&#39;DCF1300S_42&#39;</span><span class="p">,</span> <span class="n">clad_refractive_index</span><span class="o">=</span><span class="mf">1.444</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">fiber</span> <span class="o">=</span> <span class="n">fiber_loader</span><span class="o">.</span><span class="n">load_fiber</span><span class="p">(</span><span class="s1">&#39;DCF1300S_42&#39;</span><span class="p">,</span> <span class="n">clad_refractive_index</span><span class="o">=</span><span class="mf">1.444</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
 
 <span class="n">fiber</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
@@ -514,7 +516,7 @@ to download the full example code.</p>
 <img src="../../_images/sphx_glr_loading_fiber_002.png" srcset="../../_images/sphx_glr_loading_fiber_002.png" alt="Fiber structure" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Axes: title={&#39;center&#39;: &#39;Fiber structure&#39;}, xlabel=&#39;x-distance [m]&#39;, ylabel=&#39;y-distance [m]&#39;&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.460 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 0.458 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-extra-loading-fiber-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/9929bb1f81736f4c1c49bb081a2dab42/loading_fiber.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">loading_fiber.ipynb</span></code></a></p>
