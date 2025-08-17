@@ -43,7 +43,7 @@ This script demonstrates how to create and visualize a 4x4 ring geometry using t
 
 Define the operational parameters
 
-.. GENERATED FROM PYTHON SOURCE LINES 14-53
+.. GENERATED FROM PYTHON SOURCE LINES 14-56
 
 .. code-block:: Python
 
@@ -64,7 +64,9 @@ Define the operational parameters
     )
 
     profile.index = MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
+    profile.rotate(45)  # Rotate the profile for better visualization
 
+    profile.plot(show_cores=True, show_centers=True)
 
     # Load fibers (e.g., SMF-28) positioned at the cores of the profile structure
     fibers = [
@@ -74,25 +76,38 @@ Define the operational parameters
 
     # Set up the geometry with the defined background, profile structure, and resolution
     geometry = Geometry(
-        background=air_background,
-        additional_structure_list=[profile],
         x_bounds=BoundaryMode.CENTERING,
         y_bounds=BoundaryMode.CENTERING,
         resolution=250
     )
 
     # Add the fibers to the geometry
-    geometry.add_fiber(*fibers)
+    geometry.add_structure(air_background, profile, *fibers)
+
+    geometry.initialize_geometry()
+
 
     # Plot the resulting geometry
     geometry.plot()
 
 
 
-.. image-sg:: /gallery/geometry/images/sphx_glr_plot_ring_4_001.png
-   :alt: Fiber structure, Fiber structure
-   :srcset: /gallery/geometry/images/sphx_glr_plot_ring_4_001.png
-   :class: sphx-glr-single-img
+.. rst-class:: sphx-glr-horizontal
+
+
+    *
+
+      .. image-sg:: /gallery/geometry/images/sphx_glr_plot_ring_4_001.png
+         :alt: Fiber structure
+         :srcset: /gallery/geometry/images/sphx_glr_plot_ring_4_001.png
+         :class: sphx-glr-multi-img
+
+    *
+
+      .. image-sg:: /gallery/geometry/images/sphx_glr_plot_ring_4_002.png
+         :alt: Fiber structure, Fiber structure
+         :srcset: /gallery/geometry/images/sphx_glr_plot_ring_4_002.png
+         :class: sphx-glr-multi-img
 
 
 .. rst-class:: sphx-glr-script-out
@@ -107,7 +122,7 @@ Define the operational parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.452 seconds)
+   **Total running time of the script:** (0 minutes 4.108 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_ring_4.py:

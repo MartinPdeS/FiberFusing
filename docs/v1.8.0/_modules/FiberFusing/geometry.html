@@ -464,7 +464,6 @@
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">colors</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">MPSPlots.styles</span><span class="w"> </span><span class="kn">import</span> <span class="n">mps</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.helper</span><span class="w"> </span><span class="kn">import</span> <span class="n">_plot_helper</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.background</span><span class="w"> </span><span class="kn">import</span> <span class="n">BackGround</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">field_validator</span><span class="p">,</span> <span class="n">ConfigDict</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">pydantic.dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
 
@@ -487,12 +486,6 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    background : object</span>
-<span class="sd">        Geometric object representing the background (usually air).</span>
-<span class="sd">    additional_structure_list : List[object], optional</span>
-<span class="sd">        List of geometric objects representing additional structures. Default is an empty list.</span>
-<span class="sd">    fiber_list : List[object], optional</span>
-<span class="sd">        List of fiber structures. Default is an empty list.</span>
 <span class="sd">    x_bounds : Union[Tuple[float, float], BoundaryMode], optional</span>
 <span class="sd">        X boundaries for rendering the structure. Can be a tuple of bounds or one of [&#39;auto&#39;, &#39;left&#39;, &#39;right&#39;, &#39;centering&#39;]. Default is &#39;centering&#39;.</span>
 <span class="sd">    y_bounds : Union[Tuple[float, float], BoundaryMode], optional</span>
@@ -508,9 +501,6 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1"># Optional fields with defaults</span>
-    <span class="n">background</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BackGround</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">fiber_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">additional_structure_list</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">x_bounds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">BoundaryMode</span><span class="p">]</span> <span class="o">=</span> <span class="n">BoundaryMode</span><span class="o">.</span><span class="n">CENTERING</span>
     <span class="n">y_bounds</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">BoundaryMode</span><span class="p">]</span> <span class="o">=</span> <span class="n">BoundaryMode</span><span class="o">.</span><span class="n">CENTERING</span>
     <span class="n">resolution</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">100</span>
@@ -524,14 +514,21 @@
 
     <span class="k">def</span><span class="w"> </span><span class="nf">__post_init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize geometry after model validation.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">background</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">background</span> <span class="o">=</span> <span class="n">BackGround</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiber_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">fiber_list</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_structure_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">additional_structure_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">structure_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">initialize_geometry</span><span class="p">()</span>
+<div class="viewcode-block" id="Geometry.add_structure">
+<a class="viewcode-back" href="../../code/geometry.html#FiberFusing.geometry.Geometry.add_structure">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">add_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">structure</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a structure to the internal structure list.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        structure : object</span>
+<span class="sd">            The structure to be added.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">structure_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">structure</span><span class="p">)</span></div>
+
 
 <div class="viewcode-block" id="Geometry.validate_resolution">
 <a class="viewcode-back" href="../../code/geometry.html#FiberFusing.geometry.Geometry.validate_resolution">[docs]</a>
@@ -603,51 +600,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="o">.</span><span class="n">center</span><span class="p">(</span><span class="n">factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">boundary_pad_factor</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">apply_boundary_settings</span><span class="p">()</span></div>
 
-
-<div class="viewcode-block" id="Geometry.add_fiber">
-<a class="viewcode-back" href="../../code/geometry.html#FiberFusing.geometry.Geometry.add_fiber">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_fiber</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">fibers</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add fiber structures to the geometry.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        fibers : object</span>
-<span class="sd">            Fiber structures to be added.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fiber_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">fibers</span><span class="p">)</span></div>
-
-
-<div class="viewcode-block" id="Geometry.add_structure">
-<a class="viewcode-back" href="../../code/geometry.html#FiberFusing.geometry.Geometry.add_structure">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_structure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">structures</span><span class="p">:</span> <span class="nb">object</span><span class="p">,</span> <span class="n">update_coordinates</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add custom structures to the geometry.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        structures : object</span>
-<span class="sd">            Custom structures to be added.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">additional_structure_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">structures</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">update_coordinates</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">update_coordinate_system</span><span class="p">()</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">mesh</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_mesh</span><span class="p">()</span></div>
-
-
-    <span class="nd">@property</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">structure_list</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">object</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Get a list of all optical structures considered for the mesh construction.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        List[object]</span>
-<span class="sd">            List of the optical structures.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">additional_structure_list</span><span class="p">,</span> <span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">fiber_list</span><span class="p">]</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">refractive_index_maximum</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
@@ -760,16 +712,14 @@
 <span class="sd">        Tuple[float, float, float, float]</span>
 <span class="sd">            The boundaries as (x_min, y_min, x_max, y_max).</span>
 
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        ValueError</span>
-<span class="sd">            If no structures are provided for computing the mesh.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_structure_list</span> <span class="ow">and</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiber_list</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No internal structures provided for computation of the mesh.&#39;</span><span class="p">)</span>
+        <span class="n">filtered_structures</span> <span class="o">=</span> <span class="p">[</span><span class="n">obj</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">structure_list</span> <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">FiberFusing</span><span class="o">.</span><span class="n">background</span><span class="o">.</span><span class="n">BackGround</span><span class="p">)]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filtered_structures</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No structures provided (other than background) for computing the mesh.&#39;</span><span class="p">)</span>
 
         <span class="n">x_min</span><span class="p">,</span> <span class="n">y_min</span><span class="p">,</span> <span class="n">x_max</span><span class="p">,</span> <span class="n">y_max</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span>
-            <span class="o">*</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get_structure_max_min_boundaries</span><span class="p">()</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_structure_list</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiber_list</span><span class="p">)</span>
+            <span class="o">*</span><span class="p">(</span><span class="n">obj</span><span class="o">.</span><span class="n">get_structure_max_min_boundaries</span><span class="p">()</span> <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">filtered_structures</span><span class="p">)</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">x_min</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">y_min</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">x_max</span><span class="p">),</span> <span class="n">numpy</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">y_max</span><span class="p">))</span></div>
 
@@ -865,44 +815,11 @@
 <span class="sd">            The rasterized mesh.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">mesh</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="o">.</span><span class="n">overlay_structures_on_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span> <span class="n">coordinate_system</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="p">)</span>
 
-        <span class="k">for</span> <span class="n">structure</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_structure_list</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">structure</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">structure_list</span><span class="p">:</span>
             <span class="n">structure</span><span class="o">.</span><span class="n">overlay_structures_on_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span> <span class="n">coordinate_system</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">index_scrambling</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">randomize_fiber_structures_index</span><span class="p">(</span><span class="n">random_factor</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">index_scrambling</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">fiber</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiber_list</span><span class="p">:</span>
-            <span class="n">fiber</span><span class="o">.</span><span class="n">overlay_structures_on_mesh</span><span class="p">(</span><span class="n">mesh</span><span class="o">=</span><span class="n">mesh</span><span class="p">,</span> <span class="n">coordinate_system</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="p">)</span>
-
         <span class="k">return</span> <span class="n">mesh</span></div>
-
-
-<div class="viewcode-block" id="Geometry.add_background_to_mesh">
-<a class="viewcode-back" href="../../code/geometry.html#FiberFusing.geometry.Geometry.add_background_to_mesh">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">add_background_to_mesh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mesh</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Add the rasterized background to the provided mesh.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        mesh : numpy.ndarray</span>
-<span class="sd">            The mesh to which the background is added. Must match the shape of the coordinate system.</span>
-
-<span class="sd">        Raises</span>
-<span class="sd">        ------</span>
-<span class="sd">        ValueError</span>
-<span class="sd">            If the mesh dimensions do not match the coordinate system.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">mesh</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The provided mesh dimensions do not match the coordinate system shape.&quot;</span><span class="p">)</span>
-
-        <span class="n">raster</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="o">.</span><span class="n">get_rasterized_mesh</span><span class="p">(</span><span class="n">coordinate_system</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">coordinate_system</span><span class="p">)</span>
-        <span class="n">mask</span> <span class="o">=</span> <span class="n">raster</span> <span class="o">!=</span> <span class="mi">0</span>
-        <span class="n">mesh</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="n">raster</span> <span class="o">*=</span> <span class="bp">self</span><span class="o">.</span><span class="n">background</span><span class="o">.</span><span class="n">index</span>
-        <span class="n">mesh</span> <span class="o">+=</span> <span class="n">raster</span></div>
 
 
 <div class="viewcode-block" id="Geometry.generate_mesh">
@@ -948,11 +865,10 @@
 <span class="sd">        -------</span>
 <span class="sd">        None</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">structure</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">additional_structure_list</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">structure</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">structure_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">structure</span><span class="p">,</span> <span class="n">FiberFusing</span><span class="o">.</span><span class="n">background</span><span class="o">.</span><span class="n">BackGround</span><span class="p">):</span>
+                <span class="k">continue</span>
             <span class="n">structure</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">fiber</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiber_list</span><span class="p">:</span>
-            <span class="n">fiber</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
         <span class="n">ax</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s1">&#39;Fiber structure&#39;</span><span class="p">,</span> <span class="n">xlabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;x-distance [m]&#39;</span><span class="p">,</span> <span class="n">ylabel</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;y-distance [m]&#39;</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">ticklabel_format</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;sci&#39;</span><span class="p">,</span> <span class="n">scilimits</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">),</span> <span class="n">useOffset</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>

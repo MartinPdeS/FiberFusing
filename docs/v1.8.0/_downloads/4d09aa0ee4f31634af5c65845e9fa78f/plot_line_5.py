@@ -20,7 +20,7 @@ air_background = BackGround(index=1.0)
 profile = Profile()
 
 profile.add_structure(
-    structure_type=StructureType.CIRCULAR,
+    structure_type=StructureType.LINEAR,
     number_of_fibers=5,
     fusion_degree=0.4,
     fiber_radius=62.5e-6,
@@ -38,15 +38,15 @@ fibers = [
 
 # Set up the geometry with the defined background, cladding structure, and resolution
 geometry = Geometry(
-    background=air_background,
-    additional_structure_list=[profile],
     x_bounds=BoundaryMode.CENTERING,
     y_bounds=BoundaryMode.CENTERING,
     resolution=250
 )
 
 # Add the fibers to the geometry
-geometry.add_fiber(*fibers)
+geometry.add_structure(air_background, profile, *fibers)
+
+geometry.initialize_geometry()
 
 # Plot the resulting geometry
 geometry.plot()

@@ -74,15 +74,15 @@ Define operational parameters
 
     # Set up the geometry with the defined background, profile structure, and resolution
     geometry = Geometry(
-        background=air_background,
-        additional_structure_list=[profile],
         x_bounds=BoundaryMode.CENTERING,
         y_bounds=BoundaryMode.CENTERING,
         resolution=250
     )
 
     # Add the fibers to the geometry
-    geometry.add_fiber(*fibers)
+    geometry.add_structure(air_background, profile, *fibers)
+
+    geometry.initialize_geometry()
 
     # Plot the resulting geometry
     geometry.plot()
@@ -107,7 +107,7 @@ Define operational parameters
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 7.736 seconds)
+   **Total running time of the script:** (0 minutes 8.137 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_ring_10.py:

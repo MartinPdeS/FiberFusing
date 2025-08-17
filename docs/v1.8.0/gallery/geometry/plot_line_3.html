@@ -405,19 +405,9 @@
      aria-label="Section Navigation">
   <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
   <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
-<li class="toctree-l1 has-children"><a class="reference internal" href="../clad/index.html">Clad Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
-<li class="toctree-l2"><a class="reference internal" href="../clad/fusion_degree.html">Effect of fusion degree</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../clad/plot_line_3.html">3x3 Line - Clad</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../clad/plot_line_4.html">4x4 Line - Clad</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../clad/plot_line_5.html">5x5 Line - Clad</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../clad/plot_ring_12.html">12x12 Ring - Clad</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../clad/plot_ring_19.html">19x19 Ring - Clad</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../clad/plot_ring_2.html">2x2 Ring - Clad</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../clad/plot_ring_4.html">4x4 Ring - Clad</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../clad/plot_ring_7.html">7x7 Ring - Clad</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../clad/plot_single.html">1x1 Ring - Clad</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../clad/randomize_core.html">Effect of core randomization</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../clad/structure_shift.html">Effect of translation</a></li>
+<li class="toctree-l1 has-children"><a class="reference internal" href="../extra/index.html">Geometry Examples</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l2"><a class="reference internal" href="../extra/randomize_core.html">Effect of core randomization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../extra/structure_shift.html">Effect of translation</a></li>
 </ul>
 </details></li>
 <li class="toctree-l1 current active has-children"><a class="reference internal" href="index.html">Geometry Examples</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
@@ -536,8 +526,6 @@ to download the full example code.</p>
 </div>
 <p>Set up the geometry with the defined background, cladding structure, and resolution</p>
 <div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">geometry</span> <span class="o">=</span> <span class="n">Geometry</span><span class="p">(</span>
-    <span class="n">background</span><span class="o">=</span><span class="n">air_background</span><span class="p">,</span>
-    <span class="n">additional_structure_list</span><span class="o">=</span><span class="p">[</span><span class="n">profile</span><span class="p">],</span>
     <span class="n">x_bounds</span><span class="o">=</span><span class="n">BoundaryMode</span><span class="o">.</span><span class="n">CENTERING</span><span class="p">,</span>
     <span class="n">y_bounds</span><span class="o">=</span><span class="n">BoundaryMode</span><span class="o">.</span><span class="n">CENTERING</span><span class="p">,</span>
     <span class="n">resolution</span><span class="o">=</span><span class="mi">250</span>
@@ -545,7 +533,9 @@ to download the full example code.</p>
 </pre></div>
 </div>
 <p>Add the fibers to the geometry</p>
-<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">geometry</span><span class="o">.</span><span class="n">add_fiber</span><span class="p">(</span><span class="o">*</span><span class="n">fibers</span><span class="p">)</span>
+<div class="highlight-Python notranslate"><div class="highlight"><pre><span></span><span class="n">geometry</span><span class="o">.</span><span class="n">add_structure</span><span class="p">(</span><span class="n">air_background</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="o">*</span><span class="n">fibers</span><span class="p">)</span>
+
+<span class="n">geometry</span><span class="o">.</span><span class="n">initialize_geometry</span><span class="p">()</span>
 </pre></div>
 </div>
 <p>Plot the resulting geometry</p>
@@ -555,7 +545,7 @@ to download the full example code.</p>
 <img src="../../_images/sphx_glr_plot_line_3_001.png" srcset="../../_images/sphx_glr_plot_line_3_001.png" alt="Fiber structure, Fiber structure" class = "sphx-glr-single-img"/><div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;Figure size 1000x500 with 3 Axes&gt;
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.220 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> (0 minutes 2.137 seconds)</p>
 <div class="sphx-glr-footer sphx-glr-footer-example docutils container" id="sphx-glr-download-gallery-geometry-plot-line-3-py">
 <div class="sphx-glr-download sphx-glr-download-jupyter docutils container">
 <p><a class="reference download internal" download="" href="../../_downloads/f618c653baf1a0ca38b9114495180ee9/plot_line_3.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">plot_line_3.ipynb</span></code></a></p>

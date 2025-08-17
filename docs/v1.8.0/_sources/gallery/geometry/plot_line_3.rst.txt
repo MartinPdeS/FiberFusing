@@ -108,13 +108,11 @@ Load fibers (e.g., SMF-28) positioned at the cores of the cladding structure
 
 Set up the geometry with the defined background, cladding structure, and resolution
 
-.. GENERATED FROM PYTHON SOURCE LINES 40-48
+.. GENERATED FROM PYTHON SOURCE LINES 40-46
 
 .. code-block:: Python
 
     geometry = Geometry(
-        background=air_background,
-        additional_structure_list=[profile],
         x_bounds=BoundaryMode.CENTERING,
         y_bounds=BoundaryMode.CENTERING,
         resolution=250
@@ -127,15 +125,17 @@ Set up the geometry with the defined background, cladding structure, and resolut
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 49-50
+.. GENERATED FROM PYTHON SOURCE LINES 47-48
 
 Add the fibers to the geometry
 
-.. GENERATED FROM PYTHON SOURCE LINES 50-52
+.. GENERATED FROM PYTHON SOURCE LINES 48-52
 
 .. code-block:: Python
 
-    geometry.add_fiber(*fibers)
+    geometry.add_structure(air_background, profile, *fibers)
+
+    geometry.initialize_geometry()
 
 
 
@@ -174,7 +174,7 @@ Plot the resulting geometry
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.220 seconds)
+   **Total running time of the script:** (0 minutes 2.137 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_line_3.py:

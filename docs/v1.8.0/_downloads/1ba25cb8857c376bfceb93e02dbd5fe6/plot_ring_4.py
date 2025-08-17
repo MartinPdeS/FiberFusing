@@ -28,7 +28,9 @@ profile.add_structure(
 )
 
 profile.index = MaterialBank.fused_silica.compute_refractive_index(wavelength)  # Refractive index of silica at the specified wavelength
+profile.rotate(45)  # Rotate the profile for better visualization
 
+profile.plot(show_cores=True, show_centers=True)
 
 # Load fibers (e.g., SMF-28) positioned at the cores of the profile structure
 fibers = [
@@ -38,15 +40,16 @@ fibers = [
 
 # Set up the geometry with the defined background, profile structure, and resolution
 geometry = Geometry(
-    background=air_background,
-    additional_structure_list=[profile],
     x_bounds=BoundaryMode.CENTERING,
     y_bounds=BoundaryMode.CENTERING,
     resolution=250
 )
 
 # Add the fibers to the geometry
-geometry.add_fiber(*fibers)
+geometry.add_structure(air_background, profile, *fibers)
+
+geometry.initialize_geometry()
+
 
 # Plot the resulting geometry
 geometry.plot()
