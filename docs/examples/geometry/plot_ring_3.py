@@ -38,15 +38,13 @@ fibers = [
 
 # Set up the geometry with the defined background, profile structure, and resolution
 geometry = Geometry(
-    background=air_background,
-    additional_structure_list=[profile],
     x_bounds=BoundaryMode.CENTERING,
     y_bounds=BoundaryMode.CENTERING,
     resolution=350
 )
 
 # Add the fibers to the geometry
-geometry.add_fiber(*fibers)
+geometry.add_fiber(air_background, profile, *fibers)
 
 geometry.initialize_geometry()
 

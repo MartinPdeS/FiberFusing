@@ -38,8 +38,6 @@ fibers = [
 # %%
 # Set up the geometry with the defined background, cladding structure, and resolution
 geometry = Geometry(
-    background=air_background,
-    additional_structure_list=[profile],
     x_bounds=BoundaryMode.CENTERING,
     y_bounds=BoundaryMode.CENTERING,
     resolution=250
@@ -47,7 +45,7 @@ geometry = Geometry(
 
 # %%
 # Add the fibers to the geometry
-geometry.add_fiber(*fibers)
+geometry.add_fiber(air_background, profile, *fibers)
 
 geometry.initialize_geometry()
 
