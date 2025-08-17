@@ -12,7 +12,6 @@ from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.colors as colors
 from MPSPlots.styles import mps
 from FiberFusing.helper import _plot_helper
-from FiberFusing.background import BackGround
 from pydantic import field_validator, ConfigDict
 from pydantic.dataclasses import dataclass
 
@@ -33,12 +32,6 @@ class Geometry():
 
     Parameters
     ----------
-    background : object
-        Geometric object representing the background (usually air).
-    additional_structure_list : List[object], optional
-        List of geometric objects representing additional structures. Default is an empty list.
-    fiber_list : List[object], optional
-        List of fiber structures. Default is an empty list.
     x_bounds : Union[Tuple[float, float], BoundaryMode], optional
         X boundaries for rendering the structure. Can be a tuple of bounds or one of ['auto', 'left', 'right', 'centering']. Default is 'centering'.
     y_bounds : Union[Tuple[float, float], BoundaryMode], optional
@@ -54,9 +47,6 @@ class Geometry():
     """
 
     # Optional fields with defaults
-    background: Optional[BackGround] = None
-    fiber_list: List[object] = None
-    additional_structure_list: List[object] = None
     x_bounds: Union[Tuple[float, float], BoundaryMode] = BoundaryMode.CENTERING
     y_bounds: Union[Tuple[float, float], BoundaryMode] = BoundaryMode.CENTERING
     resolution: int = 100
@@ -70,14 +60,18 @@ class Geometry():
 
     def __post_init__(self) -> None:
         """Initialize geometry after model validation."""
-        if self.background is None:
-            self.background = BackGround(index=1.0)
-        if self.fiber_list is None:
-            self.fiber_list = []
-        if self.additional_structure_list is None:
-            self.additional_structure_list = []
+        self.structure_list = list()
 
-        self.initialize_geometry()
+    def add_structure(self, *structure: object) -> None:
+        """
+        Add a structure to the internal structure list.
+
+        Parameters
+        ----------
+        structure : object
+            The structure to be added.
+        """
+        self.structure_list.extend(structure)
 
     @field_validator('resolution')
     @classmethod
@@ -134,45 +128,6 @@ class Geometry():
         )
         self.coordinate_system.center(factor=self.boundary_pad_factor)
         self.apply_boundary_settings()
-
-    def add_fiber(self, *fibers: object) -> None:
-        """
-        Add fiber structures to the geometry.
-
-        Parameters
-        ----------
-        fibers : object
-            Fiber structures to be added.
-        """
-        self.fiber_list.extend(fibers)
-
-    def add_structure(self, *structures: object, update_coordinates: bool = True) -> None:
-        """
-        Add custom structures to the geometry.
-
-        Parameters
-        ----------
-        structures : object
-            Custom structures to be added.
-        """
-        self.additional_structure_list.extend(structures)
-
-        if update_coordinates:
-            self.update_coordinate_system()
-
-        self.mesh = self.generate_mesh()
-
-    @property
-    def structure_list(self) -> List[object]:
-        """
-        Get a list of all optical structures considered for the mesh construction.
-
-        Returns
-        -------
-        List[object]
-            List of the optical structures.
-        """
-        return [self.background, *self.additional_structure_list, *self.fiber_list]
 
     @property
     def refractive_index_maximum(self) -> float:
@@ -274,16 +229,14 @@ class Geometry():
         Tuple[float, float, float, float]
             The boundaries as (x_min, y_min, x_max, y_max).
 
-        Raises
-        ------
-        ValueError
-            If no structures are provided for computing the mesh.
         """
-        if not self.additional_structure_list and not self.fiber_list:
-            raise ValueError('No internal structures provided for computation of the mesh.')
+        filtered_structures = [obj for obj in self.structure_list if not isinstance(obj, FiberFusing.background.BackGround)]
+
+        if len(filtered_structures) == 0:
+            raise ValueError('No structures provided (other than background) for computing the mesh.')
 
         x_min, y_min, x_max, y_max = zip(
-            *(obj.get_structure_max_min_boundaries() for obj in self.additional_structure_list + self.fiber_list)
+            *(obj.get_structure_max_min_boundaries() for obj in filtered_structures)
         )
         return (numpy.min(x_min), numpy.min(y_min), numpy.max(x_max), numpy.max(y_max))
 
@@ -367,16 +320,9 @@ class Geometry():
             The rasterized mesh.
         """
         mesh = numpy.zeros(self.coordinate_system.shape)
-        self.background.overlay_structures_on_mesh(mesh=mesh, coordinate_system=self.coordinate_system)
 
-        for structure in self.additional_structure_list:
+        for structure in self.structure_list:
             structure.overlay_structures_on_mesh(mesh=mesh, coordinate_system=self.coordinate_system)
-
-        if self.index_scrambling != 0:
-            self.randomize_fiber_structures_index(random_factor=self.index_scrambling)
-
-        for fiber in self.fiber_list:
-            fiber.overlay_structures_on_mesh(mesh=mesh, coordinate_system=self.coordinate_system)
 
         return mesh
 
@@ -443,11 +389,10 @@ class Geometry():
         -------
         None
         """
-        for structure in self.additional_structure_list:
+        for structure in self.structure_list:
+            if isinstance(structure, FiberFusing.background.BackGround):
+                continue
             structure.plot(ax=ax, show=False)
-
-        for fiber in self.fiber_list:
-            fiber.plot(ax=ax, show=False)
 
         ax.set(title='Fiber structure', xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
         ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)

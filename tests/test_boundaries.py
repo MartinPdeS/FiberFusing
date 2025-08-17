@@ -47,19 +47,19 @@ def test_building_geometry(mock_show, boundaries):
 
     # Create a geometry instance with the given parameters
     geometry = Geometry(
-        additional_structure_list=[profile],
-        background=background,
         x_bounds=x_boundary,
         y_bounds=y_boundary,
         resolution=50
     )
 
     # Add the structure and generate the mesh
-    geometry.add_structure(profile)
+    geometry.add_structure(profile, background)
+
+    geometry.initialize_geometry()
 
     # Plot the geometry (mocked)
     geometry.plot()
-    plt.close()
+    plt.close('all')
 
 
 # Run the tests if the file is executed directly

@@ -12,8 +12,6 @@ class NameSpace:
     def __init__(self, **kwargs):
         """
         Initializes an instance with attributes specified by the keyword arguments.
-
-        :param kwargs: Arbitrary keyword arguments to set as attributes.
         """
         for key, value in kwargs.items():
             setattr(self, key, value)
@@ -118,4 +116,5 @@ def interpret_to_point(*args):
         A tuple of ff.Point instances or a single ff.Point if only one argument is provided.
     """
     result = tuple(arg if isinstance(arg, ff.Point) else ff.Point(position=arg) for arg in args)
+
     return result[0] if len(result) == 1 else result

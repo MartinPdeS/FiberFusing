@@ -49,6 +49,8 @@ geometry = Geometry(
 # Add the fibers to the geometry
 geometry.add_fiber(*fibers)
 
+geometry.initialize_geometry()
+
 # %%
 # Plot the resulting geometry
 geometry.plot()

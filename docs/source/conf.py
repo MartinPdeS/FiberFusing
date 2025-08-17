@@ -55,10 +55,6 @@ def reset_mpl(gallery_conf, fname):
     use_mpsplots_style()
 
 
-examples_files = [
-    'utils', 'sellmeier', 'tabulated'
-]
-
 sphinx_gallery_conf = {
     'examples_dirs': ['../examples'],
     'gallery_dirs': ['gallery'],
