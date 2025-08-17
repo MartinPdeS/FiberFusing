@@ -43,7 +43,7 @@ geometry = Geometry(
 )
 
 # Add the fibers to the geometry
-geometry.add_fiber(air_background, profile, *fibers)
+geometry.add_structure(air_background, profile, *fibers)
 
 geometry.initialize_geometry()
 
