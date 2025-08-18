@@ -43,6 +43,18 @@ class GenericFiber():
         self.structure_list = []
         self.add_air()
 
+    def randomize_refractive_index(self, factor: float) -> None:
+        """
+        Randomizes the refractive index of each structure in the fiber by a given factor.
+
+        Parameters
+        ----------
+        factor : float
+            The factor by which to randomize the refractive index.
+        """
+        for structure in self.structure_list:
+            structure.refractive_index += factor * numpy.random.uniform(0, 1)
+
     @property
     def full_structure(self) -> list:
         """Returns the list of all structures."""
