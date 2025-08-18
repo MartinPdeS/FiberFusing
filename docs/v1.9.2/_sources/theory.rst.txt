@@ -1,0 +1,5 @@
+.. _theory:
+
+Theoretical background
+======================
+
