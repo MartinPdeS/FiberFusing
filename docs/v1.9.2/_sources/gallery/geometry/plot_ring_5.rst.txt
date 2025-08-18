@@ -22,7 +22,7 @@
 =================================
 This script demonstrates how to create and visualize a 5x5 ring geometry using the FiberFusing library.
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-50
+.. GENERATED FROM PYTHON SOURCE LINES 6-49
 
 
 
@@ -63,8 +63,7 @@ This script demonstrates how to create and visualize a 5x5 ring geometry using t
         structure_type=StructureType.CIRCULAR,
         number_of_fibers=5,
         fusion_degree=0.4,
-        fiber_radius=62.5e-6,
-        compute_fusing=True
+        fiber_radius=62.5e-6
     )
 
     profile.refractive_index = 1.4444  # Refractive index of silica at the specified wavelength
@@ -95,7 +94,7 @@ This script demonstrates how to create and visualize a 5x5 ring geometry using t
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.737 seconds)
+   **Total running time of the script:** (0 minutes 4.503 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_ring_5.py:

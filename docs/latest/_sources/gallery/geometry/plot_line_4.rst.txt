@@ -22,7 +22,7 @@
 =================================
 This script demonstrates how to create and visualize a 4x4 line geometry using the FiberFusing library.
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-49
+.. GENERATED FROM PYTHON SOURCE LINES 6-48
 
 
 
@@ -63,8 +63,7 @@ This script demonstrates how to create and visualize a 4x4 line geometry using t
         structure_type=StructureType.LINEAR,
         number_of_fibers=4,
         fusion_degree=0.3,
-        fiber_radius=62.5e-6,
-        compute_fusing=True
+        fiber_radius=62.5e-6
     )
 
     profile.refractive_index = 1.4444  # Refractive index of silica at the specified wavelength
@@ -94,7 +93,7 @@ This script demonstrates how to create and visualize a 4x4 line geometry using t
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.996 seconds)
+   **Total running time of the script:** (0 minutes 2.848 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_line_4.py:

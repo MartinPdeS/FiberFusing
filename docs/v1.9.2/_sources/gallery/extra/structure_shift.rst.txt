@@ -21,7 +21,7 @@
 Effect of translation
 =====================
 
-.. GENERATED FROM PYTHON SOURCE LINES 5-21
+.. GENERATED FROM PYTHON SOURCE LINES 5-20
 
 .. code-block:: Python
 
@@ -34,8 +34,7 @@ Effect of translation
         structure_type=StructureType.LINEAR,
         number_of_fibers=3,
         fusion_degree=0.3,
-        fiber_radius=62.5e-6,
-        compute_fusing=True
+        fiber_radius=62.5e-6
     )
 
     profile.plot(show_cores=True, show_centers=True)
@@ -59,7 +58,7 @@ Effect of translation
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 22-26
+.. GENERATED FROM PYTHON SOURCE LINES 21-25
 
 .. code-block:: Python
 
@@ -85,7 +84,7 @@ Effect of translation
 
 
 
-.. GENERATED FROM PYTHON SOURCE LINES 27-30
+.. GENERATED FROM PYTHON SOURCE LINES 26-29
 
 .. code-block:: Python
 
@@ -113,7 +112,7 @@ Effect of translation
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.436 seconds)
+   **Total running time of the script:** (0 minutes 2.259 seconds)
 
 
 .. _sphx_glr_download_gallery_extra_structure_shift.py:
