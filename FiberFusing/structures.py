@@ -215,7 +215,10 @@ class FiberRing(ConnectionOptimization, FiberStructureBaseClass):
         """
         self.angle_list = numpy.linspace(0, 360, self.number_of_fibers, endpoint=False)
         self.angle_list += self.angle_shift
-        self.delta_angle = (self.angle_list[1] - self.angle_list[0])
+        if len(self.angle_list) > 1:
+            self.delta_angle = (self.angle_list[1] - self.angle_list[0])
+        else:
+            self.delta_angle = 0
 
         centers = self.compute_unfused_positions(distance_from_center="not-fused")
         self.compute_fiber_list(centers=centers)

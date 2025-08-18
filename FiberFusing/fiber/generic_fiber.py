@@ -552,7 +552,7 @@ class GenericFiber():
             if structure.name == 'air':
                 continue
 
-        boundaries.append(structure.polygon.bounds)
+            boundaries.append(structure.polygon.bounds)
 
         return numpy.array(boundaries)
 

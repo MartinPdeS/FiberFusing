@@ -248,7 +248,7 @@ _default_loader = FiberLoader()
 def load_fiber(fiber_name: str, clad_refractive_index: float, position: Tuple[float, float] = (0, 0), remove_cladding: bool = False) -> GenericFiber:
     """
     Convenience function to load a fiber using the default loader.
-    
+
     Parameters
     ----------
     fiber_name : str
@@ -271,7 +271,7 @@ def load_fiber(fiber_name: str, clad_refractive_index: float, position: Tuple[fl
 def make_fiber(structure_list: List[Dict], clad_refractive_index: float, position: Tuple[float, float] = (0, 0)) -> GenericFiber:
     """
     Convenience function to make a fiber using the default loader.
-    
+
     Parameters
     ----------
     structure_list : List[Dict]
@@ -292,7 +292,7 @@ def make_fiber(structure_list: List[Dict], clad_refractive_index: float, positio
 def load_fiber_as_dict(fiber_name: str, clad_refractive_index: float = None, order: str = 'in-to-out') -> dict:
     """
     Convenience function to load fiber configuration as dictionary using the default loader.
-    
+
     Parameters
     ----------
     fiber_name : str
@@ -312,7 +312,7 @@ def load_fiber_as_dict(fiber_name: str, clad_refractive_index: float = None, ord
         layer_order = LayerOrder.OUT_TO_IN
     else:
         layer_order = LayerOrder.IN_TO_OUT
-        
+
     return _default_loader.load_fiber_as_dict(fiber_name, clad_refractive_index, layer_order)
 
 # -
