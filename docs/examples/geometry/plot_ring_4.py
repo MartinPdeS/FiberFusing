@@ -19,8 +19,7 @@ profile.add_structure(
     structure_type=StructureType.CIRCULAR,
     number_of_fibers=4,
     fusion_degree=0.4,
-    fiber_radius=62.5e-6,
-    compute_fusing=True
+    fiber_radius=62.5e-6
 )
 
 profile.refractive_index = 1.4444  # Refractive index of silica at the specified wavelength

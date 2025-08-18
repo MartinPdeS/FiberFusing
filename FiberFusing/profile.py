@@ -219,10 +219,9 @@ class Profile(OverlayStructureBaseClass):
     def _add_structure_to_instance_(
         self,
         structure: Union[FiberRing, FiberLine],
-        fusion_degree: float = 0.0,
+        fusion_degree: float | None = None,
         scale_position: float = 1.0,
-        position_shift: List[float] = [0, 0],
-        compute_fusing: bool = False
+        position_shift: List[float] = [0, 0]
     ) -> "Profile":
         """
         Internal method to add a fiber structure to the instance.
@@ -231,21 +230,19 @@ class Profile(OverlayStructureBaseClass):
         ----------
         structure : Union[FiberRing, FiberLine]
             The fiber structure to add.
-        fusion_degree : float, optional
-            The degree of fusion. Default is 0.0.
+        fusion_degree : float | None, optional
+            The degree of fusion. Default is None which means no fusion is applied.
         scale_position : float, optional
             Factor to scale the position. Default is 1.0.
         position_shift : list of float, optional
             Shift vector for the position. Default is [0, 0].
-        compute_fusing : bool, optional
-            Whether to compute the fusing operation. Default is False.
 
         Returns
         -------
         Profile
             The updated Profile instance.
         """
-        if compute_fusing:
+        if fusion_degree is not None:
             structure.set_fusion_degree(fusion_degree=fusion_degree)
 
         structure.scale_position(factor=scale_position)
@@ -254,7 +251,7 @@ class Profile(OverlayStructureBaseClass):
 
         self.fiber_list.extend(structure.fiber_list)
 
-        if compute_fusing:
+        if fusion_degree is not None:
             structure.init_connected_fibers()
             structure.compute_optimal_structure()
             self.removed_section_list.append(structure.removed_section)
@@ -273,7 +270,6 @@ class Profile(OverlayStructureBaseClass):
         fusion_degree: float = 0.0,
         scale_position: float = 1.0,
         position_shift: List[float] = [0, 0],
-        compute_fusing: bool = False,
         angle_shift: float = 0.0
     ) -> "Profile":
         """
@@ -293,8 +289,6 @@ class Profile(OverlayStructureBaseClass):
             Factor to scale the position of each fiber. Default is 1.0.
         position_shift : list of float, optional
             A 2D vector [x, y] to shift the entire structure. Default is [0, 0].
-        compute_fusing : bool, optional
-            Whether to compute the fusing operation for the structure. Default is False.
         angle_shift : float, optional
             The angle by which to rotate the structure. Default is 0.0.
 
@@ -323,8 +317,7 @@ class Profile(OverlayStructureBaseClass):
             structure=structure,
             fusion_degree=fusion_degree,
             scale_position=scale_position,
-            position_shift=position_shift,
-            compute_fusing=compute_fusing
+            position_shift=position_shift
         )
 
     def add_custom_fiber(self, *fibers) -> None:
@@ -454,6 +447,7 @@ class Profile(OverlayStructureBaseClass):
             show_centers: bool = False,
             show_cores: bool = True,
             show_added: bool = True,
+            show_fibers: bool = False,
             show_removed: bool = True) -> None:
         """
         Plot the structure using matplotlib.
@@ -476,6 +470,10 @@ class Profile(OverlayStructureBaseClass):
         if show_structure:
             self.clad_structure.plot(ax, show=False)
 
+        if show_fibers:
+            for fiber in self.fiber_list:
+                fiber.plot(ax, show=False)
+
         if show_added:
             self.added_section.plot(ax=ax, facecolor='green', show=False)
 
@@ -489,6 +487,3 @@ class Profile(OverlayStructureBaseClass):
         if show_centers:
             for idx, fiber in enumerate(self.fiber_list):
                 fiber.center.plot(ax, marker='o', size=40, label=f'Center$_{idx}$', show=False)
-
-        for fiber in self.fiber_list:
-            fiber.plot(ax, show=False)

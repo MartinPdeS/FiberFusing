@@ -18,8 +18,7 @@ def test_building_structure(mock_show, number_of_fibers, fusion_degree, structur
         structure_type=structure_type,
         number_of_fibers=number_of_fibers,
         fusion_degree=fusion_degree,
-        fiber_radius=62.5e-6,
-        compute_fusing=True
+        fiber_radius=62.5e-6
     )
 
     profile.plot()
@@ -36,8 +35,7 @@ def test_randomize_core_position():
         structure_type=StructureType.CIRCULAR,
         number_of_fibers=5,
         fusion_degree=0.4,
-        fiber_radius=62.5e-6,
-        compute_fusing=True
+        fiber_radius=62.5e-6
     )
 
     profile.randomize_core_positions(random_factor=4e-6)
@@ -56,8 +54,7 @@ def test_rotate_profile():
         structure_type=StructureType.CIRCULAR,
         number_of_fibers=5,
         fusion_degree=0.4,
-        fiber_radius=62.5e-6,
-        compute_fusing=True
+        fiber_radius=62.5e-6
     )
 
     initial_fiber_list = profile.fiber_list.copy()
@@ -74,8 +71,7 @@ def test_translate_profile():
         structure_type=StructureType.CIRCULAR,
         number_of_fibers=5,
         fusion_degree=0.4,
-        fiber_radius=62.5e-6,
-        compute_fusing=True
+        fiber_radius=62.5e-6
     )
 
     initial_fiber_list = profile.fiber_list.copy()
@@ -92,8 +88,7 @@ def test_scale_profile():
         structure_type=StructureType.CIRCULAR,
         number_of_fibers=5,
         fusion_degree=0.4,
-        fiber_radius=62.5e-6,
-        compute_fusing=True
+        fiber_radius=62.5e-6
     )
 
     initial_fiber_list = profile.fiber_list.copy()

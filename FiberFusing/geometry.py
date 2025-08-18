@@ -345,6 +345,14 @@ class Geometry():
         for structure in self.structure_list:
             if isinstance(structure, FiberFusing.background.BackGround):
                 continue
+
+            if isinstance(structure, FiberFusing.fiber.GenericFiber):
+                continue
+
+            if isinstance(structure, FiberFusing.profile.Profile):
+                structure.plot(ax=ax, show=False, show_added=False, show_removed=False, show_centers=False, show_fibers=True)
+                continue
+
             structure.plot(ax=ax, show=False)
 
         ax.set(title='Fiber structure', xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')

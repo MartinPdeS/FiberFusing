@@ -30,8 +30,7 @@ def test_building_geometry(mock_show, fusion_degree, number_of_fibers, structure
         structure_type=structure_type,
         number_of_fibers=number_of_fibers,
         fusion_degree=fusion_degree,
-        fiber_radius=62.5e-6,
-        compute_fusing=True
+        fiber_radius=62.5e-6
     )
 
     profile.refractive_index = 1.4444
@@ -71,8 +70,7 @@ def test_building_geometry_with_capillary(mock_show, fusion_degree, number_of_fi
         structure_type=structure_type,
         number_of_fibers=number_of_fibers,
         fusion_degree=fusion_degree,
-        fiber_radius=62.5e-6,
-        compute_fusing=True
+        fiber_radius=62.5e-6
     )
 
     profile.refractive_index=1.4444
@@ -120,8 +118,7 @@ def test_building_geometry_with_capillary_and_fibers(mock_show, fusion_degree, n
         structure_type=structure_type,
         number_of_fibers=number_of_fibers,
         fusion_degree=fusion_degree,
-        fiber_radius=62.5e-6,
-        compute_fusing=True
+        fiber_radius=62.5e-6
     )
 
     profile.refractive_index = 1.4444
@@ -162,8 +159,7 @@ def test_geometry_api():
         structure_type=StructureType.CIRCULAR,
         number_of_fibers=2,
         fusion_degree=0.3,
-        fiber_radius=62.5e-6,
-        compute_fusing=True
+        fiber_radius=62.5e-6
     )
 
     profile.refractive_index = 1.4444
