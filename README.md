@@ -25,9 +25,9 @@
 | FiberFusing/shapes/circle.py                       |       18 |        1 |        2 |        1 |     90% |        45 |
 | FiberFusing/shapes/ellipse.py                      |       23 |        9 |        4 |        0 |     52% |     46-68 |
 | FiberFusing/shapes/square.py                       |       18 |        6 |        2 |        0 |     60% |     39-53 |
-| FiberFusing/structures.py                          |       67 |        1 |        6 |        0 |     99% |        50 |
+| FiberFusing/structures.py                          |       69 |        2 |        8 |        1 |     96% |   50, 221 |
 | FiberFusing/utils.py                               |       32 |        6 |        6 |        2 |     79% |57, 79, 100-101, 118-120 |
-|                                          **TOTAL** | **1663** |  **226** |  **380** |   **77** | **82%** |           |
+|                                          **TOTAL** | **1665** |  **227** |  **382** |   **78** | **82%** |           |
 
 
 ## Setup coverage badge

@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_fb080959cceadeaf_base_class_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.10.3">coverage.py v7.10.3</a>,
-            created at 2025-08-17 20:17 +0000
+            created at 2025-08-18 08:46 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -332,7 +332,7 @@
     <p class="run"><span class="n"><a id="t248" href="#t248">248</a></span><span class="t"><span class="key">def</span> <span class="nam">load_fiber</span><span class="op">(</span><span class="nam">fiber_name</span><span class="op">:</span> <span class="nam">str</span><span class="op">,</span> <span class="nam">clad_refractive_index</span><span class="op">:</span> <span class="nam">float</span><span class="op">,</span> <span class="nam">position</span><span class="op">:</span> <span class="nam">Tuple</span><span class="op">[</span><span class="nam">float</span><span class="op">,</span> <span class="nam">float</span><span class="op">]</span> <span class="op">=</span> <span class="op">(</span><span class="num">0</span><span class="op">,</span> <span class="num">0</span><span class="op">)</span><span class="op">,</span> <span class="nam">remove_cladding</span><span class="op">:</span> <span class="nam">bool</span> <span class="op">=</span> <span class="key">False</span><span class="op">)</span> <span class="op">-></span> <span class="nam">GenericFiber</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t249" href="#t249">249</a></span><span class="t">    <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t250" href="#t250">250</a></span><span class="t"><span class="str">    Convenience function to load a fiber using the default loader.</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t251" href="#t251">251</a></span><span class="t"><span class="str">    </span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t251" href="#t251">251</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t252" href="#t252">252</a></span><span class="t"><span class="str">    Parameters</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t253" href="#t253">253</a></span><span class="t"><span class="str">    ----------</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t254" href="#t254">254</a></span><span class="t"><span class="str">    fiber_name : str</span>&nbsp;</span><span class="r"></span></p>
@@ -355,7 +355,7 @@
     <p class="run"><span class="n"><a id="t271" href="#t271">271</a></span><span class="t"><span class="key">def</span> <span class="nam">make_fiber</span><span class="op">(</span><span class="nam">structure_list</span><span class="op">:</span> <span class="nam">List</span><span class="op">[</span><span class="nam">Dict</span><span class="op">]</span><span class="op">,</span> <span class="nam">clad_refractive_index</span><span class="op">:</span> <span class="nam">float</span><span class="op">,</span> <span class="nam">position</span><span class="op">:</span> <span class="nam">Tuple</span><span class="op">[</span><span class="nam">float</span><span class="op">,</span> <span class="nam">float</span><span class="op">]</span> <span class="op">=</span> <span class="op">(</span><span class="num">0</span><span class="op">,</span> <span class="num">0</span><span class="op">)</span><span class="op">)</span> <span class="op">-></span> <span class="nam">GenericFiber</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t272" href="#t272">272</a></span><span class="t">    <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t273" href="#t273">273</a></span><span class="t"><span class="str">    Convenience function to make a fiber using the default loader.</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t274" href="#t274">274</a></span><span class="t"><span class="str">    </span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t274" href="#t274">274</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t275" href="#t275">275</a></span><span class="t"><span class="str">    Parameters</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t276" href="#t276">276</a></span><span class="t"><span class="str">    ----------</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t277" href="#t277">277</a></span><span class="t"><span class="str">    structure_list : List[Dict]</span>&nbsp;</span><span class="r"></span></p>
@@ -376,7 +376,7 @@
     <p class="run"><span class="n"><a id="t292" href="#t292">292</a></span><span class="t"><span class="key">def</span> <span class="nam">load_fiber_as_dict</span><span class="op">(</span><span class="nam">fiber_name</span><span class="op">:</span> <span class="nam">str</span><span class="op">,</span> <span class="nam">clad_refractive_index</span><span class="op">:</span> <span class="nam">float</span> <span class="op">=</span> <span class="key">None</span><span class="op">,</span> <span class="nam">order</span><span class="op">:</span> <span class="nam">str</span> <span class="op">=</span> <span class="str">'in-to-out'</span><span class="op">)</span> <span class="op">-></span> <span class="nam">dict</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t293" href="#t293">293</a></span><span class="t">    <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t294" href="#t294">294</a></span><span class="t"><span class="str">    Convenience function to load fiber configuration as dictionary using the default loader.</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t295" href="#t295">295</a></span><span class="t"><span class="str">    </span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t295" href="#t295">295</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t296" href="#t296">296</a></span><span class="t"><span class="str">    Parameters</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t297" href="#t297">297</a></span><span class="t"><span class="str">    ----------</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t298" href="#t298">298</a></span><span class="t"><span class="str">    fiber_name : str</span>&nbsp;</span><span class="r"></span></p>
@@ -409,7 +409,7 @@
             <a class="nav" href="z_fb080959cceadeaf_base_class_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.10.3">coverage.py v7.10.3</a>,
-            created at 2025-08-17 20:17 +0000
+            created at 2025-08-18 08:46 +0000
         </p>
     </div>
 </footer>
