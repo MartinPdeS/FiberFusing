@@ -9,7 +9,7 @@
 | FiberFusing/connection/connection\_optimization.py |       75 |        2 |       14 |        2 |     96% |69->71, 203-204 |
 | FiberFusing/connection/utils.py                    |        8 |        0 |        0 |        0 |    100% |           |
 | FiberFusing/coordinate\_system.py                  |      245 |       18 |       60 |       10 |     89% |80->84, 90->94, 110, 112, 254, 268, 436-443, 469, 520-523, 647, 691, 791 |
-| FiberFusing/fiber/generic\_fiber.py                |      151 |       41 |       42 |        7 |     70% |40, 49, 59, 76, 88-99, 170, 176, 224, 255->254, 272-273, 337-339, 408, 412->418, 415-416, 453-479, 497-498, 583, 601-605 |
+| FiberFusing/fiber/generic\_fiber.py                |      154 |       43 |       44 |        7 |     69% |40, 55-56, 61, 71, 88, 100-111, 182, 188, 236, 267->266, 284-285, 349-351, 420, 424->430, 427-428, 465-491, 509-510, 595, 613-617 |
 | FiberFusing/fiber/loader.py                        |       76 |       16 |       24 |        6 |     74% |39, 63, 70, 94-98, 159->162, 205, 229-230, 268, 289, 311-316 |
 | FiberFusing/geometries/base\_class.py              |      111 |       10 |        6 |        3 |     89% |55, 67, 190, 202, 238, 320-322, 343, 409->411, 436 |
 | FiberFusing/geometries/linestring.py               |       69 |        6 |        6 |        2 |     89% |26, 32, 44, 59, 78-79 |
@@ -27,7 +27,7 @@
 | FiberFusing/shapes/square.py                       |       18 |        6 |        2 |        0 |     60% |     39-53 |
 | FiberFusing/structures.py                          |       69 |        2 |        8 |        1 |     96% |   50, 221 |
 | FiberFusing/utils.py                               |       32 |        6 |        6 |        2 |     79% |57, 79, 100-101, 118-120 |
-|                                          **TOTAL** | **1665** |  **227** |  **382** |   **78** | **82%** |           |
+|                                          **TOTAL** | **1668** |  **229** |  **384** |   **78** | **82%** |           |
 
 
 ## Setup coverage badge
