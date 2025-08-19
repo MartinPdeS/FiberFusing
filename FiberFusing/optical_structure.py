@@ -4,6 +4,7 @@ from .shapes import Circle, Square, Ellipse  # noqa: F401
 from .background import BackGround  # noqa: F401
 from pydantic.dataclasses import dataclass
 from pydantic import ConfigDict
+from FiberFusing.graded_index import GradedIndex
 
 from typing import Optional, Tuple
 import numpy as np
@@ -18,25 +19,18 @@ class CircleOpticalStructure:
     ----------
     name : str
         Name of the structure.
-    refractive_index : float
+    refractive_index : float | GradedIndex
         Refractive index of the structure.
     radius : float
         Radius of the circle representing the structure.
     position : Tuple[float, float]
         Center position of the circle.
-    is_graded : Optional[bool], optional
-        Indicates if the structure has a graded refractive index. Default is False.
-    delta_n : Optional[float], optional
-        Delta refractive index for graded structures. Default is None.
     """
 
     name: str
     radius: float
     position: Tuple[float, float]
-    refractive_index: float = None
-    refractive_index_in: float = None
-    refractive_index_out: float = None
-    is_graded: Optional[bool] = False
+    refractive_index: float | GradedIndex = None
 
     def __post_init__(self) -> None:
         """

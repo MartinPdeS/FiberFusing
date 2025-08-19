@@ -12,7 +12,7 @@ from FiberFusing.geometries.point import Point
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.plottings import plot_polygon
 from FiberFusing.helper import _plot_helper
-
+from FiberFusing.graded_index import GradedIndex
 
 pp = pprint.PrettyPrinter(indent=4, sort_dicts=False, compact=True, width=1)
 
@@ -110,7 +110,7 @@ class GenericFiber():
 
         return fiber_copy
 
-    def create_and_add_new_structure(self, refractive_index: float = None, NA: float = None, **kwargs) -> None:
+    def create_and_add_new_structure(self, refractive_index: float | GradedIndex = None, NA: float = None, **kwargs) -> None:
         """
         Adds a new circular structure to the collection.
 
@@ -135,32 +135,6 @@ class GenericFiber():
         )
         setattr(self, new_structure.name, new_structure)
         self.structure_list.append(new_structure)
-
-    def create_and_add_new_graded_index_structure(self, refractive_index_in: float, refractive_index_out: float, **kwargs) -> None:
-        """
-        Adds a new graded index structure to the collection.
-
-        Parameters
-        ----------
-        refractive_index : float, optional
-            The refractive index of the new structure. If provided, NA should be None.
-        NA : float, optional
-            The numerical aperture of the new structure. If provided, refractive_index should be None.
-
-        Raises
-        ------
-        ValueError
-            If both refractive_index and NA are provided or if neither is provided.
-        """
-        new_structure = CircleOpticalStructure(
-            **kwargs,
-            refractive_index_in=refractive_index_in,
-            refractive_index_out=refractive_index_out,
-            position=self.position
-        )
-        setattr(self, new_structure.name, new_structure)
-        self.structure_list.append(new_structure)
-
 
     def _interpret_index_or_NA_to_index(self, refractive_index: float, NA: float) -> float:
         """
@@ -232,12 +206,11 @@ class GenericFiber():
             raster = structure.polygon.get_rasterized_mesh(coordinate_system=coordinate_system)
             mesh[numpy.where(raster != 0)] = 0
 
-            if structure.is_graded:
+            if isinstance(structure.refractive_index, GradedIndex):
                 refractive_index = self.get_graded_index_mesh(
                     coordinate_system=coordinate_system,
                     polygon=structure.polygon,
-                    min_index=structure.refractive_index_in,
-                    max_index=structure.refractive_index_out
+                    refractive_index=structure.refractive_index,
                 )
             else:
                 refractive_index = structure.refractive_index
@@ -429,7 +402,7 @@ class GenericFiber():
 
         return distance
 
-    def get_graded_index_mesh(self, coordinate_system: CoordinateSystem, polygon, min_index: float, max_index: float) -> numpy.ndarray:
+    def get_graded_index_mesh(self, coordinate_system: CoordinateSystem, polygon, refractive_index: GradedIndex) -> numpy.ndarray:
         """
         Compute the graded index mesh for a given polygon within the coordinate system.
 
@@ -443,10 +416,8 @@ class GenericFiber():
             The coordinate system defining the spatial grid where the index profile will be computed.
         polygon : Polygon
             The polygon object representing the area for which the graded index mesh is computed.
-        min_index : float
-            The minimum refractive index value, typically at the outer boundary of the polygon.
-        max_index : float
-            The maximum refractive index value, typically at the center of the polygon.
+        refractive_index : GradedIndex
+            The graded index object containing the minimum and maximum refractive index values.
 
         Returns
         -------
@@ -485,8 +456,8 @@ class GenericFiber():
             normalized_distance_mesh = masked_distance_mesh
 
         # Scale the normalized mesh to the index range [min_index, max_index]
-        delta_n = max_index - min_index
-        graded_index_mesh = normalized_distance_mesh * delta_n + min_index
+        delta_n = refractive_index.outside - refractive_index.inside
+        graded_index_mesh = normalized_distance_mesh * delta_n + refractive_index.inside
 
         return graded_index_mesh
 

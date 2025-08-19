@@ -2,13 +2,13 @@
 # -*- coding: utf-8 -*-
 
 from typing import Iterable, Union, List
-from FiberFusing.geometries.point import Point
-from FiberFusing.geometries.polygon import Polygon
 import shapely.geometry as geo
 from shapely.ops import unary_union
 
+from FiberFusing import geometries
 
-def get_polygon_union(*objects) -> Polygon:
+
+def get_polygon_union(*objects) -> geometries.Polygon:
     """
     Computes the union of multiple geometric objects and returns the resulting Polygon.
 
@@ -21,15 +21,15 @@ def get_polygon_union(*objects) -> Polygon:
                  If no objects are provided, an empty Polygon is returned.
     """
     if len(objects) == 0:
-        return Polygon(instance=geo.Polygon())
+        return geometries.Polygon(instance=geo.Polygon())
 
     objects = [o._shapely_object if hasattr(o, '_shapely_object') else o for o in objects]
     output = unary_union(objects)
 
-    return Polygon(instance=output)
+    return geometries.Polygon(instance=output)
 
 
-def interpret_to_point(*args: Union[Point, Iterable, geo.Point]) -> Union[Point, List[Point]]:
+def interpret_to_point(*args: Union[geometries.Point, Iterable, geo.Point]) -> Union[geometries.Point, List[geometries.Point]]:
     """
     Converts various input formats to Point instances.
 
@@ -44,12 +44,12 @@ def interpret_to_point(*args: Union[Point, Iterable, geo.Point]) -> Union[Point,
     output = []
 
     for arg in args:
-        if isinstance(arg, Point):
+        if isinstance(arg, geometries.Point):
             output.append(arg)
         elif isinstance(arg, Iterable):
-            output.append(Point(position=arg))
+            output.append(geometries.Point(position=arg))
         elif isinstance(arg, geo.Point):
-            output.append(Point(instance=arg))
+            output.append(geometries.Point(instance=arg))
 
     if len(output) == 1:
         return output[0]

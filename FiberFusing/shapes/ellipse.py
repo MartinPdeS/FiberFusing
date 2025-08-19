@@ -31,7 +31,6 @@ class Ellipse(Polygon):
     position: tuple
     radius: float
     resolution: Optional[int] = 128
-    refractive_index: Optional[float] = None
     ratio: Optional[float] = 1  # Default ratio of 1 makes this a circle
 
     def __post_init__(self):

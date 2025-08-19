@@ -5,6 +5,7 @@ Loading and plotting a graded-index fiber structure
 
 from FiberFusing.fiber import GenericFiber
 from FiberFusing.coordinate_system import CoordinateSystem
+from FiberFusing import GradedIndex
 
 fiber = GenericFiber()
 
@@ -14,11 +15,14 @@ fiber.create_and_add_new_structure(
     radius=62.5 * 1e-6
 )
 
-fiber.create_and_add_new_graded_index_structure(
+graded_index = GradedIndex(
+    inside=1.4480,
+    outside=1.4450
+)
+
+fiber.create_and_add_new_structure(
     name='core',
-    is_graded=True,
-    refractive_index_out=1.4450,
-    refractive_index_in=1.4480,
+    refractive_index=graded_index,
     radius=4.5 * 1e-6
 )
 

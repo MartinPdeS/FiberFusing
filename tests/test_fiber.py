@@ -5,6 +5,7 @@ import pytest
 from unittest.mock import patch
 import matplotlib.pyplot as plt
 from FiberFusing.fiber import FiberLoader, GenericFiber
+from FiberFusing import GradedIndex
 
 
 @patch("matplotlib.pyplot.show")
@@ -59,11 +60,14 @@ def test_graded_index_fiber(mock_show):
 
     fiber = GenericFiber()
 
-    fiber.create_and_add_new_graded_index_structure(
+    graded_index = GradedIndex(
+        inside=1.4480,
+        outside=1.4450,
+    )
+
+    fiber.create_and_add_new_structure(
         name='core',
-        is_graded=True,
-        refractive_index_out=1.4450,
-        refractive_index_in=1.4480,
+        refractive_index=graded_index,
         radius=8e-6
     )
 
