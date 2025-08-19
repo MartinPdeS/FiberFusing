@@ -76,7 +76,7 @@ Loading and plotting a step-index fiber structure
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 0.276 seconds)
+   **Total running time of the script:** (0 minutes 0.273 seconds)
 
 
 .. _sphx_glr_download_gallery_extra_custom_step_index_fiber.py:
