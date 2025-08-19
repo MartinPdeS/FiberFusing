@@ -109,7 +109,7 @@ This script demonstrates how to create and visualize a 4x4 ring geometry using t
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.213 seconds)
+   **Total running time of the script:** (0 minutes 4.227 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_ring_4.py:
