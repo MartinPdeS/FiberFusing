@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:43.390** total execution time for 15 files **from all galleries**:
+**00:43.571** total execution time for 15 files **from all galleries**:
 
 .. container::
 
@@ -33,47 +33,47 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_geometry_plot_ring_10.py` (``../examples/geometry/plot_ring_10.py``)
-     - 00:08.540
+     - 00:08.649
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_ring_7.py` (``../examples/geometry/plot_ring_7.py``)
-     - 00:06.437
+     - 00:06.439
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_ring_5.py` (``../examples/geometry/plot_ring_5.py``)
-     - 00:04.652
+     - 00:04.675
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_ring_4.py` (``../examples/geometry/plot_ring_4.py``)
      - 00:04.227
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_ring_3.py` (``../examples/geometry/plot_ring_3.py``)
-     - 00:03.667
+     - 00:03.664
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_line_5.py` (``../examples/geometry/plot_line_5.py``)
      - 00:03.446
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_line_4.py` (``../examples/geometry/plot_line_4.py``)
-     - 00:02.937
+     - 00:02.933
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_line_3.py` (``../examples/geometry/plot_line_3.py``)
-     - 00:02.273
+     - 00:02.301
      - 0.0
    * - :ref:`sphx_glr_gallery_extra_structure_shift.py` (``../examples/extra/structure_shift.py``)
-     - 00:02.251
+     - 00:02.255
      - 0.0
    * - :ref:`sphx_glr_gallery_extra_randomize_core.py` (``../examples/extra/randomize_core.py``)
-     - 00:01.640
+     - 00:01.652
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_ring_2.py` (``../examples/geometry/plot_ring_2.py``)
-     - 00:01.430
+     - 00:01.462
      - 0.0
    * - :ref:`sphx_glr_gallery_geometry_plot_single.py` (``../examples/geometry/plot_single.py``)
-     - 00:00.788
+     - 00:00.754
      - 0.0
    * - :ref:`sphx_glr_gallery_extra_loading_fiber.py` (``../examples/extra/loading_fiber.py``)
-     - 00:00.476
+     - 00:00.473
      - 0.0
    * - :ref:`sphx_glr_gallery_extra_custom_graded_index_fiber.py` (``../examples/extra/custom_graded_index_fiber.py``)
-     - 00:00.349
+     - 00:00.368
      - 0.0
    * - :ref:`sphx_glr_gallery_extra_custom_step_index_fiber.py` (``../examples/extra/custom_step_index_fiber.py``)
-     - 00:00.276
+     - 00:00.274
      - 0.0
