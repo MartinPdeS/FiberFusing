@@ -1,0 +1,23 @@
+
+# Ignore all
+/*
+
+# Except ...
+!.github
+!FiberFusing
+!development
+!docs
+!tests
+!.flake8
+!.gitignore
+!.pre-commit-config.yaml
+!LICENSE
+!meta.yaml
+!pyproject.toml
+!README.rst
+!notebook.ipynb
+
+# But ignore docs/build inside docs and code
+docs/build/
+docs/source/gallery/
+*__pycache__*

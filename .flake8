@@ -1,0 +1,6 @@
+[flake8]
+max-line-length = 300
+exclude = [".git"]
+count = true
+per-file-ignores =
+    __init__.py: F403, F401

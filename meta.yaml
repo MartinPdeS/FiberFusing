@@ -1,0 +1,65 @@
+package:
+  name: fiberfusing
+  version: {{ GIT_DESCRIBE_TAG }}
+
+source:
+  path: ../
+  git_url: https://github.com/MartinPdeS/FiberFusing.git
+
+build:
+  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv --no-deps  --no-build-isolation
+  number: 0
+
+channels:
+  - conda-forge
+  - martinpdes
+
+requirements:
+  host:
+    - python {{ PY_VER }}*
+    - setuptools >=40.8.0
+    - wheel
+    - setuptools-scm >=8.0
+    - pip
+  run:
+    - pyyaml
+    - martinpdes::mpsplots
+    - martinpdes::pyoptik
+    - scipy
+    - pydantic
+    - numpy
+    - tabulate
+    - shapely
+
+
+about:
+  home: https://github.com/MartinPdeS/FiberFusing
+  license: MIT
+  summary: "A package fiber fusing configuration simulating the transverse fusion of fiber optics."
+  description: FiberFusing is a library that simulate the fusing of fiber optics through scanning flame. It's compuation is based on "The shape of the taper" from Birks.
+  dev_url: https://github.com/MartinPdeS/FiberFusing
+  doc_url: https://fiberfusing.readthedocs.io
+  license_file: LICENSE
+  keywords:
+    - fiber optics
+    - fusion
+    - fiber components
+
+test:
+  imports:
+    - FiberFusing
+  requires:
+    - python {{PY_VER}}*
+    - pytest >=0.6
+    - pytest-cov >=2.0
+    - pytest-json-report ~=1.5.0
+    - coverage ~=7.6.1
+  commands:
+    - python -m pytest
+  source_files:
+    - tests
+
+extra:
+  recipe-maintainers:
+    - MartinPdeS
