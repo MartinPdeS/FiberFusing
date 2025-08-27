@@ -93,7 +93,7 @@ This script demonstrates how to create and visualize a 10x10 ring geometry using
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 8.649 seconds)
+   **Total running time of the script:** (0 minutes 8.858 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_ring_10.py:
