@@ -4,11 +4,13 @@
 import numpy as np
 from typing import Tuple, Optional
 from pydantic.dataclasses import dataclass
-from pydantic import ConfigDict, field_validator
+from pydantic import field_validator
 from dataclasses import field
 
+from FiberFusing.utils import config_dict
 
-@dataclass(config=ConfigDict(extra='forbid', strict=True, kw_only=True, arbitrary_types_allowed=True, frozen=False))
+
+@dataclass(config=config_dict)
 class CoordinateSystem:
     """
     A 2D Cartesian coordinate system for fiber optics simulations.

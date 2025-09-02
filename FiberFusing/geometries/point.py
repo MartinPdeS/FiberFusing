@@ -7,11 +7,12 @@ import numpy
 from pydantic.dataclasses import dataclass
 import shapely.geometry as geo
 import matplotlib.pyplot as plt
+from MPSPlots import helper
 
-from FiberFusing.helper import _plot_helper
 from FiberFusing import geometries
+from FiberFusing.utils import config_dict
 
-@dataclass(config=geometries.config_dict)
+@dataclass(config=config_dict)
 class Point(geometries.base_class.Alteration):
     position: Optional[Tuple[float, float]] = None
     instance: Optional[geo.Point] = None
@@ -106,8 +107,8 @@ class Point(geometries.base_class.Alteration):
         """
         return numpy.sqrt((self.x - other.x)**2 + (self.y - other.y)**2)
 
-    @_plot_helper
-    def plot(self, ax: plt.Axes = None, marker: str = 'x', size: int = 20, label: str = None) -> None:
+    @helper.pre_plot(nrows=1, ncols=1)
+    def plot(self, axes: plt.Axes, marker: str = 'x', size: int = 20, label: str = None) -> None:
         """
         Renders this point on the given axis, optionally with text.
 
@@ -122,4 +123,4 @@ class Point(geometries.base_class.Alteration):
         label : str
             The label for the point, if any.
         """
-        ax.scatter(self.x, self.y, label=label, marker=marker, s=size)
+        axes.scatter(self.x, self.y, label=label, marker=marker, s=size)

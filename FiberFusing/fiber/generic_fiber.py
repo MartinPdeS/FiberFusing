@@ -6,12 +6,12 @@ import numpy
 import pprint
 from copy import deepcopy
 import matplotlib.pyplot as plt
+from MPSPlots import helper
 
 from FiberFusing import Circle, CircleOpticalStructure
 from FiberFusing.geometries.point import Point
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.plottings import plot_polygon
-from FiberFusing.helper import _plot_helper
 from FiberFusing.graded_index import GradedIndex
 
 pp = pprint.PrettyPrinter(indent=4, sort_dicts=False, compact=True, width=1)
@@ -508,8 +508,8 @@ class GenericFiber():
             coordinate_system=coordinate_system
         )
 
-    @_plot_helper
-    def plot(self, ax: plt.Axes = None) -> None:
+    @helper.pre_plot(nrows=1, ncols=1)
+    def plot(self, axes: plt.Axes = None) -> None:
         """
         Plot the fiber geometry representation including patch and raster-mesh.
 
@@ -519,7 +519,7 @@ class GenericFiber():
             Resolution for rasterizing structures. Default is 300.
         """
         for structure in self.fiber_structure:
-            plot_polygon(ax=ax, polygon=structure.polygon._shapely_object)
+            plot_polygon(ax=axes, polygon=structure.polygon._shapely_object)
 
     def get_structures_boundaries(self) -> numpy.ndarray:
         """
@@ -565,8 +565,8 @@ class GenericFiber():
         """
         return self.get_structure_max_min_boundaries()
 
-    @_plot_helper
-    def plot_raster(self, coordinate_system, ax: plt.Axes = None) -> None:
+    @helper.pre_plot(nrows=1, ncols=1)
+    def plot_raster(self, axes: plt.Axes, coordinate_system) -> None:
         """
         Render the rasterized representation of the geometry onto a given matplotlib axis.
 
@@ -582,7 +582,16 @@ class GenericFiber():
         None
         """
         mesh = self.get_raster_mesh(coordinate_system=coordinate_system)
-        ax.pcolormesh(coordinate_system.x_vector, coordinate_system.y_vector, mesh, cmap='Blues')
+        axes.pcolormesh(
+            coordinate_system.x_vector,
+            coordinate_system.y_vector,
+            mesh,
+            cmap='Blues'
+        )
 
-        ax.set(title='Fiber structure', xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
-        ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)
+        axes.set(
+            title='Fiber structure',
+            xlabel=r'x-distance',
+            ylabel=r'y-distance'
+        )
+

@@ -7,13 +7,15 @@ import numpy
 from scipy.ndimage import gaussian_filter
 import FiberFusing
 import matplotlib.pyplot as plt
-from FiberFusing.coordinate_system import CoordinateSystem
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 import matplotlib.colors as colors
-from MPSPlots.styles import mps
-from FiberFusing.helper import _plot_helper
-from pydantic import field_validator, ConfigDict
+from mpl_toolkits.axes_grid1 import make_axes_locatable
+from pydantic import field_validator
 from pydantic.dataclasses import dataclass
+from MPSPlots import helper
+
+
+from FiberFusing.coordinate_system import CoordinateSystem
+from FiberFusing.utils import config_dict
 
 class DomainAlignment(Enum):
     """Boundary positioning modes."""
@@ -25,7 +27,7 @@ class DomainAlignment(Enum):
     CENTERING = "centering"
 
 
-@dataclass(config=ConfigDict(extra='forbid', kw_only=True, arbitrary_types_allowed=True))
+@dataclass(config=config_dict)
 class Geometry():
     """
     Represents the refractive index (RI) geometric profile including background and fiber structures.
@@ -326,8 +328,8 @@ class Geometry():
 
         return mesh
 
-    @_plot_helper
-    def plot_patch(self, ax: plt.Axes = None, show: bool = True) -> None:
+    @helper.pre_plot(nrows=1, ncols=1)
+    def plot_patch(self, axes: plt.Axes) -> None:
         """
         Render the patch representation of the geometry onto a given matplotlib axis.
 
@@ -347,16 +349,15 @@ class Geometry():
                 continue
 
             if isinstance(structure, FiberFusing.profile.Profile):
-                structure.plot(ax=ax, show=False, show_added=False, show_removed=False, show_centers=False, show_fibers=True)
+                structure.plot(axes=axes, show=False, show_added=False, show_removed=False, show_centers=False, show_fibers=True)
                 continue
 
-            structure.plot(ax=ax, show=False)
+            structure.plot(axes=axes, show=False)
 
-        ax.set(title='Fiber structure', xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
-        ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)
+        axes.set(title='Fiber structure', xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
 
-    @_plot_helper
-    def plot_raster(self, ax: plt.Axes = None, gamma: float = 5) -> None:
+    @helper.pre_plot(nrows=1, ncols=1)
+    def plot_raster(self, axes: plt.Axes, gamma: float = 5) -> None:
         """
         Render the rasterized representation of the geometry onto a given matplotlib axis.
 
@@ -373,7 +374,7 @@ class Geometry():
         -------
         None
         """
-        image = ax.pcolormesh(
+        image = axes.pcolormesh(
             self.coordinate_system.x_vector,
             self.coordinate_system.y_vector,
             self.mesh,
@@ -381,23 +382,19 @@ class Geometry():
             norm=colors.PowerNorm(gamma=gamma)
         )
 
-        divider = make_axes_locatable(ax)
+        divider = make_axes_locatable(axes)
         cax = divider.append_axes('right', size='5%', pad=0.05)
-        ax.get_figure().colorbar(image, cax=cax, orientation='vertical')
+        axes.get_figure().colorbar(image, cax=cax, orientation='vertical')
 
-        ax.set(title='Fiber structure', xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
-        ax.ticklabel_format(axis='both', style='sci', scilimits=(-6, -6), useOffset=False)
+        axes.set(title='Fiber structure', xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
 
-    def plot(self, show_patch: bool = True, show_mesh: bool = True, show: bool = True, gamma: float = 5) -> plt.Figure:
+    @helper.pre_plot(nrows=1, ncols=2, subplot_kw=dict(aspect='equal', xlabel='x-distance [m]', ylabel='y-distance [m]'))
+    def plot(self, axes, gamma: float = 5) -> plt.Figure:
         """
         Plot the different representations (patch and mesh) of the geometry.
 
         Parameters
         ----------
-        show_patch : bool, optional
-            Whether to display the patch representation of the geometry. Default is True.
-        show_mesh : bool, optional
-            Whether to display the mesh (rasterized) representation of the geometry. Default is True.
         show : bool, optional
             Whether to immediately show the plot. Default is True.
         gamma : float, optional
@@ -408,29 +405,10 @@ class Geometry():
         plt.Figure
             The matplotlib figure encompassing all the axes used in the plot.
         """
-        n_ax = bool(show_patch) + bool(show_mesh)
-        unit_size = numpy.array([1, n_ax])
+        axes[0].sharex(axes[1])
+        axes[0].sharey(axes[1])
 
-        with plt.style.context(mps):
-            figure, axes = plt.subplots(
-                *unit_size,
-                figsize=5 * numpy.flip(unit_size),
-                sharex=True,
-                sharey=True,
-                subplot_kw=dict(aspect='equal', xlabel='x-distance [m]', ylabel='y-distance [m]'),
-            )
 
-        axes_iter = iter(axes.flatten())
+        self.plot_patch(axes=axes[0], show=False)
 
-        if show_patch:
-            ax = next(axes_iter)
-            self.plot_patch(ax, show=False)
-
-        if show_mesh:
-            ax = next(axes_iter)
-            self.plot_raster(ax, show=False, gamma=gamma)
-
-        if show:
-            plt.show()
-
-        return figure
+        self.plot_raster(axes=axes[1], show=False, gamma=gamma)

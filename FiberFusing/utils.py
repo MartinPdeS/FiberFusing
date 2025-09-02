@@ -4,6 +4,20 @@ import FiberFusing as ff
 from shapely.ops import unary_union, nearest_points
 import shapely.geometry as geo
 
+
+from pydantic.dataclasses import dataclass
+from pydantic import ConfigDict, field_validator
+from dataclasses import field
+
+
+config_dict = ConfigDict(
+    extra='forbid',
+    strict=True,
+    kw_only=True,
+    arbitrary_types_allowed=True,
+    frozen=False
+)
+
 class NameSpace:
     """
     A flexible class that allows the dynamic addition of attributes via keyword arguments.

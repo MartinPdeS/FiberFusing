@@ -8,10 +8,10 @@ import shapely.geometry as geo
 import matplotlib.pyplot as plt
 from shapely.ops import split
 from shapely import affinity
+from MPSPlots import helper
 
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.plottings import plot_polygon
-from FiberFusing.helper import _plot_helper
 from FiberFusing import geometries
 
 class Polygon(geometries.base_class.Alteration):
@@ -142,8 +142,8 @@ class Polygon(geometries.base_class.Alteration):
         # Points are inside if they are in the exterior but not in any hole
         return exterior_mask & ~hole_mask
 
-    @_plot_helper
-    def plot(self, ax: plt.Axes, **kwargs) -> None:
+    @helper.pre_plot(nrows=1, ncols=1)
+    def plot(self, axes: plt.Axes, **kwargs) -> None:
         """
         Plots the polygon on the given Matplotlib axis.
 
@@ -154,7 +154,7 @@ class Polygon(geometries.base_class.Alteration):
         **kwargs
             Additional keyword arguments passed to the plotting function.
         """
-        plot_polygon(ax=ax, polygon=self._shapely_object, **kwargs)
+        plot_polygon(ax=axes, polygon=self._shapely_object, **kwargs)
 
     def rasterize(self, coordinate_system: CoordinateSystem) -> np.ndarray:
         """

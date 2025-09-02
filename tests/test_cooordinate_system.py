@@ -496,7 +496,6 @@ def test_numerical_precision(fine_resolution_system):
 # PERFORMANCE TESTS
 # =============================================================================
 
-@pytest.mark.slow
 def test_large_grid_creation():
     """Test creation of large grids."""
 

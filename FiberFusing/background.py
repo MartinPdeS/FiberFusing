@@ -3,15 +3,14 @@
 
 from typing import Tuple, Optional
 from pydantic.dataclasses import dataclass
-from pydantic import ConfigDict
 import numpy as np
 
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.helper import OverlayStructureBaseClass
-from FiberFusing.utils import NameSpace
+from FiberFusing.utils import NameSpace, config_dict
+from FiberFusing
 
-
-@dataclass(config=ConfigDict(extra='forbid', kw_only=True))
+@dataclass(config=config_dict)
 class BackGround(OverlayStructureBaseClass):
     """
     Represents a background structure overlayed on a mesh, characterized by a circular shape.

@@ -2,15 +2,17 @@ from .geometry import Geometry  # noqa: F401
 from .geometries import Point, LineString, Polygon, EmptyPolygon  # noqa: F401
 from .shapes import Circle, Square, Ellipse  # noqa: F401
 from .background import BackGround  # noqa: F401
-from pydantic.dataclasses import dataclass
-from pydantic import ConfigDict
-from FiberFusing.graded_index import GradedIndex
 
-from typing import Optional, Tuple
+from pydantic.dataclasses import dataclass
+from typing import Tuple
 import numpy as np
 
 
-@dataclass(config=ConfigDict(extra='forbid', kw_only=True))
+from FiberFusing.graded_index import GradedIndex
+from FiberFusing.utils import config_dict
+
+
+@dataclass(config=config_dict)
 class CircleOpticalStructure:
     """
     Represents a circular optical structure.

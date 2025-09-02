@@ -9,9 +9,10 @@ from shapely.affinity import scale
 import shapely.geometry as geo
 
 from FiberFusing.geometries.base_class import Alteration
-from FiberFusing import geometries
+from FiberFusing.utils import config_dict
+import geometries
 
-@dataclass(config=geometries.config_dict)
+@dataclass(config=config_dict)
 class LineString(Alteration):
     coordinates: Optional[Tuple] = field(default=None, repr=False)
     instance: Optional[geo.LineString] = field(default=None, repr=False)

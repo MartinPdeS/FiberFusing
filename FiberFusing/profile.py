@@ -6,12 +6,14 @@ from typing import Union, Optional, List, Dict, Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 import logging
+from enum import Enum
+from MPSPlots import helper
+
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.shapes.circle import Circle
 from FiberFusing.structures import FiberLine, FiberRing
 from FiberFusing.utils import union_geometries, NameSpace
-from FiberFusing.helper import _plot_helper, OverlayStructureBaseClass
-from enum import Enum
+from FiberFusing.helper import OverlayStructureBaseClass
 
 logging.basicConfig(level=logging.INFO)
 
@@ -439,10 +441,10 @@ class Profile(OverlayStructureBaseClass):
     def added_section(self) -> object:
         return union_geometries(*self.added_section_list)
 
-    @_plot_helper
+    @helper.pre_plot(nrows=1, ncols=1)
     def plot(
             self,
-            ax: plt.Axis = None,
+            axes: plt.Axis,
             show_structure: bool = True,
             show_centers: bool = False,
             show_cores: bool = True,
@@ -468,22 +470,22 @@ class Profile(OverlayStructureBaseClass):
             Whether to show removed sections. Default is True.
         """
         if show_structure:
-            self.clad_structure.plot(ax, show=False)
+            self.clad_structure.plot(axes=axes, show=False)
 
         if show_fibers:
             for fiber in self.fiber_list:
-                fiber.plot(ax, show=False)
+                fiber.plot(axes=axes, show=False)
 
         if show_added:
-            self.added_section.plot(ax=ax, facecolor='green', show=False)
+            self.added_section.plot(axes=axes, facecolor='green', show=False)
 
         if show_removed:
-            self.removed_section.plot(ax=ax, facecolor='red', show=False)
+            self.removed_section.plot(axes=axes, facecolor='red', show=False)
 
         if show_cores:
             for idx, fiber in enumerate(self.fiber_list):
-                fiber.shifted_core.plot(ax, marker='x', size=40, label=f'Core$_{idx}$', show=False)
+                fiber.shifted_core.plot(axes=axes, marker='x', size=40, label=f'Core$_{idx}$', show=False)
 
         if show_centers:
             for idx, fiber in enumerate(self.fiber_list):
-                fiber.center.plot(ax, marker='o', size=40, label=f'Center$_{idx}$', show=False)
+                fiber.center.plot(axes=axes, marker='o', size=40, label=f'Center$_{idx}$', show=False)
