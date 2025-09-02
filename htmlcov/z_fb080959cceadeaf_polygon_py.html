@@ -67,7 +67,7 @@
             <a id="nextFileLink" class="nav" href="z_fb080959cceadeaf_utils_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.10.5">coverage.py v7.10.5</a>,
-            created at 2025-08-27 14:09 +0000
+            created at 2025-09-02 14:14 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -92,10 +92,10 @@
     <p class="run"><span class="n"><a id="t8" href="#t8">8</a></span><span class="t"><span class="key">import</span> <span class="nam">matplotlib</span><span class="op">.</span><span class="nam">pyplot</span> <span class="key">as</span> <span class="nam">plt</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t"><span class="key">from</span> <span class="nam">shapely</span><span class="op">.</span><span class="nam">ops</span> <span class="key">import</span> <span class="nam">split</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t10" href="#t10">10</a></span><span class="t"><span class="key">from</span> <span class="nam">shapely</span> <span class="key">import</span> <span class="nam">affinity</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t11" href="#t11">11</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t12" href="#t12">12</a></span><span class="t"><span class="key">from</span> <span class="nam">FiberFusing</span><span class="op">.</span><span class="nam">coordinate_system</span> <span class="key">import</span> <span class="nam">CoordinateSystem</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t13" href="#t13">13</a></span><span class="t"><span class="key">from</span> <span class="nam">FiberFusing</span><span class="op">.</span><span class="nam">plottings</span> <span class="key">import</span> <span class="nam">plot_polygon</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t14" href="#t14">14</a></span><span class="t"><span class="key">from</span> <span class="nam">FiberFusing</span><span class="op">.</span><span class="nam">helper</span> <span class="key">import</span> <span class="nam">_plot_helper</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t11" href="#t11">11</a></span><span class="t"><span class="key">from</span> <span class="nam">MPSPlots</span> <span class="key">import</span> <span class="nam">helper</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t12" href="#t12">12</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t13" href="#t13">13</a></span><span class="t"><span class="key">from</span> <span class="nam">FiberFusing</span><span class="op">.</span><span class="nam">coordinate_system</span> <span class="key">import</span> <span class="nam">CoordinateSystem</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t14" href="#t14">14</a></span><span class="t"><span class="key">from</span> <span class="nam">FiberFusing</span><span class="op">.</span><span class="nam">plottings</span> <span class="key">import</span> <span class="nam">plot_polygon</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t15" href="#t15">15</a></span><span class="t"><span class="key">from</span> <span class="nam">FiberFusing</span> <span class="key">import</span> <span class="nam">geometries</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t16" href="#t16">16</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t17" href="#t17">17</a></span><span class="t"><span class="key">class</span> <span class="nam">Polygon</span><span class="op">(</span><span class="nam">geometries</span><span class="op">.</span><span class="nam">base_class</span><span class="op">.</span><span class="nam">Alteration</span><span class="op">)</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
@@ -226,8 +226,8 @@
     <p class="pln"><span class="n"><a id="t142" href="#t142">142</a></span><span class="t">        <span class="com"># Points are inside if they are in the exterior but not in any hole</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t143" href="#t143">143</a></span><span class="t">        <span class="key">return</span> <span class="nam">exterior_mask</span> <span class="op">&amp;</span> <span class="op">~</span><span class="nam">hole_mask</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t144" href="#t144">144</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t145" href="#t145">145</a></span><span class="t">    <span class="op">@</span><span class="nam">_plot_helper</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t146" href="#t146">146</a></span><span class="t">    <span class="key">def</span> <span class="nam">plot</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">ax</span><span class="op">:</span> <span class="nam">plt</span><span class="op">.</span><span class="nam">Axes</span><span class="op">,</span> <span class="op">**</span><span class="nam">kwargs</span><span class="op">)</span> <span class="op">-></span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t145" href="#t145">145</a></span><span class="t">    <span class="op">@</span><span class="nam">helper</span><span class="op">.</span><span class="nam">pre_plot</span><span class="op">(</span><span class="nam">nrows</span><span class="op">=</span><span class="num">1</span><span class="op">,</span> <span class="nam">ncols</span><span class="op">=</span><span class="num">1</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t146" href="#t146">146</a></span><span class="t">    <span class="key">def</span> <span class="nam">plot</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">axes</span><span class="op">:</span> <span class="nam">plt</span><span class="op">.</span><span class="nam">Axes</span><span class="op">,</span> <span class="op">**</span><span class="nam">kwargs</span><span class="op">)</span> <span class="op">-></span> <span class="key">None</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t147" href="#t147">147</a></span><span class="t">        <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t148" href="#t148">148</a></span><span class="t"><span class="str">        Plots the polygon on the given Matplotlib axis.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t149" href="#t149">149</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
@@ -238,7 +238,7 @@
     <p class="pln"><span class="n"><a id="t154" href="#t154">154</a></span><span class="t"><span class="str">        **kwargs</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t155" href="#t155">155</a></span><span class="t"><span class="str">            Additional keyword arguments passed to the plotting function.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t156" href="#t156">156</a></span><span class="t"><span class="str">        """</span>&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t157" href="#t157">157</a></span><span class="t">        <span class="nam">plot_polygon</span><span class="op">(</span><span class="nam">ax</span><span class="op">=</span><span class="nam">ax</span><span class="op">,</span> <span class="nam">polygon</span><span class="op">=</span><span class="nam">self</span><span class="op">.</span><span class="nam">_shapely_object</span><span class="op">,</span> <span class="op">**</span><span class="nam">kwargs</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t157" href="#t157">157</a></span><span class="t">        <span class="nam">plot_polygon</span><span class="op">(</span><span class="nam">ax</span><span class="op">=</span><span class="nam">axes</span><span class="op">,</span> <span class="nam">polygon</span><span class="op">=</span><span class="nam">self</span><span class="op">.</span><span class="nam">_shapely_object</span><span class="op">,</span> <span class="op">**</span><span class="nam">kwargs</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t158" href="#t158">158</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t159" href="#t159">159</a></span><span class="t">    <span class="key">def</span> <span class="nam">rasterize</span><span class="op">(</span><span class="nam">self</span><span class="op">,</span> <span class="nam">coordinate_system</span><span class="op">:</span> <span class="nam">CoordinateSystem</span><span class="op">)</span> <span class="op">-></span> <span class="nam">np</span><span class="op">.</span><span class="nam">ndarray</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t160" href="#t160">160</a></span><span class="t">        <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
@@ -583,7 +583,7 @@
             <a class="nav" href="z_fb080959cceadeaf_utils_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
             <a class="nav" href="https://coverage.readthedocs.io/en/7.10.5">coverage.py v7.10.5</a>,
-            created at 2025-08-27 14:09 +0000
+            created at 2025-09-02 14:14 +0000
         </p>
     </div>
 </footer>
