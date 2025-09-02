@@ -17,8 +17,10 @@ from MPSPlots import helper
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.utils import config_dict
 
+
 class DomainAlignment(Enum):
     """Boundary positioning modes."""
+
     AUTO = "auto"
     LEFT = "left"
     RIGHT = "right"
@@ -28,7 +30,7 @@ class DomainAlignment(Enum):
 
 
 @dataclass(config=config_dict)
-class Geometry():
+class Geometry:
     """
     Represents the refractive index (RI) geometric profile including background and fiber structures.
 
@@ -75,28 +77,28 @@ class Geometry():
         """
         self.structure_list.extend(structure)
 
-    @field_validator('resolution')
+    @field_validator("resolution")
     @classmethod
     def validate_resolution(cls, v: int) -> int:
         """Validate resolution is positive."""
         if v <= 0:
-            raise ValueError('Resolution must be positive')
+            raise ValueError("Resolution must be positive")
         return v
 
-    @field_validator('boundary_pad_factor')
+    @field_validator("boundary_pad_factor")
     @classmethod
     def validate_boundary_pad_factor(cls, v: float) -> float:
         """Validate boundary pad factor is positive."""
         if v <= 0:
-            raise ValueError('Boundary pad factor must be positive')
+            raise ValueError("Boundary pad factor must be positive")
         return v
 
-    @field_validator('index_scrambling')
+    @field_validator("index_scrambling")
     @classmethod
     def validate_index_scrambling(cls, v: float) -> float:
         """Validate index scrambling is non-negative."""
         if v < 0:
-            raise ValueError('Index scrambling must be non-negative')
+            raise ValueError("Index scrambling must be non-negative")
         return v
 
     def initialize(self):
@@ -107,7 +109,12 @@ class Geometry():
         x_min, y_min, x_max, y_max = self.get_boundaries()
 
         self.coordinate_system = CoordinateSystem(
-            x_min=x_min, x_max=x_max, y_min=y_min, y_max=y_max, nx=self.resolution, ny=self.resolution
+            x_min=x_min,
+            x_max=x_max,
+            y_min=y_min,
+            y_max=y_max,
+            nx=self.resolution,
+            ny=self.resolution,
         )
 
         self.coordinate_system.center(factor=self.boundary_pad_factor)
@@ -126,14 +133,21 @@ class Geometry():
         x_min, y_min, x_max, y_max = self.get_boundaries()
 
         self.coordinate_system = CoordinateSystem(
-            x_min=x_min, x_max=x_max, y_min=y_min, y_max=y_max, nx=self.resolution, ny=self.resolution
+            x_min=x_min,
+            x_max=x_max,
+            y_min=y_min,
+            y_max=y_max,
+            nx=self.resolution,
+            ny=self.resolution,
         )
         self.coordinate_system.center(factor=self.boundary_pad_factor)
         self.apply_boundary_settings()
 
-    @field_validator('x_bounds')
+    @field_validator("x_bounds")
     @classmethod
-    def validate_x_bounds(cls, v: Union[DomainAlignment, Tuple[float, float]]) -> Union[DomainAlignment, Tuple[float, float]]:
+    def validate_x_bounds(
+        cls, v: Union[DomainAlignment, Tuple[float, float]]
+    ) -> Union[DomainAlignment, Tuple[float, float]]:
         """Validate x_bounds parameter."""
         if isinstance(v, (list, tuple)):
             if len(v) != 2:
@@ -144,9 +158,11 @@ class Geometry():
             raise ValueError("x_bounds must be a tuple or DomainAlignment")
         return v
 
-    @field_validator('y_bounds')
+    @field_validator("y_bounds")
     @classmethod
-    def validate_y_bounds(cls, v: Union[DomainAlignment, Tuple[float, float]]) -> Union[DomainAlignment, Tuple[float, float]]:
+    def validate_y_bounds(
+        cls, v: Union[DomainAlignment, Tuple[float, float]]
+    ) -> Union[DomainAlignment, Tuple[float, float]]:
         """Validate y_bounds parameter."""
         if isinstance(v, (list, tuple)):
             if len(v) != 2:
@@ -159,14 +175,18 @@ class Geometry():
 
     def apply_boundary_settings(self) -> None:
         """Apply boundary settings to coordinate system."""
-        if hasattr(self, 'coordinate_system') and self.coordinate_system is not None:
+        if hasattr(self, "coordinate_system") and self.coordinate_system is not None:
             if isinstance(self.x_bounds, (list, tuple)):
-                self.coordinate_system.x_min, self.coordinate_system.x_max = self.x_bounds
+                self.coordinate_system.x_min, self.coordinate_system.x_max = (
+                    self.x_bounds
+                )
             elif isinstance(self.x_bounds, DomainAlignment):
                 self._apply_x_boundary_mode(self.x_bounds)
 
             if isinstance(self.y_bounds, (list, tuple)):
-                self.coordinate_system.y_min, self.coordinate_system.y_max = self.y_bounds
+                self.coordinate_system.y_min, self.coordinate_system.y_max = (
+                    self.y_bounds
+                )
             elif isinstance(self.y_bounds, DomainAlignment):
                 self._apply_y_boundary_mode(self.y_bounds)
 
@@ -208,10 +228,16 @@ class Geometry():
             The boundaries as (x_min, y_min, x_max, y_max).
 
         """
-        filtered_structures = [obj for obj in self.structure_list if not isinstance(obj, FiberFusing.background.BackGround)]
+        filtered_structures = [
+            obj
+            for obj in self.structure_list
+            if not isinstance(obj, FiberFusing.background.BackGround)
+        ]
 
         if len(filtered_structures) == 0:
-            raise ValueError('No structures provided (other than background) for computing the mesh.')
+            raise ValueError(
+                "No structures provided (other than background) for computing the mesh."
+            )
 
         x_min, y_min, x_max, y_max = zip(
             *(obj.get_structure_max_min_boundaries() for obj in filtered_structures)
@@ -228,7 +254,11 @@ class Geometry():
         float
             Maximum refractive index.
         """
-        return max(refractive_index for obj in self.structure_list for refractive_index in obj.refractive_index_list)
+        return max(
+            refractive_index
+            for obj in self.structure_list
+            for refractive_index in obj.refractive_index_list
+        )
 
     @property
     def refractive_index_minimum(self) -> float:
@@ -240,7 +270,12 @@ class Geometry():
         float
             Minimum refractive index.
         """
-        return min(refractive_index for obj in self.structure_list if not isinstance(obj, FiberFusing.background.BackGround) for refractive_index in obj.refractive_index_list)
+        return min(
+            refractive_index
+            for obj in self.structure_list
+            if not isinstance(obj, FiberFusing.background.BackGround)
+            for refractive_index in obj.refractive_index_list
+        )
 
     def get_index_range(self) -> List[float]:
         """
@@ -278,7 +313,12 @@ class Geometry():
         """
         for fiber in self.fiber_list:
             for structure in fiber.inner_structure:
-                adjustment = structure.refractive_index * self.refractive_index_scrambling * numpy.random.rand() * random_factor
+                adjustment = (
+                    structure.refractive_index
+                    * self.refractive_index_scrambling
+                    * numpy.random.rand()
+                    * random_factor
+                )
                 structure.refractive_index += adjustment
 
         self.mesh = self.generate_mesh()
@@ -300,7 +340,9 @@ class Geometry():
         mesh = numpy.zeros(self.coordinate_system.shape)
 
         for structure in self.structure_list:
-            structure.overlay_structures_on_mesh(mesh=mesh, coordinate_system=self.coordinate_system)
+            structure.overlay_structures_on_mesh(
+                mesh=mesh, coordinate_system=self.coordinate_system
+            )
 
         return mesh
 
@@ -318,8 +360,10 @@ class Geometry():
         AttributeError
             If the coordinate system has not been generated before calling this method.
         """
-        if not hasattr(self, 'coordinate_system'):
-            raise AttributeError("Coordinate system has not been generated. Call generate_coordinate_system() first.")
+        if not hasattr(self, "coordinate_system"):
+            raise AttributeError(
+                "Coordinate system has not been generated. Call generate_coordinate_system() first."
+            )
 
         mesh = self.rasterize_polygons()
 
@@ -349,12 +393,21 @@ class Geometry():
                 continue
 
             if isinstance(structure, FiberFusing.profile.Profile):
-                structure.plot(axes=axes, show=False, show_added=False, show_removed=False, show_centers=False, show_fibers=True)
+                structure.plot(
+                    axes=axes,
+                    show=False,
+                    show_added=False,
+                    show_removed=False,
+                    show_centers=False,
+                    show_fibers=True,
+                )
                 continue
 
             structure.plot(axes=axes, show=False)
 
-        axes.set(title='Fiber structure', xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
+        axes.set(
+            title="Fiber structure", xlabel=r"x-distance [m]", ylabel=r"y-distance [m]"
+        )
 
     @helper.pre_plot(nrows=1, ncols=1)
     def plot_raster(self, axes: plt.Axes, gamma: float = 5) -> None:
@@ -378,17 +431,25 @@ class Geometry():
             self.coordinate_system.x_vector,
             self.coordinate_system.y_vector,
             self.mesh,
-            cmap='Blues',
-            norm=colors.PowerNorm(gamma=gamma)
+            cmap="Blues",
+            norm=colors.PowerNorm(gamma=gamma),
         )
 
         divider = make_axes_locatable(axes)
-        cax = divider.append_axes('right', size='5%', pad=0.05)
-        axes.get_figure().colorbar(image, cax=cax, orientation='vertical')
+        cax = divider.append_axes("right", size="5%", pad=0.05)
+        axes.get_figure().colorbar(image, cax=cax, orientation="vertical")
 
-        axes.set(title='Fiber structure', xlabel=r'x-distance [m]', ylabel=r'y-distance [m]')
+        axes.set(
+            title="Fiber structure", xlabel=r"x-distance [m]", ylabel=r"y-distance [m]"
+        )
 
-    @helper.pre_plot(nrows=1, ncols=2, subplot_kw=dict(aspect='equal', xlabel='x-distance [m]', ylabel='y-distance [m]'))
+    @helper.pre_plot(
+        nrows=1,
+        ncols=2,
+        subplot_kw=dict(
+            aspect="equal", xlabel="x-distance [m]", ylabel="y-distance [m]"
+        ),
+    )
     def plot(self, axes, gamma: float = 5) -> plt.Figure:
         """
         Plot the different representations (patch and mesh) of the geometry.
@@ -407,7 +468,6 @@ class Geometry():
         """
         axes[0].sharex(axes[1])
         axes[0].sharey(axes[1])
-
 
         self.plot_patch(axes=axes[0], show=False)
 
