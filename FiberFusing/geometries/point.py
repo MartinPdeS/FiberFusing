@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 # Built-in imports
-from typing import Optional, Tuple, Self
+from typing import Optional, Tuple, Self, List
 import numpy
 from pydantic.dataclasses import dataclass
 import shapely.geometry as geo
@@ -14,7 +14,7 @@ from FiberFusing.utils import config_dict
 
 @dataclass(config=config_dict)
 class Point(geometries.base_class.Alteration):
-    position: Optional[Tuple[float, float]] = None
+    position: Tuple[float, float] | List[float] | None = None
     instance: Optional[geo.Point] = None
     index: Optional[float] = None
 

@@ -8,7 +8,7 @@ import numpy as np
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.helper import OverlayStructureBaseClass
 from FiberFusing.utils import NameSpace, config_dict
-from FiberFusing
+
 
 @dataclass(config=config_dict)
 class BackGround(OverlayStructureBaseClass):

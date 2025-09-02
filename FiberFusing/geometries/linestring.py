@@ -10,7 +10,7 @@ import shapely.geometry as geo
 
 from FiberFusing.geometries.base_class import Alteration
 from FiberFusing.utils import config_dict
-import geometries
+from FiberFusing import geometries
 
 @dataclass(config=config_dict)
 class LineString(Alteration):

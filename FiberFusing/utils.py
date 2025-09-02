@@ -3,20 +3,17 @@ from itertools import combinations
 import FiberFusing as ff
 from shapely.ops import unary_union, nearest_points
 import shapely.geometry as geo
-
-
-from pydantic.dataclasses import dataclass
-from pydantic import ConfigDict, field_validator
-from dataclasses import field
+from pydantic import ConfigDict
 
 
 config_dict = ConfigDict(
     extra='forbid',
-    strict=True,
+    strict=False,
     kw_only=True,
     arbitrary_types_allowed=True,
     frozen=False
 )
+
 
 class NameSpace:
     """
