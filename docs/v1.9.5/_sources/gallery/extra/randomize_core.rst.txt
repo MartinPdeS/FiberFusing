@@ -91,7 +91,7 @@ Effect of core randomization
     INFO:root:Starting core position optimization...
     INFO:root:Optimization successful: cost=9.11e-17
 
-    <FiberFusing.profile.Profile object at 0x7f8bd70ed190>
+    <FiberFusing.profile.Profile object at 0x7f67afb60d50>
 
 
 
@@ -107,7 +107,7 @@ Effect of core randomization
 
 
 .. image-sg:: /gallery/extra/images/sphx_glr_randomize_core_001.png
-   :alt: Fiber structure
+   :alt: randomize core
    :srcset: /gallery/extra/images/sphx_glr_randomize_core_001.png
    :class: sphx-glr-single-img
 
@@ -117,7 +117,7 @@ Effect of core randomization
  .. code-block:: none
 
 
-    <Axes: title={'center': 'Fiber structure'}, xlabel='x-distance [m]', ylabel='y-distance [m]'>
+    <Figure size 800x500 with 1 Axes>
 
 
 
@@ -133,7 +133,7 @@ Effect of core randomization
 
 
 .. image-sg:: /gallery/extra/images/sphx_glr_randomize_core_002.png
-   :alt: Fiber structure
+   :alt: randomize core
    :srcset: /gallery/extra/images/sphx_glr_randomize_core_002.png
    :class: sphx-glr-single-img
 
@@ -144,7 +144,7 @@ Effect of core randomization
 
     INFO:root:Randomizing core positions.
 
-    <Axes: title={'center': 'Fiber structure'}, xlabel='x-distance [m]', ylabel='y-distance [m]'>
+    <Figure size 800x500 with 1 Axes>
 
 
 
@@ -159,7 +159,7 @@ Effect of core randomization
 
 
 .. image-sg:: /gallery/extra/images/sphx_glr_randomize_core_003.png
-   :alt: Fiber structure
+   :alt: randomize core
    :srcset: /gallery/extra/images/sphx_glr_randomize_core_003.png
    :class: sphx-glr-single-img
 
@@ -170,14 +170,14 @@ Effect of core randomization
 
     INFO:root:Randomizing core positions.
 
-    <Axes: title={'center': 'Fiber structure'}, xlabel='x-distance [m]', ylabel='y-distance [m]'>
+    <Figure size 800x500 with 1 Axes>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.657 seconds)
+   **Total running time of the script:** (0 minutes 1.668 seconds)
 
 
 .. _sphx_glr_download_gallery_extra_randomize_core.py:

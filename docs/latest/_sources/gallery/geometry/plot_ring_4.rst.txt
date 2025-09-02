@@ -32,7 +32,7 @@ This script demonstrates how to create and visualize a 4x4 ring geometry using t
     *
 
       .. image-sg:: /gallery/geometry/images/sphx_glr_plot_ring_4_001.png
-         :alt: Fiber structure
+         :alt: plot ring 4
          :srcset: /gallery/geometry/images/sphx_glr_plot_ring_4_001.png
          :class: sphx-glr-multi-img
 
@@ -49,7 +49,7 @@ This script demonstrates how to create and visualize a 4x4 ring geometry using t
  .. code-block:: none
 
 
-    <Figure size 1000x500 with 3 Axes>
+    <Figure size 800x500 with 3 Axes>
 
 
 
@@ -109,7 +109,7 @@ This script demonstrates how to create and visualize a 4x4 ring geometry using t
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.254 seconds)
+   **Total running time of the script:** (0 minutes 4.685 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_ring_4.py:

@@ -22,7 +22,7 @@
 =================================
 This script demonstrates how to create and visualize a 3x3 ring geometry using the FiberFusing library.
 
-.. GENERATED FROM PYTHON SOURCE LINES 6-48
+.. GENERATED FROM PYTHON SOURCE LINES 6-52
 
 
 
@@ -37,7 +37,7 @@ This script demonstrates how to create and visualize a 3x3 ring geometry using t
  .. code-block:: none
 
 
-    <Figure size 1000x500 with 3 Axes>
+    <Figure size 800x500 with 3 Axes>
 
 
 
@@ -62,16 +62,20 @@ This script demonstrates how to create and visualize a 3x3 ring geometry using t
         structure_type=StructureType.CIRCULAR,
         number_of_fibers=3,
         fusion_degree=0.4,
-        fiber_radius=62.5e-6
+        fiber_radius=62.5e-6,
     )
 
-    profile.refractive_index = 1.4444  # Refractive index of silica at the specified wavelength
+    profile.refractive_index = (
+        1.4444  # Refractive index of silica at the specified wavelength
+    )
 
 
     # Load fibers (e.g., SMF-28) positioned at the cores of the profile structure
     fiber_loader = FiberLoader()
     fibers = [
-        fiber_loader.load_fiber('SMF28', clad_refractive_index=profile.refractive_index, position=core_position)
+        fiber_loader.load_fiber(
+            "SMF28", clad_refractive_index=profile.refractive_index, position=core_position
+        )
         for core_position in profile.cores
     ]
 
@@ -79,7 +83,7 @@ This script demonstrates how to create and visualize a 3x3 ring geometry using t
     geometry = Geometry(
         x_bounds=DomainAlignment.CENTERING,
         y_bounds=DomainAlignment.CENTERING,
-        resolution=350
+        resolution=350,
     )
 
     # Add the fibers to the geometry
@@ -88,12 +92,12 @@ This script demonstrates how to create and visualize a 3x3 ring geometry using t
     geometry.initialize()
 
     # Plot the resulting geometry
-    geometry.plot(show_patch=True)
+    geometry.plot()
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 3.749 seconds)
+   **Total running time of the script:** (0 minutes 3.996 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_ring_3.py:

@@ -44,7 +44,7 @@ Effect of translation
 
 
 .. image-sg:: /gallery/extra/images/sphx_glr_structure_shift_001.png
-   :alt: Fiber structure
+   :alt: structure shift
    :srcset: /gallery/extra/images/sphx_glr_structure_shift_001.png
    :class: sphx-glr-single-img
 
@@ -54,7 +54,7 @@ Effect of translation
  .. code-block:: none
 
 
-    <Axes: title={'center': 'Fiber structure'}, xlabel='x-distance [m]', ylabel='y-distance [m]'>
+    <Figure size 800x500 with 1 Axes>
 
 
 
@@ -70,7 +70,7 @@ Effect of translation
 
 
 .. image-sg:: /gallery/extra/images/sphx_glr_structure_shift_002.png
-   :alt: Fiber structure
+   :alt: structure shift
    :srcset: /gallery/extra/images/sphx_glr_structure_shift_002.png
    :class: sphx-glr-single-img
 
@@ -80,7 +80,7 @@ Effect of translation
  .. code-block:: none
 
 
-    <Axes: title={'center': 'Fiber structure'}, xlabel='x-distance [m]', ylabel='y-distance [m]'>
+    <Figure size 800x500 with 1 Axes>
 
 
 
@@ -95,7 +95,7 @@ Effect of translation
 
 
 .. image-sg:: /gallery/extra/images/sphx_glr_structure_shift_003.png
-   :alt: Fiber structure
+   :alt: structure shift
    :srcset: /gallery/extra/images/sphx_glr_structure_shift_003.png
    :class: sphx-glr-single-img
 
@@ -105,14 +105,14 @@ Effect of translation
  .. code-block:: none
 
 
-    <Axes: title={'center': 'Fiber structure'}, xlabel='x-distance [m]', ylabel='y-distance [m]'>
+    <Figure size 800x500 with 1 Axes>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.247 seconds)
+   **Total running time of the script:** (0 minutes 2.353 seconds)
 
 
 .. _sphx_glr_download_gallery_extra_structure_shift.py:

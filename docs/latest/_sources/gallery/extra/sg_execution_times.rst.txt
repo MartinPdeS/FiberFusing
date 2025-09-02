@@ -6,7 +6,7 @@
 
 Computation times
 =================
-**00:05.003** total execution time for 5 files **from gallery/extra**:
+**00:05.012** total execution time for 5 files **from gallery/extra**:
 
 .. container::
 
@@ -33,17 +33,17 @@ Computation times
      - Time
      - Mem (MB)
    * - :ref:`sphx_glr_gallery_extra_structure_shift.py` (``structure_shift.py``)
-     - 00:02.247
+     - 00:02.353
      - 0.0
    * - :ref:`sphx_glr_gallery_extra_randomize_core.py` (``randomize_core.py``)
-     - 00:01.657
+     - 00:01.668
      - 0.0
    * - :ref:`sphx_glr_gallery_extra_loading_fiber.py` (``loading_fiber.py``)
-     - 00:00.472
+     - 00:00.371
      - 0.0
    * - :ref:`sphx_glr_gallery_extra_custom_graded_index_fiber.py` (``custom_graded_index_fiber.py``)
-     - 00:00.347
+     - 00:00.345
      - 0.0
    * - :ref:`sphx_glr_gallery_extra_custom_step_index_fiber.py` (``custom_step_index_fiber.py``)
-     - 00:00.280
+     - 00:00.275
      - 0.0
