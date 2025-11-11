@@ -62,27 +62,3 @@ documentation = [
     "sphinx-rtd-theme >=2,<4",
     "pydata-sphinx-theme ~=0.15"
 ]
-
-[tool.pytest.ini_options]
-minversion = "6.0"
-xfail_strict = true
-log_cli_level = "INFO"
-testpaths = ["tests"]
-addopts = [
-    '-v',
-    '-rA',
-    '-rw',
-    '--cov=FiberFusing',
-    '--cov-report=html',
-    "--cov-report=term"
-]
-
-[tool.coverage.run]
-source = ['FiberFusing']
-omit = [
-    '*\__init__.py',
-    '*/_version.py',
-    '*/directories.py',
-]
-branch = true
-relative_files = true
