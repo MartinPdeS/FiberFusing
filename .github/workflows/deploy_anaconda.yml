@@ -1,3 +1,5 @@
+name: Deploy Conda Packages
+
 on:
   push:
     branches: [ "master" ]
