@@ -25,7 +25,7 @@
 | FiberFusing/shapes/square.py                       |       16 |        6 |        2 |        0 |     55.56% |     39-53 |
 | FiberFusing/structures.py                          |       65 |        2 |        8 |        1 |     95.89% |   52, 223 |
 | FiberFusing/utils.py                               |       34 |        6 |        6 |        2 |     80.00% |68, 90, 111-112, 129-131 |
-|                                          **TOTAL** | **1611** |  **217** |  **374** |   **72** | **82.62%** |           |
+| **TOTAL**                                          | **1611** |  **217** |  **374** |   **72** | **82.62%** |           |
 
 3 files skipped due to complete coverage.
 
