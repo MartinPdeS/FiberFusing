@@ -9,6 +9,10 @@ Explore our gallery of examples demonstrating the usage of FiberFusing. These ex
 
 
 
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
+
 
 .. raw:: html
 
@@ -26,6 +30,10 @@ Explore our gallery of examples demonstrating the usage of FiberFusing. These ex
 Extra Examples
 ==============
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
 
 
 .. raw:: html
@@ -129,6 +137,10 @@ Extra Examples
 Geometry Examples
 =================
 
+
+.. raw:: html
+
+  <div id='sg-tag-list' class='sphx-glr-tag-list'></div>
 
 
 .. raw:: html

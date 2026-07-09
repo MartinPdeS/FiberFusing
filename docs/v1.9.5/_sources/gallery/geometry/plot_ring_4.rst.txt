@@ -49,7 +49,7 @@ This script demonstrates how to create and visualize a 4x4 ring geometry using t
  .. code-block:: none
 
 
-    <Figure size 800x500 with 3 Axes>
+    <Figure size 640x480 with 3 Axes>
 
 
 
@@ -109,7 +109,7 @@ This script demonstrates how to create and visualize a 4x4 ring geometry using t
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 4.684 seconds)
+   **Total running time of the script:** (0 minutes 4.629 seconds)
 
 
 .. _sphx_glr_download_gallery_geometry_plot_ring_4.py:
