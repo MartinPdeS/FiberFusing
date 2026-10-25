@@ -38,12 +38,12 @@ def test_randomize_core_position():
         fiber_radius=62.5e-6
     )
 
-    profile.randomize_core_positions(random_factor=4e-6)
+    profile.randomize_core_positions(random_factor=4e-6, seed=42)
 
     assert len(profile.fiber_list) == 5
     for fiber in profile.fiber_list:
         assert fiber.shifted_core is not None
-        assert fiber.center != fiber.core
+        assert fiber.shifted_core.distance(fiber.core) > 0
 
 def test_rotate_profile():
     """Test the rotation of a profile structure.

@@ -1,4 +1,5 @@
 import logging
+import numpy as np
 from scipy.optimize import minimize_scalar
 from itertools import combinations
 from FiberFusing.connection.connection import Connection
@@ -92,6 +93,7 @@ class ConnectionOptimization:
         virtual_shift : float
             The shift value for the virtual circles.
         """
+        self._added_section = self._removed_section = None
         self.virtual_shift = virtual_shift
         topology = self.get_overall_topology()
         for connection in self.connected_fibers:
@@ -132,7 +134,7 @@ class ConnectionOptimization:
         float
             The total removed area.
         """
-        disconnected_area = len(self.fiber_list) * self.fiber_list[0].area
+        disconnected_area = sum(fiber.area for fiber in self.fiber_list)
         connected_area = utils.union_geometries(*self.fiber_list).area
         return disconnected_area - connected_area
 
@@ -140,6 +142,7 @@ class ConnectionOptimization:
         """
         Initializes the connections between pairs of fibers in the structure.
         """
+        self._added_section = self._removed_section = None
         self.connected_fibers = [Connection(f0, f1) for f0, f1 in self.iterate_over_connected_fibers()]
 
     def get_overall_topology(self) -> str:
@@ -206,12 +209,18 @@ class ConnectionOptimization:
         core_distance = self.connected_fibers[0].distance_between_cores
         bounds = (0, core_distance * 1e3) if bounds is None else bounds
 
+        if np.shape(bounds) != (2,) or not np.all(np.isfinite(bounds)) or not 0 <= bounds[0] < bounds[1]:
+            raise ValueError("bounds must be finite, nonnegative, and strictly increasing.")
+
         result = minimize_scalar(
             self.get_cost_value,
             bounds=bounds,
             method='bounded',
             options={'xatol': core_distance * self.tolerance_factor}
         )
+        if not result.success or not np.isfinite(result.x) or not np.isfinite(result.fun):
+            raise RuntimeError(f"Fusion optimization failed: {result.message}")
+        self.shift_connections(result.x)
         return result.x
 
     def compute_optimal_structure(self, bounds: tuple = None) -> None:
@@ -224,8 +233,14 @@ class ConnectionOptimization:
             The boundaries for the virtual shift.
         """
         logging.info("Computing the optimal structure geometry")
-        self.find_optimal_virtual_shift(bounds)
+        shift = self.find_optimal_virtual_shift(bounds)
+        self.shift_connections(shift)
         self._clad_structure = self.compute_shifted_geometry()
+        if not self._clad_structure._shapely_object.is_valid or not np.isfinite(self._clad_structure.area):
+            raise RuntimeError("Fusion optimization produced invalid geometry.")
+        target_area = sum(fiber.area for fiber in self.fiber_list)
+        self.area_residual = abs(self._clad_structure.area - target_area)
+        self.relative_area_residual = self.area_residual / target_area
         self.optimize_core_positions()
 
     def compute_shifted_geometry(self) -> Polygon:

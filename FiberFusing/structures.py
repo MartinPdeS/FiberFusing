@@ -1,5 +1,6 @@
 import numpy
 from dataclasses import dataclass
+from numbers import Integral, Real
 
 
 from FiberFusing.shapes.circle import Circle
@@ -26,6 +27,17 @@ class FiberStructureBaseClass:
     connected_fibers : list
         List of connected fiber objects during fusion.
     """
+
+    def _validate_parameters(self):
+        if not isinstance(self.number_of_fibers, Integral) or isinstance(self.number_of_fibers, bool) or self.number_of_fibers < 1:
+            raise ValueError("number_of_fibers must be a positive integer.")
+        for name in ('fiber_radius', 'tolerance_factor'):
+            value = getattr(self, name)
+            if not isinstance(value, Real) or not numpy.isfinite(value) or value <= 0:
+                raise ValueError(f"{name} must be finite and positive.")
+        angle = getattr(self, 'rotation_angle', getattr(self, 'angle_shift', 0))
+        if not isinstance(angle, Real) or not numpy.isfinite(angle):
+            raise ValueError("The rotation angle must be finite.")
 
     @property
     def fused_structure(self):
@@ -72,6 +84,8 @@ class FiberStructureBaseClass:
         float
             The calculated scaling factor based on the fusion degree.
         """
+        if not numpy.isscalar(fusion_degree) or not numpy.isfinite(fusion_degree) or not 0 <= fusion_degree <= 1:
+            raise ValueError("fusion_degree must be finite and within [0, 1].")
         factor = 1 - fusion_degree * (2 - numpy.sqrt(2))
         distance_between_cores = 2 * self.fiber_radius * factor
         scaling_factor = distance_between_cores / (2 * self.fiber_radius)
@@ -155,6 +169,7 @@ class FiberLine(ConnectionOptimization, FiberStructureBaseClass):
     tolerance_factor: float = 1e-10
 
     def __post_init__(self):
+        self._validate_parameters()
         core_positions = self.compute_unfused_positions()
 
         self.compute_fiber_list(centers=core_positions)
@@ -215,6 +230,7 @@ class FiberRing(ConnectionOptimization, FiberStructureBaseClass):
         """
         Initialize the fiber ring by computing the angle list and core positions.
         """
+        self._validate_parameters()
         self.angle_list = numpy.linspace(0, 360, self.number_of_fibers, endpoint=False)
         self.angle_list += self.angle_shift
         if len(self.angle_list) > 1:
@@ -236,6 +252,8 @@ class FiberRing(ConnectionOptimization, FiberStructureBaseClass):
             If "not-fused", the distance is calculated based on the fiber radius and angle.
             If a float, it specifies the distance from the center to the first core.
         """
+        if self.number_of_fibers == 1:
+            return [ff.Point(position=(0, 0))]
         factor = numpy.sqrt(2 / (1 - numpy.cos(numpy.deg2rad(self.delta_angle))))
 
         distance_from_center = factor * self.fiber_radius

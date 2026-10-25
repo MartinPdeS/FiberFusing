@@ -6,6 +6,8 @@ from typing import Union, Optional, List, Dict, Tuple
 import matplotlib.pyplot as plt
 import numpy as np
 import logging
+import copy
+from numbers import Real
 from enum import Enum
 from FiberFusing.plottings import plotting
 
@@ -54,30 +56,36 @@ class Profile(OverlayStructureBaseClass):
         self.structure_list = []
         self.removed_section_list = []
         self.added_section_list = []
+        self._assemblies = []
 
-    def randomize_core_positions(self, random_factor: float = 0) -> "Profile":
-        """
-        Randomize the position of fiber cores to simulate real-world imperfections.
+    def randomize_core_positions(self, random_factor: float = 0, *, seed: int | None = None, rng: np.random.Generator | None = None) -> "Profile":
+        """Perturb nominal cores without modifying them.
 
         Parameters
         ----------
-        random_factor : float, optional
-            Factor determining the randomness in position. Default is 0.
+        random_factor : float
+            Maximum absolute displacement per coordinate, in the geometry units.
+        seed : int, optional
+            Seed for a new NumPy generator. Mutually exclusive with ``rng``.
+        rng : numpy.random.Generator, optional
+            Generator to use for independent uniform shifts in [-factor, factor].
 
         Returns
         -------
         Profile
-            The updated Profile instance.
+            This profile. A zero factor leaves existing shifted cores unchanged.
         """
+        if not isinstance(random_factor, Real) or not np.isfinite(random_factor) or random_factor < 0:
+            raise ValueError("random_factor must be finite and nonnegative.")
+        if seed is not None and rng is not None:
+            raise ValueError("Pass either seed or rng, not both.")
+        if rng is not None and not isinstance(rng, np.random.Generator):
+            raise TypeError("rng must be a NumPy Generator.")
+        generator = np.random.default_rng(seed) if rng is None else rng
         if random_factor == 0:
             return self
-
-        logging.info("Randomizing core positions.")
         for fiber in self.fiber_list:
-            fiber.shifted_core = fiber.core
-            random_shift = np.random.rand(2) * random_factor
-            fiber.shifted_core.translate(random_shift, in_place=True)
-
+            fiber.shifted_core = fiber.core.translate(generator.uniform(-random_factor, random_factor, 2))
         return self
 
     @property
@@ -87,20 +95,13 @@ class Profile(OverlayStructureBaseClass):
     @fusion_degree.setter
     def fusion_degree(self, value: float | str) -> None:
         if isinstance(value, str) and value.lower() == 'auto':
-            if self.fusion_range is not None:
-                value = 0.8
-                self._fusion_degree = value
-                self.parametrized_fusion_degree = self.fusion_range[0] * (1 - value) + value * self.fusion_range[-1]
-            else:
-                self._fusion_degree = self.parametrized_fusion_degree = None
-
-        elif np.isscalar(value):
-            assert 0 <= value <= 1, f"Fusion degree [{value}] must be within the range [0, 1]."
-            self._fusion_degree = value
-            self.parametrized_fusion_degree = self.fusion_range[0] * (1 - value) + value * self.fusion_range[-1]
-
-        else:
-            f"Input for fusion_degree [{value}] is invalid."
+            value = 0.8
+        if not isinstance(value, Real) or not np.isfinite(value) or not 0 <= value <= 1:
+            raise ValueError("fusion_degree must be finite and within [0, 1], or 'auto'.")
+        fusion_range = getattr(self, 'fusion_range', (0, 1))
+        parametrized = None if fusion_range is None else fusion_range[0] * (1 - value) + value * fusion_range[-1]
+        self._fusion_degree = value
+        self.parametrized_fusion_degree = parametrized
 
         self._initialize_parameters()
 
@@ -183,6 +184,7 @@ class Profile(OverlayStructureBaseClass):
 
         self.structure_list.append(fiber)
         self.fiber_list.append(fiber)
+        self._clad_structure = None
 
         return self
 
@@ -251,8 +253,6 @@ class Profile(OverlayStructureBaseClass):
         structure.shift_position(shift=position_shift)
         structure.initialize_cores()
 
-        self.fiber_list.extend(structure.fiber_list)
-
         if fusion_degree is not None:
             structure.init_connected_fibers()
             structure.compute_optimal_structure()
@@ -262,6 +262,9 @@ class Profile(OverlayStructureBaseClass):
         else:
             self.structure_list.append(structure.unfused_structure)
 
+        self.fiber_list.extend(structure.fiber_list)
+        self._assemblies.append((len(self.structure_list) - 1, structure, fusion_degree is not None))
+        self._clad_structure = None
         return self
 
     def add_structure(
@@ -300,6 +303,16 @@ class Profile(OverlayStructureBaseClass):
             The updated Profile instance.
         """
 
+        if not isinstance(number_of_fibers, int) or isinstance(number_of_fibers, bool) or number_of_fibers < 1:
+            raise ValueError("number_of_fibers must be a positive integer.")
+        if not np.isfinite(fiber_radius) or fiber_radius <= 0:
+            raise ValueError("fiber_radius must be finite and positive.")
+        if fusion_degree is not None and (not isinstance(fusion_degree, Real) or not np.isfinite(fusion_degree) or not 0 <= fusion_degree <= 1):
+            raise ValueError("fusion_degree must be finite and within [0, 1].")
+        if not np.isfinite(scale_position) or scale_position <= 0:
+            raise ValueError("scale_position must be finite and positive.")
+        if np.shape(position_shift) != (2,) or not np.all(np.isfinite(position_shift)) or not np.isfinite(angle_shift):
+            raise ValueError("Positions and angles must be finite.")
         match structure_type:
             case StructureType.CIRCULAR:
                 structure = FiberRing(
@@ -331,7 +344,14 @@ class Profile(OverlayStructureBaseClass):
         fibers : variable
             Custom fiber objects to be added.
         """
+        if any(not isinstance(fiber, Circle) for fiber in fibers):
+            raise TypeError("Custom fibers must be Circle instances.")
+        for fiber in fibers:
+            if not hasattr(fiber, 'shifted_core'):
+                fiber.shifted_core = fiber.core.copy()
         self.fiber_list.extend(fibers)
+        self.structure_list.extend(fibers)
+        self._clad_structure = None
 
     @property
     def cores(self) -> List:
@@ -373,50 +393,33 @@ class Profile(OverlayStructureBaseClass):
         Profile
             The updated Profile instance.
         """
-        for fiber in self.fiber_list:
-            fiber.rotate(angle, in_place=True)
-            fiber.core.rotate(angle, in_place=True)
-            fiber.shifted_core.rotate(angle, in_place=True)
-            fiber.center.rotate(angle, in_place=True)
+        if not np.isfinite(angle):
+            raise ValueError("angle must be finite.")
+        return self._transform('rotate', angle)
 
-        self.clad_structure.rotate(angle, in_place=True)
-
-        for element in self.removed_section_list:
-            element.rotate(angle, in_place=True)
-
-        for element in self.added_section_list:
-            element.rotate(angle, in_place=True)
-
+    def _transform(self, method, value):
+        objects = self.fiber_list + self.structure_list + self.removed_section_list + self.added_section_list
+        objects += [point for fiber in self.fiber_list for point in (fiber.core, fiber.shifted_core)]
+        seen = set()
+        for element in objects:
+            if id(element) not in seen:
+                getattr(element, method)(value, in_place=True)
+                seen.add(id(element))
+        self._clad_structure = None
         return self
 
     def translate(self, shift: Tuple[float, float]) -> "Profile":
-        """
-        Translate the entire structure, including fiber cores.
-
-        Returns
-        -------
-        Profile
-            The updated Profile instance.
-        """
-        for fiber in self.fiber_list:
-            fiber.translate(shift, in_place=True)
-            fiber.core.translate(shift, in_place=True)
-            fiber.shifted_core.translate(shift, in_place=True)
-            fiber.center.translate(shift, in_place=True)
-
-        self.clad_structure.translate(shift, in_place=True)
-
-        for element in self.removed_section_list:
-            element.translate(shift, in_place=True)
-
-        for element in self.added_section_list:
-            element.translate(shift, in_place=True)
-
-        return self
+        """Translate the geometry and cores by a finite two-coordinate shift."""
+        if np.shape(shift) != (2,) or not np.all(np.isfinite(shift)):
+            raise ValueError("shift must contain two finite coordinates.")
+        return self._transform('translate', shift)
 
     def scale_position(self, factor: float) -> "Profile":
         """
-        Scale the positions of fibers in the structure.
+        Scale fiber positions while keeping radii fixed and recomputing fusion.
+
+        Fused cores are reoptimized, resetting randomized offsets. The profile
+        remains unchanged if recomputation fails.
 
         Parameters
         ----------
@@ -428,10 +431,42 @@ class Profile(OverlayStructureBaseClass):
         Profile
             The updated Profile instance.
         """
-        for fiber in self.fiber_list:
+        if not np.isfinite(factor) or factor <= 0:
+            raise ValueError("factor must be finite and positive.")
+        candidate = copy.deepcopy(self)
+        for fiber in candidate.fiber_list:
+            shift = ((factor - 1) * fiber.center.x, (factor - 1) * fiber.center.y)
             fiber.scale_position(factor=factor)
-
+            fiber.shifted_core.translate(shift, in_place=True)
+        candidate.removed_section_list = []
+        candidate.added_section_list = []
+        for index, structure, fused in candidate._assemblies:
+            if fused:
+                structure.initialize_cores()
+                structure.init_connected_fibers()
+                structure.compute_optimal_structure()
+                candidate.structure_list[index] = structure.fused_structure
+                candidate.removed_section_list.append(structure.removed_section)
+                candidate.added_section_list.append(structure.added_section)
+            else:
+                candidate.structure_list[index] = structure.unfused_structure
+        candidate._clad_structure = None
+        self.__dict__.update(candidate.__dict__)
         return self
+
+    @property
+    def fusion_diagnostics(self) -> tuple[dict[str, float], ...]:
+        """Return per-fused-assembly absolute and relative polygon-area residuals.
+
+        Absolute residuals use squared geometry units; relative residuals divide
+        by the sum of the original fiber polygon areas. Values describe the last
+        successful optimization, not analytical-circle discretization error.
+        """
+        return tuple(
+            {'area_residual': structure.area_residual,
+             'relative_area_residual': structure.relative_area_residual}
+            for _, structure, fused in self._assemblies if fused
+        )
 
     @property
     def removed_section(self) -> object:

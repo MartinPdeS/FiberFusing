@@ -380,14 +380,15 @@ class Connection:
             options={'xatol': tolerance}
         )
 
-        if result.success:
+        if result.success and np.isfinite(result.x) and np.isfinite(result.fun):
+            self._compute_area_mismatch_cost(result.x)
             logging.info(f"Optimization successful: cost={result.fun:.2e}")
             # Apply optimized shifts
             if self.core_shift:
                 self.fiber0.shifted_core += self.core_shift[0]
                 self.fiber1.shifted_core += self.core_shift[1]
         else:
-            logging.warning(f"Optimization failed: {result.message}")
+            raise RuntimeError(f"Core optimization failed: {result.message}")
 
     def _compute_area_mismatch_cost(self, x: float) -> float:
         """

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import math
 from typing import Optional
 from pydantic.dataclasses import dataclass
 
@@ -43,16 +44,20 @@ class Ellipse(Polygon):
         - The position is interpreted and converted to a `shapely` point.
         """
         self.position = interpret_to_point(self.position)
+        if not all(math.isfinite(value) for value in (self.position.x, self.position.y)):
+            raise ValueError("Position coordinates must be finite.")
+        if self.resolution is None or self.resolution < 1:
+            raise ValueError("resolution must be a positive integer.")
 
         # Validate radius and ratio
-        if self.radius <= 0:
+        if not math.isfinite(self.radius) or self.radius <= 0:
             raise ValueError("Radius must be a positive value.")
-        if self.ratio <= 0:
+        if not math.isfinite(self.ratio) or self.ratio <= 0:
             raise ValueError("Ratio must be a positive value.")
 
         ellipse = self.position._shapely_object.buffer(
             self.radius,
-            resolution=self.resolution
+            quad_segs=self.resolution
         )
 
         # Scale the ellipse according to the ratio

@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import math
 from typing import Tuple, Optional
 from pydantic.dataclasses import dataclass
 
@@ -39,15 +40,19 @@ class Circle(Polygon):
         - The position is interpreted and converted to a `shapely` point.
         """
         self.position = interpret_to_point(self.position)
+        if not all(math.isfinite(value) for value in (self.position.x, self.position.y)):
+            raise ValueError("Position coordinates must be finite.")
+        if self.resolution is None or self.resolution < 1:
+            raise ValueError("resolution must be a positive integer.")
 
         # Validate radius
-        if self.radius <= 0:
+        if not math.isfinite(self.radius) or self.radius <= 0:
             raise ValueError("Radius must be a positive value.")
 
         # Create a circular geometry using buffer
         circle = self.position._shapely_object.buffer(
             self.radius,
-            resolution=self.resolution
+            quad_segs=self.resolution
         )
 
         self._shapely_object = circle
