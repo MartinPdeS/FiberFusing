@@ -1,0 +1,5 @@
+Tool: built-in image_gen
+Reference: branding/option-c/logo.png
+Transparent background: true
+
+Refine the attached FiberFusing logo, preserving the exact horizontal composition, seven-core fused-fiber emblem, emblem shape and proportions, and the clean geometric sans-serif typography. Make the title more engaging with a deliberate TWO-COLOR wordmark: 'Fiber' in the emblem's deep midnight navy and 'Fusing' in the emblem's vivid warm coral. Exact text 'FiberFusing', one continuous word, no space. Preserve the existing icon on the left: six peripheral coral circles and one central coral circle inside the continuous navy six-lobed silhouette. Improve edge cleanliness and optical spacing subtly for a polished professional scientific software identity, but do not redesign the emblem or add decorative elements. Flat crisp solid colors, no gradients, no shadows, no glow, no outlines around text, no tagline, no mockup. Generous clear margins, genuine transparent background, no checkerboard baked into the pixels.

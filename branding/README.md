@@ -28,3 +28,11 @@ including favicons displayed at 16, 32, and 64 pixels.
 ## C: Hex bundle
 
 ![Hex bundle logo](option-c/logo.png)
+
+## C: two-color refinement
+
+Selected-concept refinement: navy Fiber, coral Fusing, unchanged seven-core motif.
+
+![Two-color wordmark](option-c/logo-two-color.png)
+
+[Generation prompt](option-c/logo-two-color.prompt.txt). Original candidates are preserved.
