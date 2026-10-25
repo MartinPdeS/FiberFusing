@@ -10,10 +10,10 @@
 | FiberFusing/coordinate\_system.py                  |      246 |       18 |       60 |       10 |     88.89% |82-\>86, 92-\>96, 112, 114, 256, 270, 438-445, 471, 522-525, 649, 693, 793 |
 | FiberFusing/fiber/generic\_fiber.py                |      150 |       42 |       44 |        7 |     68.56% |40, 55-56, 61, 71, 88, 100-111, 156, 162, 210, 240-\>239, 257-258, 322-324, 393, 397-\>403, 400-401, 436-462, 480-481, 566, 584-592 |
 | FiberFusing/fiber/loader.py                        |       66 |        5 |       22 |        5 |     88.64% |39, 63, 159-\>162, 205, 229-230 |
-| FiberFusing/geometries/base\_class.py              |       42 |        2 |        0 |        0 |     95.24% |    52, 64 |
-| FiberFusing/geometries/linestring.py               |       69 |        6 |        6 |        2 |     89.33% |26, 32, 44, 67, 107-108 |
-| FiberFusing/geometries/point.py                    |       41 |        5 |        2 |        1 |     86.05% |26, 54-55, 86, 92 |
-| FiberFusing/geometries/polygon.py                  |      140 |       15 |       32 |        8 |     84.30% |73, 82, 105-106, 110, 179-180, 230, 242, 278, 360-362, 383, 449-\>451, 476 |
+| FiberFusing/geometries/base\_class.py              |       43 |        2 |        0 |        0 |     95.35% |    53, 65 |
+| FiberFusing/geometries/linestring.py               |       70 |        6 |        6 |        2 |     89.47% |27, 33, 45, 68, 108-109 |
+| FiberFusing/geometries/point.py                    |       42 |        5 |        2 |        1 |     86.36% |27, 55-56, 87, 93 |
+| FiberFusing/geometries/polygon.py                  |      141 |       15 |       32 |        8 |     84.39% |74, 83, 106-107, 111, 180-181, 231, 243, 279, 361-363, 384, 450-\>452, 477 |
 | FiberFusing/geometries/utils.py                    |       22 |        1 |       12 |        2 |     91.18% |51-\>46, 57 |
 | FiberFusing/geometry.py                            |      178 |       36 |       68 |       15 |     74.39% |85, 92-94, 100-102, 133-144, 154, 156, 158, 169, 171, 173, 178-\>exit, 183-\>186, 190-\>exit, 202-205, 216-219, 238, 257, 273, 289, 314-324, 364, 371 |
 | FiberFusing/helper.py                              |       13 |        1 |        4 |        1 |     88.24% |        21 |
@@ -25,7 +25,7 @@
 | FiberFusing/shapes/square.py                       |       16 |        6 |        2 |        0 |     55.56% |     39-53 |
 | FiberFusing/structures.py                          |       65 |        2 |        8 |        1 |     95.89% |   52, 223 |
 | FiberFusing/utils.py                               |       34 |        6 |        6 |        2 |     80.00% |68, 90, 111-112, 129-131 |
-| **TOTAL**                                          | **1611** |  **217** |  **374** |   **72** | **82.62%** |           |
+| **TOTAL**                                          | **1615** |  **217** |  **374** |   **72** | **82.65%** |           |
 
 3 files skipped due to complete coverage.
 
