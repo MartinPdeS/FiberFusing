@@ -13,19 +13,19 @@
 | FiberFusing/geometries/base\_class.py              |       43 |        2 |        0 |        0 |     95.35% |    53, 65 |
 | FiberFusing/geometries/linestring.py               |       70 |        6 |        6 |        2 |     89.47% |27, 33, 45, 68, 108-109 |
 | FiberFusing/geometries/point.py                    |       42 |        5 |        2 |        1 |     86.36% |27, 55-56, 87, 93 |
-| FiberFusing/geometries/polygon.py                  |      141 |       15 |       32 |        8 |     84.39% |74, 83, 106-107, 111, 180-181, 231, 243, 279, 361-363, 384, 450-\>452, 477 |
+| FiberFusing/geometries/polygon.py                  |      140 |       15 |       32 |        8 |     84.30% |73, 82, 105-106, 110, 179-180, 230, 242, 278, 360-362, 383, 449-\>451, 476 |
 | FiberFusing/geometries/utils.py                    |       22 |        1 |       12 |        2 |     91.18% |51-\>46, 57 |
 | FiberFusing/geometry.py                            |      178 |       36 |       68 |       15 |     74.39% |85, 92-94, 100-102, 133-144, 154, 156, 158, 169, 171, 173, 178-\>exit, 183-\>186, 190-\>exit, 202-205, 216-219, 238, 257, 273, 289, 314-324, 364, 371 |
 | FiberFusing/helper.py                              |       13 |        1 |        4 |        1 |     88.24% |        21 |
 | FiberFusing/optical\_structure.py                  |       23 |        6 |        0 |        0 |     73.91% |59, 77-79, 90-91 |
-| FiberFusing/plottings.py                           |       21 |        1 |        8 |        1 |     93.10% |        40 |
+| FiberFusing/plottings.py                           |       66 |        7 |       38 |        8 |     85.58% |49, 109, 112, 122, 124, 128, 130, 131-\>133 |
 | FiberFusing/profile.py                             |      161 |       31 |       52 |        7 |     78.40% |73, 85, 89-105, 131, 181-187, 203, 219, 247-\>250, 263, 315-316, 334, 338, 349, 365, 472-\>475, 485-\>489, 490-491 |
 | FiberFusing/shapes/circle.py                       |       16 |        1 |        2 |        1 |     88.89% |        45 |
 | FiberFusing/shapes/ellipse.py                      |       20 |        9 |        4 |        0 |     45.83% |     45-67 |
 | FiberFusing/shapes/square.py                       |       16 |        6 |        2 |        0 |     55.56% |     39-53 |
 | FiberFusing/structures.py                          |       65 |        2 |        8 |        1 |     95.89% |   52, 223 |
 | FiberFusing/utils.py                               |       34 |        6 |        6 |        2 |     80.00% |68, 90, 111-112, 129-131 |
-| **TOTAL**                                          | **1615** |  **217** |  **374** |   **72** | **82.65%** |           |
+| **TOTAL**                                          | **1659** |  **223** |  **404** |   **79** | **82.65%** |           |
 
 3 files skipped due to complete coverage.
 
