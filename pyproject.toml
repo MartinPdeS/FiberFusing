@@ -1,11 +1,11 @@
 [build-system]
-requires = ["setuptools>=40.8.0", "wheel", "setuptools_scm[toml]>=8.0"]
+requires = ["setuptools>=77", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "FiberFusing"
-dynamic = ["version"]
-description = "A package fiber fusing configuration simulating the transverse fusion of fiber optics."
+version = "1.9.5"
+description = "Parametrized fused-fiber cross-sections and refractive-index meshes."
 license = {file = "LICENSE"}
 readme = "README.rst"
 requires-python = ">=3.10"
@@ -13,8 +13,11 @@ authors = [{ name="Martin Poinsinet de Sivry-Houle", email="martin.poinsinet.de.
 classifiers = [
     'Programming Language :: Python',
     'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.10',
     'Programming Language :: Python :: 3.11',
     'Programming Language :: Python :: 3.12',
+    'Programming Language :: Python :: 3.13',
+    'Programming Language :: Python :: 3.14',
     'Programming Language :: Python :: Implementation :: CPython',
     'Development Status :: 4 - Beta',
     'Topic :: Scientific/Engineering :: Physics',
@@ -29,8 +32,9 @@ keywords = [
 
 dependencies = [
     "pyyaml",
-    "pydantic",
+    "pydantic>=2,<3",
     "scipy",
+    "matplotlib>=3.8,<4",
     "numpy",
     "shapely >=2.0",
     "MPSPlots",
@@ -41,13 +45,11 @@ Homepage = "https://github.com/MartinPdeS/FiberFusing"
 Documentation = "https://martinpdes.github.io/FiberFusing/"
 Repository = "https://github.com/MartinPdeS/FiberFusing.git"
 
-[tool.setuptools_scm]
-write_to = "FiberFusing/_version.py"
-version_scheme = "only-version"
-local_scheme = "no-local-version"
-
 [project.optional-dependencies]
+release = ["martinpdes-maintenance==0.2.2"]
+dev = ["ruff==0.17.2", "build>=1,<2", "twine>=6,<7"]
 testing = [
+    "tomli>=2; python_version < '3.11'",
     "pytest >=7.4,<10.0",
     "pytest-cov >=2,<7",
     "pytest-json-report ~=1.5",
@@ -55,10 +57,23 @@ testing = [
     "coverage ~=7.6"
 ]
 
-documentation = [
-    "numpydoc ~=1.8",
-    "sphinx >=6",
-    "sphinx-gallery ~=0.17",
-    "sphinx-rtd-theme >=2,<4",
-    "pydata-sphinx-theme ~=0.15"
-]
+documentation = ["MartinPdeS-docs>=0.3.2,<0.4"]
+
+[tool.setuptools.packages.find]
+include = ["FiberFusing", "FiberFusing.*"]
+
+[tool.setuptools.package-data]
+FiberFusing = ["fiber/fiber_files/*.yaml"]
+
+[tool.ruff]
+target-version = "py310"
+line-length = 100
+extend-exclude = ["FiberFusing/_version.py", "docs/source/gallery", "build"]
+
+[tool.ruff.lint]
+select = ["E9", "F63", "F7", "F82"]
+
+[tool.mps-maintenance]
+version-file = "FiberFusing/_version.py"
+version-method = "literal"
+conda-recipe = "conda.recipe/meta.yaml"

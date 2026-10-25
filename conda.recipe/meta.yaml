@@ -1,0 +1,54 @@
+package:
+  name: fiberfusing
+  version: 1.9.5
+
+source:
+  path: ..
+
+build:
+  noarch: python
+  number: 0
+  script: "{{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation"
+
+requirements:
+  host:
+    - python {{ PY_VER }}*
+    - setuptools >=77
+    - wheel
+    - pip
+  run:
+    - python >=3.10
+    - pyyaml
+    - pydantic >=2,<3
+    - scipy
+    - matplotlib >=3.8,<4
+    - numpy
+    - shapely >=2.0
+    - martinpdes::mpsplots
+
+test:
+  imports:
+    - FiberFusing
+  requires:
+    - pytest >=7.4,<10
+    - pytest-cov >=2,<7
+    - pytest-json-report ~=1.5
+    - coverage >=7.6,<8
+  commands:
+    - python -m pytest --import-mode=importlib --config-file=pytest.ini tests
+  source_files:
+    - tests
+    - pytest.ini
+    - .coveragerc
+
+about:
+  home: https://github.com/MartinPdeS/FiberFusing
+  license: MIT
+  license_file: LICENSE
+  summary: Parametrized fused-fiber cross-sections and refractive-index meshes.
+  dev_url: https://github.com/MartinPdeS/FiberFusing
+  doc_url: https://martinpdes.github.io/FiberFusing/docs/latest/
+
+extra:
+  recipe-maintainers:
+    - MartinPdeS

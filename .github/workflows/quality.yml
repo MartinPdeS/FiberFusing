@@ -1,0 +1,16 @@
+name: Quality
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+permissions:
+  contents: read
+jobs:
+  quality:
+    uses: MartinPdeS/MPSActions/.github/workflows/run_quality.yml@v2
+    with:
+      install-command: python -m pip install -e ".[dev,release]"
+      quality-command: |
+        python -m ruff check FiberFusing tests
+        python -m martinpdes_maintenance.cli check

@@ -1,38 +1,16 @@
-
-# Ignore all
-/*
-
-# Except ...
-!.github
-!.gitmodules
-!extern
-!FiberFusing
-!development
-!docs
-!tests
-!.flake8
-!.gitignore
-!.pre-commit-config.yaml
-!LICENSE
-!meta.yaml
-!pyproject.toml
-!README.rst
-!notebook.ipynb
-!CMakeLists.txt
-!pytest.ini
-!.coveragerc
-
-# But ignore docs/build inside docs and code
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+build/
+dist/
+.pytest_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.DS_Store
 docs/build/
 docs/source/gallery/
-
-# Compiled files in the project
-*__pycache__*
-*.DS_Store*
-*.so*
-*.a*
-*.cmake
-*CMakeFiles*
-*Makefile*
-
-# Package specifics
+docs/source/sg_execution_times.rst

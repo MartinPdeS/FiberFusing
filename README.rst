@@ -79,7 +79,7 @@ As follows, an example of 3x3 fused fiber.
 
 Documentation
 **************
-For the most up-to-date documentation, visit the official `FiberFusing Docs <https://martinpdes.github.io/FiberFusing/latest/>`_ or click the badge below:
+For the most up-to-date documentation, visit the official `FiberFusing Docs <https://martinpdes.github.io/FiberFusing/docs/latest/>`_ or click the badge below:
 
 |docs|
 
@@ -105,16 +105,18 @@ To run tests locally after cloning the GitHub repository, you’ll need to insta
 
     git clone https://github.com/MartinPdeS/FiberFusing.git
     cd FiberFusing
-    pip install FiberFusing[testing]
-    pytest
+    python -m pip install -e ".[testing,dev,release]"
+    MPLBACKEND=Agg python -m pytest
 
-For more detailed testing instructions, consult the documentation.
+See ``CONTRIBUTING.md`` for documentation builds, installed-package checks, and
+release commands. Versions are explicit and releases use the shared
+``martinpdes-maintenance`` tool.
 
 ----
 
 Coding examples
 ***************
-Explore a wide range of examples demonstrating the usage of FiberFusing in the `Examples section <https://martinpdes.github.io/FiberFusing/gallery/index.html>`_ of the documentation.
+Explore a wide range of examples demonstrating the usage of FiberFusing in the `Examples section <https://martinpdes.github.io/FiberFusing/docs/latest/gallery/index.html>`_ of the documentation.
 
 ----
 
@@ -152,8 +154,8 @@ We welcome feedback and contributions to improve FiberFusing and expand its capa
    :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/FiberFusing/blob/python-coverage-comment-action-data/htmlcov/index.html
    :alt: Unittest coverage
 
-.. |ci/cd| image:: https://github.com/martinpdes/fiberfusing/actions/workflows/deploy_coverage.yml/badge.svg
-   :target: https://martinpdes.github.io/FiberFusing/actions
+.. |ci/cd| image:: https://github.com/martinpdes/fiberfusing/actions/workflows/tests.yml/badge.svg
+   :target: https://github.com/MartinPdeS/FiberFusing/actions
    :alt: Unittest Status
 
 .. |anaconda_download| image:: https://anaconda.org/martinpdes/fiberfusing/badges/downloads.svg

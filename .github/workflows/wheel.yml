@@ -1,0 +1,16 @@
+name: Package smoke test
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+permissions:
+  contents: read
+jobs:
+  package:
+    uses: MartinPdeS/MPSActions/.github/workflows/build_pure_package.yml@v2
+    with:
+      python_version: "3.11"
+      test_import: FiberFusing
+      test_command: "python -c 'from FiberFusing.fiber import FiberLoader; FiberLoader().load_fiber(fiber_name=\"SMF28\", clad_refractive_index=1.4444)'"
+      artifact_identity: wheels-pure

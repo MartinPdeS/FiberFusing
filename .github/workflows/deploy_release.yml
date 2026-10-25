@@ -1,0 +1,32 @@
+name: Publish release
+on:
+  push:
+    tags: ["v*"]
+permissions:
+  contents: read
+jobs:
+  release:
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    uses: MartinPdeS/MPSActions/.github/workflows/publish_release.yml@v2
+    with:
+      release_validation_command: |
+        python -m pip install "martinpdes-maintenance==0.2.2"
+        python -m martinpdes_maintenance.cli check --version "${GITHUB_REF_NAME}"
+      documentation: true
+      documentation_package_name: FiberFusing
+      documentation_python_version: "3.11"
+      documentation_retain_versions: 5
+      pypi_package_type: pure
+      pypi_python_version: "3.11"
+      pypi_test_command: "python -c 'from FiberFusing.fiber import FiberLoader; FiberLoader().load_fiber(fiber_name=\"SMF28\", clad_refractive_index=1.4444)'"
+      conda_python_versions: '["3.11"]'
+      conda_os_list: '["ubuntu-latest"]'
+      conda_package_name: fiberfusing
+      conda_recipe_path: conda.recipe
+      conda_test_import: FiberFusing
+    secrets:
+      PYPI_API_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+      ANACONDA_API_TOKEN: ${{ secrets.ANACONDA_API_TOKEN }}

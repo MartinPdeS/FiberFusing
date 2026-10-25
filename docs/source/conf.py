@@ -1,175 +1,54 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+"""Shared Sphinx configuration for FiberFusing."""
 
-import sys
-import os
-from sphinx_gallery.sorting import FileNameSortKey
-from MPSPlots.styles import use_mpsplots_style
 from pathlib import Path
-import FiberFusing
-from FiberFusing.directories import doc_css_path
+
+from martinpdes_docs import configure
 
 
-package_name = "FiberFusing"
-version = FiberFusing.__version__
+docs_source = Path(__file__).resolve().parent
 
-current_dir = Path(".")
+globals().update(
+    configure(
+        project="FiberFusing",
+        package="FiberFusing",
+        repository="MartinPdeS/FiberFusing",
+        logo="_static/thumbnail.png",
+        favicon="_static/thumbnail.png",
+        gallery_default_thumb=str(docs_source / "_static" / "thumbnail.png"),
+        gallery_options={
+            "examples_dirs": "../examples",
+            "gallery_dirs": "gallery",
+            "abort_on_example_error": True,
+            "capture_repr": (),
+        },
+    )
+)
 
-sys.path.append(str(current_dir.resolve()))
+
+def document_wrapped_plots(app, what, name, obj, options, lines):
+    """Render original NumPy docstrings before processing plotting wrappers.
+
+    MPSPlots appends an indented docstring fragment to decorated methods. Its
+    section headings are not valid reStructuredText in that position. Keep the
+    original method documentation and document the wrapper options as a note.
+    """
+    import inspect
+
+    if name.startswith("FiberFusing.") and hasattr(obj, "__wrapped__"):
+        original = inspect.getdoc(inspect.unwrap(obj))
+        if original:
+            lines[:] = original.splitlines()
+            lines.extend(
+                [
+                    "",
+                    ".. note::",
+                    "   Plotting wrappers also accept ``show``, ``save_as``,",
+                    "   ``figure_size``, ``tight_layout``, ``axes``, ``xscale``,",
+                    "   ``yscale``, ``xlim``, ``ylim``, and ``style`` options.",
+                ]
+            )
 
 
 def setup(app):
-    app.add_css_file(str(doc_css_path))
-
-
-autodoc_mock_imports = [
-    'numpy',
-    'matplotlib',
-    'numpydoc',
-]
-
-
-project = package_name
-copyright = '2024, Martin Poinsinet de Sivry-Houle'
-author = 'Martin Poinsinet de Sivry-Houle'
-
-extensions = [
-    'sphinx.ext.mathjax',
-    'sphinx_gallery.gen_gallery',
-    'sphinx.ext.autodoc',
-    'sphinx.ext.napoleon',
-    'sphinx.ext.viewcode',
-    'sphinx.ext.autosectionlabel',
-    'sphinx.ext.intersphinx',
-]
-
-# Napoleon settings for docstrings
-napoleon_google_docstring = False
-napoleon_numpy_docstring = True
-
-html_logo = "_static/thumbnail.png"
-html_favicon = "_static/thumbnail.png"
-
-
-def reset_mpl(gallery_conf, fname):
-    use_mpsplots_style()
-
-
-sphinx_gallery_conf = {
-    'examples_dirs': ['../examples'],
-    'gallery_dirs': ['gallery'],
-    'image_scrapers': ('matplotlib'),
-    'ignore_pattern': '/__',
-    'filename_pattern': r'.*\.py',
-    'plot_gallery': True,
-    'thumbnail_size': [600, 600],
-    'download_all_examples': False,
-    'reset_modules': reset_mpl,
-    'line_numbers': False,
-    'remove_config_comments': True,
-    'capture_repr': ('_repr_html_', '__repr__'),
-    'nested_sections': True,
-    'within_subsection_order': FileNameSortKey,
-}
-
-
-autodoc_default_options = {
-    'members': False,
-    'members-order': 'bysource',
-    'undoc-members': False,
-    'show-inheritance': True,
-}
-
-autosectionlabel_prefix_document = True
-numpydoc_show_class_members = False
-add_module_names = False
-
-source_suffix = '.rst'
-master_doc = 'index'
-language = 'en'
-highlight_language = 'python3'
-html_theme = "pydata_sphinx_theme"
-
-# -- Options for HTML output -------------------------------------------------
-# https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
-
-exclude_trees = []
-# default_role = "autolink"
-pygments_style = "sphinx"
-
-# -- Sphinx-gallery configuration --------------------------------------------
-major, minor = version[:2]
-binder_branch = f"v{major}.{minor}.x"
-
-html_theme_options = dict()
-
-html_theme_options['logo'] = dict(text=package_name, image="_static/thumbnail.png")
-html_theme_options["show_nav_level"] = 0
-
-html_theme_options.update({
-    "icon_links": [
-        {
-            "name": "GitHub",
-            "url": f"https://github.com/MartinPdeS/{package_name}",
-            "icon": "fa-brands fa-github",
-        },
-        {
-            "name": "PyPI",
-            "url": f"https://pypi.org/project/{package_name}/",
-            "icon": "fa-solid fa-box",
-        },
-        {
-            "name": "Anaconda",
-            "url": f"https://anaconda.org/MartinPdeS/{package_name}",
-            "icon": "fa-brands fa-python",
-        },
-    ],
-    "navbar_align": "left",
-    "navbar_end": ["version-switcher", "navbar-icon-links"],
-    "show_prev_next": False,
-    "show_version_warning_banner": True,
-    # Footer
-    "footer_start": ["copyright"],
-    "footer_end": ["sphinx-version", "theme-version"],
-    # Other
-    "pygments_light_style": "default",
-    "pygments_dark_style": "github-dark",
-}
-)
-
-current_version = os.getenv("tag", "latest")
-
-html_theme_options["switcher"] = dict(
-    json_url=f"https://raw.githubusercontent.com/MartinPdeS/{package_name}/documentation_page/version_switcher.json",
-    version_match=current_version,
-)
-
-htmlhelp_basename = f'{package_name}doc'
-
-latex_elements = {}
-
-
-latex_documents = [
-    (master_doc, f'{package_name}.tex', f'{package_name} Documentation',
-     'Martin Poinsinet de Sivry-Houle', 'manual'),
-]
-
-man_pages = [
-    (master_doc, 'supymode', f'{package_name} Documentation',
-     [author], 1)
-]
-
-texinfo_documents = [
-    (master_doc, package_name, f'{package_name} Documentation',
-     author, package_name, 'One line description of project.',
-     'Miscellaneous'),
-]
-
-epub_title = project
-
-html_static_path = ['_static']
-templates_path = ['_templates']
-html_css_files = ['default.css']
-epub_exclude_files = ['search.html']
-
-# -
+    """Normalize decorated plotting documentation before NumPy doc processing."""
+    app.connect("autodoc-process-docstring", document_wrapped_plots, priority=100)
