@@ -54,7 +54,7 @@ testing = [
     "pytest-cov >=2,<7",
     "pytest-json-report ~=1.5",
     "flake8 ==7.3.0",
-    "coverage ~=7.6"
+    "coverage ~=7.16"
 ]
 
 documentation = ["MartinPdeS-docs>=0.3.2,<0.4"]
