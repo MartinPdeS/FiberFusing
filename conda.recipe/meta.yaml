@@ -1,6 +1,6 @@
 package:
   name: fiberfusing
-  version: "1.9.6"
+  version: "1.9.7"
 
 source:
   path: ..
