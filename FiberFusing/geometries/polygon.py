@@ -9,10 +9,9 @@ import shapely.geometry as geo
 import matplotlib.pyplot as plt
 from shapely.ops import split
 from shapely import affinity
-from MPSPlots import helper
 
 from FiberFusing.coordinate_system import CoordinateSystem
-from FiberFusing.plottings import plot_polygon
+from FiberFusing.plottings import plot_polygon, plotting
 from FiberFusing import geometries
 
 class Polygon(geometries.base_class.Alteration):
@@ -143,7 +142,7 @@ class Polygon(geometries.base_class.Alteration):
         # Points are inside if they are in the exterior but not in any hole
         return exterior_mask & ~hole_mask
 
-    @helper.pre_plot(nrows=1, ncols=1)
+    @plotting(nrows=1, ncols=1)
     def plot(self, axes: plt.Axes, **kwargs) -> None:
         """
         Plots the polygon on the given Matplotlib axis.

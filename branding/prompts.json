@@ -1,0 +1,30 @@
+{
+  "tool": "built-in image_gen",
+  "status": "candidates awaiting user selection",
+  "options": {
+    "a": {
+      "name": "Trefoil",
+      "logo": "Create a polished scientific Python software LOGO for FiberFusing. Option A 'Trefoil'. A continuous rounded triangular fused-fiber cross-section with THREE circular cores in a triangular arrangement; teal and cobalt blue, minimal precise geometry. Horizontal lockup: geometric symbol left, exact word 'FiberFusing' right in refined readable geometric sans serif, dark navy lettering. The symbol represents transverse cross-sectional geometry of fused optical fibers, NOT a flame, cable plug, or DNA. Flat vector-like rendering as a crisp raster asset, restrained palette, no gradients or shadows, generous clear space, transparent background, no extra words, no mockups, no border. Professional photonics research software branding.",
+      "icon": "Create a standalone square application ICON from the symbol in this reference FiberFusing logo. Preserve precisely the same concept, lobe/core count and palette. Remove all lettering. Center the symbol, filling about 80 percent of a square canvas. Crisp flat graphic, no textures or gradients, no shadows, no border, transparent background. This is a matching companion asset, not a redesign.",
+      "favicon": "Create a standalone square FAVICON from the symbol in this reference FiberFusing logo. Preserve the same concept, lobe/core count and palette, simplify the mark for clear recognition at 16 and 32 pixel display sizes. No text. Strong flat shapes with substantial spacing between core dots, centered filling 85 percent of a square canvas. No texture, gradients, shadows or border; transparent background. Matching companion asset, not a redesign.",
+      "reference": "option-a/logo.png",
+      "transparent_background": true
+    },
+    "b": {
+      "name": "Fusion seam",
+      "logo": "Create a polished scientific Python software LOGO for FiberFusing. Option B 'Fusion seam'. TWO round optical-fiber cross-sections smoothly joined across a narrow central neck, each with a small circular core; deep violet and warm amber, elegant minimal geometry. Horizontal lockup: geometric symbol left, exact word 'FiberFusing' right in refined readable geometric sans serif, dark navy lettering. The symbol represents transverse cross-sectional geometry of fused optical fibers, NOT a flame, cable plug, or DNA. Flat vector-like rendering as a crisp raster asset, restrained palette, no gradients or shadows, generous clear space, transparent background, no extra words, no mockups, no border. Professional photonics research software branding.",
+      "icon": "Create a standalone square application ICON from the symbol in this reference FiberFusing logo. Preserve precisely the same concept, lobe/core count and palette. Remove all lettering. Center the symbol, filling about 80 percent of a square canvas. Crisp flat graphic, no textures or gradients, no shadows, no border, transparent background. This is a matching companion asset, not a redesign.",
+      "favicon": "Create a standalone square FAVICON from the symbol in this reference FiberFusing logo. Preserve the same concept, lobe/core count and palette, simplify the mark for clear recognition at 16 and 32 pixel display sizes. No text. Strong flat shapes with substantial spacing between core dots, centered filling 85 percent of a square canvas. No texture, gradients, shadows or border; transparent background. Matching companion asset, not a redesign.",
+      "reference": "option-b/logo.png",
+      "transparent_background": true
+    },
+    "c": {
+      "name": "Hex bundle",
+      "logo": "Create a polished scientific Python software LOGO for FiberFusing. Option C 'Hex bundle'. A compact six-lobed fused optical-fiber bundle surrounding a central core, seven small circular cores in a hexagonal arrangement; coral and midnight blue, bold clean geometry. Horizontal lockup: geometric symbol left, exact word 'FiberFusing' right in refined readable geometric sans serif, dark navy lettering. The symbol represents transverse cross-sectional geometry of fused optical fibers, NOT a flame, cable plug, or DNA. Flat vector-like rendering as a crisp raster asset, restrained palette, no gradients or shadows, generous clear space, transparent background, no extra words, no mockups, no border. Professional photonics research software branding.",
+      "icon": "Create a standalone square application ICON from the symbol in this reference FiberFusing logo. Preserve precisely the same concept, lobe/core count and palette. Remove all lettering. Center the symbol, filling about 80 percent of a square canvas. Crisp flat graphic, no textures or gradients, no shadows, no border, transparent background. This is a matching companion asset, not a redesign.",
+      "favicon": "Create a standalone square FAVICON from the symbol in this reference FiberFusing logo. Preserve the same concept, lobe/core count and palette, simplify the mark for clear recognition at 16 and 32 pixel display sizes. No text. Strong flat shapes with substantial spacing between core dots, centered filling 85 percent of a square canvas. No texture, gradients, shadows or border; transparent background. Matching companion asset, not a redesign.",
+      "reference": "option-c/logo.png",
+      "transparent_background": true
+    }
+  }
+}

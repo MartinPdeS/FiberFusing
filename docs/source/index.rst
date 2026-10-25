@@ -9,5 +9,6 @@
 
     theory
     code
+    plotting
     gallery/index
     references

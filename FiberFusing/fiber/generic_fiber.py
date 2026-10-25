@@ -6,7 +6,7 @@ import numpy
 import pprint
 from copy import deepcopy
 import matplotlib.pyplot as plt
-from MPSPlots import helper
+from FiberFusing.plottings import plotting
 
 from FiberFusing import Circle, CircleOpticalStructure
 from FiberFusing.geometries.point import Point
@@ -508,7 +508,7 @@ class GenericFiber():
             coordinate_system=coordinate_system
         )
 
-    @helper.pre_plot(nrows=1, ncols=1)
+    @plotting(nrows=1, ncols=1)
     def plot(self, axes: plt.Axes = None) -> None:
         """
         Plot the fiber geometry representation including patch and raster-mesh.
@@ -565,7 +565,7 @@ class GenericFiber():
         """
         return self.get_structure_max_min_boundaries()
 
-    @helper.pre_plot(nrows=1, ncols=1)
+    @plotting(nrows=1, ncols=1)
     def plot_raster(self, axes: plt.Axes, coordinate_system) -> None:
         """
         Render the rasterized representation of the geometry onto a given matplotlib axis.

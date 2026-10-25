@@ -11,7 +11,7 @@ import matplotlib.colors as colors
 from mpl_toolkits.axes_grid1 import make_axes_locatable
 from pydantic import field_validator
 from pydantic.dataclasses import dataclass
-from MPSPlots import helper
+from FiberFusing.plottings import plotting
 
 
 from FiberFusing.coordinate_system import CoordinateSystem
@@ -372,7 +372,7 @@ class Geometry:
 
         return mesh
 
-    @helper.pre_plot(nrows=1, ncols=1)
+    @plotting(nrows=1, ncols=1)
     def plot_patch(self, axes: plt.Axes) -> None:
         """
         Render the patch representation of the geometry onto a given matplotlib axis.
@@ -409,7 +409,7 @@ class Geometry:
             title="Fiber structure", xlabel=r"x-distance [m]", ylabel=r"y-distance [m]"
         )
 
-    @helper.pre_plot(nrows=1, ncols=1)
+    @plotting(nrows=1, ncols=1)
     def plot_raster(self, axes: plt.Axes, gamma: float = 5) -> None:
         """
         Render the rasterized representation of the geometry onto a given matplotlib axis.
@@ -443,7 +443,7 @@ class Geometry:
             title="Fiber structure", xlabel=r"x-distance [m]", ylabel=r"y-distance [m]"
         )
 
-    @helper.pre_plot(
+    @plotting(
         nrows=1,
         ncols=2,
         subplot_kw=dict(

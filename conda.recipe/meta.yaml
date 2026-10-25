@@ -25,7 +25,6 @@ requirements:
     - matplotlib >=3.8,<4
     - numpy
     - shapely >=2.0
-    - martinpdes::mpsplots
 
 test:
   imports:

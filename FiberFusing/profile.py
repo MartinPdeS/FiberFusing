@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import logging
 from enum import Enum
-from MPSPlots import helper
+from FiberFusing.plottings import plotting
 
 from FiberFusing.coordinate_system import CoordinateSystem
 from FiberFusing.shapes.circle import Circle
@@ -441,7 +441,7 @@ class Profile(OverlayStructureBaseClass):
     def added_section(self) -> object:
         return union_geometries(*self.added_section_list)
 
-    @helper.pre_plot(nrows=1, ncols=1)
+    @plotting(nrows=1, ncols=1)
     def plot(
             self,
             axes: plt.Axis,
