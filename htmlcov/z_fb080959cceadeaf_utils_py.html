@@ -5,7 +5,7 @@
     <title>Coverage for FiberFusing/geometries/utils.py: 91.18%</title>
     <link rel="icon" sizes="32x32" href="favicon_32_cb_c827f16f.png">
     <link rel="stylesheet" href="style_cb_4667309f.css" type="text/css">
-    <script src="coverage_html_cb_dd2e7eb5.js" defer></script>
+    <script src="coverage_html_cb_15cffcd0.js" defer></script>
 </head>
 <body class="pyfile">
 <header>
@@ -66,8 +66,8 @@
             <a id="indexLink" class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a id="nextFileLink" class="nav" href="z_732005255e093286_geometry_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.14.3">coverage.py v7.14.3</a>,
-            created at 2026-07-09 08:41 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.16.2">coverage.py v7.16.2</a>,
+            created at 2026-10-25 13:33 +0000
         </p>
         <aside class="hidden">
             <button type="button" class="button_next_chunk" data-shortcut="j"></button>
@@ -92,8 +92,8 @@
     <p class="run"><span class="n"><a id="t8" href="#t8">8</a></span><span class="t"><span class="key">from</span> <span class="nam">FiberFusing</span> <span class="key">import</span> <span class="nam">geometries</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t9" href="#t9">9</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t10" href="#t10">10</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t11" href="#t11">11</a></span><span class="t"><span class="key">def</span> <span class="nam">get_polygon_union</span><span class="op">(</span><span class="op">*</span><span class="nam">objects</span><span class="op">)</span> <span class="op">-></span> <span class="nam">geometries</span><span class="op">.</span><span class="nam">Polygon</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t12" href="#t12">12</a></span><span class="t">    <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t11" href="#t11">11</a></span><span class="t"><span class="key">def</span> <span class="nam">get_polygon_union</span><span class="op">(</span><span class="op">*</span><span class="nam">objects</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="nam">geometries</span><span class="op">.</span><span class="nam">Polygon</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t12" href="#t12">12</a></span><span class="t">    <span class="str">&quot;&quot;&quot;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t13" href="#t13">13</a></span><span class="t"><span class="str">    Computes the union of multiple geometric objects and returns the resulting Polygon.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t14" href="#t14">14</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t15" href="#t15">15</a></span><span class="t"><span class="str">    Args:</span>&nbsp;</span><span class="r"></span></p>
@@ -103,18 +103,18 @@
     <p class="pln"><span class="n"><a id="t19" href="#t19">19</a></span><span class="t"><span class="str">    Returns:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t20" href="#t20">20</a></span><span class="t"><span class="str">        Polygon: A new Polygon instance representing the union of the input objects.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t21" href="#t21">21</a></span><span class="t"><span class="str">                 If no objects are provided, an empty Polygon is returned.</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t22" href="#t22">22</a></span><span class="t"><span class="str">    """</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t22" href="#t22">22</a></span><span class="t"><span class="str">    &quot;&quot;&quot;</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t23" href="#t23">23</a></span><span class="t">    <span class="key">if</span> <span class="nam">len</span><span class="op">(</span><span class="nam">objects</span><span class="op">)</span> <span class="op">==</span> <span class="num">0</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t24" href="#t24">24</a></span><span class="t">        <span class="key">return</span> <span class="nam">geometries</span><span class="op">.</span><span class="nam">Polygon</span><span class="op">(</span><span class="nam">instance</span><span class="op">=</span><span class="nam">geo</span><span class="op">.</span><span class="nam">Polygon</span><span class="op">(</span><span class="op">)</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t25" href="#t25">25</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t26" href="#t26">26</a></span><span class="t">    <span class="nam">objects</span> <span class="op">=</span> <span class="op">[</span><span class="nam">o</span><span class="op">.</span><span class="nam">_shapely_object</span> <span class="key">if</span> <span class="nam">hasattr</span><span class="op">(</span><span class="nam">o</span><span class="op">,</span> <span class="str">'_shapely_object'</span><span class="op">)</span> <span class="key">else</span> <span class="nam">o</span> <span class="key">for</span> <span class="nam">o</span> <span class="key">in</span> <span class="nam">objects</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t26" href="#t26">26</a></span><span class="t">    <span class="nam">objects</span> <span class="op">=</span> <span class="op">[</span><span class="nam">o</span><span class="op">.</span><span class="nam">_shapely_object</span> <span class="key">if</span> <span class="nam">hasattr</span><span class="op">(</span><span class="nam">o</span><span class="op">,</span> <span class="str">&#x27;_shapely_object&#x27;</span><span class="op">)</span> <span class="key">else</span> <span class="nam">o</span> <span class="key">for</span> <span class="nam">o</span> <span class="key">in</span> <span class="nam">objects</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t27" href="#t27">27</a></span><span class="t">    <span class="nam">output</span> <span class="op">=</span> <span class="nam">unary_union</span><span class="op">(</span><span class="nam">objects</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t28" href="#t28">28</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t29" href="#t29">29</a></span><span class="t">    <span class="key">return</span> <span class="nam">geometries</span><span class="op">.</span><span class="nam">Polygon</span><span class="op">(</span><span class="nam">instance</span><span class="op">=</span><span class="nam">output</span><span class="op">)</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t30" href="#t30">30</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t31" href="#t31">31</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
-    <p class="run"><span class="n"><a id="t32" href="#t32">32</a></span><span class="t"><span class="key">def</span> <span class="nam">interpret_to_point</span><span class="op">(</span><span class="op">*</span><span class="nam">args</span><span class="op">:</span> <span class="nam">Union</span><span class="op">[</span><span class="nam">geometries</span><span class="op">.</span><span class="nam">Point</span><span class="op">,</span> <span class="nam">Iterable</span><span class="op">,</span> <span class="nam">geo</span><span class="op">.</span><span class="nam">Point</span><span class="op">]</span><span class="op">)</span> <span class="op">-></span> <span class="nam">Union</span><span class="op">[</span><span class="nam">geometries</span><span class="op">.</span><span class="nam">Point</span><span class="op">,</span> <span class="nam">List</span><span class="op">[</span><span class="nam">geometries</span><span class="op">.</span><span class="nam">Point</span><span class="op">]</span><span class="op">]</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t33" href="#t33">33</a></span><span class="t">    <span class="str">"""</span>&nbsp;</span><span class="r"></span></p>
+    <p class="run"><span class="n"><a id="t32" href="#t32">32</a></span><span class="t"><span class="key">def</span> <span class="nam">interpret_to_point</span><span class="op">(</span><span class="op">*</span><span class="nam">args</span><span class="op">:</span> <span class="nam">Union</span><span class="op">[</span><span class="nam">geometries</span><span class="op">.</span><span class="nam">Point</span><span class="op">,</span> <span class="nam">Iterable</span><span class="op">,</span> <span class="nam">geo</span><span class="op">.</span><span class="nam">Point</span><span class="op">]</span><span class="op">)</span> <span class="op">-&gt;</span> <span class="nam">Union</span><span class="op">[</span><span class="nam">geometries</span><span class="op">.</span><span class="nam">Point</span><span class="op">,</span> <span class="nam">List</span><span class="op">[</span><span class="nam">geometries</span><span class="op">.</span><span class="nam">Point</span><span class="op">]</span><span class="op">]</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t33" href="#t33">33</a></span><span class="t">    <span class="str">&quot;&quot;&quot;</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t34" href="#t34">34</a></span><span class="t"><span class="str">    Converts various input formats to Point instances.</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t35" href="#t35">35</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t36" href="#t36">36</a></span><span class="t"><span class="str">    Args:</span>&nbsp;</span><span class="r"></span></p>
@@ -124,7 +124,7 @@
     <p class="pln"><span class="n"><a id="t40" href="#t40">40</a></span><span class="t"><span class="str">    Returns:</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t41" href="#t41">41</a></span><span class="t"><span class="str">        Union[Point, List[Point]]: A single Point instance if only one argument is provided,</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t42" href="#t42">42</a></span><span class="t"><span class="str">                                   otherwise a list of Point instances.</span>&nbsp;</span><span class="r"></span></p>
-    <p class="pln"><span class="n"><a id="t43" href="#t43">43</a></span><span class="t"><span class="str">    """</span>&nbsp;</span><span class="r"></span></p>
+    <p class="pln"><span class="n"><a id="t43" href="#t43">43</a></span><span class="t"><span class="str">    &quot;&quot;&quot;</span>&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t44" href="#t44">44</a></span><span class="t">    <span class="nam">output</span> <span class="op">=</span> <span class="op">[</span><span class="op">]</span>&nbsp;</span><span class="r"></span></p>
     <p class="pln"><span class="n"><a id="t45" href="#t45">45</a></span><span class="t">&nbsp;</span><span class="r"></span></p>
     <p class="run"><span class="n"><a id="t46" href="#t46">46</a></span><span class="t">    <span class="key">for</span> <span class="nam">arg</span> <span class="key">in</span> <span class="nam">args</span><span class="op">:</span>&nbsp;</span><span class="r"></span></p>
@@ -149,8 +149,8 @@
             <a class="nav" href="index.html">&Hat; index</a> &nbsp; &nbsp;
             <a class="nav" href="z_732005255e093286_geometry_py.html">&#xbb; next</a>
             &nbsp; &nbsp; &nbsp;
-            <a class="nav" href="https://coverage.readthedocs.io/en/7.14.3">coverage.py v7.14.3</a>,
-            created at 2026-07-09 08:41 +0000
+            <a class="nav" href="https://coverage.readthedocs.io/en/7.16.2">coverage.py v7.16.2</a>,
+            created at 2026-10-25 13:33 +0000
         </p>
     </div>
 </footer>
