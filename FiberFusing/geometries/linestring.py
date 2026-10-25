@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Optional, Tuple, Self
+from typing import Optional, Tuple
+from typing_extensions import Self
 import numpy as np
 from pydantic.dataclasses import dataclass
 from dataclasses import field

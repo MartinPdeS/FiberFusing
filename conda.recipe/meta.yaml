@@ -19,6 +19,7 @@ requirements:
   run:
     - python >=3.10
     - pyyaml
+    - typing_extensions >=4.4
     - pydantic >=2,<3
     - scipy
     - matplotlib >=3.8,<4

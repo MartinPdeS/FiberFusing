@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Tuple, Callable, Self
+from typing import Tuple, Callable
+from typing_extensions import Self
 import copy
 from shapely import affinity
 

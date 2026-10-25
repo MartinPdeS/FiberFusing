@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 # Built-in imports
-from typing import Optional, Tuple, Self, List
+from typing import Optional, Tuple, List
+from typing_extensions import Self
 import numpy
 from pydantic.dataclasses import dataclass
 import shapely.geometry as geo

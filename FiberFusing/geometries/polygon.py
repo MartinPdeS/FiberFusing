@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from typing import Iterable, List, Optional, Union, Tuple, Self
+from typing import Iterable, List, Optional, Union, Tuple
+from typing_extensions import Self
 import numpy as np
 from matplotlib.path import Path
 import shapely.geometry as geo
