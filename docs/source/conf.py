@@ -12,9 +12,9 @@ globals().update(
         project="FiberFusing",
         package="FiberFusing",
         repository="MartinPdeS/FiberFusing",
-        logo="_static/thumbnail.png",
-        favicon="_static/thumbnail.png",
-        gallery_default_thumb=str(docs_source / "_static" / "thumbnail.png"),
+        logo="_static/logo.png",
+        favicon="_static/favicon.png",
+        gallery_default_thumb=str(docs_source / "_static" / "icon.png"),
         gallery_options={
             "examples_dirs": "../examples",
             "gallery_dirs": "gallery",

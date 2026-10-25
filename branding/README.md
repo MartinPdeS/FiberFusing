@@ -1,7 +1,9 @@
 # FiberFusing branding candidates
 
-Generated with the built-in image_gen tool. No candidate is active in the
-README or documentation yet. The existing branding is preserved until selection.
+Generated with the built-in image_gen tool. **Selected: option C, with the
+two-color wordmark.** The README and Sphinx header use the navy/coral wordmark;
+Sphinx uses the matching option C icon for gallery thumbnails and favicon mark
+for browser tabs. Original candidates and generation prompts are preserved.
 
 | Option | Design | Logo | Icon | Favicon |
 | --- | --- | --- | --- | --- |

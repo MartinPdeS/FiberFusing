@@ -1,6 +1,6 @@
 {
   "tool": "built-in image_gen",
-  "status": "candidates awaiting user selection",
+  "status": "option-c selected; two-color wordmark active",
   "options": {
     "a": {
       "name": "Trefoil",
@@ -26,5 +26,11 @@
       "reference": "option-c/logo.png",
       "transparent_background": true
     }
+  },
+  "selected": {
+    "logo": "option-c/logo-two-color.png",
+    "icon": "option-c/icon.png",
+    "favicon": "option-c/favicon.png",
+    "refinement_prompt": "option-c/logo-two-color.prompt.txt"
   }
 }

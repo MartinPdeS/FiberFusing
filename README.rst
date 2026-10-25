@@ -144,7 +144,8 @@ We welcome feedback and contributions to improve FiberFusing and expand its capa
    :alt: PyPi download statistics
 
 .. |logo| image:: https://github.com/MartinPdeS/FiberFusing/raw/master/docs/images/logo.png
-   :alt: FiberFusing's logo
+   :alt: FiberFusing navy and coral seven-core logo
+   :width: 720px
 
 .. |docs| image:: https://github.com/martinpdes/fiberfusing/actions/workflows/deploy_documentation.yml/badge.svg
    :target: https://martinpdes.github.io/FiberFusing/
