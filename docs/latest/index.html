@@ -1,8 +1,7 @@
-
 <!DOCTYPE html>
 
 
-<html lang="en" data-content_root="./" >
+<html lang="en" data-content_root="./" data-theme="dark">
 
   <head>
     <meta charset="utf-8" />
@@ -13,8 +12,8 @@
   
   
   <script data-cfasync="false">
-    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
-    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "dark";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "dark";
   </script>
   <!--
     this give us a css class that will be invisible only if js is disabled
@@ -27,43 +26,46 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="_static/styles/theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
-<link href="_static/styles/pydata-sphinx-theme.css?digest=a95f357e85573c9b56d5" rel="stylesheet" />
+  <link href="_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
-    <link rel="stylesheet" type="text/css" href="/opt/hostedtoolcache/Python/3.11.15/x64/lib/python3.11/site-packages/docs/source/_static/default.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=fd6457a4" />
+    <link rel="stylesheet" type="text/css" href="_static/sg_gallery.css?v=c83e6b79" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-binder.css?v=f4aeca0c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-dataframe.css?v=2082cf3c" />
     <link rel="stylesheet" type="text/css" href="_static/sg_gallery-rendered-html.css?v=1277b6f3" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
     <link rel="stylesheet" type="text/css" href="_static/default.css?v=265c6c44" />
+    <link rel="stylesheet" type="text/css" href="_static/martinpdes_layout.css?v=a8cc01cd" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="_static/scripts/fontawesome.js?digest=a95f357e85573c9b56d5"></script>
+  <script defer src="_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5" />
-<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5" />
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="_static/documentation_options.js?v=8a448e45"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/sg-tags.js?v=d80f6fa4"></script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
     <script>
-        DOCUMENTATION_OPTIONS.theme_version = '0.19.0';
+        DOCUMENTATION_OPTIONS.theme_version = '0.23.0';
         DOCUMENTATION_OPTIONS.theme_switcher_json_url = 'https://raw.githubusercontent.com/MartinPdeS/FiberFusing/documentation_page/version_switcher.json';
-        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v1.9.5';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v1.9.7';
         DOCUMENTATION_OPTIONS.show_version_warning_banner =
             true;
         </script>
     <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
-    <link rel="icon" href="_static/thumbnail.png"/>
+    <link rel="icon" href="_static/favicon.png"/>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Theoretical background" href="theory.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="1.9.5" />
+  <meta name="docsearch:version" content="" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -71,7 +73,7 @@
     <script src="searchindex.js"></script>
   
   </head>
-  <body data-default-mode="">
+  <body data-default-mode="dark">
   
   
   <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
@@ -111,12 +113,12 @@
   
     <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
 <div class="bd-header__inner bd-page-width">
-  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+  <button type="button" class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
     <span class="fa-solid fa-bars"></span>
   </button>
   
   
-  <div class=" navbar-header-items__start">
+  <div class="col-lg-3 navbar-header-items__start">
     
       <div class="navbar-item">
 
@@ -132,11 +134,9 @@
   
     
     
-      
     
-    
-    <img src="_static/thumbnail.png" class="logo__image only-light" alt=""/>
-    <img src="_static/thumbnail.png" class="logo__image only-dark pst-js-only" alt=""/>
+    <img src="_static/logo.png" class="logo__image only-dark" alt=""/>
+    <img src="_static/logo.png" class="logo__image only-light pst-js-only" alt=""/>
   
   
     <p class="title logo__title">FiberFusing</p>
@@ -145,7 +145,7 @@
     
   </div>
   
-  <div class=" navbar-header-items">
+  <div class="col-lg-9 navbar-header-items">
     
     <div class="me-auto navbar-header-items__center">
       
@@ -163,6 +163,13 @@
 <li class="nav-item ">
   <a class="nav-link nav-internal" href="code.html">
     Source Code
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="plotting.html">
+    Plotting
   </a>
 </li>
 
@@ -191,7 +198,7 @@
         <div class="navbar-item navbar-persistent--container">
           
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -217,6 +224,21 @@
     role="listbox" aria-labelledby="pst-version-switcher-button-2">
     <!-- dropdown will be populated by javascript on page load -->
   </div>
+</div></div>
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
 </div></div>
       
         <div class="navbar-item"><ul class="navbar-icon-links"
@@ -263,7 +285,7 @@
   
     <div class="navbar-persistent--mobile">
 
-<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button type="button" class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
  <i class="fa-solid fa-magnifying-glass"></i>
  <span class="search-button__default-text">Search</span>
  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
@@ -272,7 +294,7 @@
   
 
   
-    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+    <button type="button" class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
       <span class="fa-solid fa-outdent"></span>
     </button>
   
@@ -319,6 +341,13 @@
 
 
 <li class="nav-item ">
+  <a class="nav-link nav-internal" href="plotting.html">
+    Plotting
+  </a>
+</li>
+
+
+<li class="nav-item ">
   <a class="nav-link nav-internal" href="gallery/index.html">
     Coding examples
   </a>
@@ -359,6 +388,21 @@
     role="listbox" aria-labelledby="pst-version-switcher-button-3">
     <!-- dropdown will be populated by javascript on page load -->
   </div>
+</div></div>
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button type="button" class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button type="button" class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
 </div></div>
         
           <div class="navbar-item"><ul class="navbar-icon-links"
@@ -430,43 +474,95 @@
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <p><strong>Date</strong>: Jul 09, 2026, <strong>Version</strong>: 1.9.5</p>
-<section id="fiberfusing">
-<h1>FiberFusing<a class="headerlink" href="#fiberfusing" title="Link to this heading">#</a></h1>
-<p><img alt="FiberFusing's logo" src="https://github.com/MartinPdeS/FiberFusing/raw/master/docs/images/logo.png" /></p>
+  <p><strong>Date</strong>: Oct 25, 2026, <strong>Version</strong>: </p>
+<p><a class="reference internal" href="https://github.com/MartinPdeS/FiberFusing/raw/master/docs/images/logo.png"><img alt="FiberFusing navy and coral seven-core logo" src="https://github.com/MartinPdeS/FiberFusing/raw/master/docs/images/logo.png" style="width: 720px;" /></a></p>
 <div class="pst-scrollable-table-container"><table class="table">
 <colgroup>
-<col style="width: 11.8%" />
-<col style="width: 29.4%" />
-<col style="width: 29.4%" />
-<col style="width: 29.4%" />
+<col style="width: 35.0%" />
+<col style="width: 65.0%" />
 </colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Badge</p></th>
+<th class="head"><p>Status</p></th>
+</tr>
+</thead>
 <tbody>
-<tr class="row-odd"><td><p>Meta</p></td>
-<td><p><a class="reference external" href="https://www.python.org/"><img alt="Python version" src="https://img.shields.io/pypi/pyversions/fiberfusing.svg" /></a></p></td>
+<tr class="row-even"><td><p>Python versions</p></td>
+<td><p><a class="reference external" href="https://github.com/MartinPdeS/FiberFusing/actions/workflows/tests.yml"><img alt="Supported and tested Python versions: 3.10, 3.11, 3.12, 3.13, 3.14" src="https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue" /></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Documentation</p></td>
 <td><p><a class="reference external" href="https://martinpdes.github.io/FiberFusing/"><img alt="Documentation Status" src="https://github.com/martinpdes/fiberfusing/actions/workflows/deploy_documentation.yml/badge.svg" /></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Continuous integration</p></td>
+<td><p><a class="reference external" href="https://github.com/MartinPdeS/FiberFusing/actions"><img alt="Unittest Status" src="https://github.com/martinpdes/fiberfusing/actions/workflows/tests.yml/badge.svg" /></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Test coverage</p></td>
+<td><p><a class="reference external" href="https://htmlpreview.github.io/?https://github.com/MartinPdeS/FiberFusing/blob/python-coverage-comment-action-data/htmlcov/index.html"><img alt="Unittest coverage" src="https://raw.githubusercontent.com/MartinPdeS/FiberFusing/python-coverage-comment-action-data/badge.svg" /></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Google Colab</p></td>
 <td><p><a class="reference external" href="https://colab.research.google.com/github/MartinPdeS/FiberFusing/blob/master/notebook.ipynb"><img alt="colab" src="https://colab.research.google.com/assets/colab-badge.svg" /></a></p></td>
 </tr>
-<tr class="row-even"><td><p>Testing</p></td>
-<td><p><a class="reference external" href="https://martinpdes.github.io/FiberFusing/actions"><img alt="Unittest Status" src="https://github.com/martinpdes/fiberfusing/actions/workflows/deploy_coverage.yml/badge.svg" /></a></p></td>
-<td><p><a class="reference external" href="https://htmlpreview.github.io/?https://github.com/MartinPdeS/FiberFusing/blob/python-coverage-comment-action-data/htmlcov/index.html"><img alt="Unittest coverage" src="https://raw.githubusercontent.com/MartinPdeS/FiberFusing/python-coverage-comment-action-data/badge.svg" /></a></p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p>PyPi</p></td>
+<tr class="row-odd"><td><p>PyPI package</p></td>
 <td><p><a class="reference external" href="https://pypi.org/project/FiberFusing/"><img alt="PyPi" src="https://badge.fury.io/py/FiberFusing.svg" /></a></p></td>
-<td><p><a class="reference external" href="https://pypistats.org/packages/fiberfusing"><img alt="PyPi download statistics" src="https://img.shields.io/pypi/dm/fiberfusing.svg" /></a></p></td>
-<td></td>
 </tr>
-<tr class="row-even"><td><p>Anaconda</p></td>
+<tr class="row-even"><td><p>PyPI downloads</p></td>
+<td><p><a class="reference external" href="https://pypistats.org/packages/fiberfusing"><img alt="PyPi download statistics" src="https://img.shields.io/pypi/dm/fiberfusing.svg" /></a></p></td>
+</tr>
+<tr class="row-odd"><td><p>Anaconda package</p></td>
 <td><p><a class="reference external" href="https://anaconda.org/martinpdes/fiberfusing"><img alt="Anaconda version" src="https://anaconda.org/martinpdes/fiberfusing/badges/version.svg" /></a></p></td>
+</tr>
+<tr class="row-even"><td><p>Anaconda downloads</p></td>
 <td><p><a class="reference external" href="https://anaconda.org/martinpdes/fiberfusing"><img alt="Anaconda downloads" src="https://anaconda.org/martinpdes/fiberfusing/badges/downloads.svg" /></a></p></td>
-<td></td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>FiberFusing is a Python package designed for simulating the fiber fusing process. With this tool, users can define an initial fiber configuration and simulate the fusion process as a function of the fusion degree parameter.</p>
-<p>As follows, an example of 3x3 fused fiber.</p>
+<section id="fiberfusing">
+<h1>FiberFusing<a class="headerlink" href="#fiberfusing" title="Link to this heading">#</a></h1>
+<p><strong>FiberFusing</strong> is an open-source Python package for parametrized fused-fiber
+cross-sections and refractive-index meshes. Define a fiber arrangement, adjust
+its fusion degree, and combine the resulting profile with optical fibers and a
+background medium.</p>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>Circular and linear fiber arrangements with adjustable fusion degree.</p></li>
+<li><p>Geometric connection optimization with area-conservation diagnostics.</p></li>
+<li><p>Fiber catalog loading and refractive-index mesh generation.</p></li>
+<li><p>Core-position perturbations with reproducible random seeds.</p></li>
+<li><p>Matplotlib plots with supplied-axes support and headless rendering.</p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
+<p>Install from PyPI using the Python interpreter for your simulations:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>FiberFusing
+</pre></div>
+</div>
+<p>Alternatively, install from the MartinPdeS Anaconda channel:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda<span class="w"> </span>install<span class="w"> </span>-c<span class="w"> </span>MartinPdeS<span class="w"> </span>fiberfusing
+</pre></div>
+</div>
+<p>Verify the installation with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-c<span class="w"> </span><span class="s2">"import FiberFusing; print(FiberFusing.__version__)"</span>
+</pre></div>
+</div>
+</section>
+<section id="python-compatibility">
+<h2>Python compatibility<a class="headerlink" href="#python-compatibility" title="Link to this heading">#</a></h2>
+<p>FiberFusing supports <strong>Python 3.10, 3.11, 3.12, 3.13, and 3.14</strong>. The full test
+suite runs on all five versions in
+<a class="reference external" href="https://github.com/MartinPdeS/FiberFusing/actions/workflows/tests.yml">GitHub Actions</a>.</p>
+<p>The package contains pure Python code. Its universal wheel and Conda <code class="docutils literal notranslate"><span class="pre">noarch</span></code>
+package can be installed on these Python versions without compiling FiberFusing.
+Release artifacts are currently built and installation-checked on Python 3.11;
+source tests also run on Python 3.13 and 3.14.</p>
+</section>
+<section id="first-simulation">
+<h2>First simulation<a class="headerlink" href="#first-simulation" title="Link to this heading">#</a></h2>
+<p>Build a circular arrangement of three fibers with a cladding radius of
+62.5 micrometers. Lengths in this example use meters; refractive indices are
+dimensionless.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Geometry</span><span class="p">,</span> <span class="n">DomainAlignment</span><span class="p">,</span> <span class="n">BackGround</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.fiber</span><span class="w"> </span><span class="kn">import</span> <span class="n">FiberLoader</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">FiberFusing.profile</span><span class="w"> </span><span class="kn">import</span> <span class="n">Profile</span><span class="p">,</span> <span class="n">StructureType</span>
@@ -486,67 +582,59 @@
 
 <span class="n">fiber_loader</span> <span class="o">=</span> <span class="n">FiberLoader</span><span class="p">()</span>
 <span class="n">fibers</span> <span class="o">=</span> <span class="p">[</span>
-   <span class="n">fiber_loader</span><span class="o">.</span><span class="n">load_fiber</span><span class="p">(</span><span class="s1">&#39;SMF28&#39;</span><span class="p">,</span> <span class="n">clad_refractive_index</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">refractive_index</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">core_position</span><span class="p">)</span>
+   <span class="n">fiber_loader</span><span class="o">.</span><span class="n">load_fiber</span><span class="p">(</span><span class="s1">'SMF28'</span><span class="p">,</span> <span class="n">clad_refractive_index</span><span class="o">=</span><span class="n">profile</span><span class="o">.</span><span class="n">refractive_index</span><span class="p">,</span> <span class="n">position</span><span class="o">=</span><span class="n">core_position</span><span class="p">)</span>
    <span class="k">for</span> <span class="n">core_position</span> <span class="ow">in</span> <span class="n">profile</span><span class="o">.</span><span class="n">cores</span>
 <span class="p">]</span>
 
-<span class="c1"># Set up the geometry with the defined background, profile structure, and resolution</span>
 <span class="n">geometry</span> <span class="o">=</span> <span class="n">Geometry</span><span class="p">(</span>
    <span class="n">x_bounds</span><span class="o">=</span><span class="n">DomainAlignment</span><span class="o">.</span><span class="n">CENTERING</span><span class="p">,</span>
    <span class="n">y_bounds</span><span class="o">=</span><span class="n">DomainAlignment</span><span class="o">.</span><span class="n">CENTERING</span><span class="p">,</span>
    <span class="n">resolution</span><span class="o">=</span><span class="mi">350</span>
 <span class="p">)</span>
 
-<span class="c1"># Add the fibers to the geometry</span>
 <span class="n">geometry</span><span class="o">.</span><span class="n">add_structure</span><span class="p">(</span><span class="n">air_background</span><span class="p">,</span> <span class="n">profile</span><span class="p">,</span> <span class="o">*</span><span class="n">fibers</span><span class="p">)</span>
 
 <span class="n">geometry</span><span class="o">.</span><span class="n">initialize</span><span class="p">()</span>
 
-<span class="c1"># Plot the resulting geometry</span>
 <span class="n">geometry</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
-<p><img alt="Example for 3 fiber structure" src="https://github.com/MartinPdeS/FiberFusing/raw/master/docs/images/example_3x3.png" /></p>
-<hr class="docutils" />
-<section id="documentation">
-<h2>Documentation<a class="headerlink" href="#documentation" title="Link to this heading">#</a></h2>
-<p>For the most up-to-date documentation, visit the official <a class="reference external" href="https://martinpdes.github.io/FiberFusing/latest/">FiberFusing Docs</a> or click the badge below:</p>
-<p><a class="reference external" href="https://martinpdes.github.io/FiberFusing/"><img alt="Documentation Status" src="https://github.com/martinpdes/fiberfusing/actions/workflows/deploy_documentation.yml/badge.svg" /></a></p>
+<p><img alt="Three-fiber fused cross-section and refractive-index mesh" src="https://github.com/MartinPdeS/FiberFusing/raw/master/docs/images/example_3x3.png" /></p>
+<p>For headless workflows, use <code class="docutils literal notranslate"><span class="pre">geometry.plot(show=False)</span></code> to obtain a Matplotlib
+figure without opening a window. See the
+<a class="reference external" href="https://martinpdes.github.io/FiberFusing/docs/latest/plotting.html">plotting guide</a>
+for supplied axes, styling, and export options.</p>
 </section>
-<hr class="docutils" />
-<section id="installation">
-<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading">#</a></h2>
-<p>Getting started with FiberFusing is easy. Simply install via <cite>pip</cite>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>FiberFusing
-</pre></div>
-</div>
-<p><a class="reference external" href="https://pypi.org/project/FiberFusing/"><img alt="PyPi" src="https://badge.fury.io/py/FiberFusing.svg" /></a></p>
+<section id="documentation-and-examples">
+<h2>Documentation and examples<a class="headerlink" href="#documentation-and-examples" title="Link to this heading">#</a></h2>
+<p>See the <a class="reference external" href="https://martinpdes.github.io/FiberFusing/docs/latest/">online documentation</a> for the API and
+numerical behavior, and the <a class="reference external" href="https://martinpdes.github.io/FiberFusing/docs/latest/gallery/index.html">example gallery</a>
+for runnable fiber configurations.</p>
 </section>
-<hr class="docutils" />
-<section id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Link to this heading">#</a></h2>
-<p>To run tests locally after cloning the GitHub repository, you’ll need to install the dependencies and run the following commands:</p>
+<section id="developer-setup">
+<h2>Developer setup<a class="headerlink" href="#developer-setup" title="Link to this heading">#</a></h2>
+<p>Clone the repository, select Python 3.10 or newer, and install the development
+and testing dependencies:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/MartinPdeS/FiberFusing.git
 <span class="nb">cd</span><span class="w"> </span>FiberFusing
-pip<span class="w"> </span>install<span class="w"> </span>FiberFusing<span class="o">[</span>testing<span class="o">]</span>
-pytest
+python<span class="w"> </span>-m<span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>-e<span class="w"> </span><span class="s2">".[testing,dev,release]"</span>
 </pre></div>
 </div>
-<p>For more detailed testing instructions, consult the documentation.</p>
+<p>Run checks with the same interpreter:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nv">MPLBACKEND</span><span class="o">=</span>Agg<span class="w"> </span>python<span class="w"> </span>-m<span class="w"> </span>pytest
+python<span class="w"> </span>-m<span class="w"> </span>ruff<span class="w"> </span>check<span class="w"> </span>FiberFusing<span class="w"> </span>tests
+make<span class="w"> </span>release-check<span class="w"> </span><span class="nv">PYTHON</span><span class="o">=</span>python
+</pre></div>
+</div>
+<p>See <code class="docutils literal notranslate"><span class="pre">CONTRIBUTING.md</span></code> for documentation builds, installed-package checks, and
+release commands. Versions are explicit and releases use the shared
+<code class="docutils literal notranslate"><span class="pre">martinpdes-maintenance</span></code> tool.</p>
 </section>
-<hr class="docutils" />
-<section id="coding-examples">
-<h2>Coding examples<a class="headerlink" href="#coding-examples" title="Link to this heading">#</a></h2>
-<p>Explore a wide range of examples demonstrating the usage of FiberFusing in the <a class="reference external" href="https://martinpdes.github.io/FiberFusing/gallery/index.html">Examples section</a> of the documentation.</p>
-</section>
-<hr class="docutils" />
-<section id="contributing-contact">
-<h2>Contributing &amp; Contact<a class="headerlink" href="#contributing-contact" title="Link to this heading">#</a></h2>
-<p>FiberFusing is an open project and collaboration is encouraged! If you’re interested in contributing or have any questions, feel free to reach out.</p>
-<p><strong>Author:</strong> <a class="reference external" href="https://github.com/MartinPdeS">Martin Poinsinet de Sivry-Houle</a>
-<strong>Email:</strong> <a class="reference external" href="mailto:martin&#46;poinsinet-de-sivry&#37;&#52;&#48;polymtl&#46;ca?subject=FiberFusing">martin<span>&#46;</span>poinsinet-de-sivry<span>&#64;</span>polymtl<span>&#46;</span>ca</a></p>
-<p>We welcome feedback and contributions to improve FiberFusing and expand its capabilities.</p>
-<hr class="docutils" />
+<section id="contact">
+<h2>Contact<a class="headerlink" href="#contact" title="Link to this heading">#</a></h2>
+<p>For questions or contributions, open an issue on
+<a class="reference external" href="https://github.com/MartinPdeS/FiberFusing/issues">GitHub</a> or contact
+<a class="reference external" href="mailto:martin&#46;poinsinet-de-sivry&#37;&#52;&#48;polymtl&#46;ca?subject=FiberFusing">Martin Poinsinet de Sivry-Houle</a>.</p>
 <div class="toctree-wrapper compound">
 </div>
 </section>
@@ -558,6 +646,21 @@ pytest
               
               
               
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="theory.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Theoretical background</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
               
             </div>
             
@@ -575,13 +678,31 @@ pytest
   </div>
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation">Documentation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#features">Features</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#installation">Installation</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#testing">Testing</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#coding-examples">Coding examples</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contributing-contact">Contributing &amp; Contact</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#python-compatibility">Python compatibility</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#first-simulation">First simulation</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#documentation-and-examples">Documentation and examples</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#developer-setup">Developer setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#contact">Contact</a></li>
 </ul>
   </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  
+  <div class="tocsection editthispage">
+    <a href="https://github.com/MartinPdeS/FiberFusing/edit/v1.9.7/docs/source/index.rst">
+      <i class="fa-solid fa-pencil"></i>
+      
+      
+        
+          Edit on GitHub
+        
+      
+    </a>
+  </div>
+</div>
 
   <div class="sidebar-secondary-item">
 
@@ -605,8 +726,8 @@ pytest
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="_static/scripts/bootstrap.js?digest=a95f357e85573c9b56d5"></script>
-<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=a95f357e85573c9b56d5"></script>
+  <script defer src="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -617,7 +738,7 @@ pytest
 
   <p class="copyright">
     
-      © Copyright 2024, Martin Poinsinet de Sivry-Houle.
+      © Copyright Martin Poinsinet de Sivry-Houle.
       <br/>
     
   </p>
@@ -626,24 +747,6 @@ pytest
     </div>
   
   
-  
-    <div class="footer-items__end">
-      
-        <div class="footer-item">
-
-  <p class="sphinx-version">
-    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 9.0.4.
-    <br/>
-  </p>
-</div>
-      
-        <div class="footer-item">
-<p class="theme-version">
-  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.19.0.
-</p></div>
-      
-    </div>
   
 </div>
 

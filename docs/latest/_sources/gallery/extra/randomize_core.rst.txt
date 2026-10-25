@@ -87,11 +87,14 @@ Effect of core randomization
     INFO:root:Configured connection: shift=0.000, topology=concave
     INFO:root:Configured connection: shift=0.000, topology=concave
     INFO:root:Configured connection: shift=0.000, topology=concave
+    INFO:root:Configured connection: shift=0.000, topology=concave
+    INFO:root:Configured connection: shift=0.000, topology=concave
+    INFO:root:Configured connection: shift=0.000, topology=concave
+    INFO:root:Configured connection: shift=0.000, topology=concave
     INFO:root:Computing the optimal core positions
     INFO:root:Starting core position optimization...
     INFO:root:Optimization successful: cost=9.11e-17
 
-    <FiberFusing.profile.Profile object at 0x7f57fe29b550>
 
 
 
@@ -112,12 +115,6 @@ Effect of core randomization
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-
-    <Figure size 640x480 with 1 Axes>
 
 
 
@@ -138,13 +135,6 @@ Effect of core randomization
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    INFO:root:Randomizing core positions.
-
-    <Figure size 640x480 with 1 Axes>
 
 
 
@@ -164,20 +154,13 @@ Effect of core randomization
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-    INFO:root:Randomizing core positions.
-
-    <Figure size 640x480 with 1 Axes>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 1.877 seconds)
+   **Total running time of the script:** (0 minutes 1.262 seconds)
 
 
 .. _sphx_glr_download_gallery_extra_randomize_core.py:

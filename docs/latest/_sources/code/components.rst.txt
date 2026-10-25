@@ -1,4 +1,4 @@
-_code_components:
+.. _code_components:
 
 Geometries Module
 -----------------

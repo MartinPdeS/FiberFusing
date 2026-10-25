@@ -49,12 +49,6 @@ Effect of translation
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-
-    <Figure size 640x480 with 1 Axes>
 
 
 
@@ -75,12 +69,6 @@ Effect of translation
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-
-    <Figure size 640x480 with 1 Axes>
 
 
 
@@ -100,19 +88,13 @@ Effect of translation
    :class: sphx-glr-single-img
 
 
-.. rst-class:: sphx-glr-script-out
-
- .. code-block:: none
-
-
-    <Figure size 640x480 with 1 Axes>
 
 
 
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** (0 minutes 2.290 seconds)
+   **Total running time of the script:** (0 minutes 1.711 seconds)
 
 
 .. _sphx_glr_download_gallery_extra_structure_shift.py:
