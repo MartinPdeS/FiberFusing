@@ -129,8 +129,6 @@ FiberFusing is an open project and collaboration is encouraged! If you're intere
 
 We welcome feedback and contributions to improve FiberFusing and expand its capabilities.
 
-----
-
 .. |python| image:: https://img.shields.io/pypi/pyversions/fiberfusing.svg
    :target: https://www.python.org/
    :alt: Python version
