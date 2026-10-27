@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "FiberFusing"
-version = "1.9.7"
+version = "1.9.8"
 description = "Parametrized fused-fiber cross-sections and refractive-index meshes."
 license = {file = "LICENSE"}
 readme = "README.rst"
