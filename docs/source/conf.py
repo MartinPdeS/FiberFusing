@@ -11,6 +11,7 @@ globals().update(
     configure(
         project="FiberFusing",
         package="FiberFusing",
+        version="auto",
         repository="MartinPdeS/FiberFusing",
         logo="_static/logo.png",
         favicon="_static/favicon.png",
