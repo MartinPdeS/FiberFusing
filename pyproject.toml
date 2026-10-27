@@ -51,7 +51,7 @@ dev = ["ruff==0.17.2", "build>=1,<2", "twine>=6,<7"]
 testing = [
     "tomli>=2; python_version < '3.11'",
     "pytest >=7.4,<10.0",
-    "pytest-cov >=2,<7",
+    "pytest-cov >=7.1.0,<8",
     "pytest-json-report ~=1.5",
     "flake8 ==7.3.0",
     "coverage ~=7.6"
