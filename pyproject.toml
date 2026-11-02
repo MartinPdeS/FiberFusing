@@ -35,7 +35,7 @@ dependencies = [
     "typing_extensions>=4.4",
     "pydantic>=2,<3",
     "scipy",
-    "matplotlib>=3.8,<4",
+    "matplotlib>=3.10.9,<4",
     "numpy",
     "shapely >=2.0",
 ]
