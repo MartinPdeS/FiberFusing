@@ -46,16 +46,9 @@ Documentation = "https://martinpdes.github.io/FiberFusing/"
 Repository = "https://github.com/MartinPdeS/FiberFusing.git"
 
 [project.optional-dependencies]
-release = ["martinpdes-maintenance==0.2.2"]
-dev = ["ruff==0.17.2", "build>=1,<2", "twine>=6,<7"]
-testing = [
-    "tomli>=2; python_version < '3.11'",
-    "pytest >=7.4,<10.0",
-    "pytest-cov >=2,<7",
-    "pytest-json-report ~=1.5",
-    "flake8 ==7.3.0",
-    "coverage ~=7.6"
-]
+release = ["martinpdes-maintenance==0.2.3"]
+dev = ["martinpdes-maintenance[quality]==0.2.3", "twine>=6,<7", "flake8 ==7.3.0"]
+testing = ["martinpdes-maintenance[testing]==0.2.3", "pytest-json-report ~=1.5", "pytest-cov<7", "coverage ~=7.6"]
 
 documentation = ["MartinPdeS-docs>=0.4.0,<0.5"]
 
