@@ -9,7 +9,7 @@ import pytest
 def test_documentation_uses_package_version(monkeypatch):
     """Sphinx and the switcher use the package's explicit version."""
     pytest.importorskip("martinpdes_docs")
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     if not (root / "docs/source/conf.py").is_file():
         pytest.skip("Documentation sources are not staged.")
     monkeypatch.setenv("tag", "v9.9.9")

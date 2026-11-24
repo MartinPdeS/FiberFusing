@@ -119,7 +119,7 @@ assert "MPSPlots" not in sys.modules
 """
     subprocess.run(
         [sys.executable, "-c", code],
-        cwd=Path(__file__).resolve().parents[1],
+        cwd=Path(__file__).resolve().parents[2],
         env={**os.environ, "MPLBACKEND": "Agg"},
         check=True,
         capture_output=True,

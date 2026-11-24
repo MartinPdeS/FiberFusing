@@ -14,7 +14,7 @@ except ModuleNotFoundError:
 
 def test_release_metadata_agrees():
     """Wheel, Python API, and Conda use the same explicit version."""
-    root = Path(__file__).resolve().parents[1]
+    root = Path(__file__).resolve().parents[2]
     # Conda stages tests separately from the project sources; catalog checks
     # below still exercise its installed package in that environment.
     if not (root / "pyproject.toml").is_file():
