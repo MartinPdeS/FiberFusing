@@ -146,18 +146,13 @@ To set up a development checkout and run the tests, follow the `contributing gui
 Contact
 -------
 
-For questions about using FiberFusing in your research, get in touch below.
-If a calculation gives an unexpected result, include the package version
-and a small example that reproduces it.
-
-* `Martin Poinsinet de Sivry-Houle <mailto:martin.poinsinet.de.sivry@gmail.com?subject=FiberFusing>`__
-
-`Project contact page <https://github.com/MartinPdeS/FiberFusing/issues>`__.
+For questions, contact `Martin Poinsinet de Sivry-Houle <mailto:martin.poinsinet.de.sivry@gmail.com?subject=FiberFusing>`__.
+Report bugs on the `issue tracker <https://github.com/MartinPdeS/FiberFusing/issues>`__.
 
 License
 -------
 
-See the `license text <https://github.com/MartinPdeS/FiberFusing/blob/HEAD/LICENSE>`__.
+FiberFusing is licensed under `MIT <https://github.com/MartinPdeS/FiberFusing/blob/HEAD/LICENSE>`__.
 
 .. |mps-python| image:: https://img.shields.io/pypi/pyversions/fiberfusing.svg
    :alt: Supported Python versions
