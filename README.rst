@@ -16,20 +16,12 @@ FiberFusing
      - |mps-python|
    * - Documentation
      - |mps-docs|
-   * - Continuous integration
-     - |mps-ci|
-   * - Test coverage
-     - |mps-coverage|
-   * - PyPI package
-     - |mps-pypi|
-   * - PyPI downloads
-     - |mps-downloads|
-   * - Anaconda package
-     - |mps-conda|
-   * - Anaconda downloads
-     - |mps-conda-downloads|
-   * - Latest Anaconda release
-     - |mps-conda-release|
+   * - Tests
+     - |mps-ci| |mps-coverage|
+   * - PyPI
+     - |mps-pypi| |mps-downloads|
+   * - Conda
+     - |mps-conda| |mps-conda-downloads| |mps-conda-release|
 
 Parametrized fused-fiber cross-sections and refractive-index meshes.
 
@@ -170,9 +162,9 @@ FiberFusing is licensed under `MIT <https://github.com/MartinPdeS/FiberFusing/bl
    :alt: Documentation
    :target: https://martinpdes.github.io/FiberFusing/
 
-.. |mps-ci| image:: https://github.com/MartinPdeS/FiberFusing/actions/workflows/deploy_coverage.yml/badge.svg
-   :alt: Continuous integration
-   :target: https://github.com/MartinPdeS/FiberFusing/actions/workflows/deploy_coverage.yml
+.. |mps-ci| image:: https://github.com/MartinPdeS/FiberFusing/actions/workflows/tests.yml/badge.svg
+   :alt: Tests
+   :target: https://github.com/MartinPdeS/FiberFusing/actions/workflows/tests.yml
 
 .. |mps-coverage| image:: https://raw.githubusercontent.com/MartinPdeS/FiberFusing/python-coverage-comment-action-data/badge.svg
    :alt: Test coverage

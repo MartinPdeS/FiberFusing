@@ -68,7 +68,7 @@ extend-exclude = ["FiberFusing/_version.py", "docs/source/gallery", "build"]
 select = ["E9", "F63", "F7", "F82"]
 
 [dependency-groups]
-readme = ["martinpdes-maintenance @ git+https://github.com/MartinPdeS/MartinPdeS-maintenance.git@14d0c79389681e51f956a16af1005c3c350ddccb"]
+readme = ["martinpdes-maintenance @ git+https://github.com/MartinPdeS/MartinPdeS-maintenance.git@48acdf92a36a879e15ca76e4fc8ba9e8a79a23cf"]
 
 [tool.mps-maintenance]
 version-file = "FiberFusing/_version.py"
