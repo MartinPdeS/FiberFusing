@@ -20,6 +20,22 @@ Documentation uses MartinPdeS-docs with the existing geometry and extra example
 sections. `make docs` runs Sphinx-Gallery examples headlessly and treats Sphinx
 warnings as errors. Generated gallery pages, caches, and builds are ignored.
 
+## Updating the README
+
+Edit `readme.yml` for the introduction, example selection, and figure caption.
+The README embeds the same Python script used by the example gallery. If the
+geometry or plot changes, update its checked-in figure as well. Use pip 25.1
+or newer in your development environment:
+
+```sh
+python -m pip install --group readme
+make readme PYTHON=python
+mps-maintenance readme --check
+git diff -- README.rst
+```
+
+Commit the generated README alongside its inputs.
+
 ## Releases
 
 The explicit project version, tracked `FiberFusing/_version.py`, and

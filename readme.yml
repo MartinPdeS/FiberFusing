@@ -1,0 +1,20 @@
+introduction: |
+  Start with a circular or linear arrangement of optical fibers and vary the fusion
+  degree to change the cladding boundary and core positions. Place catalog fibers
+  at those positions and rasterize the cross-section to obtain a two-dimensional
+  refractive-index mesh.
+
+  Run the `Colab notebook <https://colab.research.google.com/github/MartinPdeS/FiberFusing/blob/master/notebook.ipynb>`_
+  in your browser, or explore other arrangements in the
+  `example gallery <https://martinpdes.github.io/FiberFusing/docs/latest/gallery/index.html>`_.
+quickstart:
+  title: Model a three-fiber ring
+  description: |
+    Arrange three SMF28 fibers in air with a cladding radius of 62.5 µm and a
+    fusion degree of 0.4. The script uses meters for length and dimensionless
+    refractive indices. For headless use, ``geometry.plot(show=False)`` returns
+    the Matplotlib figure.
+  source: docs/examples/geometry/plot_ring_3.py
+  figure:
+    path: docs/images/example_3x3.png
+    caption: Three-fiber fused cross-section and its refractive-index mesh.

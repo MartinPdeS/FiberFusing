@@ -41,6 +41,7 @@ dependencies = [
 ]
 
 [project.urls]
+Contact = "https://github.com/MartinPdeS/FiberFusing/issues"
 Homepage = "https://github.com/MartinPdeS/FiberFusing"
 Documentation = "https://martinpdes.github.io/FiberFusing/"
 Repository = "https://github.com/MartinPdeS/FiberFusing.git"
@@ -65,6 +66,9 @@ extend-exclude = ["FiberFusing/_version.py", "docs/source/gallery", "build"]
 
 [tool.ruff.lint]
 select = ["E9", "F63", "F7", "F82"]
+
+[dependency-groups]
+readme = ["martinpdes-maintenance @ git+https://github.com/MartinPdeS/MartinPdeS-maintenance.git@0196e944781cf1207121122d575be082a58d0370"]
 
 [tool.mps-maintenance]
 version-file = "FiberFusing/_version.py"

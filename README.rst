@@ -1,210 +1,190 @@
-|logo|
+FiberFusing
+===========
+
+.. image:: https://raw.githubusercontent.com/MartinPdeS/FiberFusing/HEAD/docs/images/logo.png
+   :alt: FiberFusing logo
+   :width: 100%
 
 .. list-table::
+   :width: 100%
    :widths: 35 65
    :header-rows: 1
 
    * - Badge
      - Status
    * - Python versions
-     - |python|
+     - |mps-python|
    * - Documentation
-     - |docs|
+     - |mps-docs|
    * - Continuous integration
-     - |ci/cd|
+     - |mps-ci|
    * - Test coverage
-     - |coverage|
-   * - Google Colab
-     - |colab|
+     - |mps-coverage|
    * - PyPI package
-     - |PyPi|
+     - |mps-pypi|
    * - PyPI downloads
-     - |PyPi_download|
+     - |mps-downloads|
    * - Anaconda package
-     - |anaconda|
+     - |mps-conda|
    * - Anaconda downloads
-     - |anaconda_download|
+     - |mps-conda-downloads|
+   * - Latest Anaconda release
+     - |mps-conda-release|
 
-FiberFusing
-===========
+Parametrized fused-fiber cross-sections and refractive-index meshes.
 
-**FiberFusing** is an open-source Python package for parametrized fused-fiber
-cross-sections and refractive-index meshes. Define a fiber arrangement, adjust
-its fusion degree, and combine the resulting profile with optical fibers and a
-background medium.
+Start with a circular or linear arrangement of optical fibers and vary the fusion
+degree to change the cladding boundary and core positions. Place catalog fibers
+at those positions and rasterize the cross-section to obtain a two-dimensional
+refractive-index mesh.
 
-Features
---------
-
-- Circular and linear fiber arrangements with adjustable fusion degree.
-- Geometric connection optimization with area-conservation diagnostics.
-- Fiber catalog loading and refractive-index mesh generation.
-- Core-position perturbations with reproducible random seeds.
-- Matplotlib plots with supplied-axes support and headless rendering.
+Run the `Colab notebook <https://colab.research.google.com/github/MartinPdeS/FiberFusing/blob/master/notebook.ipynb>`_
+in your browser, or explore other arrangements in the
+`example gallery <https://martinpdes.github.io/FiberFusing/docs/latest/gallery/index.html>`_.
 
 Installation
 ------------
 
-Install from PyPI using the Python interpreter for your simulations:
+Requires Python ``>=3.10``.
 
-.. code-block:: bash
+.. code-block:: console
 
-   python -m pip install FiberFusing
+   $ python -m pip install FiberFusing
 
-Alternatively, install from the MartinPdeS Anaconda channel:
+Install from the ``martinpdes`` Conda channel:
 
-.. code-block:: bash
+.. code-block:: console
 
-   conda install -c MartinPdeS fiberfusing
+   $ conda install -c martinpdes fiberfusing
 
-Verify the installation with:
+For an editable source installation:
 
-.. code-block:: bash
+.. code-block:: console
 
-   python -c "import FiberFusing; print(FiberFusing.__version__)"
+   $ git clone https://github.com/MartinPdeS/FiberFusing.git
+   $ cd FiberFusing
+   $ python -m pip install -e .
 
-Python compatibility
---------------------
+Model a three-fiber ring
+------------------------
 
-FiberFusing supports **Python 3.10, 3.11, 3.12, 3.13, and 3.14**. The full test
-suite runs on all five versions in
-`GitHub Actions <https://github.com/MartinPdeS/FiberFusing/actions/workflows/tests.yml>`_.
-
-The package contains pure Python code. Its universal wheel and Conda ``noarch``
-package can be installed on these Python versions without compiling FiberFusing.
-Release artifacts are currently built and installation-checked on Python 3.11;
-source tests also run on Python 3.13 and 3.14.
-
-First simulation
-----------------
-
-Build a circular arrangement of three fibers with a cladding radius of
-62.5 micrometers. Lengths in this example use meters; refractive indices are
-dimensionless.
+Arrange three SMF28 fibers in air with a cladding radius of 62.5 µm and a
+fusion degree of 0.4. The script uses meters for length and dimensionless
+refractive indices. For headless use, ``geometry.plot(show=False)`` returns
+the Matplotlib figure.
 
 .. code-block:: python
+
+   """
+   3x3 Ring - Geometry Visualization
+   =================================
+   This script demonstrates how to create and visualize a 3x3 ring geometry using the FiberFusing library.
+   """
 
    from FiberFusing import Geometry, DomainAlignment, BackGround
    from FiberFusing.fiber import FiberLoader
    from FiberFusing.profile import Profile, StructureType
 
+   # Set up the background medium (air)
    air_background = BackGround(refractive_index=1.0)
 
+   # Create the profile structure based on the fused fiber profile
    profile = Profile()
 
    profile.add_structure(
-      structure_type=StructureType.CIRCULAR,
-      number_of_fibers=3,
-      fusion_degree=0.4,
-      fiber_radius=62.5e-6
+       structure_type=StructureType.CIRCULAR,
+       number_of_fibers=3,
+       fusion_degree=0.4,
+       fiber_radius=62.5e-6,
    )
 
-   profile.refractive_index = 1.4444
+   profile.refractive_index = (
+       1.4444  # Refractive index of silica at the specified wavelength
+   )
 
+
+   # Load fibers (e.g., SMF-28) positioned at the cores of the profile structure
    fiber_loader = FiberLoader()
    fibers = [
-      fiber_loader.load_fiber('SMF28', clad_refractive_index=profile.refractive_index, position=core_position)
-      for core_position in profile.cores
+       fiber_loader.load_fiber(
+           "SMF28", clad_refractive_index=profile.refractive_index, position=core_position
+       )
+       for core_position in profile.cores
    ]
 
+   # Set up the geometry with the defined background, profile structure, and resolution
    geometry = Geometry(
-      x_bounds=DomainAlignment.CENTERING,
-      y_bounds=DomainAlignment.CENTERING,
-      resolution=350
+       x_bounds=DomainAlignment.CENTERING,
+       y_bounds=DomainAlignment.CENTERING,
+       resolution=350,
    )
 
+   # Add the fibers to the geometry
    geometry.add_structure(air_background, profile, *fibers)
 
    geometry.initialize()
 
+   # Plot the resulting geometry
    geometry.plot()
 
-|example_3x3|
+.. figure:: https://raw.githubusercontent.com/MartinPdeS/FiberFusing/HEAD/docs/images/example_3x3.png
 
-For headless workflows, use ``geometry.plot(show=False)`` to obtain a Matplotlib
-figure without opening a window. See the
-`plotting guide <https://martinpdes.github.io/FiberFusing/docs/latest/plotting.html>`_
-for supplied axes, styling, and export options.
+   Three-fiber fused cross-section and its refractive-index mesh.
 
-Documentation and examples
---------------------------
+Documentation
+-------------
 
-See the `online documentation
-<https://martinpdes.github.io/FiberFusing/docs/latest/>`_ for the API and
-numerical behavior, and the `example gallery
-<https://martinpdes.github.io/FiberFusing/docs/latest/gallery/index.html>`_
-for runnable fiber configurations.
+Read the `FiberFusing documentation <https://martinpdes.github.io/FiberFusing/>`__.
 
-Developer setup
----------------
+Contributing
+------------
 
-Clone the repository, select Python 3.10 or newer, and install the development
-and testing dependencies:
-
-.. code-block:: bash
-
-   git clone https://github.com/MartinPdeS/FiberFusing.git
-   cd FiberFusing
-   python -m pip install -e ".[testing,dev,release]"
-
-Run checks with the same interpreter:
-
-.. code-block:: bash
-
-   MPLBACKEND=Agg python -m pytest
-   python -m ruff check FiberFusing tests
-   make release-check PYTHON=python
-
-See ``CONTRIBUTING.md`` for documentation builds, installed-package checks, and
-release commands. Versions are explicit and releases use the shared
-``martinpdes-maintenance`` tool.
+See the `contributing guide <https://github.com/MartinPdeS/FiberFusing/blob/HEAD/CONTRIBUTING.md>`__.
 
 Contact
 -------
 
-For questions or contributions, open an issue on
-`GitHub <https://github.com/MartinPdeS/FiberFusing/issues>`_ or contact
-`Martin Poinsinet de Sivry-Houle
-<mailto:martin.poinsinet-de-sivry@polymtl.ca?subject=FiberFusing>`_.
+* `Martin Poinsinet de Sivry-Houle <mailto:martin.poinsinet.de.sivry@gmail.com?subject=FiberFusing>`__
 
-.. |python| image:: https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12%20%7C%203.13%20%7C%203.14-blue
-   :target: https://github.com/MartinPdeS/FiberFusing/actions/workflows/tests.yml
-   :alt: Supported and tested Python versions: 3.10, 3.11, 3.12, 3.13, 3.14
+`Project contact page <https://github.com/MartinPdeS/FiberFusing/issues>`__.
 
-.. |PyPi| image:: https://badge.fury.io/py/FiberFusing.svg
-   :target: https://pypi.org/project/FiberFusing/
-   :alt: PyPi
+License
+-------
 
-.. |PyPi_download| image:: https://img.shields.io/pypi/dm/fiberfusing.svg
+See the `license text <https://github.com/MartinPdeS/FiberFusing/blob/HEAD/LICENSE>`__.
+
+.. |mps-python| image:: https://img.shields.io/pypi/pyversions/fiberfusing.svg
+   :alt: Supported Python versions
+   :target: https://pypi.org/project/fiberfusing/
+
+.. |mps-pypi| image:: https://img.shields.io/pypi/v/fiberfusing.svg
+   :alt: PyPI version
+   :target: https://pypi.org/project/fiberfusing/
+
+.. |mps-downloads| image:: https://img.shields.io/pypi/dm/fiberfusing.svg
+   :alt: Monthly PyPI downloads
    :target: https://pypistats.org/packages/fiberfusing
-   :alt: PyPi download statistics
 
-.. |logo| image:: https://github.com/MartinPdeS/FiberFusing/raw/master/docs/images/logo.png
-   :alt: FiberFusing navy and coral seven-core logo
-   :width: 720px
-
-.. |docs| image:: https://github.com/martinpdes/fiberfusing/actions/workflows/deploy_documentation.yml/badge.svg
+.. |mps-docs| image:: https://github.com/MartinPdeS/FiberFusing/actions/workflows/deploy_documentation.yml/badge.svg
+   :alt: Documentation
    :target: https://martinpdes.github.io/FiberFusing/
-   :alt: Documentation Status
 
-.. |coverage| image:: https://raw.githubusercontent.com/MartinPdeS/FiberFusing/python-coverage-comment-action-data/badge.svg
+.. |mps-ci| image:: https://github.com/MartinPdeS/FiberFusing/actions/workflows/deploy_coverage.yml/badge.svg
+   :alt: Continuous integration
+   :target: https://github.com/MartinPdeS/FiberFusing/actions/workflows/deploy_coverage.yml
+
+.. |mps-coverage| image:: https://raw.githubusercontent.com/MartinPdeS/FiberFusing/python-coverage-comment-action-data/badge.svg
+   :alt: Test coverage
    :target: https://htmlpreview.github.io/?https://github.com/MartinPdeS/FiberFusing/blob/python-coverage-comment-action-data/htmlcov/index.html
-   :alt: Unittest coverage
 
-.. |ci/cd| image:: https://github.com/martinpdes/fiberfusing/actions/workflows/tests.yml/badge.svg
-   :target: https://github.com/MartinPdeS/FiberFusing/actions
-   :alt: Unittest Status
-
-.. |anaconda_download| image:: https://anaconda.org/martinpdes/fiberfusing/badges/downloads.svg
-   :alt: Anaconda downloads
-   :target: https://anaconda.org/martinpdes/fiberfusing
-
-.. |anaconda| image:: https://anaconda.org/martinpdes/fiberfusing/badges/version.svg
+.. |mps-conda| image:: https://anaconda.org/martinpdes/fiberfusing/badges/version.svg
    :alt: Anaconda version
    :target: https://anaconda.org/martinpdes/fiberfusing
 
-.. |example_3x3| image:: https://github.com/MartinPdeS/FiberFusing/raw/master/docs/images/example_3x3.png
-   :alt: Three-fiber fused cross-section and refractive-index mesh
+.. |mps-conda-downloads| image:: https://anaconda.org/martinpdes/fiberfusing/badges/downloads.svg
+   :alt: Anaconda downloads
+   :target: https://anaconda.org/martinpdes/fiberfusing
 
-.. |colab| image:: https://colab.research.google.com/assets/colab-badge.svg
-   :target: https://colab.research.google.com/github/MartinPdeS/FiberFusing/blob/master/notebook.ipynb
+.. |mps-conda-release| image:: https://anaconda.org/martinpdes/fiberfusing/badges/latest_release_relative_date.svg
+   :alt: Latest Anaconda release
+   :target: https://anaconda.org/martinpdes/fiberfusing

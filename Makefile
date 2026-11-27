@@ -2,10 +2,12 @@
 PYTHON ?= python3
 DOCS_BUILD_DIR ?= docs/build/html
 RELEASE_KIND := $(filter major minor patch,$(MAKECMDGOALS))
-.PHONY: help editable test quality check docs build package-check release-check tag release major minor patch
+.PHONY: help readme editable test quality check docs build package-check release-check tag release major minor patch
 help:
-	@echo "FiberFusing: editable, test, quality, check, docs, build, package-check"
+	@echo "FiberFusing: readme, editable, test, quality, check, docs, build, package-check"
 	@echo "Releases: release-check, tag VERSION=vX.Y.Z, release patch|minor|major"
+readme:
+	$(PYTHON) -m martinpdes_maintenance.cli readme
 editable:
 	$(PYTHON) -m pip install -e ".[testing,dev,documentation,release]"
 test:
